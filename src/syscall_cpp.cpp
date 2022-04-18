@@ -128,25 +128,25 @@ Scheduler *Scheduler::getScheduler() {
     return scheduler;
 }
 
-void Scheduler::put(Thread *thread) {
-    queueThreads->push(thread);
+void Scheduler::put(PCB *pcb) {
+    queuePCB->push(pcb);
 }
 
-Thread *Scheduler::get() {
-    Thread* t =  queueThreads->front();
-    queueThreads->pop();
+PCB *Scheduler::get() {
+    PCB* t =  queuePCB->front();
+    queuePCB->pop();
     return t;
 }
 
 Scheduler::~Scheduler() {
     //todo
     //preklopi delete za queue
-    delete queueThreads;
+    delete queuePCB;
     //MemoryAllocator::getMemoryAllocator()->mem_free(queueThreads);
 }
 
 Scheduler::Scheduler() {
-    queueThreads = (Queue<Thread*>*)MemoryAllocator::getMemoryAllocator()->mem_alloc(sizeof(Queue<Thread*>));
+    queuePCB= (Queue<PCB*>*)MemoryAllocator::getMemoryAllocator()->mem_alloc(sizeof(Queue<PCB*>));
 }
 
 void *Scheduler::operator new(size_t size) {
@@ -172,7 +172,7 @@ Thread::Thread(void (*body)(void *), void *arg) {
 //}
 
 void Thread::start() {
-    Scheduler::getScheduler()->put(this);
+    threadPCB->start();
 }
 
 void Thread::dispatch() {
@@ -193,7 +193,9 @@ Thread::Thread() {
 
 //PCB.h
 
-PCB::PCB(void (*body)(void*), void* arg, size_t stackSize, size_t timeSlice) {
+PCB::PCB(void (*body)(void*), void* arg , size_t stackSize, size_t timeSlice) {
+    //todo
+    //pocetni kontekst niti
     this->stackSize = stackSize;
     this->timeSlice = timeSlice;
     this->pcbThread = new Thread(body, arg);
@@ -201,5 +203,22 @@ PCB::PCB(void (*body)(void*), void* arg, size_t stackSize, size_t timeSlice) {
 }
 
 PCB::~PCB() {
+
+}
+
+void PCB::start()
+{
+    Scheduler::getScheduler()->put(this);
+}
+
+void PCB::runner(void* p) {
+
+}
+
+//System.h
+
+PCB* System::runningPCB = 0;
+
+void System::initSystem() {
 
 }

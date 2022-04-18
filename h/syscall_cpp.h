@@ -7,7 +7,11 @@
 
 #include "syscall_c.h"
 
+class MemoryAllocator;
 class Thread;
+class PCB;
+class Scheduler;
+class System;
 
 void * operator new(size_t size);
 
@@ -54,15 +58,15 @@ class Scheduler
 {
 public:
     static Scheduler* getScheduler();
-    void put(Thread* thread);
-    Thread* get();
+    void put(PCB* pcb);
+    PCB* get();
     ~Scheduler();
     void * operator new(size_t size);
     void operator delete(void* p);
 private:
     static Scheduler* scheduler;
     Scheduler();
-    Queue<Thread*>* queueThreads;
+    Queue<PCB*>* queuePCB;
 };
 
 class Thread
@@ -70,13 +74,9 @@ class Thread
 public:
     Thread(void (*body)(void*), void* arg);
     //virtual ~Thread();
-
     void start();
-
     static void dispatch();
-
     static void sleep(time_t);
-
     static Thread* runningThread;
 protected:
     Thread();
@@ -84,19 +84,17 @@ protected:
     //virtual pravi probleme
     //virtual void run();
 private:
+
     void (*f)(void*);
     void* args;
+
     //todo
     //da li je potrebno da se definise tip thread_t
     int myHandle;
 
     uint64 pID;
 
-    //static const int NEW;
-    //static const int READY;
-    //static const int RUNNING;
-    //static const int BLOCKED;
-    //static const int FINISHED;
+    PCB* threadPCB;
 };
 
 
@@ -112,13 +110,21 @@ private:
     size_t timeSlice;
     State state;
 public:
-    PCB(void (*body)(void*), void* arg, size_t stackSize = DEFAULT_STACK_SIZE, size_t timeSlice = DEFAULT_TIME_SLICE);
+
+    static void runner(void*);
+
+     PCB(void (*body)(void*) = PCB::runner, void* arg = 0, size_t stackSize = DEFAULT_STACK_SIZE, size_t timeSlice = DEFAULT_TIME_SLICE);
     ~PCB();
 
     void start();
-
-    static PCB* runningPCB;
-
 };
+
+class System
+{
+public:
+    static void initSystem();
+    static PCB* runningPCB;
+};
+
 
 #endif //PROJECT_BASE_V1_0_SYSCALL_CPP_H
