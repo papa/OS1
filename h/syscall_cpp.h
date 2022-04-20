@@ -22,9 +22,11 @@ class MemoryAllocator
 private:
     static MemoryAllocator* memoryAllocator;
     MemoryAllocator();
+public:
+
     void * operator new(size_t size);
     void operator delete(void* p);
-public:
+
     static MemoryAllocator* getMemoryAllocator();
 
     ~MemoryAllocator();
@@ -78,6 +80,8 @@ public:
     static void dispatch();
     static void sleep(time_t);
     static Thread* runningThread;
+    void * operator new(size_t size);
+    void operator delete(void* p);
 protected:
     Thread();
     //todo
@@ -111,16 +115,21 @@ private:
     State state;
 public:
 
-    static void runner(void*);
-
-     PCB(void (*body)(void*) = PCB::runner, void* arg = 0, size_t stackSize = DEFAULT_STACK_SIZE, size_t timeSlice = DEFAULT_TIME_SLICE);
+    PCB(void (*body)(void*) = PCB::runner, void* arg = 0, size_t stackSize = DEFAULT_STACK_SIZE, size_t timeSlice = DEFAULT_TIME_SLICE);
     ~PCB();
 
+    static void runner(void*);
+
     void start();
+
+    void * operator new(size_t size);
+    void operator delete(void* p);
 };
 
 class System
 {
+private:
+    System();
 public:
     static void initSystem();
     static PCB* runningPCB;

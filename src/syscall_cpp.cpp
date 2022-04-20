@@ -104,6 +104,7 @@ Queue<T>::~Queue() {
 
 template<typename T>
 void *Queue<T>::operator new(size_t size) {
+    //todo
     //da li ovde treba size ili sizeof(Queue<T>)
     return ::operator new(sizeof(Queue<T>));
 }
@@ -122,7 +123,7 @@ Scheduler *Scheduler::getScheduler() {
     {
         //todo
         //preklopi new za Scheduler
-        scheduler = (Scheduler*)MemoryAllocator::getMemoryAllocator()->mem_alloc(sizeof(Scheduler));
+        scheduler = new Scheduler();
     }
 
     return scheduler;
@@ -146,7 +147,9 @@ Scheduler::~Scheduler() {
 }
 
 Scheduler::Scheduler() {
-    queuePCB= (Queue<PCB*>*)MemoryAllocator::getMemoryAllocator()->mem_alloc(sizeof(Queue<PCB*>));
+    //todo
+    //da li radi konstruktor
+    queuePCB= new Queue<PCB*>();
 }
 
 void *Scheduler::operator new(size_t size) {
@@ -187,6 +190,14 @@ Thread::Thread() {
 
 }
 
+void *Thread::operator new(size_t size) {
+    return ::operator new(sizeof(Thread));
+}
+
+void Thread::operator delete(void *p) {
+    ::operator delete(p);
+}
+
 //void Thread::run() {
 //
 //}
@@ -211,7 +222,16 @@ void PCB::start()
     Scheduler::getScheduler()->put(this);
 }
 
+//todo
 void PCB::runner(void* p) {
+    //pcbThread->run();
+}
+
+void *PCB::operator new(size_t size) {
+    return ::operator new(sizeof(PCB));
+}
+
+void PCB::operator delete(void *p) {
 
 }
 
@@ -219,6 +239,12 @@ void PCB::runner(void* p) {
 
 PCB* System::runningPCB = 0;
 
+//todo
+extern "C" void interruptvec();
 void System::initSystem() {
+    __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
+}
+
+System::System() {
 
 }
