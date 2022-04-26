@@ -40,11 +40,6 @@ interruptvec:
 
     call interrupt
 
-    #csrr a2 , sepc
-    #li a3, 4
-    #add a2, a2, a3
-    #csrw sepc, a2
-
     ld x0, 0(sp)
     ld x1, 8(sp)
     ld x2, 16(sp)
