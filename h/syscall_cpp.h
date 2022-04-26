@@ -80,7 +80,7 @@ public:
     static void dispatch();
     static void sleep(time_t);
     static Thread* runningThread;
-    void * operator new(size_t size);
+    //void * operator new(size_t size, void (*f)(void*) f, void* args);
     void operator delete(void* p);
 protected:
     Thread();

@@ -31,7 +31,7 @@ void initMemory();
 
 void insertNewAllocatedFragment(void *addr, size_t size);
 
-void tryToAllocateFragment(size_t size);
+void* tryToAllocateFragment(size_t size);
 
 void insertNewFreeSegment(void *addr, size_t size);
 

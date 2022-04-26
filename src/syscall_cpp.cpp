@@ -190,13 +190,22 @@ Thread::Thread() {
 
 }
 
+/*
 void *Thread::operator new(size_t size) {
-    return ::operator new(sizeof(Thread));
-}
+
+    //todo
+    //koji su ovde parametri poziva
+    thread_create(0, 0, 0);
+
+}*/
 
 void Thread::operator delete(void *p) {
     ::operator delete(p);
 }
+
+/*void *Thread::operator new(size_t size, void (*f)(void *) f, void *args) {
+
+}*/
 
 //void Thread::run() {
 //

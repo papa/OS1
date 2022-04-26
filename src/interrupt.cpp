@@ -45,13 +45,23 @@ extern "C" void interrupt() {
                 size_t size;
                 __asm__ volatile("mv %0, a1" : "=r"(size));
                 size*=MEM_BLOCK_SIZE;
-                tryToAllocateFragment(size);
+                void* allocatedAddr = tryToAllocateFragment(size);
+                __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
             }
             else if(operation == (uint64)MEM_FREE){
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
                 tryToFreeSegment((void*)addr);
             }
+            else if(operation == (uint64)0x11)
+            {
+                //thread create
+
+                //__asm__ volatile("mv %0, a1" : "=r"(size));
+            }
+
+
+
 
             //uint64 sepc;
             //asm volatile("csrr %0, sepc" : "=r" (sepc));

@@ -42,3 +42,31 @@ int mem_free(void* p)
     return result;
 }
 
+#ifdef __cplusplus
+extern "C"
+#endif
+int thread_create(uint64** handle, void (*start_routine)(void*), void* args)
+{
+    //initialize registers
+    __asm__ volatile("li a0, 0x11");
+    //uint64 start_routine_addres = (uint64)start_routine;
+    __asm__ volatile("mv a2, %0" :  : "r"((uint64)start_routine));
+    __asm__ volatile("mv a3, %0" :  : "r"((uint64)args));
+
+    void * stack_space = mem_alloc(DEFAULT_STACK_SIZE);
+
+    //handle this error
+    if(stack_space == 0)
+        return -1;
+
+    __asm__ volatile("mv a4, %0" :  : "r"((uint64)stack_space));
+
+    //todo
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}
+

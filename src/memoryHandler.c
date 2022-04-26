@@ -55,7 +55,7 @@ void insertNewAllocatedFragment(void* addr, size_t size) {
     }
 }
 
-void tryToAllocateFragment(size_t size) {
+void* tryToAllocateFragment(size_t size) {
     initMemory();
     FreeFragment* prev = 0;
     FreeFragment* curr = headFree;
@@ -88,10 +88,15 @@ void tryToAllocateFragment(size_t size) {
 
                 insertNewAllocatedFragment(oldAddr, size);
 
-                uint64 oldA = (uint64) ((char*)oldAddr + sizeof(AllocatedFragment));
-                __asm__ volatile("mv a0,%0" : : "r"(oldA));
 
-                return;
+
+                uint64 oldA = (uint64) ((char*)oldAddr + sizeof(AllocatedFragment));
+
+                return (void*)oldA;
+
+                //__asm__ volatile("mv a0,%0" : : "r"(oldA));
+
+                //return;
             }
             else {
                 if(prev != 0)
@@ -110,6 +115,8 @@ void tryToAllocateFragment(size_t size) {
 
     uint64 x = 0;
     __asm__ volatile("mv a0,%0" : : "r"(x));
+
+    return 0;
 }
 
 void insertNewFreeSegment(void* addr, size_t size)
