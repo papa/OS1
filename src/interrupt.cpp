@@ -16,8 +16,7 @@ const uint64 ecallSystemInterupt = bntZero + 9UL;
 
 extern "C" void interrupt() {
 
-    uint64 scause;
-    __asm__ volatile("csrr %0,scause":"=r"(scause));
+    uint64 scause = Riscv::r_scause();
     switch(scause) {
 
         case hwInterrupt: // todo
@@ -53,7 +52,7 @@ extern "C" void interrupt() {
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
                 MemoryAllocator::tryToFreeSegment((void*)addr);
             }
-            else if(operation == (uint64)0x11)
+            else if(operation == (uint64)PCB::THREAD_CREATE)
             {
                 //thread create
 
@@ -63,11 +62,9 @@ extern "C" void interrupt() {
 
 
 
-            //uint64 sepc;
-            //asm volatile("csrr %0, sepc" : "=r" (sepc));
-            //sepc+=4;
-            //asm volatile("csrw sepc, %0" : : "r" (sepc));
-
+            uint64 sepc = Riscv::r_sepc();
+            sepc+=4;
+            Riscv::w_sepc(sepc);
             break;
     }
 

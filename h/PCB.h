@@ -19,6 +19,8 @@ public:
 
     static PCB* running;
 
+    static const int THREAD_CREATE = 0x11;
+
 protected:
     //todo
     //virtual pravi probleme

@@ -6,7 +6,9 @@
 #define PROJECT_BASE_V1_0_INTERRUPT_H
 
 #include "../lib/console.h"
+#include "Riscv.h"
 #include "MemoryAllocator.h"
+#include "PCB.h"
 
 extern "C" void interrupt();
 
