@@ -7,9 +7,17 @@
 //todo
 //kreiranje pocetnog konteksta niti
 
-PCB::PCB(void (*body)(void *), void *args) {
-    this->body = body;
-    this->args = args;
+//todo
+//stack space da li treba na poslednju poziciju da ide
+PCB::PCB(void (*body)(void *), void *args, void* stack_space) :
+    context({
+        (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
+        (uint64)&PCB::runner,
+        (uint64)body,
+        (uint64)args
+    }), finished(false)
+{
+
 }
 
 void PCB::dispatch() {
@@ -41,13 +49,6 @@ void PCB::runner() {
     //pcbThread->run();
 }
 
-/*
-void *PCB::operator new(size_t size) {
-    return 0;
-    //return ::operator new(sizeof(PCB));
-}
-
-void PCB::operator delete(void *p) {
+void PCB::yield(PCB *oldThread, PCB *newThread) {
 
 }
-*/

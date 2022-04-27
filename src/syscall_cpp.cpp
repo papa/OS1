@@ -22,7 +22,7 @@ void Thread::start() {
 }
 
 void Thread::dispatch() {
-    PCB::dispatch();
+    //PCB::dispatch();
 }
 
 void Thread::sleep(time_t time) {

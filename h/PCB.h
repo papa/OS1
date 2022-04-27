@@ -11,7 +11,7 @@
 class PCB
 {
 public:
-    PCB(void (*body)(void*), void* args);
+    PCB(void (*body)(void*), void* args, void* stack_space);
     //virtual ~Thread();
     void start();
     static void dispatch();
@@ -25,17 +25,26 @@ protected:
     //virtual void run() {}
 private:
 
-    enum State {CREATED, READY, RUNNING, BLOCKED, FINISHED, IDLE};
+    static void yield(PCB* oldThread, PCB* newThread);
 
-    uint64*  pcbSP;
+    typedef struct Context
+    {
+        uint64 pcbSP;
+        uint64 ra;
+        uint64 body;
+        uint64 args;
+    }Context;
+
+
+    //enum State {CREATED, READY, RUNNING, BLOCKED, FINISHED, IDLE};
+
+    Context context;
     size_t stackSize;
-    State state;
+    //State state;
 
     static void runner();
 
-    void (*body)(void*);
-    void* args;
-
+    bool finished;
     uint64 pID;
 };
 

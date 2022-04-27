@@ -1,0 +1,463 @@
+GAS LISTING /tmp/ccfhvM47.s 			page 1
+
+
+   1              		.file	"interrupt.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	interrupt
+   9              	interrupt:
+  10              	.LFB0:
+  11              		.file 1 "src/interrupt.cpp"
+   1:src/interrupt.cpp **** //
+   2:src/interrupt.cpp **** // Created by os on 4/12/22.
+   3:src/interrupt.cpp **** //
+   4:src/interrupt.cpp **** 
+   5:src/interrupt.cpp **** #include "../h/interrupt.h"
+   6:src/interrupt.cpp **** 
+   7:src/interrupt.cpp **** const uint64 bntOne = 1UL << 63;
+   8:src/interrupt.cpp **** const uint64 bntZero = 0;
+   9:src/interrupt.cpp **** 
+  10:src/interrupt.cpp **** const uint64 hwInterrupt = bntOne + 9UL;
+  11:src/interrupt.cpp **** const uint64 operationInterrupt = bntZero + 2UL;
+  12:src/interrupt.cpp **** const uint64 addrReadInterrupt = bntZero + 5UL;
+  13:src/interrupt.cpp **** const uint64 addrWriteInterrupt = bntZero + 7UL;
+  14:src/interrupt.cpp **** const uint64 ecallUserInterrupt = bntZero + 8UL;
+  15:src/interrupt.cpp **** const uint64 ecallSystemInterupt = bntZero + 9UL;
+  16:src/interrupt.cpp **** 
+  17:src/interrupt.cpp **** extern "C" void interrupt() {
+  12              		.loc 1 17 29
+  13              		.cfi_startproc
+  14 0000 130101FF 		addi	sp,sp,-16
+  15              		.cfi_def_cfa_offset 16
+  16 0004 23341100 		sd	ra,8(sp)
+  17 0008 23308100 		sd	s0,0(sp)
+  18              		.cfi_offset 1, -8
+  19              		.cfi_offset 8, -16
+  20 000c 13040101 		addi	s0,sp,16
+  21              		.cfi_def_cfa 8, 0
+  18:src/interrupt.cpp **** 
+  19:src/interrupt.cpp ****     uint64 scause;
+  22              		.loc 1 19 5
+  20:src/interrupt.cpp ****     __asm__ volatile("csrr %0,scause":"=r"(scause));
+  23              		.loc 1 20 5
+  24              		.loc 1 20 52 is_stmt 0
+  25              	#APP
+  26              	# 20 "src/interrupt.cpp" 1
+  21              	    switch(scause) {
+  27              		csrr a4,scause
+  28              	# 0 "" 2
+  29              	.LVL0:
+  30              		.loc 1 21 5 is_stmt 1
+  31              	#NO_APP
+  32              	.LBB2:
+  33 0014 93079000 		li	a5,9
+  34 0018 630EF700 		beq	a4,a5,.L5
+  35              	.LVL1:
+  36              	.L2:
+  37              	.LBE2:
+GAS LISTING /tmp/ccfhvM47.s 			page 2
+
+
+  22:src/interrupt.cpp **** 
+  23:src/interrupt.cpp ****         case hwInterrupt: // todo
+  24:src/interrupt.cpp ****             break;
+  25:src/interrupt.cpp **** 
+  26:src/interrupt.cpp ****         case operationInterrupt: // todo
+  27:src/interrupt.cpp ****             break;
+  28:src/interrupt.cpp **** 
+  29:src/interrupt.cpp ****         case addrReadInterrupt: // todo
+  30:src/interrupt.cpp ****             break;
+  31:src/interrupt.cpp **** 
+  32:src/interrupt.cpp ****         case addrWriteInterrupt: // todo
+  33:src/interrupt.cpp ****             break;
+  34:src/interrupt.cpp **** 
+  35:src/interrupt.cpp ****         case ecallUserInterrupt: // todo
+  36:src/interrupt.cpp **** 
+  37:src/interrupt.cpp ****             break;
+  38:src/interrupt.cpp **** 
+  39:src/interrupt.cpp ****         case ecallSystemInterupt:
+  40:src/interrupt.cpp **** 
+  41:src/interrupt.cpp ****             uint64 operation = 0;
+  42:src/interrupt.cpp ****             __asm__ volatile("mv %0, a0" :  "=r"(operation));
+  43:src/interrupt.cpp **** 
+  44:src/interrupt.cpp ****             if(operation == (uint64)MemoryAllocator::MEM_ALLOC) {
+  45:src/interrupt.cpp ****                 size_t size;
+  46:src/interrupt.cpp ****                 __asm__ volatile("mv %0, a1" : "=r"(size));
+  47:src/interrupt.cpp ****                 size*=MEM_BLOCK_SIZE;
+  48:src/interrupt.cpp ****                 void* allocatedAddr = MemoryAllocator::tryToAllocateFragment(size);
+  49:src/interrupt.cpp ****                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
+  50:src/interrupt.cpp ****             }
+  51:src/interrupt.cpp ****             else if(operation == (uint64)MemoryAllocator::MEM_FREE){
+  52:src/interrupt.cpp ****                 uint64 addr = 0;
+  53:src/interrupt.cpp ****                 __asm__ volatile("mv %0, a1" : "=r"(addr));
+  54:src/interrupt.cpp ****                 MemoryAllocator::tryToFreeSegment((void*)addr);
+  55:src/interrupt.cpp ****             }
+  56:src/interrupt.cpp ****             else if(operation == (uint64)0x11)
+  57:src/interrupt.cpp ****             {
+  58:src/interrupt.cpp ****                 //thread create
+  59:src/interrupt.cpp **** 
+  60:src/interrupt.cpp ****                 //__asm__ volatile("mv %0, a1" : "=r"(size));
+  61:src/interrupt.cpp ****             }
+  62:src/interrupt.cpp **** 
+  63:src/interrupt.cpp **** 
+  64:src/interrupt.cpp **** 
+  65:src/interrupt.cpp **** 
+  66:src/interrupt.cpp ****             //uint64 sepc;
+  67:src/interrupt.cpp ****             //asm volatile("csrr %0, sepc" : "=r" (sepc));
+  68:src/interrupt.cpp ****             //sepc+=4;
+  69:src/interrupt.cpp ****             //asm volatile("csrw sepc, %0" : : "r" (sepc));
+  70:src/interrupt.cpp **** 
+  71:src/interrupt.cpp ****             break;
+  72:src/interrupt.cpp ****     }
+  73:src/interrupt.cpp **** 
+  74:src/interrupt.cpp ****     //todo
+  75:src/interrupt.cpp ****     //sta od ovoga treba da se uradi
+  76:src/interrupt.cpp **** 
+  77:src/interrupt.cpp ****     //uint64 sepc;
+  78:src/interrupt.cpp ****     //asm volatile("csrr %0, sepc" : "=r" (sepc));
+GAS LISTING /tmp/ccfhvM47.s 			page 3
+
+
+  79:src/interrupt.cpp ****     //sepc+=4;
+  80:src/interrupt.cpp ****     //asm volatile("csrw sepc, %0" : : "r" (sepc));
+  81:src/interrupt.cpp **** 
+  82:src/interrupt.cpp ****     //uint64 sip;
+  83:src/interrupt.cpp ****     //asm volatile("csrr %0, sip" : "=r" (sip));
+  84:src/interrupt.cpp ****     //sip &= ~2;
+  85:src/interrupt.cpp ****     //asm volatile("csrw sip, %0" : : "r" (sip));
+  86:src/interrupt.cpp **** 
+  87:src/interrupt.cpp ****     //uint64 sie;
+  88:src/interrupt.cpp ****     //asm volatile("csrr %0, sie" : "=r"(sie));
+  89:src/interrupt.cpp ****     //sie &= ~2;
+  90:src/interrupt.cpp ****     //asm volatile("csrw sie, %0" : : "r" (sie));
+  91:src/interrupt.cpp **** 
+  92:src/interrupt.cpp ****     console_handler();
+  38              		.loc 1 92 5
+  39              		.loc 1 92 20 is_stmt 0
+  40 001c 97000000 		call	console_handler@plt
+  40      E7800000 
+  41              	.LVL2:
+  93:src/interrupt.cpp **** }
+  42              		.loc 1 93 1
+  43 0024 83308100 		ld	ra,8(sp)
+  44              		.cfi_remember_state
+  45              		.cfi_restore 1
+  46 0028 03340100 		ld	s0,0(sp)
+  47              		.cfi_restore 8
+  48              		.cfi_def_cfa 2, 16
+  49 002c 13010101 		addi	sp,sp,16
+  50              		.cfi_def_cfa_offset 0
+  51 0030 67800000 		jr	ra
+  52              	.LVL3:
+  53              	.L5:
+  54              		.cfi_restore_state
+  55              	.LBB10:
+  56              	.LBB3:
+  39:src/interrupt.cpp **** 
+  57              		.loc 1 39 9 is_stmt 1
+  41:src/interrupt.cpp ****             __asm__ volatile("mv %0, a0" :  "=r"(operation));
+  58              		.loc 1 41 13
+  42:src/interrupt.cpp **** 
+  59              		.loc 1 42 13
+  42:src/interrupt.cpp **** 
+  60              		.loc 1 42 61 is_stmt 0
+  61              	#APP
+  62              	# 42 "src/interrupt.cpp" 1
+  63              		mv a5, a0
+  64              	# 0 "" 2
+  65              	.LVL4:
+  44:src/interrupt.cpp ****                 size_t size;
+  66              		.loc 1 44 13 is_stmt 1
+  67              	#NO_APP
+  68              	.LBB4:
+  69 0038 13071000 		li	a4,1
+  70              	.LVL5:
+  71 003c 638EE700 		beq	a5,a4,.L6
+  72              	.LBE4:
+  73              	.LBE3:
+GAS LISTING /tmp/ccfhvM47.s 			page 4
+
+
+  74              	.LBE10:
+  51:src/interrupt.cpp ****                 uint64 addr = 0;
+  75              		.loc 1 51 18
+  76              	.LBB11:
+  77              	.LBB9:
+  78              	.LBB8:
+  79              	.LBB5:
+  80 0040 13072000 		li	a4,2
+  81 0044 E39CE7FC 		bne	a5,a4,.L2
+  82              	.LBB6:
+  52:src/interrupt.cpp ****                 __asm__ volatile("mv %0, a1" : "=r"(addr));
+  83              		.loc 1 52 17
+  84              	.LVL6:
+  53:src/interrupt.cpp ****                 MemoryAllocator::tryToFreeSegment((void*)addr);
+  85              		.loc 1 53 17
+  53:src/interrupt.cpp ****                 MemoryAllocator::tryToFreeSegment((void*)addr);
+  86              		.loc 1 53 59 is_stmt 0
+  87              	#APP
+  88              	# 53 "src/interrupt.cpp" 1
+  89              		mv a0, a1
+  90              	# 0 "" 2
+  91              	.LVL7:
+  54:src/interrupt.cpp ****             }
+  92              		.loc 1 54 17 is_stmt 1
+  54:src/interrupt.cpp ****             }
+  93              		.loc 1 54 50 is_stmt 0
+  94              	#NO_APP
+  95 004c 97000000 		call	_ZN15MemoryAllocator16tryToFreeSegmentEPv@plt
+  95      E7800000 
+  96              	.LVL8:
+  97              	.LBE6:
+  98 0054 6FF09FFC 		j	.L2
+  99              	.LVL9:
+ 100              	.L6:
+ 101              	.LBE5:
+ 102              	.LBB7:
+  45:src/interrupt.cpp ****                 __asm__ volatile("mv %0, a1" : "=r"(size));
+ 103              		.loc 1 45 17 is_stmt 1
+  46:src/interrupt.cpp ****                 size*=MEM_BLOCK_SIZE;
+ 104              		.loc 1 46 17
+  46:src/interrupt.cpp ****                 size*=MEM_BLOCK_SIZE;
+ 105              		.loc 1 46 59 is_stmt 0
+ 106              	#APP
+ 107              	# 46 "src/interrupt.cpp" 1
+ 108              		mv a0, a1
+ 109              	# 0 "" 2
+ 110              	.LVL10:
+  47:src/interrupt.cpp ****                 void* allocatedAddr = MemoryAllocator::tryToAllocateFragment(size);
+ 111              		.loc 1 47 17 is_stmt 1
+  48:src/interrupt.cpp ****                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
+ 112              		.loc 1 48 17
+  48:src/interrupt.cpp ****                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
+ 113              		.loc 1 48 77 is_stmt 0
+ 114              	#NO_APP
+ 115 005c 13156500 		slli	a0,a0,6
+ 116              	.LVL11:
+ 117 0060 97000000 		call	_ZN15MemoryAllocator21tryToAllocateFragmentEm@plt
+GAS LISTING /tmp/ccfhvM47.s 			page 5
+
+
+ 117      E7800000 
+ 118              	.LVL12:
+  49:src/interrupt.cpp ****             }
+ 119              		.loc 1 49 17 is_stmt 1
+  49:src/interrupt.cpp ****             }
+ 120              		.loc 1 49 76 is_stmt 0
+ 121              	#APP
+ 122              	# 49 "src/interrupt.cpp" 1
+ 123              		mv a0,a0
+ 124              	# 0 "" 2
+ 125              	#NO_APP
+ 126              	.LBE7:
+ 127 006c 6FF01FFB 		j	.L2
+ 128              	.LBE8:
+ 129              	.LBE9:
+ 130              	.LBE11:
+ 131              		.cfi_endproc
+ 132              	.LFE0:
+ 134              		.globl	ecallSystemInterupt
+ 135              		.globl	ecallUserInterrupt
+ 136              		.globl	addrWriteInterrupt
+ 137              		.globl	addrReadInterrupt
+ 138              		.globl	operationInterrupt
+ 139              		.globl	hwInterrupt
+ 140              		.globl	bntZero
+ 141              		.globl	bntOne
+ 142              		.section	.rodata
+ 143              		.align	3
+ 146              	ecallSystemInterupt:
+ 147 0000 09000000 		.dword	9
+ 147      00000000 
+ 150              	ecallUserInterrupt:
+ 151 0008 08000000 		.dword	8
+ 151      00000000 
+ 154              	addrWriteInterrupt:
+ 155 0010 07000000 		.dword	7
+ 155      00000000 
+ 158              	addrReadInterrupt:
+ 159 0018 05000000 		.dword	5
+ 159      00000000 
+ 162              	operationInterrupt:
+ 163 0020 02000000 		.dword	2
+ 163      00000000 
+ 166              	hwInterrupt:
+ 167 0028 09000000 		.dword	-9223372036854775799
+ 167      00000080 
+ 170              	bntZero:
+ 171 0030 00000000 		.zero	8
+ 171      00000000 
+ 174              	bntOne:
+ 175 0038 00000000 		.dword	-9223372036854775808
+ 175      00000080 
+ 176              		.text
+ 177              	.Letext0:
+ 178              		.file 2 "src/../h/../lib/hw.h"
+ 179              		.file 3 "src/../h/MemoryAllocator.h"
+ 180              		.file 4 "src/../h/interrupt.h"
+GAS LISTING /tmp/ccfhvM47.s 			page 6
+
+
+ 181              		.file 5 "src/../h/../lib/console.h"
+GAS LISTING /tmp/ccfhvM47.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 interrupt.cpp
+     /tmp/ccfhvM47.s:9      .text:0000000000000000 interrupt
+     /tmp/ccfhvM47.s:13     .text:0000000000000000 .L0 
+     /tmp/ccfhvM47.s:14     .text:0000000000000000 .L0 
+     /tmp/ccfhvM47.s:15     .text:0000000000000004 .L0 
+     /tmp/ccfhvM47.s:18     .text:000000000000000c .L0 
+     /tmp/ccfhvM47.s:19     .text:000000000000000c .L0 
+     /tmp/ccfhvM47.s:21     .text:0000000000000010 .L0 
+     /tmp/ccfhvM47.s:23     .text:0000000000000010 .L0 
+     /tmp/ccfhvM47.s:24     .text:0000000000000010 .L0 
+   src/interrupt.cpp:20     .text:0000000000000010 .L0 
+     /tmp/ccfhvM47.s:33     .text:0000000000000014 .L0 
+     /tmp/ccfhvM47.s:39     .text:000000000000001c .L0 
+     /tmp/ccfhvM47.s:40     .text:000000000000001c .L0 
+     /tmp/ccfhvM47.s:43     .text:0000000000000024 .L0 
+     /tmp/ccfhvM47.s:44     .text:0000000000000028 .L0 
+     /tmp/ccfhvM47.s:45     .text:0000000000000028 .L0 
+     /tmp/ccfhvM47.s:47     .text:000000000000002c .L0 
+     /tmp/ccfhvM47.s:48     .text:000000000000002c .L0 
+     /tmp/ccfhvM47.s:50     .text:0000000000000030 .L0 
+     /tmp/ccfhvM47.s:54     .text:0000000000000034 .L0 
+     /tmp/ccfhvM47.s:58     .text:0000000000000034 .L0 
+     /tmp/ccfhvM47.s:59     .text:0000000000000034 .L0 
+     /tmp/ccfhvM47.s:60     .text:0000000000000034 .L0 
+   src/interrupt.cpp:42     .text:0000000000000034 .L0 
+     /tmp/ccfhvM47.s:69     .text:0000000000000038 .L0 
+     /tmp/ccfhvM47.s:80     .text:0000000000000040 .L0 
+     /tmp/ccfhvM47.s:85     .text:0000000000000048 .L0 
+     /tmp/ccfhvM47.s:86     .text:0000000000000048 .L0 
+   src/interrupt.cpp:53     .text:0000000000000048 .L0 
+     /tmp/ccfhvM47.s:93     .text:000000000000004c .L0 
+     /tmp/ccfhvM47.s:95     .text:000000000000004c .L0 
+     /tmp/ccfhvM47.s:104    .text:0000000000000058 .L0 
+     /tmp/ccfhvM47.s:105    .text:0000000000000058 .L0 
+   src/interrupt.cpp:46     .text:0000000000000058 .L0 
+     /tmp/ccfhvM47.s:112    .text:000000000000005c .L0 
+     /tmp/ccfhvM47.s:113    .text:000000000000005c .L0 
+     /tmp/ccfhvM47.s:115    .text:000000000000005c .L0 
+     /tmp/ccfhvM47.s:120    .text:0000000000000068 .L0 
+   src/interrupt.cpp:49     .text:0000000000000068 .L0 
+     /tmp/ccfhvM47.s:131    .text:0000000000000070 .L0 
+     /tmp/ccfhvM47.s:146    .rodata:0000000000000000 ecallSystemInterupt
+     /tmp/ccfhvM47.s:150    .rodata:0000000000000008 ecallUserInterrupt
+     /tmp/ccfhvM47.s:154    .rodata:0000000000000010 addrWriteInterrupt
+     /tmp/ccfhvM47.s:158    .rodata:0000000000000018 addrReadInterrupt
+     /tmp/ccfhvM47.s:162    .rodata:0000000000000020 operationInterrupt
+     /tmp/ccfhvM47.s:166    .rodata:0000000000000028 hwInterrupt
+     /tmp/ccfhvM47.s:170    .rodata:0000000000000030 bntZero
+     /tmp/ccfhvM47.s:174    .rodata:0000000000000038 bntOne
+     /tmp/ccfhvM47.s:182    .text:0000000000000070 .L0 
+     /tmp/ccfhvM47.s:53     .text:0000000000000034 .L5
+     /tmp/ccfhvM47.s:100    .text:0000000000000058 .L6
+     /tmp/ccfhvM47.s:36     .text:000000000000001c .L2
+     /tmp/ccfhvM47.s:690    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccfhvM47.s:1239   .debug_str:0000000000000044 .LASF49
+     /tmp/ccfhvM47.s:1275   .debug_str:000000000000021c .LASF50
+GAS LISTING /tmp/ccfhvM47.s 			page 8
+
+
+     /tmp/ccfhvM47.s:1309   .debug_str:000000000000032c .LASF51
+     /tmp/ccfhvM47.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccfhvM47.s:177    .text:0000000000000070 .Letext0
+     /tmp/ccfhvM47.s:1227   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccfhvM47.s:1291   .debug_str:000000000000029c .LASF0
+     /tmp/ccfhvM47.s:1247   .debug_str:0000000000000109 .LASF1
+     /tmp/ccfhvM47.s:1269   .debug_str:00000000000001e6 .LASF2
+     /tmp/ccfhvM47.s:1243   .debug_str:00000000000000f4 .LASF4
+     /tmp/ccfhvM47.s:1271   .debug_str:00000000000001f4 .LASF3
+     /tmp/ccfhvM47.s:1233   .debug_str:0000000000000023 .LASF5
+     /tmp/ccfhvM47.s:1229   .debug_str:0000000000000000 .LASF6
+     /tmp/ccfhvM47.s:1261   .debug_str:0000000000000174 .LASF7
+     /tmp/ccfhvM47.s:1301   .debug_str:00000000000002ed .LASF8
+     /tmp/ccfhvM47.s:1241   .debug_str:00000000000000e6 .LASF9
+     /tmp/ccfhvM47.s:1343   .debug_str:0000000000000494 .LASF10
+     /tmp/ccfhvM47.s:1265   .debug_str:00000000000001b6 .LASF11
+     /tmp/ccfhvM47.s:1329   .debug_str:0000000000000424 .LASF12
+     /tmp/ccfhvM47.s:1305   .debug_str:0000000000000313 .LASF13
+     /tmp/ccfhvM47.s:1277   .debug_str:000000000000022e .LASF14
+     /tmp/ccfhvM47.s:1251   .debug_str:000000000000012e .LASF15
+     /tmp/ccfhvM47.s:1303   .debug_str:00000000000002fd .LASF16
+     /tmp/ccfhvM47.s:1231   .debug_str:0000000000000013 .LASF52
+     /tmp/ccfhvM47.s:1335   .debug_str:0000000000000468 .LASF19
+     /tmp/ccfhvM47.s:1295   .debug_str:00000000000002bb .LASF17
+     /tmp/ccfhvM47.s:1235   .debug_str:000000000000002a .LASF18
+     /tmp/ccfhvM47.s:1293   .debug_str:00000000000002a9 .LASF20
+     /tmp/ccfhvM47.s:1257   .debug_str:0000000000000166 .LASF21
+     /tmp/ccfhvM47.s:1289   .debug_str:000000000000028e .LASF22
+     /tmp/ccfhvM47.s:1321   .debug_str:00000000000003b9 .LASF23
+     /tmp/ccfhvM47.s:1327   .debug_str:000000000000041b .LASF24
+     /tmp/ccfhvM47.s:1281   .debug_str:000000000000024d .LASF25
+     /tmp/ccfhvM47.s:1333   .debug_str:000000000000045e .LASF26
+     /tmp/ccfhvM47.s:1323   .debug_str:00000000000003cc .LASF28
+     /tmp/ccfhvM47.s:1307   .debug_str:0000000000000323 .LASF27
+     /tmp/ccfhvM47.s:1267   .debug_str:00000000000001c5 .LASF29
+     /tmp/ccfhvM47.s:1337   .debug_str:0000000000000475 .LASF53
+     /tmp/ccfhvM47.s:1297   .debug_str:00000000000002c0 .LASF54
+     /tmp/ccfhvM47.s:1253   .debug_str:0000000000000144 .LASF32
+     /tmp/ccfhvM47.s:1311   .debug_str:000000000000034f .LASF34
+     /tmp/ccfhvM47.s:1273   .debug_str:0000000000000206 .LASF30
+     /tmp/ccfhvM47.s:1325   .debug_str:00000000000003ed .LASF31
+     /tmp/ccfhvM47.s:1237   .debug_str:000000000000002f .LASF33
+     /tmp/ccfhvM47.s:1263   .debug_str:0000000000000187 .LASF35
+     /tmp/ccfhvM47.s:1317   .debug_str:0000000000000395 .LASF55
+     /tmp/ccfhvM47.s:1331   .debug_str:0000000000000434 .LASF56
+     /tmp/ccfhvM47.s:1315   .debug_str:000000000000038e .LASF36
+     /tmp/ccfhvM47.s:1339   .debug_str:0000000000000480 .LASF37
+     /tmp/ccfhvM47.s:1341   .debug_str:0000000000000488 .LASF38
+     /tmp/ccfhvM47.s:1319   .debug_str:00000000000003a6 .LASF39
+     /tmp/ccfhvM47.s:1249   .debug_str:000000000000011c .LASF40
+     /tmp/ccfhvM47.s:1287   .debug_str:000000000000027b .LASF41
+     /tmp/ccfhvM47.s:1279   .debug_str:000000000000023a .LASF42
+     /tmp/ccfhvM47.s:1285   .debug_str:0000000000000267 .LASF43
+     /tmp/ccfhvM47.s:1313   .debug_str:0000000000000384 .LASF44
+     /tmp/ccfhvM47.s:10     .text:0000000000000000 .LFB0
+     /tmp/ccfhvM47.s:132    .text:0000000000000070 .LFE0
+     /tmp/ccfhvM47.s:1255   .debug_str:000000000000015f .LASF45
+GAS LISTING /tmp/ccfhvM47.s 			page 9
+
+
+     /tmp/ccfhvM47.s:1152   .debug_loc:0000000000000000 .LLST0
+     /tmp/ccfhvM47.s:1219   .debug_ranges:0000000000000000 .Ldebug_ranges0
+     /tmp/ccfhvM47.s:1299   .debug_str:00000000000002e3 .LASF46
+     /tmp/ccfhvM47.s:1163   .debug_loc:0000000000000036 .LLST1
+     /tmp/ccfhvM47.s:102    .text:0000000000000058 .LBB7
+     /tmp/ccfhvM47.s:126    .text:000000000000006c .LBE7
+     /tmp/ccfhvM47.s:1179   .debug_loc:0000000000000080 .LLST3
+     /tmp/ccfhvM47.s:1245   .debug_str:00000000000000fb .LASF47
+     /tmp/ccfhvM47.s:118    .text:0000000000000068 .LVL12
+     /tmp/ccfhvM47.s:82     .text:0000000000000048 .LBB6
+     /tmp/ccfhvM47.s:97     .text:0000000000000054 .LBE6
+     /tmp/ccfhvM47.s:1259   .debug_str:000000000000016f .LASF48
+     /tmp/ccfhvM47.s:1194   .debug_loc:00000000000000ba .LLST2
+     /tmp/ccfhvM47.s:96     .text:0000000000000054 .LVL8
+     /tmp/ccfhvM47.s:41     .text:0000000000000024 .LVL2
+     /tmp/ccfhvM47.s:1283   .debug_str:0000000000000257 .LASF57
+     /tmp/ccfhvM47.s:29     .text:0000000000000014 .LVL0
+     /tmp/ccfhvM47.s:35     .text:000000000000001c .LVL1
+     /tmp/ccfhvM47.s:52     .text:0000000000000034 .LVL3
+     /tmp/ccfhvM47.s:70     .text:000000000000003c .LVL5
+     /tmp/ccfhvM47.s:65     .text:0000000000000038 .LVL4
+     /tmp/ccfhvM47.s:99     .text:0000000000000058 .LVL9
+     /tmp/ccfhvM47.s:110    .text:000000000000005c .LVL10
+     /tmp/ccfhvM47.s:116    .text:0000000000000060 .LVL11
+     /tmp/ccfhvM47.s:84     .text:0000000000000048 .LVL6
+     /tmp/ccfhvM47.s:91     .text:000000000000004c .LVL7
+     /tmp/ccfhvM47.s:183    .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/ccfhvM47.s:56     .text:0000000000000034 .LBB3
+     /tmp/ccfhvM47.s:73     .text:0000000000000040 .LBE3
+     /tmp/ccfhvM47.s:77     .text:0000000000000040 .LBB9
+     /tmp/ccfhvM47.s:129    .text:0000000000000070 .LBE9
+
+UNDEFINED SYMBOLS
+console_handler
+_ZN15MemoryAllocator16tryToFreeSegmentEPv
+_ZN15MemoryAllocator21tryToAllocateFragmentEm

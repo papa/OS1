@@ -15,7 +15,8 @@ void * mem_alloc(size_t size);
 
 int mem_free(void*);
 
-int thread_create(uint64**, void (*start_routine)(void*), void*);
+typedef void* thread_t;
+int thread_create(thread_t*, void (*start_routine)(void*), void*);
 
 #ifdef __cplusplus
 }

@@ -45,7 +45,7 @@ int mem_free(void* p)
 #ifdef __cplusplus
 extern "C"
 #endif
-int thread_create(uint64** handle, void (*start_routine)(void*), void* args)
+int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 {
     //initialize registers
     __asm__ volatile("li a0, 0x11");

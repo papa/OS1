@@ -11,6 +11,10 @@ private:
 
 public:
     static void initSystem();
+
+    static void pushRegisters();
+    static void popRegisters();
+
     //static PCB* runningPCB;
 };
 

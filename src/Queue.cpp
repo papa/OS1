@@ -47,15 +47,3 @@ Queue<T>::~Queue() {
         MemoryAllocator::mem_free(old);
     }
 }
-
-template<typename T>
-void *Queue<T>::operator new(size_t size) {
-    //todo
-    //da li ovde treba size ili sizeof(Queue<T>)
-    return ::operator new(sizeof(Queue<T>));
-}
-
-template<typename T>
-void Queue<T>::operator delete(void *p) {
-    ::operator delete(p);
-}

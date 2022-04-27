@@ -25,8 +25,6 @@ public:
     void push(T t);
     Queue();
     ~Queue();
-    void * operator new(size_t size);
-    void operator delete(void* p);
 };
 
 #endif //PROJECT_BASE_V1_0_QUEUE_H

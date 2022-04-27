@@ -6,8 +6,8 @@
 #define PROJECT_BASE_V1_0_SCHEDULER_H
 
 #include "../lib/hw.h"
-#include "Queue.h"
 #include "MemoryAllocator.h"
+#include "Queue.h"
 
 class PCB;
 
@@ -17,8 +17,6 @@ public:
     static void put(PCB* pcb);
     static PCB* get();
 
-    //void * operator new(size_t size);
-    //void operator delete(void* p);
 private:
     static Queue<PCB*>* queuePCB;
 };
