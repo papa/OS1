@@ -3,6 +3,9 @@
 //
 
 #include "../h/PCB.h"
+#include "../h/Riscv.h"
+
+PCB* PCB::running = 0;
 
 //todo
 //kreiranje pocetnog konteksta niti
@@ -17,10 +20,6 @@ PCB::PCB(void (*body)(void *), void *args, void* stack_space) :
         (uint64)args
     }), finished(false)
 {
-
-}
-
-void PCB::dispatch() {
 
 }
 
@@ -44,11 +43,25 @@ void PCB::start()
 //todo
 void PCB::runner() {
 
-    //this->body(this->args);
+    void (*start_routine)(void*);
+    start_routine = (void (*)(void*))running->context.body;
+    start_routine((void*)running->context.args);
 
     //pcbThread->run();
 }
 
-void PCB::yield(PCB *oldThread, PCB *newThread) {
+void PCB::dispatch() {
+    Riscv::pushRegisters();
 
+    PCB* old = running;
+    if(!old->finished) Scheduler::put(old);
+    running = Scheduler::get();
+
+    yield(old, running);
+
+    Riscv::popRegisters();
+}
+
+void PCB::yield(PCB *oldPCB, PCB *newPCB) {
+    PCB::contextSwitch(&oldPCB->context, &newPCB->context);
 }

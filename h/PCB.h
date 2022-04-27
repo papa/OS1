@@ -25,8 +25,6 @@ protected:
     //virtual void run() {}
 private:
 
-    static void yield(PCB* oldThread, PCB* newThread);
-
     typedef struct Context
     {
         uint64 pcbSP;
@@ -35,14 +33,16 @@ private:
         uint64 args;
     }Context;
 
+    static void contextSwitch(PCB::Context* oldContext, PCB::Context* newContext);
+    static void yield(PCB* oldPCB, PCB* newPCB);
+    static void runner();
+
 
     //enum State {CREATED, READY, RUNNING, BLOCKED, FINISHED, IDLE};
 
     Context context;
     size_t stackSize;
     //State state;
-
-    static void runner();
 
     bool finished;
     uint64 pID;
