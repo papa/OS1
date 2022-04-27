@@ -41,17 +41,17 @@ extern "C" void interrupt() {
             uint64 operation = 0;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
 
-            if(operation == (uint64)MEM_ALLOC) {
+            if(operation == (uint64)MemoryAllocator::MEM_ALLOC) {
                 size_t size;
                 __asm__ volatile("mv %0, a1" : "=r"(size));
                 size*=MEM_BLOCK_SIZE;
-                void* allocatedAddr = tryToAllocateFragment(size);
+                void* allocatedAddr = MemoryAllocator::tryToAllocateFragment(size);
                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
             }
-            else if(operation == (uint64)MEM_FREE){
+            else if(operation == (uint64)MemoryAllocator::MEM_FREE){
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
-                tryToFreeSegment((void*)addr);
+                MemoryAllocator::tryToFreeSegment((void*)addr);
             }
             else if(operation == (uint64)0x11)
             {

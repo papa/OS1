@@ -6,7 +6,9 @@ extern "C" void interruptvec();
 
 void main()
 {
+    /*
     //System::initSystem();
+
     __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
 
     __putc('a');
@@ -16,4 +18,5 @@ void main()
 
     MemoryAllocator* memoryAllocator = MemoryAllocator::getMemoryAllocator();
     memoryAllocator->mem_alloc(2);
+    */
 }

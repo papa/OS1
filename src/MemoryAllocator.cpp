@@ -1,27 +1,38 @@
 //
-// Created by os on 4/13/22.
+// Created by os on 4/27/22.
 //
 
-#include "../h/memoryHandler.h"
+#include "../h/MemoryAllocator.h"
 
-AllocatedFragment* headAllocated = 0;
-FreeFragment* headFree = 0;
-int memoryInitiliaized = 0;
-int MEM_ALLOC = 1;
-int MEM_FREE = 2;
+MemoryAllocator::AllocatedFragment* MemoryAllocator::headAllocated = 0;
+MemoryAllocator::FreeFragment* MemoryAllocator::headFree = 0;
+int MemoryAllocator::memoryInitiliaized = 0;
 
-void initMemory()
+void *MemoryAllocator::mem_alloc(size_t size) {
+    return 0;
+    //todo
+    //sta ovde treba kao parametar
+    //svuda pogledaj to
+    //return ::mem_alloc(sizeof(MemoryAllocator));
+}
+
+int MemoryAllocator::mem_free(void * addr) {
+    return 0;
+    //return ::mem_free(addr);
+}
+
+void MemoryAllocator::initMemory()
 {
     if(!memoryInitiliaized)
         return;
     memoryInitiliaized = 1;
     headAllocated = 0;
-    headFree = (struct FreeFragment*)HEAP_START_ADDR;
+    headFree = (FreeFragment*)HEAP_START_ADDR;
     headFree->next = 0;
     headFree->size = (size_t)((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR + 1);
 }
 
-void insertNewAllocatedFragment(void* addr, size_t size) {
+void MemoryAllocator::insertNewAllocatedFragment(void* addr, size_t size) {
 
     initMemory();
     AllocatedFragment* prev = 0;
@@ -55,7 +66,7 @@ void insertNewAllocatedFragment(void* addr, size_t size) {
     }
 }
 
-void* tryToAllocateFragment(size_t size) {
+void* MemoryAllocator::tryToAllocateFragment(size_t size) {
     initMemory();
     FreeFragment* prev = 0;
     FreeFragment* curr = headFree;
@@ -119,7 +130,7 @@ void* tryToAllocateFragment(size_t size) {
     return 0;
 }
 
-void insertNewFreeSegment(void* addr, size_t size)
+void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
 {
     initMemory();
     FreeFragment* prev = 0;
@@ -145,7 +156,7 @@ void insertNewFreeSegment(void* addr, size_t size)
         prev->next = newSegment;
 }
 
-void tryToFreeSegment(void* addr)
+void MemoryAllocator::tryToFreeSegment(void* addr)
 {
     initMemory();
     AllocatedFragment* prev = 0;

@@ -5,8 +5,8 @@
 #ifndef PROJECT_BASE_V1_0_INTERRUPT_H
 #define PROJECT_BASE_V1_0_INTERRUPT_H
 
-#include "../h/memoryHandler.h"
 #include "../lib/console.h"
+#include "MemoryAllocator.h"
 
 extern "C" void interrupt();
 

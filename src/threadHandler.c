@@ -2,6 +2,7 @@
 // Created by os on 4/26/22.
 //
 
+/*
 #include "../h/threadHandler.h"
 #include "../h/memoryHandler.h"
 
@@ -26,3 +27,4 @@ void createThread()
 
     //__asm__ volatile("csrw sp, a0" : :"r"(thread_sp));
 }
+*/
