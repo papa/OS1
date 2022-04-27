@@ -852,18 +852,24 @@ void Thread::sleep(time_t time) {
     80001734:	00008067          	ret
 
 0000000080001738 <_ZN5Riscv10initSystemEv>:
-
 #include "../h/Riscv.h"
 
 //todo
+//sta sve treba da se odradi ovde
 extern "C" void interruptvec();
 void Riscv::initSystem() {
     80001738:	ff010113          	addi	sp,sp,-16
     8000173c:	00813423          	sd	s0,8(sp)
     80001740:	01010413          	addi	s0,sp,16
-    __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
+    w_stvec((uint64)&interruptvec);
     80001744:	00003797          	auipc	a5,0x3
     80001748:	ff47b783          	ld	a5,-12(a5) # 80004738 <_GLOBAL_OFFSET_TABLE_+0x18>
+    __asm__ volatile("csrr %0, stvec" : "=r"(stvec));
+    return stvec;
+}
+
+inline void Riscv::w_stvec(uint64 stvec) {
+    __asm__ volatile("csrw stvec, %0" : :"r"(stvec));
     8000174c:	10579073          	csrw	stvec,a5
 }
     80001750:	00813403          	ld	s0,8(sp)

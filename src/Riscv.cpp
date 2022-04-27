@@ -5,7 +5,8 @@
 #include "../h/Riscv.h"
 
 //todo
+//sta sve treba da se odradi ovde
 extern "C" void interruptvec();
 void Riscv::initSystem() {
-    __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
+    w_stvec((uint64)&interruptvec);
 }

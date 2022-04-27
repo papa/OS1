@@ -5,6 +5,8 @@
 #ifndef PROJECT_BASE_V1_0_RISCV_H
 #define PROJECT_BASE_V1_0_RISCV_H
 
+#include "../lib/hw.h"
+
 class Riscv
 {
 private:
@@ -15,8 +17,133 @@ public:
     static void pushRegisters();
     static void popRegisters();
 
-    //static PCB* runningPCB;
+    static uint64 r_scause();
+    static void w_scause(uint64 scause);
+
+    static uint64 r_sepc();
+    static void w_sepc(uint64 sepc);
+
+    static uint64 r_stvec();
+    static void w_stvec(uint64 stvec);
+
+    static uint64 r_stval();
+    static void w_stval(uint64 stval);
+
+    enum BitMaskSip
+    {
+        SIP_SSIE = (1 << 1),
+        SIP_STIE = (1 << 5),
+        SIP_SEIE = (1 << 9),
+    };
+
+    //todo
+    //| i & na sip da se primene
+    static void ms_sip(uint64 mask);
+
+    static void mc_sip(uint64 mask);
+
+    static uint64 r_sip();
+
+    static void w_sip(uint64 sip);
+
+    enum BitMaskSstatus
+    {
+        SSTATUS_SIE = (1 << 1),
+        SSTATUS_SPIE = (1 << 5),
+        SSTATUS_SPP = (1 << 8),
+    };
+
+    static void ms_sstatus(uint64 mask);
+
+    static void mc_sstatus(uint64 mask);
+
+    static uint64 r_sstatus();
+
+    static void w_sstatus(uint64 sstatus);
 };
 
+inline uint64 Riscv::r_scause() {
+    uint64 volatile scause;
+    __asm__ volatile("csrr %0, scause" : "=r"(scause));
+    return scause;
+}
+
+inline void Riscv::w_scause(uint64 scause) {
+    __asm__ volatile("csrw scause, %0" : :"r"(scause));
+}
+
+inline uint64 Riscv::r_sepc() {
+    uint64 volatile sepc;
+    __asm__ volatile("csrr %0, sepc" : "=r"(sepc));
+    return sepc;
+}
+
+inline void Riscv::w_sepc(uint64 sepc) {
+    __asm__ volatile("csrw sepc, %0" : :"r"(sepc));
+}
+
+inline uint64 Riscv::r_stvec() {
+    uint64 volatile stvec;
+    __asm__ volatile("csrr %0, stvec" : "=r"(stvec));
+    return stvec;
+}
+
+inline void Riscv::w_stvec(uint64 stvec) {
+    __asm__ volatile("csrw stvec, %0" : :"r"(stvec));
+}
+
+inline uint64 Riscv::r_stval() {
+    uint64 volatile stval;
+    __asm__ volatile("csrr %0, stval" : "=r"(stval));
+    return stval;
+}
+
+inline void Riscv::w_stval(uint64 stval) {
+    __asm__ volatile("csrw stval, %0" : :"r"(stval));
+}
+
+inline void Riscv::ms_sip(uint64 mask) {
+    uint64 sip = r_sip();
+    sip|=mask;
+    w_sip(sip);
+}
+
+inline void Riscv::mc_sip(uint64 mask) {
+    uint64 sip = r_sip();
+    sip&=mask;
+    w_sip(sip);
+}
+
+inline uint64 Riscv::r_sip() {
+    uint64 volatile sip;
+    __asm__ volatile("csrr %0, sip" : "=r"(sip));
+    return sip;
+}
+
+inline void Riscv::w_sip(uint64 sip) {
+    __asm__ volatile("csrw sip, %0" : :"r"(sip));
+}
+
+inline void Riscv::ms_sstatus(uint64 mask) {
+    uint64 sstatus = r_sstatus();
+    sstatus|=mask;
+    w_sstatus(sstatus);
+}
+
+inline void Riscv::mc_sstatus(uint64 mask) {
+    uint64 sstatus = r_sstatus();
+    sstatus&=mask;
+    w_sstatus(sstatus);
+}
+
+inline uint64 Riscv::r_sstatus() {
+    uint64 volatile sstatus;
+    __asm__ volatile("csrr %0, sstatus" : "=r"(sstatus));
+    return sstatus;
+}
+
+inline void Riscv::w_sstatus(uint64 sstatus) {
+    __asm__ volatile("csrw sstatus, %0" : :"r"(sstatus));
+}
 
 #endif //PROJECT_BASE_V1_0_RISCV_H
