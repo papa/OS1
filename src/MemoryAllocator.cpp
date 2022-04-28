@@ -138,10 +138,25 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
         curr = curr->next;
     }
 
+
+
     if(prev == 0)
         headFree = newSegment;
     else
         prev->next = newSegment;
+
+    if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size)
+    {
+        newSegment->size += newSegment->next->size;
+        newSegment->next = newSegment->next->next;
+    }
+
+    if(prev != 0 && (char*)newSegment == (char*)prev + prev->size)
+    {
+        prev->size+=newSegment->size;
+        prev->next = newSegment->next;
+    }
+
 }
 
 uint64 MemoryAllocator::tryToFreeSegment(void* addr)

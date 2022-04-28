@@ -10,9 +10,9 @@ extern "C"
 void* mem_alloc(size_t size)
 {
     //prepare for system call
-    __asm__ volatile("li a0, 1");
     uint64 numBlocks = (size + MEM_BLOCK_SIZE - 1) / MEM_BLOCK_SIZE;
     __asm__ volatile("mv a1, %0" :  : "r"(numBlocks));
+    __asm__ volatile("li a0, 1");
 
     __asm__ volatile("ecall"); // system call
 
@@ -29,9 +29,9 @@ extern "C"
 int mem_free(void* p)
 {
     //prepare for system call
-    __asm__ volatile("li a0, 2");
     uint64 addrFree = (uint64)p;
     __asm__ volatile("mv a1, %0" :  : "r"(addrFree));
+    __asm__ volatile("li a0, 2");
 
     __asm__ volatile("ecall"); // system call
 
@@ -50,8 +50,8 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
     //initialize registers
     __asm__ volatile("li a0, 0x11");
     //uint64 start_routine_addres = (uint64)start_routine;
-    __asm__ volatile("mv a2, %0" :  : "r"((uint64)start_routine));
     __asm__ volatile("mv a3, %0" :  : "r"((uint64)args));
+    __asm__ volatile("mv a2, %0" :  : "r"((uint64)start_routine));
 
     void * stack_space = mem_alloc(DEFAULT_STACK_SIZE);
 
