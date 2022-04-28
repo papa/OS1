@@ -31,13 +31,11 @@ public:
 
     enum BitMaskSip
     {
-        SIP_SSIE = (1 << 1),
-        SIP_STIE = (1 << 5),
-        SIP_SEIE = (1 << 9),
+        SIP_SSIP = (1 << 1),
+        SIP_STIP = (1 << 5),
+        SIP_SEIP = (1 << 9),
     };
 
-    //todo
-    //| i & na sip da se primene
     static void ms_sip(uint64 mask);
 
     static void mc_sip(uint64 mask);
@@ -60,6 +58,21 @@ public:
     static uint64 r_sstatus();
 
     static void w_sstatus(uint64 sstatus);
+
+    static void popSppSpie();
+
+    static void supervisorTrap();
+    static void handleSupervisorTrap();
+
+    static const uint64 bntOne = 1UL << 63;;
+    static const uint64 bntZero = 0UL;
+    static const uint64 timerInterrupt = bntOne + 8UL;
+    static const uint64 hwInterrupt = bntOne + 9UL;;
+    static const uint64 operationInterrupt = bntZero + 2UL;
+    static const uint64 addrReadInterrupt = bntZero + 5UL;
+    static const uint64 addrWriteInterrupt = bntZero + 7UL;
+    static const uint64 ecallUserInterrupt = bntZero + 8UL;
+    static const uint64 ecallSystemInterupt = bntZero + 9UL;
 };
 
 inline uint64 Riscv::r_scause() {
@@ -103,15 +116,11 @@ inline void Riscv::w_stval(uint64 stval) {
 }
 
 inline void Riscv::ms_sip(uint64 mask) {
-    uint64 sip = r_sip();
-    sip|=mask;
-    w_sip(sip);
+    __asm__ volatile("csrs sip, %0" : :"r"(mask));
 }
 
 inline void Riscv::mc_sip(uint64 mask) {
-    uint64 sip = r_sip();
-    sip&=mask;
-    w_sip(sip);
+    __asm__ volatile("csrc sip, %0" : :"r"(mask));
 }
 
 inline uint64 Riscv::r_sip() {
@@ -125,15 +134,11 @@ inline void Riscv::w_sip(uint64 sip) {
 }
 
 inline void Riscv::ms_sstatus(uint64 mask) {
-    uint64 sstatus = r_sstatus();
-    sstatus|=mask;
-    w_sstatus(sstatus);
+    __asm__ volatile("csrs sstatus, %0" : :"r"(mask));
 }
 
 inline void Riscv::mc_sstatus(uint64 mask) {
-    uint64 sstatus = r_sstatus();
-    sstatus&=mask;
-    w_sstatus(sstatus);
+    __asm__ volatile("csrc sstatus, %0" : :"r"(mask));
 }
 
 inline uint64 Riscv::r_sstatus() {
@@ -145,5 +150,4 @@ inline uint64 Riscv::r_sstatus() {
 inline void Riscv::w_sstatus(uint64 sstatus) {
     __asm__ volatile("csrw sstatus, %0" : :"r"(sstatus));
 }
-
 #endif //PROJECT_BASE_V1_0_RISCV_H

@@ -3,22 +3,20 @@
 //
 
 #include "../h/PCB.h"
-#include "../h/Riscv.h"
 
 PCB* PCB::running = 0;
+uint64 PCB::timeSliceCounter = 0;
 
 //todo
 //kreiranje pocetnog konteksta niti
 
 //todo
 //stack space da li treba na poslednju poziciju da ide
-PCB::PCB(void (*body)(void *), void *args, void* stack_space) :
-    context({
+PCB::PCB(Body body, void *args, void* stack_space) :
+    body(body), args(args),context({
         (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
-        (uint64)&PCB::runner,
-        (uint64)body,
-        (uint64)args
-    }), finished(false)
+        (uint64)&PCB::runner
+    })
 {
 
 }
@@ -26,14 +24,6 @@ PCB::PCB(void (*body)(void *), void *args, void* stack_space) :
 void PCB::sleep(time_t time) {
 
 }
-
-//void PCB::run() {
-//
-//}
-
-//PCB::~PCB() {
-//
-//}
 
 void PCB::start()
 {
@@ -43,11 +33,9 @@ void PCB::start()
 //todo
 void PCB::runner() {
 
-    void (*start_routine)(void*);
-    start_routine = (void (*)(void*))running->context.body;
-    start_routine((void*)running->context.args);
+   Riscv::popSppSpie();
+   running->body(running->args);
 
-    //pcbThread->run();
 }
 
 void PCB::dispatch() {
@@ -57,11 +45,8 @@ void PCB::dispatch() {
     if(!old->finished) Scheduler::put(old);
     running = Scheduler::get();
 
-    yield(old, running);
+    PCB::contextSwitch(&old->context, &running->context);
+    //yield(old, running);
 
     Riscv::popRegisters();
-}
-
-void PCB::yield(PCB *oldPCB, PCB *newPCB) {
-    PCB::contextSwitch(&oldPCB->context, &newPCB->context);
 }

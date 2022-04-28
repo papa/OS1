@@ -70,3 +70,11 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
     return result;
 }
 
+#ifdef __cplusplus
+extern "C"
+#endif
+void thread_dispatch(){
+    __asm__ volatile("li a0, 0x13");
+    __asm__ volatile("ecall");
+}
+

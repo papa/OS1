@@ -18,6 +18,8 @@ int mem_free(void*);
 typedef void* thread_t;
 int thread_create(thread_t*, void (*start_routine)(void*), void*);
 
+void thread_dispatch();
+
 #ifdef __cplusplus
 }
 #endif

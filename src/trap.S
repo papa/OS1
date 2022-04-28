@@ -1,8 +1,10 @@
-.global interruptvec
-.extern interrupt
-.align 4
+.extern _ZN5Riscv20handleSupervisorTrapEv
 
-interruptvec:
+.align 4
+.global _ZN5Riscv14supervisorTrapEv
+.type _ZN5Riscv14supervisorTrapEv, @function
+_ZN5Riscv14supervisorTrapEv:
+
 
     addi sp, sp, -256
     sd x0, 0(sp)
@@ -38,7 +40,7 @@ interruptvec:
     sd x30, 240(sp)
     sd x31, 248(sp)
 
-    call interrupt
+    call _ZN5Riscv20handleSupervisorTrapEv
 
     ld x0, 0(sp)
     ld x1, 8(sp)
