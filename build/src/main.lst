@@ -1,4 +1,4 @@
-GAS LISTING /tmp/cc1vZjNH.s 			page 1
+GAS LISTING /tmp/ccaSFIkq.s 			page 1
 
 
    1              		.file	"main.cpp"
@@ -9,94 +9,129 @@ GAS LISTING /tmp/cc1vZjNH.s 			page 1
    6              		.align	2
    7              		.globl	main
    9              	main:
-  10              	.LFB5:
+  10              	.LFB21:
   11              		.file 1 "src/main.cpp"
    1:src/main.cpp  **** #include "../lib/hw.h"
    2:src/main.cpp  **** #include "../h/syscall_cpp.h"
    3:src/main.cpp  **** #include "../lib/console.h"
-   4:src/main.cpp  **** 
-   5:src/main.cpp  **** extern "C" void interruptvec();
-   6:src/main.cpp  **** 
-   7:src/main.cpp  **** void main()
-   8:src/main.cpp  **** {
-  12              		.loc 1 8 1
+   4:src/main.cpp  **** #include "../h/Riscv.h"
+   5:src/main.cpp  **** 
+   6:src/main.cpp  **** extern "C" void interruptvec();
+   7:src/main.cpp  **** 
+   8:src/main.cpp  **** void main()
+   9:src/main.cpp  **** {
+  12              		.loc 1 9 1
   13              		.cfi_startproc
   14 0000 130101FF 		addi	sp,sp,-16
   15              		.cfi_def_cfa_offset 16
-  16 0004 23348100 		sd	s0,8(sp)
-  17              		.cfi_offset 8, -8
-  18 0008 13040101 		addi	s0,sp,16
-  19              		.cfi_def_cfa 8, 0
-   9:src/main.cpp  ****     /*
-  10:src/main.cpp  ****     //System::initSystem();
-  11:src/main.cpp  **** 
-  12:src/main.cpp  ****     __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
-  13:src/main.cpp  **** 
-  14:src/main.cpp  ****     __putc('a');
-  15:src/main.cpp  ****     __asm__ volatile("ecall");
-  16:src/main.cpp  ****     __putc('b');
-  17:src/main.cpp  ****     return;
-  18:src/main.cpp  **** 
-  19:src/main.cpp  ****     MemoryAllocator* memoryAllocator = MemoryAllocator::getMemoryAllocator();
-  20:src/main.cpp  ****     memoryAllocator->mem_alloc(2);
-  21:src/main.cpp  ****     */
-  22:src/main.cpp  **** }...
-  20              		.loc 1 22 1 is_stmt 0
-  21 000c 03348100 		ld	s0,8(sp)
-  22              		.cfi_restore 8
-  23              		.cfi_def_cfa 2, 16
-  24 0010 13010101 		addi	sp,sp,16
-  25              		.cfi_def_cfa_offset 0
-  26 0014 67800000 		jr	ra
-  27              		.cfi_endproc
-  28              	.LFE5:
-  30              	.Letext0:
-  31              		.file 2 "src/../lib/hw.h"
-GAS LISTING /tmp/cc1vZjNH.s 			page 2
+  16 0004 23341100 		sd	ra,8(sp)
+  17 0008 23308100 		sd	s0,0(sp)
+  18              		.cfi_offset 1, -8
+  19              		.cfi_offset 8, -16
+  20 000c 13040101 		addi	s0,sp,16
+  21              		.cfi_def_cfa 8, 0
+  10:src/main.cpp  ****     __putc('a');
+  22              		.loc 1 10 5
+  23              		.loc 1 10 11 is_stmt 0
+  24 0010 13051006 		li	a0,97
+  25 0014 97000000 		call	__putc@plt
+  25      E7800000 
+  26              	.LVL0:
+  11:src/main.cpp  ****     /*
+  12:src/main.cpp  ****     uint64 x = (uint64)HEAP_START_ADDR;
+  13:src/main.cpp  ****     Riscv::initSystem();
+  14:src/main.cpp  ****     __putc('x');
+  15:src/main.cpp  ****     char* p = (char*)mem_alloc(sizeof(char));
+  16:src/main.cpp  ****     __putc('y');
+  17:src/main.cpp  ****     *p = 'b';
+  18:src/main.cpp  ****     __putc(*p);
+  19:src/main.cpp  ****     if(x == 0)
+  20:src/main.cpp  ****         __putc('q');
+  21:src/main.cpp  ****     //int retval = mem_free(p);
+  22:src/main.cpp  ****     */
+  23:src/main.cpp  ****     /*
+  24:src/main.cpp  ****      /System::initSystem();
+  25:src/main.cpp  **** 
+  26:src/main.cpp  ****     __asm__ volatile("csrw stvec, %0" : : [vector]"r"(&interruptvec));
+  27:src/main.cpp  **** 
+  28:src/main.cpp  ****     __putc('a');
+  29:src/main.cpp  ****     __asm__ volatile("ecall");
+  30:src/main.cpp  ****     __putc('b');
+  31:src/main.cpp  ****     return;
+GAS LISTING /tmp/ccaSFIkq.s 			page 2
+
+
+  32:src/main.cpp  **** 
+  33:src/main.cpp  ****     MemoryAllocator* memoryAllocator = MemoryAllocator::getMemoryAllocator();
+  34:src/main.cpp  ****     memoryAllocator->mem_alloc(2);
+  35:src/main.cpp  ****     */
+  36:src/main.cpp  **** }...
+  27              		.loc 1 36 1
+  28 001c 83308100 		ld	ra,8(sp)
+  29              		.cfi_restore 1
+  30 0020 03340100 		ld	s0,0(sp)
+  31              		.cfi_restore 8
+  32              		.cfi_def_cfa 2, 16
+  33 0024 13010101 		addi	sp,sp,16
+  34              		.cfi_def_cfa_offset 0
+  35 0028 67800000 		jr	ra
+  36              		.cfi_endproc
+  37              	.LFE21:
+  39              	.Letext0:
+  40              		.file 2 "src/../lib/hw.h"
+  41              		.file 3 "src/../lib/console.h"
+GAS LISTING /tmp/ccaSFIkq.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.cpp
-     /tmp/cc1vZjNH.s:9      .text:0000000000000000 main
-     /tmp/cc1vZjNH.s:13     .text:0000000000000000 .L0 
-     /tmp/cc1vZjNH.s:14     .text:0000000000000000 .L0 
-     /tmp/cc1vZjNH.s:15     .text:0000000000000004 .L0 
-     /tmp/cc1vZjNH.s:17     .text:0000000000000008 .L0 
-     /tmp/cc1vZjNH.s:19     .text:000000000000000c .L0 
-     /tmp/cc1vZjNH.s:21     .text:000000000000000c .L0 
-     /tmp/cc1vZjNH.s:22     .text:0000000000000010 .L0 
-     /tmp/cc1vZjNH.s:23     .text:0000000000000010 .L0 
-     /tmp/cc1vZjNH.s:25     .text:0000000000000014 .L0 
-     /tmp/cc1vZjNH.s:27     .text:0000000000000018 .L0 
-     /tmp/cc1vZjNH.s:32     .text:0000000000000018 .L0 
-     /tmp/cc1vZjNH.s:173    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
-     /tmp/cc1vZjNH.s:347    .debug_str:000000000000001a .LASF18
-     /tmp/cc1vZjNH.s:371    .debug_str:0000000000000152 .LASF19
-     /tmp/cc1vZjNH.s:381    .debug_str:00000000000001a2 .LASF20
-     /tmp/cc1vZjNH.s:5      .text:0000000000000000 .Ltext0
-     /tmp/cc1vZjNH.s:30     .text:0000000000000018 .Letext0
-     /tmp/cc1vZjNH.s:341    .debug_line:0000000000000000 .Ldebug_line0
-     /tmp/cc1vZjNH.s:373    .debug_str:000000000000015f .LASF0
-     /tmp/cc1vZjNH.s:365    .debug_str:000000000000012e .LASF1
-     /tmp/cc1vZjNH.s:361    .debug_str:000000000000010e .LASF2
-     /tmp/cc1vZjNH.s:351    .debug_str:00000000000000ca .LASF4
-     /tmp/cc1vZjNH.s:363    .debug_str:000000000000011c .LASF3
-     /tmp/cc1vZjNH.s:345    .debug_str:0000000000000013 .LASF5
-     /tmp/cc1vZjNH.s:343    .debug_str:0000000000000000 .LASF6
-     /tmp/cc1vZjNH.s:357    .debug_str:00000000000000ec .LASF7
-     /tmp/cc1vZjNH.s:375    .debug_str:000000000000016c .LASF8
-     /tmp/cc1vZjNH.s:349    .debug_str:00000000000000bc .LASF9
-     /tmp/cc1vZjNH.s:385    .debug_str:00000000000001d5 .LASF10
-     /tmp/cc1vZjNH.s:359    .debug_str:00000000000000ff .LASF11
-     /tmp/cc1vZjNH.s:383    .debug_str:00000000000001c5 .LASF12
-     /tmp/cc1vZjNH.s:379    .debug_str:0000000000000192 .LASF13
-     /tmp/cc1vZjNH.s:367    .debug_str:0000000000000141 .LASF14
-     /tmp/cc1vZjNH.s:355    .debug_str:00000000000000d6 .LASF15
-     /tmp/cc1vZjNH.s:377    .debug_str:000000000000017c .LASF16
-     /tmp/cc1vZjNH.s:353    .debug_str:00000000000000d1 .LASF17
-     /tmp/cc1vZjNH.s:369    .debug_str:000000000000014d .LASF21
-     /tmp/cc1vZjNH.s:10     .text:0000000000000000 .LFB5
-     /tmp/cc1vZjNH.s:28     .text:0000000000000018 .LFE5
-     /tmp/cc1vZjNH.s:33     .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/ccaSFIkq.s:9      .text:0000000000000000 main
+     /tmp/ccaSFIkq.s:13     .text:0000000000000000 .L0 
+     /tmp/ccaSFIkq.s:14     .text:0000000000000000 .L0 
+     /tmp/ccaSFIkq.s:15     .text:0000000000000004 .L0 
+     /tmp/ccaSFIkq.s:18     .text:000000000000000c .L0 
+     /tmp/ccaSFIkq.s:19     .text:000000000000000c .L0 
+     /tmp/ccaSFIkq.s:21     .text:0000000000000010 .L0 
+     /tmp/ccaSFIkq.s:23     .text:0000000000000010 .L0 
+     /tmp/ccaSFIkq.s:24     .text:0000000000000010 .L0 
+     /tmp/ccaSFIkq.s:28     .text:000000000000001c .L0 
+     /tmp/ccaSFIkq.s:29     .text:0000000000000020 .L0 
+     /tmp/ccaSFIkq.s:31     .text:0000000000000024 .L0 
+     /tmp/ccaSFIkq.s:32     .text:0000000000000024 .L0 
+     /tmp/ccaSFIkq.s:34     .text:0000000000000028 .L0 
+     /tmp/ccaSFIkq.s:36     .text:000000000000002c .L0 
+     /tmp/ccaSFIkq.s:42     .text:000000000000002c .L0 
+     /tmp/ccaSFIkq.s:201    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccaSFIkq.s:410    .debug_str:0000000000000000 .LASF18
+     /tmp/ccaSFIkq.s:448    .debug_str:00000000000001b2 .LASF19
+     /tmp/ccaSFIkq.s:422    .debug_str:00000000000000e8 .LASF20
+     /tmp/ccaSFIkq.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccaSFIkq.s:39     .text:000000000000002c .Letext0
+     /tmp/ccaSFIkq.s:408    .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccaSFIkq.s:454    .debug_str:00000000000001de .LASF0
+     /tmp/ccaSFIkq.s:444    .debug_str:000000000000018f .LASF1
+     /tmp/ccaSFIkq.s:432    .debug_str:0000000000000136 .LASF2
+     /tmp/ccaSFIkq.s:426    .debug_str:000000000000011e .LASF4
+     /tmp/ccaSFIkq.s:420    .debug_str:00000000000000d6 .LASF3
+     /tmp/ccaSFIkq.s:412    .debug_str:00000000000000a2 .LASF5
+     /tmp/ccaSFIkq.s:424    .debug_str:000000000000010b .LASF6
+     /tmp/ccaSFIkq.s:442    .debug_str:000000000000017c .LASF7
+     /tmp/ccaSFIkq.s:452    .debug_str:00000000000001ce .LASF8
+     /tmp/ccaSFIkq.s:414    .debug_str:00000000000000a9 .LASF9
+     /tmp/ccaSFIkq.s:416    .debug_str:00000000000000b7 .LASF10
+     /tmp/ccaSFIkq.s:450    .debug_str:00000000000001bf .LASF11
+     /tmp/ccaSFIkq.s:418    .debug_str:00000000000000c6 .LASF12
+     /tmp/ccaSFIkq.s:446    .debug_str:00000000000001a2 .LASF13
+     /tmp/ccaSFIkq.s:430    .debug_str:000000000000012a .LASF14
+     /tmp/ccaSFIkq.s:440    .debug_str:0000000000000166 .LASF15
+     /tmp/ccaSFIkq.s:438    .debug_str:0000000000000150 .LASF16
+     /tmp/ccaSFIkq.s:428    .debug_str:0000000000000125 .LASF17
+     /tmp/ccaSFIkq.s:434    .debug_str:0000000000000144 .LASF21
+     /tmp/ccaSFIkq.s:10     .text:0000000000000000 .LFB21
+     /tmp/ccaSFIkq.s:37     .text:000000000000002c .LFE21
+     /tmp/ccaSFIkq.s:26     .text:000000000000001c .LVL0
+     /tmp/ccaSFIkq.s:436    .debug_str:0000000000000149 .LASF22
+     /tmp/ccaSFIkq.s:43     .debug_info:0000000000000000 .Ldebug_info0
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+__putc

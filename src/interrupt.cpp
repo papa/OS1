@@ -33,11 +33,13 @@ extern "C" void interrupt() {
 
         case ecallUserInterrupt: // todo
 
+
+
             break;
 
         case ecallSystemInterupt:
 
-            uint64 operation = 0;
+            uint64 operation = 1;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
 
             if(operation == (uint64)MemoryAllocator::MEM_ALLOC) {
@@ -47,7 +49,7 @@ extern "C" void interrupt() {
                 void* allocatedAddr = MemoryAllocator::tryToAllocateFragment(size);
                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
             }
-            else if(operation == (uint64)MemoryAllocator::MEM_FREE){
+            else if(operation == (uint64)MemoryAllocator::MEM_FREE) {
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
                 MemoryAllocator::tryToFreeSegment((void*)addr);
@@ -60,11 +62,14 @@ extern "C" void interrupt() {
             }
 
 
-
-
             uint64 sepc = Riscv::r_sepc();
             sepc+=4;
             Riscv::w_sepc(sepc);
+
+            uint64 sip = Riscv::r_sip();
+            sip&=~2;
+            Riscv::w_sip(sip);
+
             break;
     }
 
@@ -86,5 +91,5 @@ extern "C" void interrupt() {
     //sie &= ~2;
     //asm volatile("csrw sie, %0" : : "r" (sie));
 
-    console_handler();
+    //console_handler();
 }

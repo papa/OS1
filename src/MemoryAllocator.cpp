@@ -23,7 +23,7 @@ int MemoryAllocator::mem_free(void * addr) {
 
 void MemoryAllocator::initMemory()
 {
-    if(!memoryInitiliaized)
+    if(memoryInitiliaized == 1)
         return;
     memoryInitiliaized = 1;
     headAllocated = 0;
