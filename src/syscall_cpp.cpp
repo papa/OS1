@@ -17,8 +17,10 @@ void operator delete(void * p)
 
 //Thread
 
+//todo
+//diskusija u os1 proj sheet-u
 void Thread::start() {
-    myHandle->start();
+    //myHandle->start();
 }
 
 void Thread::dispatch() {

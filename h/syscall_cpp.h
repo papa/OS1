@@ -12,21 +12,26 @@ void * operator new(size_t size);
 
 void operator delete(void * p);
 
+//todo
+//virtual pravi problem
+
 class Thread
 {
 public:
     Thread(void (*body)(void*), void* arg);
-    //todo
-    //virtual pravi problem
+
     //virtual ~Thread();
+
     void start();
+
     static void dispatch();
+
     static void sleep(time_t);
 protected:
     Thread();
-    //todo
-    //virtual pravi probleme
+
     //virtual void run();
+
 private:
     PCB* myHandle;
 };

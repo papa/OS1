@@ -14,7 +14,6 @@ class PCB
 public:
     using Body = void (*)(void*);
 
-
     PCB(Body body,  void* args, void* stack_space);
 
     void start();
@@ -31,6 +30,11 @@ public:
     static uint64 timeSliceCounter;
 
     uint64 getTimeSlice() { return timeSlice;}
+
+    void setFinished(bool f) {finished = f;}
+
+    void* operator new(size_t size);
+    void operator delete(void *p);
 
 protected:
     //todo

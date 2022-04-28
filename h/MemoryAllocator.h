@@ -39,7 +39,7 @@ public:
     //~MemoryAllocator();
 
     static void* mem_alloc(size_t size);
-    static int mem_free(void* p);
+    static uint64 mem_free(void* p);
 
     static void initMemory();
 
@@ -49,9 +49,12 @@ public:
 
     static void insertNewFreeSegment(void *addr, size_t size);
 
-    static void tryToFreeSegment(void *addr);
+    static uint64 tryToFreeSegment(void *addr);
 
 };
+
+void* kmalloc(size_t size);
+uint64 kfree(void* p);
 
 
 #endif //PROJECT_BASE_V1_0_MEMORYALLOCATOR_H

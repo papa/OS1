@@ -3,14 +3,13 @@
 //
 
 #include "../h/PCB.h"
+#include "../h/syscall_c.h"
 
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
 
 //todo
 //kreiranje pocetnog konteksta niti
-
-//todo
 //stack space da li treba na poslednju poziciju da ide
 PCB::PCB(Body body, void *args, void* stack_space) :
     body(body), args(args),context({
@@ -21,24 +20,30 @@ PCB::PCB(Body body, void *args, void* stack_space) :
 
 }
 
-void PCB::sleep(time_t time) {
-
+void PCB::sleep(time_t time)
+{
+    //todo
 }
 
+//todo
+//da li ovde vec treba da bude lockovano
+//ili treba ovde bas lock da se uradi
 void PCB::start()
 {
     Scheduler::put(this);
 }
 
 //todo
-void PCB::runner() {
-
+void PCB::runner()
+{
    Riscv::popSppSpie();
    running->body(running->args);
-
+   running->setFinished(false);
+   thread_dispatch();
 }
 
-void PCB::dispatch() {
+void PCB::dispatch()
+{
     Riscv::pushRegisters();
 
     PCB* old = running;
@@ -46,7 +51,14 @@ void PCB::dispatch() {
     running = Scheduler::get();
 
     PCB::contextSwitch(&old->context, &running->context);
-    //yield(old, running);
 
     Riscv::popRegisters();
+}
+
+void *PCB::operator new(size_t size) {
+    return kmalloc(size);
+}
+
+void PCB::operator delete(void *p) {
+    kfree(p);
 }

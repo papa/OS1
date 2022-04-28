@@ -9,16 +9,11 @@ MemoryAllocator::FreeFragment* MemoryAllocator::headFree = 0;
 int MemoryAllocator::memoryInitiliaized = 0;
 
 void *MemoryAllocator::mem_alloc(size_t size) {
-    return 0;
-    //todo
-    //sta ovde treba kao parametar
-    //svuda pogledaj to
-    //return ::mem_alloc(sizeof(MemoryAllocator));
+    return tryToAllocateFragment(size);
 }
 
-int MemoryAllocator::mem_free(void * addr) {
-    return 0;
-    //return ::mem_free(addr);
+uint64 MemoryAllocator::mem_free(void * addr) {
+    return tryToFreeSegment(addr);
 }
 
 void MemoryAllocator::initMemory()
@@ -104,10 +99,6 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
                 uint64 oldA = (uint64) ((char*)oldAddr + sizeof(AllocatedFragment));
 
                 return (void*)oldA;
-
-                //__asm__ volatile("mv a0,%0" : : "r"(oldA));
-
-                //return;
             }
             else {
                 if(prev != 0)
@@ -123,9 +114,6 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
         prev = curr;
         curr = curr->next;
     }
-
-    uint64 x = 0;
-    __asm__ volatile("mv a0,%0" : : "r"(x));
 
     return 0;
 }
@@ -156,7 +144,7 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
         prev->next = newSegment;
 }
 
-void MemoryAllocator::tryToFreeSegment(void* addr)
+uint64 MemoryAllocator::tryToFreeSegment(void* addr)
 {
     initMemory();
     AllocatedFragment* prev = 0;
@@ -182,10 +170,18 @@ void MemoryAllocator::tryToFreeSegment(void* addr)
         curr = curr->next;
     }
 
-    if(found) {
-        __asm__ volatile("li a0, 0");
-    }
-    else {
-        __asm__ volatile("li a0, 1");
-    }
+    if(found)
+        return 0;
+    else
+        return 1;
+}
+
+void* kmalloc(size_t size)
+{
+    return MemoryAllocator::mem_alloc(size);
+}
+
+uint64 kfree(void* p)
+{
+    return MemoryAllocator::mem_free(p);
 }

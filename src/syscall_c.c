@@ -55,6 +55,7 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 
     void * stack_space = mem_alloc(DEFAULT_STACK_SIZE);
 
+    //todo
     //handle this error
     if(stack_space == 0)
         return -1;

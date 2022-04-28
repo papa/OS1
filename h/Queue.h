@@ -65,8 +65,7 @@ Queue<T>::~Queue() {
     {
         Elem* old = curr;
         curr = curr->next;
-        //todo
-        MemoryAllocator::mem_free(old);
+        kfree(old);
     }
 }
 

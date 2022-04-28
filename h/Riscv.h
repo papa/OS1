@@ -14,6 +14,10 @@ private:
 public:
     static void initSystem();
 
+    static void printString(char const *string);
+
+    static void printInteger(uint64 num);
+
     static void pushRegisters();
     static void popRegisters();
 
@@ -150,4 +154,5 @@ inline uint64 Riscv::r_sstatus() {
 inline void Riscv::w_sstatus(uint64 sstatus) {
     __asm__ volatile("csrw sstatus, %0" : :"r"(sstatus));
 }
+
 #endif //PROJECT_BASE_V1_0_RISCV_H

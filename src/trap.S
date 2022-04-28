@@ -5,7 +5,6 @@
 .type _ZN5Riscv14supervisorTrapEv, @function
 _ZN5Riscv14supervisorTrapEv:
 
-
     addi sp, sp, -256
     sd x0, 0(sp)
     sd x1, 8(sp)
