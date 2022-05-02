@@ -18,7 +18,7 @@ void operator delete(void * p);
 class Thread
 {
 public:
-    Thread(void (*body)(void*), void* arg);
+    Thread(void (*body)(void*), void* args);
 
     //virtual ~Thread();
 
@@ -27,13 +27,18 @@ public:
     static void dispatch();
 
     static void sleep(time_t);
+
+    //todo
+    //only for testing
+    //return it to private
+    PCB* myHandle;
 protected:
     Thread();
 
     //virtual void run();
 
 private:
-    PCB* myHandle;
+
 };
 
 #endif //PROJECT_BASE_V1_0_SYSCALL_CPP_H

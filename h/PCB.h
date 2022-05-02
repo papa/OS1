@@ -33,6 +33,8 @@ public:
 
     void setFinished(bool f) {finished = f;}
 
+    bool getFinished() { return finished;}
+
     void* operator new(size_t size);
     void operator delete(void *p);
 

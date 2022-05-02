@@ -30,7 +30,7 @@ public:
 template<typename T>
 void Queue<T>::pop() {
     Elem* newFirst = first->next;
-    MemoryAllocator::mem_free(first);
+    kfree(first);
     first = newFirst;
     if(first == 0)
         first = last = 0;
@@ -38,7 +38,9 @@ void Queue<T>::pop() {
 
 template<typename T>
 void Queue<T>::push(T t) {
-    Elem* newElem = (Elem*)MemoryAllocator::mem_alloc(sizeof(Elem));
+    Elem* newElem = (Elem*) kmalloc(sizeof(Elem));
+    newElem->data = t;
+    newElem->next = 0;
     if(first == 0) {
         first = newElem;
         last = 0;

@@ -8,20 +8,91 @@ public:
     uint64 a;
 };
 
+//memory (de)allocation tests
 void mallocFree();
 void bigMalloc();
 void lotOfSmallMallocs();
 void badFree();
-
 void memoryAllocationTests();
+
+//thread tests
+void thread1Function();
+void thread2Function();
+void threadTests();
+
+void testQueue();
 
 void main()
 {
     Riscv::initSystem();
+
+    //memoryAllocationTests();
+    threadTests();
+    //testQueue();
 }
 
+void testQueue()
+{
+    Queue<uint64> q;
+    q.push(1);
+    q.push(2);
+    uint64 x = q.front();
+    q.pop();
+    Riscv::printInteger(x);
+    Riscv::printString("\n");
+}
+
+void thread1Function(void* p)
+{
+    Riscv::printString("Thread 1 started...");
+    for(int i = 0; i < 10;i++)
+    {
+        if(i % 4 == 0)
+            thread_dispatch();
+        Riscv::printString("i : ");
+        Riscv::printInteger(i);
+        Riscv::printString("\n");
+    }
+
+    Thread::dispatch();
+}
+
+void thread2Function(void* p)
+{
+    Riscv::printString("Thread 2 started...");
+    for(int j = 0; j < 10;j++)
+    {
+        if(j % 5 == 0)
+            thread_dispatch();
+        Riscv::printString("j : ");
+        Riscv::printInteger(j);
+        Riscv::printString("\n");
+    }
+
+    Thread::dispatch();
+}
+
+void threadTests()
+{
+    Thread* t = new Thread(0, 0);
+    PCB::running = t->myHandle;
+    Thread* t1 = new Thread(&thread1Function, 0);
+    Thread* t2 = new Thread(&thread2Function, 0);
+
+    while(!t1->myHandle->getFinished()
+        && !t2->myHandle->getFinished())
+    {
+        thread_dispatch();
+    }
+
+    Riscv::printString("End...");
+}
+
+
+//memory (de)allocation tests
 void mallocFree()
 {
+    Riscv::printString("mallocFree\n");
     constexpr int num = 100;
     void* addrs[num];
     for(int i = 0; i < num;i++)
@@ -45,7 +116,7 @@ void mallocFree()
         }
     }
 
-    for(int i = 0 ; i < num;i++)
+    for(int i = 0 ; i < num;i+=2)
     {
         addrs[i] = mem_alloc(20);
         if(addrs[i] == 0)
@@ -69,7 +140,9 @@ void mallocFree()
 }
 void bigMalloc()
 {
-    void* p = mem_alloc(1000000000000000UL);
+    Riscv::printString("bigMalloc\n");
+    uint64 x = (uint64)HEAP_END_ADDR - (uint64)HEAP_START_ADDR + 100UL;
+    void* p = mem_alloc(x);
     if(p == 0)
         Riscv::printString("OK\n");
     else
@@ -78,27 +151,32 @@ void bigMalloc()
 
 void lotOfSmallMallocs()
 {
+    Riscv::printString("lotOfSmallMallocs\n");
     uint64 cnt = 0;
     uint64 sum = 0;
-    for(;;)
+    uint64 N = 10000UL;
+    uint64 X = 10UL;
+    for(uint64 i = 0; i < N;i++)
     {
-        Test* t = (Test*) mem_alloc(sizeof(Test));
+        Test* t = (Test*)mem_alloc(sizeof(Test));
         if(t == 0)
             break;
-        t->a = 10;
+        t->a = X;
         sum+=t->a;
         cnt++;
     }
     Riscv::printInteger(cnt);
-    if(sum == 10*cnt)
+    Riscv::printString("\n");
+    if(sum == X*cnt)
         Riscv::printString("OK\n");
     else
         Riscv::printString("not OK\n");
 }
 void badFree()
 {
+    Riscv::printString("badFree\n");
     Test* t = (Test*)mem_alloc(sizeof(Test));
-    uint64 retval = mem_free((char*)t + 2);// address is not allocated with new, look at mem_free return value
+    uint64 retval = mem_free((char*)t + 2);
     if(retval == 0)
         Riscv::printString("not OK\n");
     else
@@ -107,8 +185,8 @@ void badFree()
 
 void memoryAllocationTests()
 {
-    bigMalloc();
-    lotOfSmallMallocs();
-    mallocFree();
-    badFree();
+    //bigMalloc();
+    //lotOfSmallMallocs();
+    //mallocFree();
+    //badFree();
 }

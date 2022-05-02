@@ -47,22 +47,27 @@ extern "C"
 #endif
 int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 {
-    //initialize registers
-    __asm__ volatile("li a0, 0x11");
-    //uint64 start_routine_addres = (uint64)start_routine;
-    __asm__ volatile("mv a3, %0" :  : "r"((uint64)args));
-    __asm__ volatile("mv a2, %0" :  : "r"((uint64)start_routine));
+    uint64 handleLocal = (uint64)handle;
+    uint64 startRLocal = (uint64)start_routine;
+    uint64 argsLocal = (uint64)args;
+    uint64 opLocal = 0x11;
 
     void * stack_space = mem_alloc(DEFAULT_STACK_SIZE);
-
+    uint64 stackPointerLocal = (uint64)stack_space;
     //todo
     //handle this error
     if(stack_space == 0)
         return -1;
 
-    __asm__ volatile("mv a4, %0" :  : "r"((uint64)stack_space));
+    //initialize registers
 
-    //todo
+    __asm__ volatile("mv a4, %0" :  : "r"((uint64)stackPointerLocal));
+    __asm__ volatile("mv a3, %0" :  : "r"((uint64)argsLocal));
+    __asm__ volatile("mv a2, %0" :  : "r"((uint64)startRLocal));
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)handleLocal));
+    __asm__ volatile("mv a0, %0" :  : "r"((uint64)opLocal));
+
+
     __asm__ volatile("ecall");
 
     uint64 result;
@@ -79,3 +84,18 @@ void thread_dispatch(){
     __asm__ volatile("ecall");
 }
 
+#ifdef __cplusplus
+extern "C"
+#endif
+int thread_exit()
+{
+    __asm__ volatile("li a0, 0x13");
+
+    __asm__ volatile("ecall");
+
+    //returning the result
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}

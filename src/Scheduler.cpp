@@ -6,14 +6,31 @@
 #include "../h/PCB.h"
 
 //todo
-Queue<PCB*>* Scheduler::queuePCB = (Queue<PCB*>*)MemoryAllocator::mem_alloc(sizeof(Queue<PCB*>));
+//Queue<PCB*>* Scheduler::queuePCB = (Queue<PCB*>*)kmalloc(sizeof(Queue<PCB*>));
+Scheduler* Scheduler::scheduler = 0;
 
 void Scheduler::put(PCB *pcb) {
-    Scheduler::queuePCB->push(pcb);
+    //Scheduler::queuePCB->push(pcb);
+    Riscv::printInteger(sizeof(Scheduler));
+    Riscv::printString("needs to put\n");
+    if(scheduler == 0)
+        scheduler = new Scheduler();
+    scheduler->queuePCB.push(pcb);
+    Riscv::printString("put\n");
 }
 
 PCB *Scheduler::get() {
-    PCB* fr = queuePCB->front();
-    queuePCB->pop();
+    if(scheduler == 0)
+        scheduler = new Scheduler();
+    PCB* fr = scheduler->queuePCB.front();
+    scheduler->queuePCB.pop();
     return fr;
+}
+
+void *Scheduler::operator new(size_t size) {
+    return kmalloc(size);
+}
+
+void Scheduler::operator delete(void *p) {
+    kfree(p);
 }

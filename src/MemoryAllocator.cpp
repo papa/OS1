@@ -63,6 +63,7 @@ void MemoryAllocator::insertNewAllocatedFragment(void* addr, size_t size) {
 
 void* MemoryAllocator::tryToAllocateFragment(size_t size) {
     initMemory();
+    uint64 retval = 0;
     FreeFragment* prev = 0;
     FreeFragment* curr = headFree;
     uint64 newSize = size + sizeof(AllocatedFragment);
@@ -94,11 +95,10 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
 
                 insertNewAllocatedFragment(oldAddr, size);
 
+                uint64 oldA = (uint64)((char*)oldAddr) + sizeof(AllocatedFragment);
 
-
-                uint64 oldA = (uint64) ((char*)oldAddr + sizeof(AllocatedFragment));
-
-                return (void*)oldA;
+                retval = oldA;
+                break;
             }
             else {
                 if(prev != 0)
@@ -115,7 +115,7 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
         curr = curr->next;
     }
 
-    return 0;
+    return (void*)retval;
 }
 
 void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)

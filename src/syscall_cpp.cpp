@@ -20,13 +20,26 @@ void operator delete(void * p)
 //todo
 //diskusija u os1 proj sheet-u
 void Thread::start() {
-    //myHandle->start();
+    //int retval = thread_create(&myHandle, )
 }
 
 void Thread::dispatch() {
-    //PCB::dispatch();
+    thread_dispatch();
 }
 
 void Thread::sleep(time_t time) {
     PCB::sleep(time);
+}
+
+Thread::Thread(void (*body)(void *), void *args) {
+    int retval = thread_create((void**)&myHandle, body, args);
+    if(retval != 0)
+    {
+        //todo
+        //what then
+    }
+}
+
+Thread::Thread() {
+
 }

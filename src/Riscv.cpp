@@ -13,7 +13,7 @@ void Riscv::initSystem() {
     w_stvec((uint64)&Riscv::supervisorTrap);
     //todo
     //no need for comment, but sync context switch
-    //should be tested
+    //should be tested, before hardware interrupts are enabled
     //Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
 }
 
@@ -62,6 +62,8 @@ void Riscv::printInteger(uint64 num)
 
     while(--i >= 0)
         __putc(buf[i]);
+
+    Riscv::printString("\n");
 
     ms_sstatus(sstatus & SSTATUS_SIE ? SSTATUS_SIE : 0);
 }
@@ -123,7 +125,7 @@ void Riscv::handleSupervisorTrap() {
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
                 uint64 retval = kfree((void*)addr);
-                __asm__ volatile("mv a1,%0" : :"r"(retval));
+                __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
             else if(operation == PCB::THREAD_CREATE)
             {
@@ -132,15 +134,18 @@ void Riscv::handleSupervisorTrap() {
                 uint64 start_routine;
                 uint64 args;
                 uint64 stack_space;
-                __asm__ volatile("mv %0, a1" : "=r"(start_routine));
-                __asm__ volatile("mv %0, a2" : "=r"(args));
-                __asm__ volatile("mv %0, a3" : "=r"(stack_space));
-
+                PCB** threadHandle;
+                __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
+                __asm__ volatile("mv %0, a2" : "=r"(start_routine));
+                __asm__ volatile("mv %0, a3" : "=r"(args));
+                __asm__ volatile("mv %0, a4" : "=r"(stack_space));
                 //todo
                 //da li treba ovako ili tipa da se ne koristi new
                 //nego direktno kmalloc - ali onda kako konstruktor
                 //sta se desava ako preklopljeni new vrati 0
                 PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)stack_space);
+
+                (*threadHandle) = newPCB;
 
                 if(newPCB == 0)
                 {
@@ -150,8 +155,9 @@ void Riscv::handleSupervisorTrap() {
                 else
                 {
                     __asm__ volatile("li a0, 0");
-                    __asm__ volatile("mv a1, %0" : :"r"((uint64)newPCB));
+                    //__asm__ volatile("mv a1, %0" : :"r"((uint64)newPCB));
                 }
+
             }
             else if(operation == PCB::THREAD_DISPATCH)
             {

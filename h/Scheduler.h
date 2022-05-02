@@ -17,8 +17,16 @@ public:
     static void put(PCB* pcb);
     static PCB* get();
 
+    void* operator new(size_t size);
+    void operator delete(void *p);
+
 private:
-    static Queue<PCB*>* queuePCB;
+    //static Queue<PCB*>* queuePCB;
+    //todo
+    //resi ovo
+    Queue<PCB*> queuePCB;
+
+    static Scheduler* scheduler;
 };
 
 #endif //PROJECT_BASE_V1_0_SCHEDULER_H
