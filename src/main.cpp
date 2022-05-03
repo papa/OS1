@@ -33,13 +33,13 @@ void main()
 
 void testQueue()
 {
-    Queue<uint64> q;
+   /* Queue<uint64> q;
     q.push(1);
     q.push(2);
     uint64 x = q.front();
     q.pop();
     Riscv::printInteger(x);
-    Riscv::printString("\n");
+    Riscv::printString("\n");*/
 }
 
 void thread1Function(void* p)
@@ -47,7 +47,8 @@ void thread1Function(void* p)
     Riscv::printString("Thread 1 started...");
     for(int i = 0; i < 10;i++)
     {
-        if(i % 4 == 0)
+        Riscv::printInteger(Scheduler::getSize());
+        if(i % 4 == 0 && i > 0)
             thread_dispatch();
         Riscv::printString("i : ");
         Riscv::printInteger(i);
@@ -62,7 +63,8 @@ void thread2Function(void* p)
     Riscv::printString("Thread 2 started...");
     for(int j = 0; j < 10;j++)
     {
-        if(j % 5 == 0)
+        Riscv::printInteger(Scheduler::getSize());
+        if(j % 5 == 0 && j > 0)
             thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
@@ -77,7 +79,11 @@ void threadTests()
     Thread* t = new Thread(0, 0);
     PCB::running = t->myHandle;
     Thread* t1 = new Thread(&thread1Function, 0);
+    Scheduler::put(t1->myHandle);
     Thread* t2 = new Thread(&thread2Function, 0);
+    Scheduler::put(t2->myHandle);
+
+    Riscv::printInteger(Scheduler::getSize());
 
     while(!t1->myHandle->getFinished()
         && !t2->myHandle->getFinished())
@@ -188,5 +194,5 @@ void memoryAllocationTests()
     //bigMalloc();
     //lotOfSmallMallocs();
     //mallocFree();
-    //badFree();
+    badFree();
 }

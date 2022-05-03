@@ -12,20 +12,14 @@ class MemoryAllocator
 private:
     //MemoryAllocator();
 
-    typedef struct FreeFragment {
+    typedef struct BlockHeader {
         //void* addr;
         size_t size;
-        struct FreeFragment *next;
-    } FreeFragment;
+        struct BlockHeader *next;
+    } BlockHeader;
 
-    typedef struct AllocatedFragment {
-        //void* addr;
-        size_t size;
-        struct AllocatedFragment *next;
-    } AllocatedFragment;
-
-    static FreeFragment* headFree;
-    static AllocatedFragment* headAllocated;
+    static BlockHeader* headFree;
+    static BlockHeader* headAllocated;
 
     static int memoryInitiliaized;
 

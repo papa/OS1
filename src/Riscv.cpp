@@ -70,6 +70,9 @@ void Riscv::printInteger(uint64 num)
 
 void Riscv::handleSupervisorTrap() {
 
+    uint64 a4;
+    __asm__ volatile("mv %0, a4" : "=r"(a4));
+
     uint64 scause = Riscv::r_scause();
     switch(scause) {
 
@@ -133,17 +136,17 @@ void Riscv::handleSupervisorTrap() {
                 //thread create
                 uint64 start_routine;
                 uint64 args;
-                uint64 stack_space;
+                //uint64 stack_space;
                 PCB** threadHandle;
                 __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
                 __asm__ volatile("mv %0, a2" : "=r"(start_routine));
                 __asm__ volatile("mv %0, a3" : "=r"(args));
-                __asm__ volatile("mv %0, a4" : "=r"(stack_space));
+                //__asm__ volatile("mv %0, a4" : "=r"(stack_space));
                 //todo
                 //da li treba ovako ili tipa da se ne koristi new
                 //nego direktno kmalloc - ali onda kako konstruktor
                 //sta se desava ako preklopljeni new vrati 0
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)stack_space);
+                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4);
 
                 (*threadHandle) = newPCB;
 

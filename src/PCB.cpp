@@ -13,11 +13,11 @@ uint64 PCB::timeSliceCounter = 0;
 //stack space da li treba na poslednju poziciju da ide
 PCB::PCB(Body body, void *args, void* stack_space) :
     body(body), args(args),context({
-        (uint64)((char*)stack_space + DEFAULT_STACK_SIZE - 1),
+        (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
         (uint64)&PCB::runner
     })
 {
-    Scheduler::put(this);
+
 }
 
 void PCB::sleep(time_t time)
@@ -49,8 +49,9 @@ void PCB::dispatch()
 
     PCB* old = running;
     if(!old->finished) Scheduler::put(old);
-    running = Scheduler::get();
+    PCB::running = Scheduler::get();
     Riscv::printString("got the new thread\n");
+
     PCB::contextSwitch(&old->context, &running->context);
 
     //Riscv::popRegisters();

@@ -18,7 +18,7 @@ public:
     ~KSemaphore();
 private:
     int val;
-    Queue<PCB*>* queueBlocked;
+    Queue queueBlocked;
 };
 
 #endif //PROJECT_BASE_V1_0_KSEMAPHORE_H

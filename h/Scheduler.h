@@ -20,11 +20,13 @@ public:
     void* operator new(size_t size);
     void operator delete(void *p);
 
+    static int getSize();
+
 private:
     //static Queue<PCB*>* queuePCB;
     //todo
     //resi ovo
-    Queue<PCB*> queuePCB;
+    Queue queuePCB;
 
     static Scheduler* scheduler;
 };

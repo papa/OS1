@@ -7,7 +7,7 @@
 
 KSemaphore::KSemaphore(int val) {
     this->val = val;
-    queueBlocked = (Queue<PCB*>*)kmalloc(sizeof(Queue<PCB*>));
+    //queueBlocked = (Queue<PCB*>*)kmalloc(sizeof(Queue<PCB*>));
 }
 
 void KSemaphore::wait() {
