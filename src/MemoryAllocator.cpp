@@ -31,19 +31,19 @@ void MemoryAllocator::insertNewAllocatedFragment(void *addr, size_t size) {
 
     initMemory();
     BlockHeader* prev = 0;
-    BlockHeader* after =  headAllocated;
+    BlockHeader* curr =  headAllocated;
     BlockHeader* newAllocated = (BlockHeader*)addr;
     newAllocated->next = 0;
     newAllocated->size = size;
-    while(after != 0)
+    while(curr != 0)
     {
-        if((void*)after > addr)
+        if((void*)curr > addr)
         {
-            newAllocated->next = after;
+            newAllocated->next = curr;
             break;
         }
-        prev = after;
-        after = after->next;
+        prev = curr;
+        curr = curr->next;
     }
 
     if(prev == 0)
@@ -57,16 +57,14 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
     uint64 retval = 0;
     BlockHeader* prev = 0;
     BlockHeader* curr = headFree;
-    //uint64 newSize = size + sizeof(BlockHeader);
-    uint64 newSize = size;
     while(curr != 0) {
 
-        if(curr->size >= newSize) {
+        if(curr->size >= size) {
 
             void* oldAddr = curr;
             void* newAddr = ((char*)curr + size + sizeof(BlockHeader));
-            if(newAddr <= HEAP_END_ADDR) {
-
+            if(newAddr <= HEAP_END_ADDR)
+            {
                 uint64 size2 = curr->size - size;
 
                 if(size2 > sizeof(BlockHeader))
@@ -96,13 +94,6 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
         curr = curr->next;
     }
 
-    if(headFree == 0)
-    {
-        //...
-        uint64 x = 2;
-        x++;
-    }
-
     return (void*)retval;
 }
 
@@ -111,7 +102,7 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
     initMemory();
     BlockHeader* prev = 0;
     BlockHeader* curr = headFree;
-    BlockHeader* newSegment = (BlockHeader*) addr;
+    BlockHeader* newSegment = (BlockHeader*)addr;
     newSegment->size = size;
     newSegment->next = 0;
     while(curr != 0)
@@ -131,7 +122,7 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
     else
         prev->next = newSegment;
 
-    if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
+    /*if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
     {
         newSegment->size += newSegment->next->size + sizeof(BlockHeader);
         newSegment->next = newSegment->next->next;
@@ -141,7 +132,7 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
     {
         prev->size+=newSegment->size + sizeof(BlockHeader);
         prev->next = newSegment->next;
-    }
+    }*/
 
 }
 
@@ -150,7 +141,6 @@ uint64 MemoryAllocator::tryToFreeSegment(void* addr)
     initMemory();
     BlockHeader* prev = 0;
     BlockHeader* curr = headAllocated;
-    int found = 0;
     while(curr != 0)
     {
         if(addr == (void*)((char*)curr + sizeof(BlockHeader)))
@@ -162,7 +152,6 @@ uint64 MemoryAllocator::tryToFreeSegment(void* addr)
 
             insertNewFreeSegment((void*)curr, curr->size);
 
-            found = 1;
             break;
         }
 
@@ -170,7 +159,7 @@ uint64 MemoryAllocator::tryToFreeSegment(void* addr)
         curr = curr->next;
     }
 
-    if(found)
+    if(curr != 0)
         return 0;
     else
         return 1;

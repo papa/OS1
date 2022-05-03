@@ -14,7 +14,7 @@ class PCB
 public:
     using Body = void (*)(void*);
 
-    PCB(Body body,  void* args, void* stack_space);
+    PCB(Body body,  void* args, void* stack_space, uint64 timeSlice);
 
     void start();
     static void dispatch();

@@ -31,7 +31,7 @@ void *Scheduler::operator new(size_t size) {
 }
 
 void Scheduler::operator delete(void *p) {
-    kfree(p);
+    //kfree(p);
 }
 
 int Scheduler::getSize() {

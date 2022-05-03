@@ -17,8 +17,10 @@ public:
     void signal();
     ~KSemaphore();
 private:
-    int val;
+    int val, beginVal;
     Queue queueBlocked;
+    void block();
+    void unblock();
 };
 
 #endif //PROJECT_BASE_V1_0_KSEMAPHORE_H

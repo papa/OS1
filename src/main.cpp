@@ -44,7 +44,7 @@ void testQueue()
 
 void thread1Function(void* p)
 {
-    Riscv::printString("Thread 1 started...");
+    Riscv::printString("Thread 1 started...\n");
     for(int i = 0; i < 10;i++)
     {
         Riscv::printInteger(Scheduler::getSize());
@@ -54,13 +54,11 @@ void thread1Function(void* p)
         Riscv::printInteger(i);
         Riscv::printString("\n");
     }
-
-    Thread::dispatch();
 }
 
 void thread2Function(void* p)
 {
-    Riscv::printString("Thread 2 started...");
+    Riscv::printString("Thread 2 started...\n");
     for(int j = 0; j < 10;j++)
     {
         Riscv::printInteger(Scheduler::getSize());
@@ -70,8 +68,6 @@ void thread2Function(void* p)
         Riscv::printInteger(j);
         Riscv::printString("\n");
     }
-
-    Thread::dispatch();
 }
 
 void threadTests()
@@ -83,10 +79,10 @@ void threadTests()
     Thread* t2 = new Thread(&thread2Function, 0);
     Scheduler::put(t2->myHandle);
 
-    Riscv::printInteger(Scheduler::getSize());
+    //Riscv::enableInterrupts();
 
     while(!t1->myHandle->getFinished()
-        && !t2->myHandle->getFinished())
+        || !t2->myHandle->getFinished())
     {
         thread_dispatch();
     }

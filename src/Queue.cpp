@@ -6,7 +6,7 @@
 
 void Queue::pop() {
     Elem* newFirst = first->next;
-    kfree(first);
+    //kfree(first);
     first = newFirst;
     if(first == 0)
         first = last = 0;
@@ -43,9 +43,12 @@ Queue::~Queue() {
     Elem* curr = first;
     while(curr != 0)
     {
-        Elem* old = curr;
-        curr = curr->next;
-        kfree(old);
+        //todo
+        //vrati ovo
+        //sad je zakomentarisano zbog kfree
+        //Elem* old = curr;
+        //curr = curr->next;
+        //kfree(old);
     }
 }
 

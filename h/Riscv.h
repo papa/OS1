@@ -14,6 +14,10 @@ private:
 public:
     static void initSystem();
 
+    static void enableInterrupts();
+
+    static void disableInterrupts();
+
     static void printString(char const *string);
 
     static void printInteger(uint64 num);
@@ -70,8 +74,8 @@ public:
 
     static const uint64 bntOne = 1UL << 63;;
     static const uint64 bntZero = 0UL;
-    static const uint64 timerInterrupt = bntOne + 8UL;
-    static const uint64 hwInterrupt = bntOne + 9UL;;
+    static const uint64 timerInterrupt = bntOne + 1UL;
+    static const uint64 hwInterrupt = bntOne + 9UL;
     static const uint64 operationInterrupt = bntZero + 2UL;
     static const uint64 addrReadInterrupt = bntZero + 5UL;
     static const uint64 addrWriteInterrupt = bntZero + 7UL;

@@ -14,7 +14,16 @@ void Riscv::initSystem() {
     //todo
     //no need for comment, but sync context switch
     //should be tested, before hardware interrupts are enabled
-    //Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
+    //Riscv::enableInterrupts();
+}
+
+void Riscv::enableInterrupts() {
+    Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
+}
+
+void Riscv::disableInterrupts()
+{
+    Riscv::mc_sstatus(Riscv::SSTATUS_SIE);
 }
 
 void Riscv::popSppSpie() {
@@ -78,7 +87,10 @@ void Riscv::handleSupervisorTrap() {
 
         case timerInterrupt:
 
+            //Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
+            if(PCB::running == 0)
+                break;
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice()) {
                 uint64 sepc = Riscv::r_sepc();
                 uint64 sstatus = Riscv::r_sstatus();
@@ -92,6 +104,7 @@ void Riscv::handleSupervisorTrap() {
             break;
 
         case hwInterrupt: // todo
+
             break;
 
         case operationInterrupt: // todo
@@ -104,9 +117,6 @@ void Riscv::handleSupervisorTrap() {
             break;
 
         case ecallUserInterrupt: // todo
-
-
-
             break;
 
         case ecallSystemInterupt:
@@ -127,7 +137,10 @@ void Riscv::handleSupervisorTrap() {
             else if(operation == MemoryAllocator::MEM_FREE) {
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
-                uint64 retval = kfree((void*)addr);
+                //uint64 retval = kfree((void*)addr);
+                //todo
+                //only for testing
+                uint64 retval = 0;
                 __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
             else if(operation == PCB::THREAD_CREATE)
@@ -146,7 +159,7 @@ void Riscv::handleSupervisorTrap() {
                 //da li treba ovako ili tipa da se ne koristi new
                 //nego direktno kmalloc - ali onda kako konstruktor
                 //sta se desava ako preklopljeni new vrati 0
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4);
+                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 2UL);
 
                 (*threadHandle) = newPCB;
 

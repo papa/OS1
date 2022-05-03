@@ -8,11 +8,11 @@
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
 
-//todo
-//kreiranje pocetnog konteksta niti
-//stack space da li treba na poslednju poziciju da ide
-PCB::PCB(Body body, void *args, void* stack_space) :
-    body(body), args(args),context({
+PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
+    timeSlice(timeSlice),
+    body(body),
+    args(args),
+    context({
         (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
         (uint64)&PCB::runner
     })
@@ -36,25 +36,24 @@ void PCB::start()
 //todo
 void PCB::runner()
 {
-    Riscv::printString("runner started...\n");
-   Riscv::popSppSpie();
-   running->body(running->args);
-   running->setFinished(false);
-   thread_dispatch();
+    Riscv::printString("Runner started...\n");
+    Riscv::popSppSpie();
+    running->body(running->args);
+    running->setFinished(true);
+    Riscv::printString("Thread finished\n");
+    thread_dispatch();
 }
 
 void PCB::dispatch()
 {
-    //Riscv::pushRegisters();
-
+    Riscv::printString("Dispatch called...\n");
     PCB* old = running;
     if(!old->finished) Scheduler::put(old);
     PCB::running = Scheduler::get();
-    Riscv::printString("got the new thread\n");
+
+    Riscv::printString("Switching context...\n");
 
     PCB::contextSwitch(&old->context, &running->context);
-
-    //Riscv::popRegisters();
 }
 
 void *PCB::operator new(size_t size) {
@@ -62,5 +61,6 @@ void *PCB::operator new(size_t size) {
 }
 
 void PCB::operator delete(void *p) {
-    kfree(p);
+    //todo
+    //kfree(p);
 }
