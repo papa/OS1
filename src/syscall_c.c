@@ -93,7 +93,61 @@ int thread_exit()
 
     __asm__ volatile("ecall");
 
-    //returning the result
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}
+
+typedef void* sem_t;
+int sem_open(sem_t* handle, unsigned int x)
+{
+    __asm__ volatile("mv a2, %0" :  : "r"((uint64)x));
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)handle));
+    __asm__ volatile("li a0, 0x21");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}
+
+
+int sem_close(sem_t handle)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)handle));
+    __asm__ volatile("li a0, 0x22");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}
+
+int sem_wait(sem_t id)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)id));
+    __asm__ volatile("li a0, 0x23");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
+    return result;
+}
+
+int sem_signal(sem_t id)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)id));
+    __asm__ volatile("li a0, 0x24");
+
+    __asm__ volatile("ecall");
+
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
 

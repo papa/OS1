@@ -28,6 +28,7 @@ void PCB::sleep(time_t time)
 //todo
 //da li ovde vec treba da bude lockovano
 //ili treba ovde bas lock da se uradi
+//ili se ovo uvek poziva iz sistemskog rezima
 void PCB::start()
 {
     Scheduler::put(this);
@@ -39,7 +40,7 @@ void PCB::runner()
     Riscv::printString("Runner started...\n");
     Riscv::popSppSpie();
     running->body(running->args);
-    running->setFinished(true);
+    running->setState(PCB::FINISHED);
     Riscv::printString("Thread finished\n");
     thread_dispatch();
 }
@@ -48,9 +49,9 @@ void PCB::dispatch()
 {
     Riscv::printString("Dispatch called...\n");
     PCB* old = running;
-    if(!old->finished) Scheduler::put(old);
+    if(old->getState() == PCB::RUNNING) Scheduler::put(old);
     PCB::running = Scheduler::get();
-
+    PCB::running->setState(PCB::RUNNING);
     Riscv::printString("Switching context...\n");
 
     PCB::contextSwitch(&old->context, &running->context);
@@ -62,5 +63,5 @@ void *PCB::operator new(size_t size) {
 
 void PCB::operator delete(void *p) {
     //todo
-    //kfree(p);
+    kfree(p);
 }

@@ -31,12 +31,13 @@ public:
 
     uint64 getTimeSlice() { return timeSlice;}
 
-    void setFinished(bool f) {finished = f;}
-
-    bool getFinished() { return finished;}
-
     void* operator new(size_t size);
     void operator delete(void *p);
+
+    enum State{READY, RUNNING, SUSPENDED, FINISHED};
+
+    State getState() {return state;}
+    void setState(State s) {state = s;}
 
 protected:
     //todo
@@ -59,13 +60,10 @@ private:
     Body body;
     void* args;
 
-    //enum State {CREATED, READY, RUNNING, BLOCKED, FINISHED, IDLE};
-    //State state;
+    State state;
 
     Context context;
     size_t stackSize;
-
-    bool finished = false;
 
     uint64 pID;
 };

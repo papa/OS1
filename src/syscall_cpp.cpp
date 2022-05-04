@@ -20,7 +20,7 @@ void operator delete(void * p)
 //todo
 //diskusija u os1 proj sheet-u
 void Thread::start() {
-    //int retval = thread_create(&myHandle, )
+
 }
 
 void Thread::dispatch() {
@@ -41,5 +41,9 @@ Thread::Thread(void (*body)(void *), void *args) {
 }
 
 Thread::Thread() {
+
+}
+
+void Semaphore::wait() {
 
 }

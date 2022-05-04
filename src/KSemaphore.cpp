@@ -7,17 +7,16 @@
 
 KSemaphore::KSemaphore(int val) {
     this->val = this->beginVal = val;
-    //queueBlocked = (Queue<PCB*>*)kmalloc(sizeof(Queue<PCB*>));
 }
 
+//todo
 void KSemaphore::wait() {
-    //todo
     if(--val < 0)
         block();
 }
 
+//todo
 void KSemaphore::signal() {
-    //todo
     if(++val <= 0)
         unblock();
     else
@@ -28,20 +27,19 @@ KSemaphore::~KSemaphore() {
     //todo
 }
 
+//todo
 void KSemaphore::block() {
-    //todo
-    //postavi stanje
+    PCB::running->setState(PCB::SUSPENDED);
     PCB::dispatch();
 }
 
+//todo
 void KSemaphore::unblock() {
     PCB* fr = queueBlocked.front();
     queueBlocked.pop();
     if(fr != 0)
     {
-        //todo
-        //postavi stanje
+        fr->setState(PCB::READY);
         Scheduler::put(fr);
     }
-
 }

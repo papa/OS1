@@ -77,6 +77,14 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size) {
                     else
                         headFree = newFree;
                 }
+                else
+                {
+                    if(prev != 0)
+                        prev->next = curr->next;
+                    else
+                        headFree = curr->next;
+                }
+
             }
             else
             {
@@ -122,6 +130,8 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
     else
         prev->next = newSegment;
 
+    //todo
+    //kad proradi kfree odkomentarisi ovo
     /*if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
     {
         newSegment->size += newSegment->next->size + sizeof(BlockHeader);

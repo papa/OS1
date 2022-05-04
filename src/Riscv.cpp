@@ -87,7 +87,7 @@ void Riscv::handleSupervisorTrap() {
 
         case timerInterrupt:
 
-            //Riscv::printString("timerInterrupt\n");
+            Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
             if(PCB::running == 0)
                 break;
@@ -137,10 +137,7 @@ void Riscv::handleSupervisorTrap() {
             else if(operation == MemoryAllocator::MEM_FREE) {
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
-                //uint64 retval = kfree((void*)addr);
-                //todo
-                //only for testing
-                uint64 retval = 0;
+                uint64 retval = kfree((void*)addr);
                 __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
             else if(operation == PCB::THREAD_CREATE)

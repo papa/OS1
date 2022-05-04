@@ -22,6 +22,15 @@ int thread_exit();
 
 void thread_dispatch();
 
+typedef void* sem_t;
+int sem_open(sem_t* handle, unsigned int x);
+
+int sem_close(sem_t handle);
+
+int sem_wait(sem_t id);
+
+int sem_signal(sem_t id);
+
 #ifdef __cplusplus
 }
 #endif

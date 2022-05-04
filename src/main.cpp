@@ -13,6 +13,7 @@ void mallocFree();
 void bigMalloc();
 void lotOfSmallMallocs();
 void badFree();
+void stressTesting();
 void memoryAllocationTests();
 
 //thread tests
@@ -26,8 +27,8 @@ void main()
 {
     Riscv::initSystem();
 
-    //memoryAllocationTests();
-    threadTests();
+    memoryAllocationTests();
+    //threadTests();
     //testQueue();
 }
 
@@ -74,6 +75,7 @@ void threadTests()
 {
     Thread* t = new Thread(0, 0);
     PCB::running = t->myHandle;
+    PCB::running->setState(PCB::RUNNING);
     Thread* t1 = new Thread(&thread1Function, 0);
     Scheduler::put(t1->myHandle);
     Thread* t2 = new Thread(&thread2Function, 0);
@@ -81,13 +83,13 @@ void threadTests()
 
     //Riscv::enableInterrupts();
 
-    while(!t1->myHandle->getFinished()
-        || !t2->myHandle->getFinished())
+    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED)
     {
+
         thread_dispatch();
     }
 
-    Riscv::printString("End...");
+    Riscv::printString("End...\n");
 }
 
 
@@ -185,10 +187,78 @@ void badFree()
         Riscv::printString("OK\n");
 }
 
+void stressTesting()
+{
+    Riscv::printString("stressTesting\n");
+    constexpr int num = 100;
+    void* addrs[num];
+    for(int i = 0; i < num;i++)
+    {
+        addrs[i] = mem_alloc(1);
+        if(addrs[i] == 0)
+        {
+            Riscv::printString("not OK\n");
+            return;
+        }
+
+    }
+    int sz = 5;
+    while(sz > 0)
+    {
+        Riscv::printString("sz : ");
+        Riscv::printInteger(sz);
+        for(int i = 0 ; i < num;i+=2)
+        {
+            Riscv::printString("i : ");
+            Riscv::printInteger(i);
+            Riscv::printString("free\n");
+            int retval = mem_free(addrs[i]);
+            if(retval != 0)
+            {
+                Riscv::printString("not OK\n");
+                return;
+            }
+            Riscv::printString("alloc\n");
+            addrs[i] = mem_alloc(sz/2);
+            if(addrs[i] == 0)
+            {
+                Riscv::printString("not Ok\n");
+                return;
+            }
+
+        }
+
+        for(int i = 1 ; i < num;i+=2)
+        {
+            Riscv::printString("i : ");
+            Riscv::printInteger(i);
+            Riscv::printString("free\n");
+            int retval = mem_free(addrs[i]);
+            if(retval != 0)
+            {
+                Riscv::printString("not OK\n");
+                return;
+            }
+            Riscv::printString("alloc\n");
+            addrs[i] = mem_alloc(sz);
+            if(addrs[i] == 0)
+            {
+                Riscv::printString("not Ok\n");
+                return;
+            }
+
+        }
+        sz-=10;
+    }
+
+    Riscv::printString("OK\n");
+}
+
 void memoryAllocationTests()
 {
     //bigMalloc();
     //lotOfSmallMallocs();
     //mallocFree();
-    badFree();
+    //badFree();
+    stressTesting();
 }

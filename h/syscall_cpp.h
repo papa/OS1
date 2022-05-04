@@ -7,6 +7,7 @@
 
 #include "syscall_c.h"
 #include "PCB.h"
+#include "KSemaphore.h"
 
 void * operator new(size_t size);
 
@@ -39,6 +40,19 @@ protected:
 
 private:
 
+};
+
+class Semaphore
+{
+public:
+    Semaphore(unsigned init = 1);
+    virtual ~Semaphore();
+
+    void wait();
+    void signal();
+
+private:
+    KSemaphore* myHandle;
 };
 
 #endif //PROJECT_BASE_V1_0_SYSCALL_CPP_H
