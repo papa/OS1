@@ -21,6 +21,7 @@ class Thread
 public:
     Thread(void (*body)(void*), void* args);
 
+    //todo
     //virtual ~Thread();
 
     void start();
@@ -37,7 +38,6 @@ protected:
     Thread();
 
     //virtual void run();
-
 private:
 
 };
@@ -46,7 +46,10 @@ class Semaphore
 {
 public:
     Semaphore(unsigned init = 1);
-    virtual ~Semaphore();
+
+    //todo
+    //virtual pravi problem
+    //virtual ~Semaphore();
 
     void wait();
     void signal();

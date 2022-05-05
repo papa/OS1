@@ -9,13 +9,10 @@
 Scheduler* Scheduler::scheduler = 0;
 
 void Scheduler::put(PCB *pcb) {
-    //Scheduler::queuePCB->push(pcb);
-    //Riscv::printInteger(sizeof(Scheduler));
-    //Riscv::printString("needs to put\n");
+    pcb->setState(PCB::READY);
     if(scheduler == 0)
         scheduler = new Scheduler();
     scheduler->queuePCB.push(pcb);
-    //Riscv::printString("put\n");
 }
 
 PCB *Scheduler::get() {

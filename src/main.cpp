@@ -21,35 +21,26 @@ void thread1Function();
 void thread2Function();
 void threadTests();
 
-void testQueue();
 
 void main()
 {
     Riscv::initSystem();
+    //Riscv::enableInterrupts();
 
-    memoryAllocationTests();
-    //threadTests();
+    //memoryAllocationTests();
+    threadTests();
     //testQueue();
-}
 
-void testQueue()
-{
-   /* Queue<uint64> q;
-    q.push(1);
-    q.push(2);
-    uint64 x = q.front();
-    q.pop();
-    Riscv::printInteger(x);
-    Riscv::printString("\n");*/
+    Riscv::disableInterrupts();
 }
 
 void thread1Function(void* p)
 {
     Riscv::printString("Thread 1 started...\n");
-    for(int i = 0; i < 10;i++)
+    uint64 num = 1000;
+    for(uint64 i = 0; i < num;i++)
     {
-        Riscv::printInteger(Scheduler::getSize());
-        if(i % 4 == 0 && i > 0)
+        if(i % 150 == 0 && i > 0)
             thread_dispatch();
         Riscv::printString("i : ");
         Riscv::printInteger(i);
@@ -60,11 +51,11 @@ void thread1Function(void* p)
 void thread2Function(void* p)
 {
     Riscv::printString("Thread 2 started...\n");
-    for(int j = 0; j < 10;j++)
+    uint64 num = 1000;
+    for(uint64 j = 0; j < num;j++)
     {
-        Riscv::printInteger(Scheduler::getSize());
-        if(j % 5 == 0 && j > 0)
-            thread_dispatch();
+        if(j % 50 == 0 && j > 0)
+          thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
         Riscv::printString("\n");
@@ -73,21 +64,15 @@ void thread2Function(void* p)
 
 void threadTests()
 {
-    Thread* t = new Thread(0, 0);
-    PCB::running = t->myHandle;
+    new Thread(0, 0);
+    PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
     Thread* t1 = new Thread(&thread1Function, 0);
-    Scheduler::put(t1->myHandle);
     Thread* t2 = new Thread(&thread2Function, 0);
-    Scheduler::put(t2->myHandle);
 
-    //Riscv::enableInterrupts();
+    Riscv::enableInterrupts();
 
-    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED)
-    {
-
-        thread_dispatch();
-    }
+    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED);
 
     Riscv::printString("End...\n");
 }

@@ -44,6 +44,32 @@ Thread::Thread() {
 
 }
 
+//Semaphore
+
 void Semaphore::wait() {
+    int retval = sem_wait((void*)myHandle);
+    if(retval != 0)
+    {
+        //todo
+        //what then
+    }
+}
+
+Semaphore::Semaphore(unsigned int init) {
+    int retval = sem_open((void**)&myHandle, init);
+    if(retval != 0)
+    {
+        //todo
+        //what then
+    }
+}
+
+void Semaphore::signal() {
+    int retval = sem_signal((void*)myHandle);
+    if(retval != 0)
+    {
+        //todo
+        //what then
+    }
 
 }

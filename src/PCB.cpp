@@ -17,7 +17,7 @@ PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
         (uint64)&PCB::runner
     })
 {
-
+    Scheduler::put(this);
 }
 
 void PCB::sleep(time_t time)
@@ -49,7 +49,8 @@ void PCB::dispatch()
 {
     Riscv::printString("Dispatch called...\n");
     PCB* old = running;
-    if(old->getState() == PCB::RUNNING) Scheduler::put(old);
+    if(old->getState() == PCB::RUNNING)
+        Scheduler::put(old);
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
     Riscv::printString("Switching context...\n");

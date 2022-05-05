@@ -18,12 +18,12 @@ void Riscv::initSystem() {
 }
 
 void Riscv::enableInterrupts() {
-    Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
+    ms_sstatus(Riscv::SSTATUS_SIE);
 }
 
 void Riscv::disableInterrupts()
 {
-    Riscv::mc_sstatus(Riscv::SSTATUS_SIE);
+    mc_sstatus(Riscv::SSTATUS_SIE);
 }
 
 void Riscv::popSppSpie() {
@@ -72,7 +72,7 @@ void Riscv::printInteger(uint64 num)
     while(--i >= 0)
         __putc(buf[i]);
 
-    Riscv::printString("\n");
+    __putc('\n');
 
     ms_sstatus(sstatus & SSTATUS_SIE ? SSTATUS_SIE : 0);
 }
@@ -89,8 +89,6 @@ void Riscv::handleSupervisorTrap() {
 
             Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
-            if(PCB::running == 0)
-                break;
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice()) {
                 uint64 sepc = Riscv::r_sepc();
                 uint64 sstatus = Riscv::r_sstatus();
@@ -99,6 +97,7 @@ void Riscv::handleSupervisorTrap() {
                 Riscv::w_sstatus(sstatus);
                 Riscv::w_sepc(sepc);
             }
+
             Riscv::mc_sip(Riscv::SIP_SSIP);
 
             break;
@@ -143,34 +142,27 @@ void Riscv::handleSupervisorTrap() {
             else if(operation == PCB::THREAD_CREATE)
             {
                 //todo
-                //thread create
                 uint64 start_routine;
                 uint64 args;
-                //uint64 stack_space;
                 PCB** threadHandle;
                 __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
                 __asm__ volatile("mv %0, a2" : "=r"(start_routine));
                 __asm__ volatile("mv %0, a3" : "=r"(args));
+                //uint64 stack_space;
                 //__asm__ volatile("mv %0, a4" : "=r"(stack_space));
+
                 //todo
                 //da li treba ovako ili tipa da se ne koristi new
                 //nego direktno kmalloc - ali onda kako konstruktor
                 //sta se desava ako preklopljeni new vrati 0
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 2UL);
+                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 1UL);
 
                 (*threadHandle) = newPCB;
 
                 if(newPCB == 0)
-                {
                     __asm__ volatile("li a0, 0xffffffffffffffff");
-                    //__asm__ volatile("mv a1, %0" : :"r"((uint64)newPCB));
-                }
                 else
-                {
                     __asm__ volatile("li a0, 0");
-                    //__asm__ volatile("mv a1, %0" : :"r"((uint64)newPCB));
-                }
-
             }
             else if(operation == PCB::THREAD_DISPATCH)
             {
@@ -182,8 +174,9 @@ void Riscv::handleSupervisorTrap() {
 
             Riscv::w_sepc(sepc);
 
-            break;
+            return;
+            //break;
     }
 
-    //console_handler();
+    console_handler();
 }
