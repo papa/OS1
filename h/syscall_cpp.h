@@ -31,15 +31,15 @@ public:
     static void sleep(time_t);
 
     //todo
-    //only for testing
-    //return it to private
+    //vrati u private
+    //ovde je samo za potrebe testiranja
     PCB* myHandle;
+
 protected:
     Thread();
 
     //virtual void run();
 private:
-
 };
 
 class Semaphore

@@ -6,16 +6,27 @@
 #include "../h/MemoryAllocator.h"
 #include "../h/PCB.h"
 #include "../lib/console.h"
+#include "../h/syscall_cpp.h"
 
 //todo
 //sta sve treba da se odradi ovde
 void Riscv::initSystem() {
     w_stvec((uint64)&Riscv::supervisorTrap);
+    new Thread(0, 0);
+    PCB::running = Scheduler::get();
+    PCB::running->setState(PCB::RUNNING);
     //todo
     //no need for comment, but sync context switch
     //should be tested, before hardware interrupts are enabled
     //Riscv::enableInterrupts();
 }
+
+void Riscv::endSystem() {
+    //todo
+    //da li treba jos nesto da se ocisti
+    Riscv::disableInterrupts();
+}
+
 
 void Riscv::enableInterrupts() {
     ms_sstatus(Riscv::SSTATUS_SIE);
@@ -115,10 +126,8 @@ void Riscv::handleSupervisorTrap() {
         case addrWriteInterrupt: // todo
             break;
 
-        case ecallUserInterrupt: // todo
-            break;
-
         case ecallSystemInterupt:
+        case ecallUserInterrupt:
 
             uint64 operation;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
@@ -155,7 +164,7 @@ void Riscv::handleSupervisorTrap() {
                 //da li treba ovako ili tipa da se ne koristi new
                 //nego direktno kmalloc - ali onda kako konstruktor
                 //sta se desava ako preklopljeni new vrati 0
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 1UL);
+                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 3UL);
 
                 (*threadHandle) = newPCB;
 
@@ -171,6 +180,23 @@ void Riscv::handleSupervisorTrap() {
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
             }
+            else if(operation == PCB::THREAD_EXIT)
+            {
+                if(PCB::running == 0)
+                {
+                    __asm__ volatile("li a0, 0xffffffffffffffff");
+                    return;
+                }
+                uint64 sstatus = Riscv::r_sstatus();
+                PCB::timeSliceCounter = 0;
+                PCB::exitingPCB = PCB::running;
+                PCB::exitingPCB->setState(PCB::EXITING);
+                //todo
+                //da li se iz ovog dispatch-a neka nit vraca uopste
+                PCB::dispatch();
+                Riscv::w_sstatus(sstatus);
+            }
+
 
             Riscv::w_sepc(sepc);
 

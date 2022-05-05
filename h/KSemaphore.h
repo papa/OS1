@@ -16,6 +16,11 @@ public:
     void wait();
     void signal();
     ~KSemaphore();
+
+    static const uint64 SEM_OPEN = 0x21;
+    static const uint64 SEM_CLOSE = 0x22;
+    static const uint64 SEM_WAIT = 0x23;
+    static const uint64 SEM_SIGNAL = 0x24;
 private:
     int val, beginVal;
     Queue queueBlocked;

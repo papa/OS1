@@ -89,7 +89,7 @@ extern "C"
 #endif
 int thread_exit()
 {
-    __asm__ volatile("li a0, 0x13");
+    __asm__ volatile("li a0, 0x12");
 
     __asm__ volatile("ecall");
 

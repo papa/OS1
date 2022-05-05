@@ -13,6 +13,7 @@ private:
 
 public:
     static void initSystem();
+    static void endSystem();
 
     static void enableInterrupts();
 
@@ -158,5 +159,4 @@ inline uint64 Riscv::r_sstatus() {
 inline void Riscv::w_sstatus(uint64 sstatus) {
     __asm__ volatile("csrw sstatus, %0" : :"r"(sstatus));
 }
-
 #endif //PROJECT_BASE_V1_0_RISCV_H

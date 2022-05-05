@@ -28,7 +28,7 @@ void Thread::dispatch() {
 }
 
 void Thread::sleep(time_t time) {
-    PCB::sleep(time);
+    //PCB::sleep(time);
 }
 
 Thread::Thread(void (*body)(void *), void *args) {

@@ -10,3 +10,12 @@ _ZN3PCB13contextSwitchEPNS_7ContextES1_:
     ld ra, 1 * 8(a1)
 
     ret
+
+.global _ZN3PCB20contextSwitchExitingEPNS_7ContextE
+.type _ZN3PCB20contextSwitchExitingEPNS_7ContextE, @function
+_ZN3PCB20contextSwitchExitingEPNS_7ContextE:
+    #a0 - &running->Context
+    ld sp, 0 * 8(a0)
+    ld ra, 1 * 8(a0)
+
+    ret
