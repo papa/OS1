@@ -16,11 +16,11 @@ void idle(void* args)
 void thread1Function(void* p)
 {
     Riscv::printString("Thread 1 started...\n");
-    uint64 num = 1000;
+    uint64 num = 10000;
     for(uint64 i = 0; i < num;i++)
     {
-        if(i % 150 == 0 && i > 0)
-            thread_dispatch();
+        //if(i % 150 == 0 && i > 0)
+        //    thread_dispatch();
         Riscv::printString("i : ");
         Riscv::printInteger(i);
         Riscv::printString("\n");
@@ -30,11 +30,11 @@ void thread1Function(void* p)
 void thread2Function(void* p)
 {
     Riscv::printString("Thread 2 started...\n");
-    uint64 num = 1000;
+    uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
-        if(j % 50 == 0 && j > 0)
-            thread_dispatch();
+        //if(j % 50 == 0 && j > 0)
+        //    thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
         Riscv::printString("\n");
@@ -44,15 +44,15 @@ void thread2Function(void* p)
 void thread2FunctionTest2(void* p)
 {
     Riscv::printString("Thread 2 started...\n");
-    uint64 num = 1000;
+    uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
-        if(j == 100)
-            time_sleep(1000);
-        if(j == 200)
-            thread_exit();
-        if(j!=100 && j!= 200 && j % 50 == 0 && j > 0)
-            thread_dispatch();
+        //if(j == 100)
+        //    time_sleep(200);
+        //if(j == 200)
+        //    thread_exit();
+        //if(j!= 100 && j!= 200 && j % 50 == 0 && j > 0)
+        //    thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
         Riscv::printString("\n");
@@ -66,13 +66,15 @@ void threadTest1()
     t1->start();
     Thread* t2 = new Thread(&thread2Function, 0);
     t2->start();
-
+    Riscv::enableInterrupts();
     while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED)
     {
+        Riscv::printString("Main thread\n");
         thread_dispatch();
     }
 
     Riscv::printString("End...\n");
+    Riscv::disableInterrupts();
 }
 
 void threadTest2()

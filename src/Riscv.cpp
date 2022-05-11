@@ -7,6 +7,7 @@
 #include "../h/PCB.h"
 #include "../lib/console.h"
 #include "../h/syscall_cpp.h"
+#include "../h/SleepPCBList.h"
 
 //todo
 //sta sve treba da se odradi ovde
@@ -16,10 +17,6 @@ void Riscv::initSystem() {
     t->start();
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    //todo
-    //no need for comment, but sync context switch
-    //should be tested, before hardware interrupts are enabled
-    //Riscv::enableInterrupts();
 }
 
 void Riscv::endSystem() {
@@ -95,14 +92,20 @@ void Riscv::handleSupervisorTrap() {
     __asm__ volatile("mv %0, a4" : "=r"(a4));
 
     uint64 scause = Riscv::r_scause();
+
     switch(scause) {
 
         case timerInterrupt:
 
+            Riscv::mc_sip(Riscv::SIP_SSIP);
             Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
-            PCB::tryToWakePCBs();
-            if (PCB::timeSliceCounter >= PCB::running->getTimeSlice()) {
+            SleepPCBList::tryToWakePCBs();
+            static uint64 sumInterrupts = 0;
+            sumInterrupts++;
+            Riscv::printInteger(sumInterrupts);
+            if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
+            {
                 uint64 sepc = Riscv::r_sepc();
                 uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
@@ -111,7 +114,7 @@ void Riscv::handleSupervisorTrap() {
                 Riscv::w_sepc(sepc);
             }
 
-            Riscv::mc_sip(Riscv::SIP_SSIP);
+            //Riscv::mc_sip(Riscv::SIP_SSIP);
 
             break;
 
@@ -208,7 +211,7 @@ void Riscv::handleSupervisorTrap() {
                 PCB::timeSliceCounter = 0;
                 PCB::running->setState(PCB::SLEEPING);
                 PCB::running->setTimeToSleep(time);
-                PCB::insertSleepingPCB();
+                SleepPCBList::insertSleepingPCB();
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
                 //todo

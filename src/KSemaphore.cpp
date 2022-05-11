@@ -7,6 +7,7 @@
 
 KSemaphore::KSemaphore(int val) {
     this->val = this->beginVal = val;
+    headBlocked = tailBlocked = 0;
 }
 
 //todo
@@ -27,16 +28,47 @@ KSemaphore::~KSemaphore() {
     //todo
 }
 
+void KSemaphore::addToBlocked(PCB* pcb)
+{
+    pcb->nextPCB = 0;
+    if(headBlocked == 0)
+    {
+        headBlocked = tailBlocked = pcb;
+    }
+    else
+    {
+        tailBlocked->nextPCB = pcb;
+        tailBlocked = pcb;
+    }
+}
+
 //todo
 void KSemaphore::block() {
     PCB::running->setState(PCB::SUSPENDED);
+    addToBlocked(PCB::running);
     PCB::dispatch();
+}
+
+PCB* KSemaphore::getFirstBlocked()
+{
+   return headBlocked;
+}
+
+void KSemaphore::removeFirstBlocked()
+{
+    if(headBlocked == 0)
+        return;
+    PCB* first = headBlocked;
+    headBlocked = headBlocked->nextPCB;
+    first->nextPCB = 0;
+    if(headBlocked == 0)
+        tailBlocked =0;
 }
 
 //todo
 void KSemaphore::unblock() {
-    PCB* fr = queueBlocked.front();
-    queueBlocked.pop();
+    PCB* fr = getFirstBlocked();
+    removeFirstBlocked();
     if(fr != 0)
     {
         fr->setState(PCB::READY);
