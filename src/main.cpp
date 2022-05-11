@@ -6,7 +6,6 @@
 void main()
 {
     Riscv::initSystem();
-    //Riscv::enableInterrupts();
 
     //memoryAllocationTests();
     threadTests();

@@ -153,3 +153,16 @@ int sem_signal(sem_t id)
 
     return result;
 }
+
+int time_sleep(uint64 time)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)time));
+    __asm__ volatile("li a0, 0x31");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+    return result;
+
+}

@@ -31,6 +31,8 @@ int sem_wait(sem_t id);
 
 int sem_signal(sem_t id);
 
+int time_sleep(uint64 time);
+
 #ifdef __cplusplus
 }
 #endif

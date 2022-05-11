@@ -12,7 +12,8 @@
 //sta sve treba da se odradi ovde
 void Riscv::initSystem() {
     w_stvec((uint64)&Riscv::supervisorTrap);
-    new Thread(0, 0);
+    Thread* t = new Thread(0, 0);
+    t->start();
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
     //todo
@@ -100,6 +101,7 @@ void Riscv::handleSupervisorTrap() {
 
             Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
+            PCB::tryToWakePCBs();
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice()) {
                 uint64 sepc = Riscv::r_sepc();
                 uint64 sstatus = Riscv::r_sstatus();
@@ -135,14 +137,16 @@ void Riscv::handleSupervisorTrap() {
             uint64 sepc = Riscv::r_sepc();
             sepc+=4;
 
-            if(operation == MemoryAllocator::MEM_ALLOC) {
+            if(operation == MemoryAllocator::MEM_ALLOC)
+            {
                 size_t size;
                 __asm__ volatile("mv %0, a1" : "=r"(size));
                 size*=MEM_BLOCK_SIZE;
                 void* allocatedAddr = kmalloc(size);
                 __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
             }
-            else if(operation == MemoryAllocator::MEM_FREE) {
+            else if(operation == MemoryAllocator::MEM_FREE)
+            {
                 uint64 addr = 0;
                 __asm__ volatile("mv %0, a1" : "=r"(addr));
                 uint64 retval = kfree((void*)addr);
@@ -196,7 +200,21 @@ void Riscv::handleSupervisorTrap() {
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
             }
-
+            else if(operation == PCB::TIME_SLEEP)
+            {
+                uint64 time;
+                __asm__ volatile("mv %0, a1" : "=r"(time));
+                uint64 sstatus = Riscv::r_sstatus();
+                PCB::timeSliceCounter = 0;
+                PCB::running->setState(PCB::SLEEPING);
+                PCB::running->setTimeToSleep(time);
+                PCB::insertSleepingPCB();
+                PCB::dispatch();
+                Riscv::w_sstatus(sstatus);
+                //todo
+                //kad treba vratiti kod greske
+                __asm__ volatile("li a0, 0x0");
+            }
 
             Riscv::w_sepc(sepc);
 

@@ -8,6 +8,7 @@
 PCB* PCB::running = 0;
 PCB* PCB::exitingPCB = 0;
 uint64 PCB::timeSliceCounter = 0;
+PCB* PCB::sleepingPCBHead = 0;
 
 PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
     timeSlice(timeSlice),
@@ -20,6 +21,7 @@ PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
     })
 {
     Scheduler::put(this);
+    nextPCB = 0;
 }
 
 void PCB::sleep(time_t time)
@@ -43,7 +45,7 @@ void PCB::runner()
     Riscv::popSppSpie();
     running->body(running->args);
     running->setState(PCB::FINISHED);
-    Riscv::printString("Thread finished\n");
+    Riscv::printString("PCB finished\n");
 
     //todo
     //da li thread_exit ili dispatch
@@ -85,4 +87,49 @@ void PCB::operator delete(void *p) {
 
 PCB::~PCB() {
     kfree(beginSP);
+}
+
+void PCB::insertSleepingPCB()
+{
+    Riscv::printString("Inserting sleeping PCB...\n");
+    PCB* prev = 0;
+    PCB* curr = sleepingPCBHead;
+    while(curr != 0)
+    {
+        if(PCB::running->getTimeToSleep() < curr->getTimeToSleep())
+        {
+            PCB::running->nextPCB = curr;
+            break;
+        }
+        prev = curr;
+        curr=curr->nextPCB;
+    }
+
+    if(prev == 0)
+        sleepingPCBHead = PCB::running;
+    else
+        prev->nextPCB = PCB::running;
+}
+
+void PCB::tryToWakePCBs() {
+    Riscv::printString("Waking PCBs...\n");
+    PCB* curr = sleepingPCBHead;
+    while(curr != 0)
+    {
+        if(curr->getTimeToSleep() == 1UL)
+        {
+            Riscv::printString("PCB woken...\n");
+            PCB* old = curr;
+            curr=curr->nextPCB;
+            old->setState(PCB::READY);
+            old->nextPCB = 0;
+            Scheduler::put(old);
+            sleepingPCBHead = curr;
+        }
+        else
+        {
+            curr->setTimeToSleep(curr->getTimeToSleep() - 1);
+            curr = curr->nextPCB;
+        }
+    }
 }

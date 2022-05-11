@@ -40,6 +40,8 @@ protected:
 
     //virtual void run();
 private:
+    void (*f)(void*);
+    void* args;
 };
 
 class Semaphore

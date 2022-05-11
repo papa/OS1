@@ -30,13 +30,25 @@ public:
     void* operator new(size_t size);
     void operator delete(void *p);
 
-    enum State{READY, RUNNING, SUSPENDED, FINISHED, EXITING};
+    enum State{READY, RUNNING, SUSPENDED, FINISHED, EXITING, SLEEPING};
     State getState() {return state;}
     void setState(State s) {state = s;}
+    void setTimeToSleep(uint64 time) {timeToSleep = time;}
+    uint64 getTimeToSleep() {return timeToSleep;}
 
     static const uint64 THREAD_CREATE = 0x11;
     static const uint64 THREAD_EXIT = 0x12;
     static const uint64 THREAD_DISPATCH = 0x13;
+    static const uint64 TIME_SLEEP = 0x31;
+
+    static PCB* sleepingPCBHead;
+
+    static void insertSleepingPCB();
+    static void tryToWakePCBs();
+
+    //next PCB in sleeping queue
+    //or suspended queue
+    PCB* nextPCB;
 
 protected:
     //todo
@@ -45,6 +57,8 @@ protected:
 private:
 
     uint64 timeSlice;
+
+    uint64 timeToSleep = 0;
 
     typedef struct Context
     {

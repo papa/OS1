@@ -47,9 +47,11 @@ void thread2FunctionTest2(void* p)
     uint64 num = 1000;
     for(uint64 j = 0; j < num;j++)
     {
+        if(j == 100)
+            time_sleep(1000);
         if(j == 200)
             thread_exit();
-        if(j % 50 == 0 && j > 0)
+        if(j!=100 && j!= 200 && j % 50 == 0 && j > 0)
             thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
@@ -61,22 +63,26 @@ void thread2FunctionTest2(void* p)
 void threadTest1()
 {
     Thread* t1 = new Thread(&thread1Function, 0);
+    t1->start();
     Thread* t2 = new Thread(&thread2Function, 0);
+    t2->start();
 
-    Riscv::enableInterrupts();
-
-    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED);
+    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED)
+    {
+        thread_dispatch();
+    }
 
     Riscv::printString("End...\n");
-
-    Riscv::disableInterrupts();
 }
 
 void threadTest2()
 {
     Thread* idleThread = new Thread(&idle, 0);
-    new Thread(&thread1Function, 0);
-    new Thread(&thread2FunctionTest2, 0);
+    idleThread->start();
+    Thread* t1 = new Thread(&thread1Function, 0);
+    t1->start();
+    Thread* t2  = new Thread(&thread2FunctionTest2, 0);
+    t2->start();
 
     Riscv::enableInterrupts();
 
@@ -89,8 +95,8 @@ void threadTest2()
 
 void threadTests()
 {
-    //threadTest1();
-    threadTest2();
+    threadTest1();
+    //threadTest2();
 }
 
 

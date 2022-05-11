@@ -20,7 +20,15 @@ void operator delete(void * p)
 //todo
 //diskusija u os1 proj sheet-u
 void Thread::start() {
-
+    if(myHandle == 0)
+    {
+        int retval = thread_create((void**)&myHandle, f, args);
+        if(retval != 0)
+        {
+        //todo
+        //what then
+        }
+    }
 }
 
 void Thread::dispatch() {
@@ -32,12 +40,15 @@ void Thread::sleep(time_t time) {
 }
 
 Thread::Thread(void (*body)(void *), void *args) {
-    int retval = thread_create((void**)&myHandle, body, args);
-    if(retval != 0)
-    {
+    myHandle = 0;
+    f = body;
+    this->args = args;
+    //int retval = thread_create((void**)&myHandle, body, args);
+    //if(retval != 0)
+    //{
         //todo
         //what then
-    }
+    //}
 }
 
 Thread::Thread() {
