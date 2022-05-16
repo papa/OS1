@@ -1,17 +1,17 @@
-build/src/PCB.o: src/PCB.cpp src/../h/PCB.h src/../h/../lib/hw.h \
- src/../h/Scheduler.h src/../h/MemoryAllocator.h src/../h/Queue.h \
- src/../h/Riscv.h src/../h/syscall_c.h
+build/src/PCB.o: src/PCB.cpp src/../h/PCB.hpp src/../h/../lib/hw.h \
+ src/../h/Scheduler.hpp src/../h/MemoryAllocator.hpp src/../h/Queue.hpp \
+ src/../h/Riscv.hpp src/../h/syscall_c.h
 
-src/../h/PCB.h:
+src/../h/PCB.hpp:
 
 src/../h/../lib/hw.h:
 
-src/../h/Scheduler.h:
+src/../h/Scheduler.hpp:
 
-src/../h/MemoryAllocator.h:
+src/../h/MemoryAllocator.hpp:
 
-src/../h/Queue.h:
+src/../h/Queue.hpp:
 
-src/../h/Riscv.h:
+src/../h/Riscv.hpp:
 
 src/../h/syscall_c.h:

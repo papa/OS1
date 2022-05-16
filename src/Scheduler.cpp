@@ -2,8 +2,8 @@
 // Created by os on 4/27/22.
 //
 
-#include "../h/Scheduler.h"
-#include "../h/PCB.h"
+#include "../h/Scheduler.hpp"
+#include "../h/PCB.hpp"
 
 //todo
 Scheduler* Scheduler::scheduler = 0;

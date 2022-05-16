@@ -2,8 +2,8 @@
 // Created by os on 4/27/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_MEMORYALLOCATOR_H
-#define PROJECT_BASE_V1_0_MEMORYALLOCATOR_H
+#ifndef PROJECT_BASE_V1_0_MEMORYALLOCATOR_HPP
+#define PROJECT_BASE_V1_0_MEMORYALLOCATOR_HPP
 
 #include "../lib/hw.h"
 
@@ -51,4 +51,4 @@ void* kmalloc(size_t size);
 uint64 kfree(void* p);
 
 
-#endif //PROJECT_BASE_V1_0_MEMORYALLOCATOR_H
+#endif //PROJECT_BASE_V1_0_MEMORYALLOCATOR_HPP

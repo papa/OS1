@@ -2,7 +2,7 @@
 // Created by os on 5/3/22.
 //
 
-#include "../h/Queue.h"
+#include "../h/Queue.hpp"
 
 void Queue::pop() {
     Elem* newFirst = first->next;

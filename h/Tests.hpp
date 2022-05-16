@@ -2,12 +2,12 @@
 // Created by os on 5/5/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_TESTS_H
-#define PROJECT_BASE_V1_0_TESTS_H
+#ifndef PROJECT_BASE_V1_0_TESTS_HPP
+#define PROJECT_BASE_V1_0_TESTS_HPP
 
-#include "Riscv.h"
-#include "PCB.h"
-#include "syscall_cpp.h"
+#include "Riscv.hpp"
+#include "PCB.hpp"
+#include "syscall_cpp.hpp"
 
 class Test
 {
@@ -32,4 +32,4 @@ void threadTests();
 
 void idle(void* args);
 
-#endif //PROJECT_BASE_V1_0_TESTS_H
+#endif //PROJECT_BASE_V1_0_TESTS_HPP

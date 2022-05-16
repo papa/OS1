@@ -1,7 +1,7 @@
-#include "../h/syscall_cpp.h"
+#include "../h/syscall_cpp.hpp"
 #include "../lib/console.h"
-#include "../h/Riscv.h"
-#include "../h/Tests.h"
+#include "../h/Riscv.hpp"
+#include "../h/Tests.hpp"
 
 void main()
 {

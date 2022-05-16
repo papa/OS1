@@ -2,12 +2,12 @@
 // Created by os on 4/8/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_SYSCALL_CPP_H
-#define PROJECT_BASE_V1_0_SYSCALL_CPP_H
+#ifndef PROJECT_BASE_V1_0_SYSCALL_CPP_HPP
+#define PROJECT_BASE_V1_0_SYSCALL_CPP_HPP
 
 #include "syscall_c.h"
-#include "PCB.h"
-#include "KSemaphore.h"
+#include "PCB.hpp"
+#include "KSemaphore.hpp"
 
 void * operator new(size_t size);
 
@@ -60,4 +60,4 @@ private:
     KSemaphore* myHandle;
 };
 
-#endif //PROJECT_BASE_V1_0_SYSCALL_CPP_H
+#endif //PROJECT_BASE_V1_0_SYSCALL_CPP_HPP

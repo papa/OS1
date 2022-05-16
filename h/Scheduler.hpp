@@ -2,12 +2,12 @@
 // Created by os on 4/27/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_SCHEDULER_H
-#define PROJECT_BASE_V1_0_SCHEDULER_H
+#ifndef PROJECT_BASE_V1_0_SCHEDULER_HPP
+#define PROJECT_BASE_V1_0_SCHEDULER_HPP
 
 #include "../lib/hw.h"
-#include "MemoryAllocator.h"
-#include "Queue.h"
+#include "MemoryAllocator.hpp"
+#include "Queue.hpp"
 
 class PCB;
 
@@ -37,4 +37,4 @@ private:
     static Scheduler* scheduler;
 };
 
-#endif //PROJECT_BASE_V1_0_SCHEDULER_H
+#endif //PROJECT_BASE_V1_0_SCHEDULER_HPP

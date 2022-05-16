@@ -2,7 +2,7 @@
 // Created by os on 5/11/22.
 //
 
-#include "../h/SleepPCBList.h"
+#include "../h/SleepPCBList.hpp"
 
 PCB* SleepPCBList::sleepingPCBHead = 0;
 

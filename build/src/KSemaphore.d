@@ -1,20 +1,20 @@
-build/src/KSemaphore.o: src/KSemaphore.cpp src/../h/KSemaphore.h \
- src/../h/../lib/hw.h src/../h/Queue.h src/../h/MemoryAllocator.h \
- src/../h/PCB.h src/../h/Scheduler.h src/../h/Riscv.h \
- src/../h/MemoryAllocator.h
+build/src/KSemaphore.o: src/KSemaphore.cpp src/../h/KSemaphore.hpp \
+ src/../h/../lib/hw.h src/../h/PCB.hpp src/../h/Scheduler.hpp \
+ src/../h/MemoryAllocator.hpp src/../h/Queue.hpp src/../h/Riscv.hpp \
+ src/../h/MemoryAllocator.hpp
 
-src/../h/KSemaphore.h:
+src/../h/KSemaphore.hpp:
 
 src/../h/../lib/hw.h:
 
-src/../h/Queue.h:
+src/../h/PCB.hpp:
 
-src/../h/MemoryAllocator.h:
+src/../h/Scheduler.hpp:
 
-src/../h/PCB.h:
+src/../h/MemoryAllocator.hpp:
 
-src/../h/Scheduler.h:
+src/../h/Queue.hpp:
 
-src/../h/Riscv.h:
+src/../h/Riscv.hpp:
 
-src/../h/MemoryAllocator.h:
+src/../h/MemoryAllocator.hpp:

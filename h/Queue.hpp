@@ -2,11 +2,11 @@
 // Created by os on 4/27/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_QUEUE_H
-#define PROJECT_BASE_V1_0_QUEUE_H
+#ifndef PROJECT_BASE_V1_0_QUEUE_HPP
+#define PROJECT_BASE_V1_0_QUEUE_HPP
 
 #include "../lib/hw.h"
-#include "MemoryAllocator.h"
+#include "MemoryAllocator.hpp"
 
 class PCB;
 
@@ -30,4 +30,4 @@ public:
 };
 
 
-#endif //PROJECT_BASE_V1_0_QUEUE_H
+#endif //PROJECT_BASE_V1_0_QUEUE_HPP

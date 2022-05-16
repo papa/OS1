@@ -2,12 +2,11 @@
 // Created by os on 5/2/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_KSEMAPHORE_H
-#define PROJECT_BASE_V1_0_KSEMAPHORE_H
+#ifndef PROJECT_BASE_V1_0_KSEMAPHORE_HPP
+#define PROJECT_BASE_V1_0_KSEMAPHORE_HPP
 
 #include "../lib/hw.h"
-#include "Queue.h"
-#include "PCB.h"
+#include "PCB.hpp"
 
 class KSemaphore
 {
@@ -27,7 +26,6 @@ public:
 
 private:
     int val, beginVal;
-    Queue queueBlocked;
     void block();
     void unblock();
     PCB* getFirstBlocked();
@@ -35,4 +33,4 @@ private:
     void addToBlocked(PCB* pcb);
 };
 
-#endif //PROJECT_BASE_V1_0_KSEMAPHORE_H
+#endif //PROJECT_BASE_V1_0_KSEMAPHORE_HPP

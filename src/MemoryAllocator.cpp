@@ -2,7 +2,7 @@
 // Created by os on 4/27/22.
 //
 
-#include "../h/MemoryAllocator.h"
+#include "../h/MemoryAllocator.hpp"
 
 MemoryAllocator::BlockHeader* MemoryAllocator::headAllocated = 0;
 MemoryAllocator::BlockHeader* MemoryAllocator::headFree = 0;

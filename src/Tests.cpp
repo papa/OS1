@@ -2,7 +2,7 @@
 // Created by os on 5/5/22.
 //
 
-#include "../h/Tests.h"
+#include "../h/Tests.hpp"
 
 void idle(void* args)
 {

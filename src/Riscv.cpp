@@ -2,12 +2,12 @@
 // Created by os on 4/27/22.
 //
 
-#include "../h/Riscv.h"
-#include "../h/MemoryAllocator.h"
-#include "../h/PCB.h"
+#include "../h/Riscv.hpp"
+#include "../h/MemoryAllocator.hpp"
+#include "../h/PCB.hpp"
 #include "../lib/console.h"
-#include "../h/syscall_cpp.h"
-#include "../h/SleepPCBList.h"
+#include "../h/syscall_cpp.hpp"
+#include "../h/SleepPCBList.hpp"
 
 //todo
 //sta sve treba da se odradi ovde

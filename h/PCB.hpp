@@ -2,12 +2,12 @@
 // Created by os on 4/27/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_PCB_H
-#define PROJECT_BASE_V1_0_PCB_H
+#ifndef PROJECT_BASE_V1_0_PCB_HPP
+#define PROJECT_BASE_V1_0_PCB_HPP
 
 #include "../lib/hw.h"
-#include "Scheduler.h"
-#include "Riscv.h"
+#include "Scheduler.hpp"
+#include "Riscv.hpp"
 
 class PCB
 {
@@ -85,4 +85,4 @@ private:
 };
 
 
-#endif //PROJECT_BASE_V1_0_PCB_H
+#endif //PROJECT_BASE_V1_0_PCB_HPP

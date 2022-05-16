@@ -2,8 +2,8 @@
 // Created by os on 5/2/22.
 //
 
-#include "../h/KSemaphore.h"
-#include "../h/MemoryAllocator.h"
+#include "../h/KSemaphore.hpp"
+#include "../h/MemoryAllocator.hpp"
 
 KSemaphore::KSemaphore(int val) {
     this->val = this->beginVal = val;

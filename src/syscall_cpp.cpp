@@ -2,7 +2,7 @@
 // Created by os on 4/8/22.
 //
 
-#include "../h/syscall_cpp.h"
+#include "../h/syscall_cpp.hpp"
 
 //general
 void * operator new(size_t size)

@@ -1,24 +1,24 @@
-build/src/Tests.o: src/Tests.cpp src/../h/Tests.h src/../h/Riscv.h \
- src/../h/../lib/hw.h src/../h/PCB.h src/../h/Scheduler.h \
- src/../h/MemoryAllocator.h src/../h/Queue.h src/../h/syscall_cpp.h \
- src/../h/syscall_c.h src/../h/KSemaphore.h
+build/src/Tests.o: src/Tests.cpp src/../h/Tests.hpp src/../h/Riscv.hpp \
+ src/../h/../lib/hw.h src/../h/PCB.hpp src/../h/Scheduler.hpp \
+ src/../h/MemoryAllocator.hpp src/../h/Queue.hpp src/../h/syscall_cpp.hpp \
+ src/../h/syscall_c.h src/../h/KSemaphore.hpp
 
-src/../h/Tests.h:
+src/../h/Tests.hpp:
 
-src/../h/Riscv.h:
+src/../h/Riscv.hpp:
 
 src/../h/../lib/hw.h:
 
-src/../h/PCB.h:
+src/../h/PCB.hpp:
 
-src/../h/Scheduler.h:
+src/../h/Scheduler.hpp:
 
-src/../h/MemoryAllocator.h:
+src/../h/MemoryAllocator.hpp:
 
-src/../h/Queue.h:
+src/../h/Queue.hpp:
 
-src/../h/syscall_cpp.h:
+src/../h/syscall_cpp.hpp:
 
 src/../h/syscall_c.h:
 
-src/../h/KSemaphore.h:
+src/../h/KSemaphore.hpp:

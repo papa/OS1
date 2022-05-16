@@ -2,7 +2,7 @@
 // Created by os on 4/27/22.
 //
 
-#include "../h/PCB.h"
+#include "../h/PCB.hpp"
 #include "../h/syscall_c.h"
 
 PCB* PCB::running = 0;

@@ -2,10 +2,10 @@
 // Created by os on 5/11/22.
 //
 
-#ifndef PROJECT_BASE_V1_0_SLEEPPCBLIST_H
-#define PROJECT_BASE_V1_0_SLEEPPCBLIST_H
+#ifndef PROJECT_BASE_V1_0_SLEEPPCBLIST_HPP
+#define PROJECT_BASE_V1_0_SLEEPPCBLIST_HPP
 
-#include "PCB.h"
+#include "PCB.hpp"
 
 class SleepPCBList
 {
@@ -14,4 +14,4 @@ public:
     static void insertSleepingPCB();
     static void tryToWakePCBs();
 };
-#endif //PROJECT_BASE_V1_0_SLEEPPCBLIST_H
+#endif //PROJECT_BASE_V1_0_SLEEPPCBLIST_HPP
