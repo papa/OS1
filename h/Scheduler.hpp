@@ -29,12 +29,8 @@ public:
     static PCB* schedulerPCBTail;
 
 private:
-    //static Queue<PCB*>* queuePCB;
-    //todo
-    //resi ovo
+    //todo maybe need this
     Queue queuePCB;
-
-    static Scheduler* scheduler;
 };
 
 #endif //PROJECT_BASE_V1_0_SCHEDULER_HPP

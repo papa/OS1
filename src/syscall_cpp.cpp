@@ -43,12 +43,6 @@ Thread::Thread(void (*body)(void *), void *args) {
     myHandle = 0;
     f = body;
     this->args = args;
-    //int retval = thread_create((void**)&myHandle, body, args);
-    //if(retval != 0)
-    //{
-        //todo
-        //what then
-    //}
 }
 
 Thread::Thread() {

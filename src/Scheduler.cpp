@@ -6,23 +6,24 @@
 #include "../h/PCB.hpp"
 
 //todo
-Scheduler* Scheduler::scheduler = 0;
 PCB* Scheduler::schedulerPCBHead = 0;
 PCB* Scheduler::schedulerPCBTail = 0;
 
+//todo
 void Scheduler::put2(PCB *pcb) {
-    pcb->setState(PCB::READY);
-    if(scheduler == 0)
-        scheduler = new Scheduler();
-    scheduler->queuePCB.push(pcb);
+    //pcb->setState(PCB::READY);
+    //if(scheduler == 0)
+    //    scheduler = new Scheduler();
+    //scheduler->queuePCB.push(pcb);
 }
 
+//todo
 PCB *Scheduler::get2() {
-    if(scheduler == 0)
-        scheduler = new Scheduler();
-    PCB* fr = scheduler->queuePCB.front();
-    scheduler->queuePCB.pop();
-    return fr;
+    //if(scheduler == 0)
+    //    scheduler = new Scheduler();
+    //PCB* fr = scheduler->queuePCB.front();
+    //scheduler->queuePCB.pop();
+    return 0;
 }
 
 void *Scheduler::operator new(size_t size) {
@@ -35,9 +36,11 @@ void Scheduler::operator delete(void *p) {
 }
 
 int Scheduler::getSize() {
-    if(scheduler == 0)
-        scheduler = new Scheduler();
-    return scheduler->queuePCB.size();
+    //todo
+    //if(scheduler == 0)
+    //    scheduler = new Scheduler();
+    //return scheduler->queuePCB.size();
+    return 0;
 }
 
 void Scheduler::put(PCB *pcb) {

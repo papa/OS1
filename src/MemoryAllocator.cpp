@@ -131,7 +131,7 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
         prev->next = newSegment;
 
     //todo
-    //kad proradi kfree odkomentarisi ovo
+    //kad proradi kfree otkomentarisi ovo
     //test it few times
     if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
     {

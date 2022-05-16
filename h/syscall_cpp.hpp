@@ -13,9 +13,6 @@ void * operator new(size_t size);
 
 void operator delete(void * p);
 
-//todo
-//virtual pravi problem
-
 class Thread
 {
 public:
@@ -34,10 +31,11 @@ public:
     //vrati u private
     //ovde je samo za potrebe testiranja
     PCB* myHandle;
-
 protected:
+    //todo
     Thread();
 
+    //todo
     //virtual void run();
 private:
     void (*f)(void*);

@@ -43,9 +43,6 @@ public:
 
     static PCB* sleepingPCBHead;
 
-    static void insertSleepingPCB();
-    static void tryToWakePCBs();
-
     //next PCB in sleeping queue
     //or suspended queue
     PCB* nextPCB;
@@ -68,7 +65,7 @@ private:
 
     static void contextSwitch(PCB::Context* oldContext, PCB::Context* newContext);
     static void contextSwitchExiting(PCB::Context* newContext);
-    //static void yield(PCB* oldPCB, PCB* newPCB);
+
     static void runner();
 
     Body body;
@@ -79,9 +76,9 @@ private:
     State state;
 
     Context context;
-    size_t stackSize;
 
-    uint64 pID;
+    //todo need this maybe
+    size_t stackSize;
 };
 
 

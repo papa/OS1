@@ -52,7 +52,6 @@ void KSemaphore::addToBlocked(PCB* pcb)
     }
 }
 
-//todo
 void KSemaphore::block() {
     PCB::running->setState(PCB::SUSPENDED);
     addToBlocked(PCB::running);
@@ -75,15 +74,11 @@ void KSemaphore::removeFirstBlocked()
         tailBlocked =0;
 }
 
-//todo
 void KSemaphore::unblock() {
     PCB* fr = getFirstBlocked();
     removeFirstBlocked();
     if(fr != 0)
-    {
-        fr->setState(PCB::READY);
         Scheduler::put(fr);
-    }
 }
 
 void *KSemaphore::operator new(size_t size) {
