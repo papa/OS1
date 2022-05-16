@@ -12,8 +12,8 @@ class KSemaphore
 {
 public:
     KSemaphore(int val = 0);
-    void wait();
-    void signal();
+    uint64 wait();
+    uint64 signal();
     ~KSemaphore();
 
     static const uint64 SEM_OPEN = 0x21;
@@ -23,6 +23,9 @@ public:
 
     PCB* headBlocked;
     PCB* tailBlocked;
+
+    void* operator new(size_t size);
+    void operator delete(void *p);
 
 private:
     int val, beginVal;

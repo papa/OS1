@@ -55,13 +55,13 @@ void PCB::runner()
 
 void PCB::dispatch()
 {
-    Riscv::printString("Dispatch called...\n");
+    //Riscv::printString("Dispatch called...\n");
     PCB* old = running;
     if(old->getState() == PCB::RUNNING)
         Scheduler::put(old);
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    Riscv::printString("Switching context...\n");
+    //Riscv::printString("Switching context...\n");
 
     if(PCB::exitingPCB == 0)
     {

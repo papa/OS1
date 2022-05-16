@@ -11,21 +11,31 @@ KSemaphore::KSemaphore(int val) {
 }
 
 //todo
-void KSemaphore::wait() {
+uint64 KSemaphore::wait() {
     if(--val < 0)
         block();
+
+    return 0;
 }
 
 //todo
-void KSemaphore::signal() {
+uint64 KSemaphore::signal() {
     if(++val <= 0)
         unblock();
     else
         val = beginVal;
+
+    return 0;
 }
 
 KSemaphore::~KSemaphore() {
     //todo
+    while(getFirstBlocked() != 0)
+    {
+        PCB* pcb = getFirstBlocked();
+        removeFirstBlocked();
+        Scheduler::put(pcb);
+    }
 }
 
 void KSemaphore::addToBlocked(PCB* pcb)
@@ -74,4 +84,12 @@ void KSemaphore::unblock() {
         fr->setState(PCB::READY);
         Scheduler::put(fr);
     }
+}
+
+void *KSemaphore::operator new(size_t size) {
+    return kmalloc(size);
+}
+
+void KSemaphore::operator delete(void *p) {
+    kfree(p);
 }

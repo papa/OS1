@@ -41,6 +41,7 @@ int Scheduler::getSize() {
 }
 
 void Scheduler::put(PCB *pcb) {
+    pcb->setState(PCB::READY);
     pcb->nextPCB = 0;
     if(schedulerPCBHead == 0)
     {

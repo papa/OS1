@@ -98,12 +98,12 @@ void Riscv::handleSupervisorTrap() {
         case timerInterrupt:
 
             Riscv::mc_sip(Riscv::SIP_SSIP);
-            Riscv::printString("timerInterrupt\n");
+            //Riscv::printString("timerInterrupt\n");
             PCB::timeSliceCounter++;
             SleepPCBList::tryToWakePCBs();
             static uint64 sumInterrupts = 0;
             sumInterrupts++;
-            Riscv::printInteger(sumInterrupts);
+            //Riscv::printInteger(sumInterrupts);
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
             {
                 uint64 sepc = Riscv::r_sepc();
@@ -209,7 +209,6 @@ void Riscv::handleSupervisorTrap() {
                 __asm__ volatile("mv %0, a1" : "=r"(time));
                 uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
-                PCB::running->setState(PCB::SLEEPING);
                 PCB::running->setTimeToSleep(time);
                 SleepPCBList::insertSleepingPCB();
                 PCB::dispatch();
@@ -218,6 +217,56 @@ void Riscv::handleSupervisorTrap() {
                 //kad treba vratiti kod greske
                 __asm__ volatile("li a0, 0x0");
             }
+            else if(operation == KSemaphore::SEM_OPEN)
+            {
+                uint64 val;
+                KSemaphore** semaphoreHandle;
+                __asm__ volatile("mv %0, a1" : "=r"(semaphoreHandle));
+                __asm__ volatile("mv %0, a2" : "=r"(val));
+
+                KSemaphore* newSem = new KSemaphore(val);
+
+                (*semaphoreHandle) = newSem;
+
+                if(newSem == 0)
+                        __asm__ volatile("li a0, 0xffffffffffffffff");
+                else
+                        __asm__ volatile("li a0, 0");
+
+            }
+            else if(operation == KSemaphore::SEM_WAIT)
+            {
+                //todo
+                //negativna povratna vrednost sta i kako
+                KSemaphore* kSem;
+                __asm__ volatile("mv %0, a1" : "=r"(kSem));
+                uint64 retval = kSem->wait();
+                __asm__ volatile("mv a0,%0" : :"r"(retval));
+            }
+            else if(operation == KSemaphore::SEM_SIGNAL)
+            {
+                //todo
+                //negativna povratna vrednost sta i kako
+                KSemaphore* kSem;
+                __asm__ volatile("mv %0, a1" : "=r"(kSem));
+                uint64 retval = kSem->signal();
+                __asm__ volatile("mv a0,%0" : :"r"(retval));
+            }
+            else if(operation == KSemaphore::SEM_CLOSE)
+            {
+                //todo
+                //negativna povratna vrednost sta i kako
+                KSemaphore* kSem;
+                __asm__ volatile("mv %0, a1" : "=r"(kSem));
+
+                delete kSem;
+
+                __asm__ volatile("li a0, 0");
+            }
+
+
+
+
 
             Riscv::w_sepc(sepc);
 
