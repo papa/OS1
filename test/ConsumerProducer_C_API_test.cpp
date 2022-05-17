@@ -3,7 +3,7 @@
 //
 
 #include "ConsumerProducer_C_API_test.hpp"
-
+#include "../h/Riscv.hpp"
 sem_t waitForAll;
 
 struct thread_data {
@@ -38,6 +38,8 @@ void producerKeyboard(void *arg) {
 void producer(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
 
+    Riscv::printString("Producer started...\n");
+
     int i = 0;
     while (!threadEnd) {
         data->buffer->put(data->id + '0');
@@ -54,20 +56,22 @@ void producer(void *arg) {
 void consumer(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
 
+    Riscv::printString("Consumer started...\n");
 
     int i = 0;
     while (!threadEnd) {
         int key = data->buffer->get();
         i++;
 
-        putc(key);
+        //putc(key);
+        Riscv::printInteger(key);
 
         if (i % (5 * data->id) == 0) {
             thread_dispatch();
         }
 
         if (i % 80 == 0) {
-            putc('\n');
+            __putc('\n');
         }
     }
 
@@ -114,9 +118,13 @@ void producerConsumer_C_API()
         data[i].buffer = buffer;
         data[i].wait = waitForAll;
 
-        thread_create(threads + i,
-                      i > 0 ? producer : producerKeyboard,
-                      data + i);
+        //todo changed
+        //thread_create(threads + i,
+        //              i > 0 ? producer : producerKeyboard,
+        //              data + i);
+
+        thread_create(threads + i, producer, data + i);
+
     }
 
     thread_dispatch();

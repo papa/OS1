@@ -19,16 +19,23 @@ void operator delete(void * p)
 
 //todo
 //diskusija u os1 proj sheet-u
-void Thread::start() {
+void Thread::start()
+{
     if(myHandle == 0)
     {
         int retval = thread_create((void**)&myHandle, f, args);
         if(retval != 0)
         {
-        //todo
-        //what then
+            //todo
+            //what then
         }
     }
+    else
+    {
+        //todo
+        //what
+    }
+
 }
 
 void Thread::dispatch() {
@@ -36,7 +43,7 @@ void Thread::dispatch() {
 }
 
 void Thread::sleep(time_t time) {
-    //PCB::sleep(time);
+    time_sleep(time);
 }
 
 Thread::Thread(void (*body)(void *), void *args) {
@@ -45,8 +52,19 @@ Thread::Thread(void (*body)(void *), void *args) {
     this->args = args;
 }
 
-Thread::Thread() {
+Thread::Thread()
+{
+    myHandle = 0;
 
+    args = (void*)this;
+}
+
+void Thread::runner(Thread *t) {
+    Riscv::popSppSpie();
+    //t->run();
+    //todo
+    //sta ovde treba da se uradi, mozda thread_exit()
+    thread_dispatch();
 }
 
 //Semaphore

@@ -30,6 +30,22 @@ void threadTest1();
 void threadTest2();
 void threadTests();
 
+//semaphore tests
+void f1();
+void f2();
+
+void f1_2(void* p);
+void f2_2(void* p);
+void f3_2(void* p);
+
+void semTest1();
+void semTest2();
+
+void semaphoreTests();
+
+
 void idle(void* args);
+
+void myTests();
 
 #endif //PROJECT_BASE_V1_0_TESTS_HPP

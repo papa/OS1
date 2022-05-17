@@ -5,12 +5,12 @@
 #include "../h/KSemaphore.hpp"
 #include "../h/MemoryAllocator.hpp"
 
-KSemaphore::KSemaphore(int val) {
+KSemaphore::KSemaphore(int val)
+{
     this->val = this->beginVal = val;
     headBlocked = tailBlocked = 0;
 }
 
-//todo
 uint64 KSemaphore::wait() {
     if(--val < 0)
         block();
@@ -18,7 +18,6 @@ uint64 KSemaphore::wait() {
     return 0;
 }
 
-//todo
 uint64 KSemaphore::signal() {
     if(++val <= 0)
         unblock();
@@ -28,8 +27,10 @@ uint64 KSemaphore::signal() {
     return 0;
 }
 
-KSemaphore::~KSemaphore() {
-    //todo
+//todo
+//sta treba da vrate ovi PCB-ovi u wait-u
+KSemaphore::~KSemaphore()
+{
     while(getFirstBlocked() != 0)
     {
         PCB* pcb = getFirstBlocked();

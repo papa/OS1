@@ -17,9 +17,6 @@ public:
     static void put(PCB* pcb);
     static PCB* get();
 
-    static void put2(PCB* pcb);
-    static PCB* get2();
-
     void* operator new(size_t size);
     void operator delete(void *p);
 

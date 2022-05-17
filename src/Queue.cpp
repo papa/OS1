@@ -4,7 +4,8 @@
 
 #include "../h/Queue.hpp"
 
-void Queue::pop() {
+void Queue::pop()
+{
     Elem* newFirst = first->next;
     kfree(first);
     first = newFirst;
@@ -43,9 +44,6 @@ Queue::~Queue() {
     Elem* curr = first;
     while(curr != 0)
     {
-        //todo
-        //vrati ovo
-        //sad je zakomentarisano zbog kfree
         Elem* old = curr;
         curr = curr->next;
         kfree(old);

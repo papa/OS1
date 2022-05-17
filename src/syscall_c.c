@@ -60,7 +60,6 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
         return -1;
 
     //initialize registers
-
     __asm__ volatile("mv a4, %0" :  : "r"((uint64)stackPointerLocal));
     __asm__ volatile("mv a3, %0" :  : "r"((uint64)argsLocal));
     __asm__ volatile("mv a2, %0" :  : "r"((uint64)startRLocal));
@@ -70,6 +69,7 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 
     __asm__ volatile("ecall");
 
+    //get the result
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
 
@@ -79,7 +79,8 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 #ifdef __cplusplus
 extern "C"
 #endif
-void thread_dispatch(){
+void thread_dispatch()
+{
     __asm__ volatile("li a0, 0x13");
     __asm__ volatile("ecall");
 }
@@ -95,7 +96,6 @@ int thread_exit()
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
 
@@ -110,7 +110,6 @@ int sem_open(sem_t* handle, unsigned int x)
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
 
@@ -124,7 +123,6 @@ int sem_close(sem_t handle)
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
 
@@ -137,7 +135,6 @@ int sem_wait(sem_t id)
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
 
@@ -150,7 +147,6 @@ int sem_signal(sem_t id)
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
 
@@ -164,5 +160,4 @@ int time_sleep(uint64 time)
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
     return result;
-
 }

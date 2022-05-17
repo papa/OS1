@@ -11,7 +11,8 @@
 
 //todo
 //sta sve treba da se odradi ovde
-void Riscv::initSystem() {
+void Riscv::initSystem()
+{
     w_stvec((uint64)&Riscv::supervisorTrap);
     Thread* t = new Thread(0, 0);
     t->start();
@@ -86,24 +87,25 @@ void Riscv::printInteger(uint64 num)
     ms_sstatus(sstatus & SSTATUS_SIE ? SSTATUS_SIE : 0);
 }
 
-void Riscv::handleSupervisorTrap() {
-
+void Riscv::handleSupervisorTrap()
+{
     uint64 a4;
     __asm__ volatile("mv %0, a4" : "=r"(a4));
 
     uint64 scause = Riscv::r_scause();
 
-    switch(scause) {
+    switch(scause)
+    {
 
         case timerInterrupt:
 
             Riscv::mc_sip(Riscv::SIP_SSIP);
-            //Riscv::printString("timerInterrupt\n");
+            Riscv::printString("timerInterrupt\n");
+
             PCB::timeSliceCounter++;
+
             SleepPCBList::tryToWakePCBs();
-            static uint64 sumInterrupts = 0;
-            sumInterrupts++;
-            //Riscv::printInteger(sumInterrupts);
+
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
             {
                 uint64 sepc = Riscv::r_sepc();
@@ -113,8 +115,6 @@ void Riscv::handleSupervisorTrap() {
                 Riscv::w_sstatus(sstatus);
                 Riscv::w_sepc(sepc);
             }
-
-            //Riscv::mc_sip(Riscv::SIP_SSIP);
 
             break;
 
@@ -157,21 +157,17 @@ void Riscv::handleSupervisorTrap() {
             }
             else if(operation == PCB::THREAD_CREATE)
             {
-                //todo
                 uint64 start_routine;
                 uint64 args;
                 PCB** threadHandle;
                 __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
                 __asm__ volatile("mv %0, a2" : "=r"(start_routine));
                 __asm__ volatile("mv %0, a3" : "=r"(args));
+                //todo
                 //uint64 stack_space;
                 //__asm__ volatile("mv %0, a4" : "=r"(stack_space));
 
-                //todo
-                //da li treba ovako ili tipa da se ne koristi new
-                //nego direktno kmalloc - ali onda kako konstruktor
-                //sta se desava ako preklopljeni new vrati 0
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, 3UL);
+                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, DEFAULT_TIME_SLICE);
 
                 (*threadHandle) = newPCB;
 
@@ -196,10 +192,7 @@ void Riscv::handleSupervisorTrap() {
                 }
                 uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
-                PCB::exitingPCB = PCB::running;
-                PCB::exitingPCB->setState(PCB::EXITING);
-                //todo
-                //da li se iz ovog dispatch-a neka nit vraca uopste
+                PCB::running->setState(PCB::EXITING);
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
             }
@@ -264,14 +257,9 @@ void Riscv::handleSupervisorTrap() {
                 __asm__ volatile("li a0, 0");
             }
 
-
-
-
-
             Riscv::w_sepc(sepc);
 
             return;
-            //break;
     }
 
     console_handler();

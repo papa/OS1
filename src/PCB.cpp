@@ -8,7 +8,6 @@
 PCB* PCB::running = 0;
 PCB* PCB::exitingPCB = 0;
 uint64 PCB::timeSliceCounter = 0;
-PCB* PCB::sleepingPCBHead = 0;
 
 PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
     timeSlice(timeSlice),
@@ -29,10 +28,6 @@ void PCB::sleep(time_t time)
     //todo
 }
 
-//todo
-//da li ovde vec treba da bude lockovano
-//ili treba ovde bas lock da se uradi
-//ili se ovo uvek poziva iz sistemskog rezima
 void PCB::start()
 {
     Scheduler::put(this);
@@ -43,7 +38,11 @@ void PCB::runner()
 {
     Riscv::printString("Runner started...\n");
     Riscv::popSppSpie();
+
     running->body(running->args);
+
+    //todo
+    //da li ovde treba da se predje u kernel rezim mozda
     running->setState(PCB::FINISHED);
     Riscv::printString("PCB finished\n");
 
@@ -63,17 +62,7 @@ void PCB::dispatch()
     PCB::running->setState(PCB::RUNNING);
     //Riscv::printString("Switching context...\n");
 
-    if(PCB::exitingPCB == 0)
-    {
-        PCB::contextSwitch(&old->context, &running->context);
-    }
-    else
-    {
-        delete PCB::exitingPCB;
-        PCB::exitingPCB = 0;
-        PCB::contextSwitchExiting(&running->context);
-    }
-
+    PCB::contextSwitch(&old->context, &running->context);
 }
 
 void *PCB::operator new(size_t size) {
@@ -81,7 +70,6 @@ void *PCB::operator new(size_t size) {
 }
 
 void PCB::operator delete(void *p) {
-    //todo
     kfree(p);
 }
 

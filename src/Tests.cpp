@@ -3,6 +3,7 @@
 //
 
 #include "../h/Tests.hpp"
+#include "../lib/console.h"
 
 void idle(void* args)
 {
@@ -19,8 +20,8 @@ void thread1Function(void* p)
     uint64 num = 10000;
     for(uint64 i = 0; i < num;i++)
     {
-        //if(i % 150 == 0 && i > 0)
-        //    thread_dispatch();
+        if(i % 150 == 0 && i > 0)
+            thread_dispatch();
         Riscv::printString("i : ");
         Riscv::printInteger(i);
         Riscv::printString("\n");
@@ -33,8 +34,8 @@ void thread2Function(void* p)
     uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
-        //if(j % 50 == 0 && j > 0)
-        //    thread_dispatch();
+        if(j % 50 == 0 && j > 0)
+            thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
         Riscv::printString("\n");
@@ -47,18 +48,15 @@ void thread2FunctionTest2(void* p)
     uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
-        //if(j == 100)
-        //    time_sleep(200);
-        //if(j == 200)
-        //    thread_exit();
-        //if(j!= 100 && j!= 200 && j % 50 == 0 && j > 0)
-        //    thread_dispatch();
+        if(j == 200)
+            thread_exit();
+        if(j % 50 == 0 && j > 0)
+            thread_dispatch();
         Riscv::printString("j : ");
         Riscv::printInteger(j);
         Riscv::printString("\n");
     }
 }
-
 
 void threadTest1()
 {
@@ -97,8 +95,8 @@ void threadTest2()
 
 void threadTests()
 {
-    threadTest1();
-    //threadTest2();
+    //threadTest1();
+    threadTest2();
 }
 
 
@@ -206,32 +204,32 @@ void stressTesting()
         addrs[i] = mem_alloc(1);
         if(addrs[i] == 0)
         {
-            Riscv::printString("not OK\n");
+            //Riscv::printString("not OK\n");
             return;
         }
 
     }
-    int sz = 5;
+    int sz = 300;
     while(sz > 0)
     {
-        Riscv::printString("sz : ");
-        Riscv::printInteger(sz);
+        //Riscv::printString("sz : ");
+        //Riscv::printInteger(sz);
         for(int i = 0 ; i < num;i+=2)
         {
-            Riscv::printString("i : ");
-            Riscv::printInteger(i);
-            Riscv::printString("free\n");
+            //Riscv::printString("i : ");
+            //Riscv::printInteger(i);
+            //Riscv::printString("free\n");
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                Riscv::printString("not OK\n");
+                //Riscv::printString("not OK\n");
                 return;
             }
-            Riscv::printString("alloc\n");
+            //Riscv::printString("alloc\n");
             addrs[i] = mem_alloc(sz/2);
             if(addrs[i] == 0)
             {
-                Riscv::printString("not Ok\n");
+                //Riscv::printString("not Ok\n");
                 return;
             }
 
@@ -239,20 +237,20 @@ void stressTesting()
 
         for(int i = 1 ; i < num;i+=2)
         {
-            Riscv::printString("i : ");
-            Riscv::printInteger(i);
-            Riscv::printString("free\n");
+            //Riscv::printString("i : ");
+            //Riscv::printInteger(i);
+            //Riscv::printString("free\n");
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                Riscv::printString("not OK\n");
+                //Riscv::printString("not OK\n");
                 return;
             }
-            Riscv::printString("alloc\n");
+            //Riscv::printString("alloc\n");
             addrs[i] = mem_alloc(sz);
             if(addrs[i] == 0)
             {
-                Riscv::printString("not Ok\n");
+                //Riscv::printString("not Ok\n");
                 return;
             }
 
@@ -271,3 +269,155 @@ void memoryAllocationTests()
     //badFree();
     stressTesting();
 }
+
+//semaphore tests
+static Semaphore* mutex;
+
+void f1(void* p)
+{
+    Riscv::printString("f1 started\n");
+    int x = 0;
+    while(true)
+    {
+        x++;
+        mutex->wait();
+        //__putc('1');
+        //__putc('\n');
+        mutex->signal();
+        if(x < 50000)
+            thread_dispatch();
+        else
+            thread_exit();
+    }
+}
+
+void f2(void* p)
+{
+    Riscv::printString("f2 started\n");
+    int x = 0;
+    while(true)
+    {
+        mutex->wait();
+        //__putc('2');
+        //__putc('\n');
+        mutex->signal();
+        if(x < 50000)
+            thread_dispatch();
+        else
+            thread_exit();
+    }
+}
+
+void semTest1()
+{
+    mutex = new Semaphore(1);
+    Thread* t1 = new Thread(&f1, 0);
+    Thread* t2 = new Thread(&f2, 0);
+    t1->start();
+    t2->start();
+
+    int y = 0;
+    while(true)
+    {
+        y++;
+        thread_dispatch();
+        if(y == 200000)
+            break;
+    }
+}
+
+static Semaphore* s1;
+static Semaphore* s2;
+static Semaphore* s3;
+
+void f1_2(void* p)
+{
+    Riscv::printString("f1_2 started\n");
+    int x = 0;
+    while(true)
+    {
+        x++;
+        s1->wait();
+        __putc('1');
+        __putc('\n');
+        s2->signal();
+        if(x < 5000)
+            thread_dispatch();
+        else
+            thread_exit();
+    }
+}
+
+void f2_2(void* p)
+{
+    Riscv::printString("f2_2 started\n");
+    int x = 0;
+    while(true)
+    {
+        x++;
+        s2->wait();
+        __putc('2');
+        __putc('\n');
+        s3->signal();
+        if(x < 5000)
+            thread_dispatch();
+        else
+            thread_exit();
+    }
+}
+
+void f3_2(void* p)
+{
+    Riscv::printString("f3_2 started\n");
+    int x = 0;
+    while(true)
+    {
+        x++;
+        s3->wait();
+        __putc('3');
+        __putc('\n');
+        s1->signal();
+        if(x < 5000)
+            thread_dispatch();
+        else
+            thread_exit();
+    }
+}
+
+void semTest2()
+{
+    s1 = new Semaphore(1);
+    s2 = new Semaphore(0);
+    s3 = new Semaphore(0);
+    Thread* t1 = new Thread(&f1_2, 0);
+    Thread* t2 = new Thread(&f2_2, 0);
+    Thread* t3 = new Thread(&f3_2, 0);
+    t3->start();
+    t2->start();
+    t1->start();
+
+    int y = 0;
+    while(true)
+    {
+        y++;
+        thread_dispatch();
+        if(y == 200000)
+            break;
+    }
+
+}
+
+void semaphoreTests()
+{
+    //semTest1();
+    semTest2();
+}
+
+void myTests()
+{
+    //memoryAllocationTests();
+    //threadTests();
+    //testQueue();
+    semaphoreTests();
+}
+
