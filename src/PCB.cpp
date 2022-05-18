@@ -43,6 +43,9 @@ void PCB::runner()
 
     //todo
     //da li ovde treba da se predje u kernel rezim mozda
+    //mozda moze da se iskoristi lock za neku promenljivu za PCB::running
+    //kako ne bi pristupalo vise niti tome, jer malo je
+    //nezgodna promena rezima ovde
     running->setState(PCB::FINISHED);
     Riscv::printString("PCB finished\n");
 

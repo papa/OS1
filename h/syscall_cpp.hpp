@@ -19,7 +19,7 @@ public:
     Thread(void (*body)(void*), void* args);
 
     //todo
-    //virtual ~Thread();
+    virtual ~Thread();
 
     void start();
 
@@ -36,7 +36,7 @@ protected:
     Thread();
 
     //todo
-    //virtual void run();
+    virtual void run() {}
 private:
     void (*f)(void*);
     void* args;
@@ -50,7 +50,7 @@ public:
 
     //todo
     //virtual pravi problem
-    //virtual ~Semaphore();
+    virtual ~Semaphore();
 
     void wait();
     void signal();

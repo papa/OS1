@@ -19,7 +19,8 @@ void sleepyRun(void *arg) {
     finished[sleep_time/10-1] = true;
 }
 
-void testSleeping() {
+void testSleeping()
+{
     const int sleepy_thread_count = 2;
     time_t sleep_times[sleepy_thread_count] = {10, 20};
     thread_t sleepyThread[sleepy_thread_count];

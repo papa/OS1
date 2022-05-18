@@ -67,6 +67,10 @@ void Thread::runner(Thread *t) {
     thread_dispatch();
 }
 
+Thread::~Thread() {
+
+}
+
 //Semaphore
 
 void Semaphore::wait() {
@@ -94,5 +98,9 @@ void Semaphore::signal() {
         //todo
         //what then
     }
+
+}
+
+Semaphore::~Semaphore() {
 
 }
