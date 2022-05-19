@@ -1,8 +1,8 @@
 //
-// Created by os on 5/16/22.
+// Created by os on 5/19/22.
 //
 
-#include "Threads_C_API_test.hpp"
+#include "Threads_CPP_API_test.hpp"
 
 static bool finishedA = false;
 static bool finishedB = false;
@@ -15,7 +15,7 @@ static uint64 fibonacci(uint64 n) {
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-void workerBodyA(void* arg) {
+void WorkerA::workerBodyA(void *arg) {
     for (uint64 i = 0; i < 10; i++) {
         printString("A: i="); printInt(i); printString("\n");
         for (uint64 j = 0; j < 10000; j++) {
@@ -27,7 +27,7 @@ void workerBodyA(void* arg) {
     finishedA = true;
 }
 
-void workerBodyB(void* arg) {
+void WorkerB::workerBodyB(void *arg) {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
         for (uint64 j = 0; j < 10000; j++) {
@@ -40,7 +40,7 @@ void workerBodyB(void* arg) {
     thread_dispatch();
 }
 
-void workerBodyC(void* arg) {
+void WorkerC::workerBodyC(void *arg) {
     uint8 i = 0;
     for (; i < 3; i++) {
         printString("C: i="); printInt(i); printString("\n");
@@ -62,12 +62,12 @@ void workerBodyC(void* arg) {
         printString("C: i="); printInt(i); printString("\n");
     }
 
-    printString("C finished!\n");
+    printString("A finished!\n");
     finishedC = true;
     thread_dispatch();
 }
 
-void workerBodyD(void* arg) {
+void WorkerD::workerBodyD(void* arg) {
     uint8 i = 10;
     for (; i < 13; i++) {
         printString("D: i="); printInt(i); printString("\n");
@@ -90,29 +90,28 @@ void workerBodyD(void* arg) {
 }
 
 
-void Threads_C_API_test() {
-    thread_t threads[4];
-    thread_create(&threads[0], workerBodyA, nullptr);
+void Threads_CPP_API_test() {
+    Thread* threads[4];
+
+    threads[0] = new WorkerA();
     printString("ThreadA created\n");
 
-    thread_create(&threads[1], workerBodyB, nullptr);
+    threads[1] = new WorkerB();
     printString("ThreadB created\n");
 
-    thread_create(&threads[2], workerBodyC, nullptr);
+    threads[2] = new WorkerC();
     printString("ThreadC created\n");
 
-    thread_create(&threads[3], workerBodyD, nullptr);
+    threads[3] = new WorkerD();
     printString("ThreadD created\n");
 
+    for(int i=0; i<4; i++) {
+        threads[i]->start();
+    }
+
     while (!(finishedA && finishedB && finishedC && finishedD)) {
-        //printString("Main thread\n");
-        thread_dispatch();
+        Thread::dispatch();
     }
 
-    for (auto &thread: threads) {
-        //todo
-        //in order to syscall.c to stay .c it gotta be converted
-        delete (PCB*)thread;
-    }
+    for (auto thread: threads) { delete thread; }
 }
-

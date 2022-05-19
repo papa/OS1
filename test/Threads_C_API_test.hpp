@@ -6,13 +6,6 @@
 
 #include "printing.hpp"
 
-extern bool finishedA;
-extern bool finishedB;
-extern bool finishedC;
-extern bool finishedD;
-
-uint64 fibonacci(uint64 n);
-
 void workerBodyA(void* arg);
 
 void workerBodyB(void* arg);

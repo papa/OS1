@@ -40,7 +40,7 @@ protected:
 private:
     void (*f)(void*);
     void* args;
-    static void runner(Thread* t);
+    static void runner(void* t);
 };
 
 class Semaphore

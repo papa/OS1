@@ -100,7 +100,7 @@ void Riscv::handleSupervisorTrap()
         case timerInterrupt:
 
             Riscv::mc_sip(Riscv::SIP_SSIP);
-            Riscv::printString("timerInterrupt\n");
+            //Riscv::printString("timerInterrupt\n");
 
             PCB::timeSliceCounter++;
 
@@ -195,6 +195,7 @@ void Riscv::handleSupervisorTrap()
                 uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::running->setState(PCB::EXITING);
+                PCB::running->setState(PCB::FINISHED);
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
             }

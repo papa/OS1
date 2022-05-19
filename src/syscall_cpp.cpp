@@ -54,21 +54,19 @@ Thread::Thread(void (*body)(void *), void *args) {
 
 Thread::Thread()
 {
+    f = &Thread::runner;
     myHandle = 0;
-
     args = (void*)this;
 }
 
-void Thread::runner(Thread *t) {
-    Riscv::popSppSpie();
-    //t->run();
-    //todo
-    //sta ovde treba da se uradi, mozda thread_exit()
-    thread_dispatch();
+void Thread::runner(void *t) {
+    Riscv::printString("Thread runner started...\n");
+    Thread* thr = (Thread*)t;
+    thr->run();
 }
 
 Thread::~Thread() {
-
+    mem_free(myHandle);
 }
 
 //Semaphore
@@ -102,5 +100,5 @@ void Semaphore::signal() {
 }
 
 Semaphore::~Semaphore() {
-
+    mem_free(myHandle);
 }

@@ -46,13 +46,13 @@ void PCB::runner()
     //mozda moze da se iskoristi lock za neku promenljivu za PCB::running
     //kako ne bi pristupalo vise niti tome, jer malo je
     //nezgodna promena rezima ovde
-    running->setState(PCB::FINISHED);
+    //running->setState(PCB::FINISHED);
     Riscv::printString("PCB finished\n");
 
     //todo
     //da li thread_exit ili dispatch
-    //thread_exit();
-    thread_dispatch();
+    thread_exit();
+    //thread_dispatch();
 }
 
 void PCB::dispatch()
