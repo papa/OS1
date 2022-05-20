@@ -93,10 +93,22 @@ void threadTest2()
     Riscv::disableInterrupts();
 }
 
+
+void threadTest3()
+{
+    Thread* t = new TestPeriodic(5);
+    t->start();
+    while(true)
+    {
+        thread_dispatch();
+    }
+}
+
 void threadTests()
 {
     //threadTest1();
-    threadTest2();
+    //threadTest2();
+    //threadTest3();
 }
 
 
@@ -416,8 +428,20 @@ void semaphoreTests()
 void myTests()
 {
     //memoryAllocationTests();
-    //threadTests();
+    threadTests();
     //testQueue();
-    semaphoreTests();
+    //semaphoreTests();
 }
 
+TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
+
+}
+
+void TestPeriodic::periodicActivation()
+{
+    for(int i = 0 ; i < 100;i++)
+    {
+        Riscv::printString("i : ");
+        Riscv::printInteger(i);
+    }
+}

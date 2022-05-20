@@ -26,9 +26,22 @@ void memoryAllocationTests();
 //thread tests
 void thread1Function();
 void thread2Function();
+
+void threadFunction3();
+
 void threadTest1();
 void threadTest2();
+void threadTest3();
+
 void threadTests();
+
+class TestPeriodic : public PeriodicThread
+{
+public:
+    TestPeriodic(time_t time);
+protected:
+    virtual void periodicActivation() override;
+};
 
 //semaphore tests
 void f1();
