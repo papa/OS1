@@ -21,7 +21,7 @@ public:
     //todo
     virtual ~Thread();
 
-    void start();
+    int start();
 
     static void dispatch();
 
@@ -32,10 +32,8 @@ public:
     //ovde je samo za potrebe testiranja
     PCB* myHandle;
 protected:
-    //todo
     Thread();
 
-    //todo
     virtual void run() {}
 private:
     void (*f)(void*);
@@ -48,15 +46,30 @@ class Semaphore
 public:
     Semaphore(unsigned init = 1);
 
-    //todo
-    //virtual pravi problem
     virtual ~Semaphore();
 
-    void wait();
-    void signal();
+    int wait();
+    int signal();
 
 private:
     KSemaphore* myHandle;
+};
+
+class Console
+{
+public:
+    static char getc();
+    static void putc(char);
+};
+
+class PeriodicThread : public Thread
+{
+protected:
+    PeriodicThread(time_t period);
+    virtual void periodicActivation() {};
+private:
+    static void runner(void* pt);
+    time_t time;
 };
 
 #endif //PROJECT_BASE_V1_0_SYSCALL_CPP_HPP

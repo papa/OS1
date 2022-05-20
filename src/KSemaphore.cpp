@@ -21,8 +21,8 @@ uint64 KSemaphore::wait() {
 uint64 KSemaphore::signal() {
     if(++val <= 0)
         unblock();
-    else
-        val = beginVal;
+    //else
+    //    val = beginVal;
 
     return 0;
 }

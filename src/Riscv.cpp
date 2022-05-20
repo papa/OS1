@@ -116,11 +116,11 @@ void Riscv::handleSupervisorTrap()
                 Riscv::w_sepc(sepc);
             }
 
-            break;
+            return;
 
         case hwInterrupt: // todo
 
-            Riscv::printString("Hardware interrupt...\n");
+            //Riscv::printString("Hardware interrupt...\n");
 
             break;
 

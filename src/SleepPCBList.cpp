@@ -42,7 +42,7 @@ void SleepPCBList::tryToWakePCBs()
     PCB* curr = sleepingPCBHead;
     if(curr == 0)
     {
-        Riscv::printString("No sleeping PCBs...\n");
+        //Riscv::printString("No sleeping PCBs...\n");
         return;
     }
     if(sleepingPCBHead->getTimeToSleep() == 1)

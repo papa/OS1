@@ -8,11 +8,11 @@ void main()
 {
     Riscv::initSystem();
 
-    //Riscv::enableInterrupts();
+    Riscv::enableInterrupts();
     //todo
     //go to unprivileged mode
     userMain();
-    //Riscv::disableInterrupts();
+    Riscv::disableInterrupts();
 
     //myTests();
 

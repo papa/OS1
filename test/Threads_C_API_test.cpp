@@ -18,8 +18,10 @@ static uint64 fibonacci(uint64 n) {
 void workerBodyA(void* arg) {
     for (uint64 i = 0; i < 10; i++) {
         printString("A: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 10000; j++) {
-            for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
+        for (uint64 j = 0; j < 500; j++) {
+            //Riscv::printString("A j : ");
+            //Riscv::printInteger(j);
+            for (uint64 k = 0; k < 3000; k++) { /* busy wait */ }
             thread_dispatch();
         }
     }
@@ -30,8 +32,10 @@ void workerBodyA(void* arg) {
 void workerBodyB(void* arg) {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 10000; j++) {
-            for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
+        for (uint64 j = 0; j < 500; j++) {
+            //Riscv::printString("B j : ");
+            //Riscv::printInteger(j);
+            for (uint64 k = 0; k < 3000; k++) { /* busy wait */ }
             thread_dispatch();
         }
     }
@@ -106,7 +110,7 @@ void Threads_C_API_test() {
 
     while (!(finishedA && finishedB && finishedC && finishedD)) {
         //printString("Main thread\n");
-        thread_dispatch();
+        //thread_dispatch();
     }
 
     for (auto &thread: threads) {

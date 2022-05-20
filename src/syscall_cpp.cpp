@@ -12,28 +12,21 @@ void * operator new(size_t size)
 
 void operator delete(void * p)
 {
-   mem_free(p);
+    mem_free(p);
 }
 
 //Thread
 
-//todo
-//diskusija u os1 proj sheet-u
-void Thread::start()
+int Thread::start()
 {
     if(myHandle == 0)
     {
-        int retval = thread_create((void**)&myHandle, f, args);
-        if(retval != 0)
-        {
-            //todo
-            //what then
-        }
+        return thread_create((void**)&myHandle, f, args);
     }
     else
     {
         //todo
-        //what
+        return -1;
     }
 
 }
@@ -71,13 +64,10 @@ Thread::~Thread() {
 
 //Semaphore
 
-void Semaphore::wait() {
-    int retval = sem_wait((void*)myHandle);
-    if(retval != 0)
-    {
-        //todo
-        //what then
-    }
+int Semaphore::wait() {
+    if(myHandle == 0)
+        return -1;
+    return sem_wait((void *) myHandle);
 }
 
 Semaphore::Semaphore(unsigned int init) {
@@ -86,19 +76,42 @@ Semaphore::Semaphore(unsigned int init) {
     {
         //todo
         //what then
+        myHandle = 0;
     }
 }
 
-void Semaphore::signal() {
-    int retval = sem_signal((void*)myHandle);
-    if(retval != 0)
-    {
-        //todo
-        //what then
-    }
-
+int Semaphore::signal() {
+    if(myHandle == 0)
+        return -1;
+    return sem_signal((void*)myHandle);
 }
 
 Semaphore::~Semaphore() {
     mem_free(myHandle);
+}
+
+//Console
+
+char Console::getc() {
+    return 0;
+}
+
+void Console::putc(char) {
+
+}
+
+//PeriodicThread
+
+PeriodicThread::PeriodicThread(time_t period) : Thread(&PeriodicThread::runner, (void*)this) {
+    this->time = period;
+}
+
+void PeriodicThread::runner(void* pt)
+{
+    PeriodicThread* pThread = (PeriodicThread*)pt;
+    while(true)
+    {
+        pThread->periodicActivation();
+        Thread::sleep(pThread->time);
+    }
 }
