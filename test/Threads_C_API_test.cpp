@@ -110,7 +110,7 @@ void Threads_C_API_test() {
 
     while (!(finishedA && finishedB && finishedC && finishedD)) {
         //printString("Main thread\n");
-        //thread_dispatch();
+        thread_dispatch();
     }
 
     for (auto &thread: threads) {

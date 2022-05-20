@@ -9,13 +9,20 @@
 #include "../h/syscall_cpp.hpp"
 #include "../h/SleepPCBList.hpp"
 
-//todo
-//sta sve treba da se odradi ovde
+//extern const uint64 CONSOLE_STATUS;
+//extern const uint64 CONSOLE_TX_DATA;
+//extern const uint64 CONSOLE_RX_DATA;
+
+void Riscv::getCharactersFromConsole()
+{
+    //uint64 addr = CONSOLE_STATUS;
+    //__asm__ volatile("ld a0, %0" : : "r"(addr));
+}
+
 void Riscv::initSystem()
 {
     w_stvec((uint64)&Riscv::supervisorTrap);
-    Thread* t = new Thread(0, 0);
-    t->start();
+    new PCB(0, 0,0,0);
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
 }

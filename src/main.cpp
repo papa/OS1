@@ -11,8 +11,8 @@ void main()
     Riscv::enableInterrupts();
     //todo
     //go to unprivileged mode
-    //userMain();
-    myTests();
+    userMain();
+    //myTests();
 
     Riscv::disableInterrupts();
 

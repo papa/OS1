@@ -73,6 +73,8 @@ public:
     static void supervisorTrap();
     static void handleSupervisorTrap();
 
+    static void getCharactersFromConsole();
+
     static const uint64 bntOne = 1UL << 63;;
     static const uint64 bntZero = 0UL;
     static const uint64 timerInterrupt = bntOne + 1UL;
@@ -159,4 +161,5 @@ inline uint64 Riscv::r_sstatus() {
 inline void Riscv::w_sstatus(uint64 sstatus) {
     __asm__ volatile("csrw sstatus, %0" : :"r"(sstatus));
 }
+
 #endif //PROJECT_BASE_V1_0_RISCV_HPP
