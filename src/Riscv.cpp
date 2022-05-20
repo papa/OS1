@@ -102,6 +102,10 @@ void Riscv::handleSupervisorTrap()
             Riscv::mc_sip(Riscv::SIP_SSIP);
             //Riscv::printString("timerInterrupt\n");
 
+            static uint64 total = 0;
+            total++;
+            Riscv::printInteger(total);
+
             PCB::timeSliceCounter++;
 
             SleepPCBList::tryToWakePCBs();

@@ -96,11 +96,11 @@ void threadTest2()
 
 void threadTest3()
 {
-    Thread* t = new TestPeriodic(5);
+    Thread* t = new TestPeriodic(50);
     t->start();
     while(true)
     {
-        thread_dispatch();
+        //thread_dispatch();
     }
 }
 
@@ -108,7 +108,7 @@ void threadTests()
 {
     //threadTest1();
     //threadTest2();
-    //threadTest3();
+    threadTest3();
 }
 
 
@@ -439,7 +439,7 @@ TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
 
 void TestPeriodic::periodicActivation()
 {
-    for(int i = 0 ; i < 100;i++)
+    for(int i = 0 ; i < 10000;i++)
     {
         Riscv::printString("i : ");
         Riscv::printInteger(i);
