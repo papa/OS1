@@ -51,3 +51,8 @@ char KConsole::getCharacter()
     KConsole::hasCharacters->wait();
     return getChar();
 }
+
+void KConsole::initialize() {
+    hasCharacters = new KSemaphore(0);
+
+}

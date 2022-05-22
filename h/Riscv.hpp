@@ -12,8 +12,12 @@ class Riscv
 private:
 
 public:
+    static void kernelMain();
+
     static void initSystem();
     static void endSystem();
+
+    static void userMainWrapper(void* p);
 
     static void enableInterrupts();
 

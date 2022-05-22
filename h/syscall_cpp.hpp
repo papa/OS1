@@ -30,7 +30,7 @@ public:
     //todo
     //vrati u private
     //ovde je samo za potrebe testiranja
-    PCB* myHandle;
+    thread_t myHandle;
 protected:
     Thread();
 
@@ -52,7 +52,7 @@ public:
     int signal();
 
 private:
-    KSemaphore* myHandle;
+    sem_t myHandle;
 };
 
 class Console

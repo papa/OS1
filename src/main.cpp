@@ -6,10 +6,13 @@
 
 void main()
 {
+
+    Riscv::kernelMain();
+    /*
     Riscv::initSystem();
 
     Riscv::enableInterrupts();
-    //todo
+    ///todo
     //go to unprivileged mode
     userMain();
     //myTests();
@@ -18,5 +21,5 @@ void main()
 
     Riscv::endSystem();
 
-    Riscv::printString("End...");
+    Riscv::printString("End...");*/
 }

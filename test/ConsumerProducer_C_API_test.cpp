@@ -41,15 +41,25 @@ void producer(void *arg) {
     Riscv::printString("Producer started...\n");
 
     int i = 0;
-    while (!threadEnd) {
+    while (!threadEnd)
+    {
+        Riscv::printString("producer i : ");
+        Riscv::printInteger(i);
+        Riscv::printString("put ");
+        Riscv::printInteger(data->id + '0');
         data->buffer->put(data->id + '0');
         i++;
 
         if (i % (10 * data->id) == 0) {
+            Riscv::printString("dispatching\n");
             thread_dispatch();
         }
+
+        if(i == 10)
+            threadEnd = 1;
     }
 
+    Riscv::printString("producer done\n");
     sem_signal(data->wait);
 }
 
@@ -60,21 +70,26 @@ void consumer(void *arg) {
 
     int i = 0;
     while (!threadEnd) {
+        Riscv::printString("consumer i : ");
+        Riscv::printInteger(i);
         int key = data->buffer->get();
         i++;
 
         //putc(key);
+        Riscv::printString("get ");
         Riscv::printInteger(key);
 
         if (i % (5 * data->id) == 0) {
+            Riscv::printString("dispatching\n");
             thread_dispatch();
         }
 
         if (i % 80 == 0) {
-            __putc('\n');
+           Riscv::printString("\n");
         }
     }
 
+    Riscv::printString("consumer done\n");
     sem_signal(data->wait);
 }
 
@@ -89,11 +104,11 @@ void producerConsumer_C_API()
 
     printString("Unesite broj proizvodjaca?\n");
     //getString(input, 30);
-    threadNum = 5;
+    threadNum = 1;
 
     printString("Unesite velicinu bafera?\n");
     //getString(input, 30);
-    n = 10;
+    n = 3;
 
     printString("Broj proizvodjaca "); printInt(threadNum);
     printString(" i velicina bafera "); printInt(n);

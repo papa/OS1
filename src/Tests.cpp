@@ -65,7 +65,7 @@ void threadTest1()
     Thread* t2 = new Thread(&thread2Function, 0);
     t2->start();
     Riscv::enableInterrupts();
-    while(t1->myHandle->getState() != PCB::FINISHED || t2->myHandle->getState() != PCB::FINISHED)
+    while(((PCB*)(t1->myHandle))->getState() != PCB::FINISHED || ((PCB*)(t2->myHandle))->getState()!= PCB::FINISHED)
     {
         Riscv::printString("Main thread\n");
         thread_dispatch();
@@ -86,7 +86,7 @@ void threadTest2()
 
     Riscv::enableInterrupts();
 
-    while(idleThread->myHandle->getState() != PCB::FINISHED);
+    while(((PCB*)idleThread->myHandle)->getState() != PCB::FINISHED);
 
     Riscv::printString("End...\n");
 

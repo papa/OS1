@@ -34,6 +34,8 @@ public:
 
     static const uint64 CONSOLE_GETC = 0x41;
     static const uint64 CONSOLE_PUTC = 0x42;
+
+    static void initialize();
 };
 
 #endif //PROJECT_BASE_V1_0_KCONSOLE_HPP

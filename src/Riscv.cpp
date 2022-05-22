@@ -8,6 +8,8 @@
 #include "../lib/console.h"
 #include "../h/syscall_cpp.hpp"
 #include "../h/SleepPCBList.hpp"
+#include "../h/KConsole.hpp"
+#include "../test/userMain.hpp"
 
 //extern const uint64 CONSOLE_STATUS;
 //extern const uint64 CONSOLE_TX_DATA;
@@ -22,9 +24,8 @@ void Riscv::getCharactersFromConsole()
 void Riscv::initSystem()
 {
     w_stvec((uint64)&Riscv::supervisorTrap);
-    new PCB(0, 0,0,0);
-    PCB::running = Scheduler::get();
-    PCB::running->setState(PCB::RUNNING);
+    PCB::initialize();
+    KConsole::initialize();
 }
 
 void Riscv::endSystem() {
@@ -111,7 +112,7 @@ void Riscv::handleSupervisorTrap()
 
             static uint64 total = 0;
             total++;
-            Riscv::printInteger(total);
+            //Riscv::printInteger(total);
 
             PCB::timeSliceCounter++;
 
@@ -277,4 +278,33 @@ void Riscv::handleSupervisorTrap()
     }
 
     console_handler();
+}
+
+void Riscv::kernelMain()
+{
+    initSystem();
+
+    //enableInterrupts();
+    //todo
+    //go to unprivileged mode
+
+    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+
+    while(userPCB->getState() != PCB::FINISHED)
+    {
+        //Riscv::printString("main\n");
+        thread_dispatch();
+    }
+
+    //myTests();
+
+    //disableInterrupts();
+
+    endSystem();
+
+    Riscv::printString("End...");
+}
+
+void Riscv::userMainWrapper(void* ) {
+    userMain();
 }

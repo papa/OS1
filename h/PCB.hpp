@@ -41,6 +41,10 @@ public:
     static const uint64 THREAD_DISPATCH = 0x13;
     static const uint64 TIME_SLEEP = 0x31;
 
+    bool systemThread = false;
+
+    static void initialize();
+
     //next PCB in sleeping queue
     //or suspended queue
     PCB* nextPCB;

@@ -79,3 +79,11 @@ void PCB::operator delete(void *p) {
 PCB::~PCB() {
     kfree(beginSP);
 }
+
+void PCB::initialize()
+{
+    PCB* mainSystem = new PCB(0, 0, 0, 0);
+    mainSystem->systemThread = true;
+    PCB::running = Scheduler::get();
+    PCB::running->setState(PCB::RUNNING);
+}
