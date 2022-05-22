@@ -108,7 +108,7 @@ void producerConsumer_C_API()
 
     printString("Unesite velicinu bafera?\n");
     //getString(input, 30);
-    n = 3;
+    n = 1;
 
     printString("Broj proizvodjaca "); printInt(threadNum);
     printString(" i velicina bafera "); printInt(n);

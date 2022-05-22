@@ -284,57 +284,57 @@ void memoryAllocationTests()
 
 //semaphore tests
 static Semaphore* mutex;
+static Semaphore* s11, *s22;
+
+void foo()
+{
+    s11->wait();
+    Riscv::printString("foo exec\n");
+    s22->signal();
+}
+
+void foo2()
+{
+    s22->wait();
+    Riscv::printString("foo2 exec\n");
+    //s11->signal();
+}
+
 
 void f1(void* p)
 {
     Riscv::printString("f1 started\n");
-    int x = 0;
-    while(true)
+    for(int br = 0;br < 2;br++)
     {
-        x++;
-        mutex->wait();
-        //__putc('1');
-        //__putc('\n');
-        mutex->signal();
-        if(x < 50000)
-            thread_dispatch();
-        else
-            thread_exit();
+        //for (int i = 0; i < 2; i++)
+        foo();
     }
 }
 
 void f2(void* p)
 {
     Riscv::printString("f2 started\n");
-    int x = 0;
-    while(true)
+    for(int br = 0;br < 1;br++)
     {
-        mutex->wait();
-        //__putc('2');
-        //__putc('\n');
-        mutex->signal();
-        if(x < 50000)
-            thread_dispatch();
-        else
-            thread_exit();
+        foo2();
     }
 }
 
 void semTest1()
 {
     mutex = new Semaphore(1);
-    Thread* t1 = new Thread(&f1, 0);
+    s11 = new Semaphore(1);
+    s22 = new Semaphore(0);
+    //Thread* t1 = new Thread(&f1, 0);
     Thread* t2 = new Thread(&f2, 0);
-    t1->start();
     t2->start();
+    //t1->start();
 
-    int y = 0;
+    thread_dispatch();
+
     while(true)
     {
-        y++;
-        thread_dispatch();
-        if(y == 200000)
-            break;
+        //thread_dispatch();
     }
 }
 
@@ -421,16 +421,16 @@ void semTest2()
 
 void semaphoreTests()
 {
-    //semTest1();
-    semTest2();
+    semTest1();
+    //semTest2();
 }
 
 void myTests()
 {
     //memoryAllocationTests();
-    threadTests();
+    //threadTests();
     //testQueue();
-    //semaphoreTests();
+    semaphoreTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {

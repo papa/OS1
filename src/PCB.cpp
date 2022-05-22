@@ -39,6 +39,9 @@ void PCB::runner()
     Riscv::printString("Runner started...\n");
     Riscv::popSppSpie();
 
+    //for(uint64 i = 0 ;i < 10000000000UL;i++) {}
+    //Riscv::printString("ttttttt\n");
+
     running->body(running->args);
 
     //todo

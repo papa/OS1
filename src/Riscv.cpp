@@ -9,6 +9,7 @@
 #include "../h/syscall_cpp.hpp"
 #include "../h/SleepPCBList.hpp"
 #include "../h/KConsole.hpp"
+#include "../h/Tests.hpp"
 #include "../test/userMain.hpp"
 
 //extern const uint64 CONSOLE_STATUS;
@@ -112,7 +113,7 @@ void Riscv::handleSupervisorTrap()
 
             static uint64 total = 0;
             total++;
-            //Riscv::printInteger(total);
+            Riscv::printInteger(total);
 
             PCB::timeSliceCounter++;
 
@@ -246,9 +247,11 @@ void Riscv::handleSupervisorTrap()
             {
                 //todo
                 //negativna povratna vrednost sta i kako
+                uint64 sstatus = Riscv::r_sstatus();
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
                 uint64 retval = kSem->wait();
+                Riscv::w_sstatus(sstatus);
                 __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
             else if(operation == KSemaphore::SEM_SIGNAL)
