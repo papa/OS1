@@ -13,13 +13,14 @@ struct thread_data {
 };
 
 volatile int threadEnd = 0;
+volatile int cntGlobal = 0;
 
 void producerKeyboard(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
 
     int key;
     int i = 0;
-    while ((key = __getc()) != 0x1b) {
+    while ((key = getc()) != 0x1b) {
         data->buffer->put(key);
         i++;
 
@@ -38,40 +39,37 @@ void producerKeyboard(void *arg) {
 void producer(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
 
-    Riscv::printString("Producer started...\n");
+    Riscv::printString("producer started\n");
 
     int i = 0;
-    while (!threadEnd)
-    {
-        Riscv::printString("producer i : ");
-        Riscv::printInteger(i);
-        Riscv::printString("put ");
-        Riscv::printInteger(data->id + '0');
+    while (!threadEnd) {
+
         data->buffer->put(data->id + '0');
         i++;
+        cntGlobal++;
+
+        Riscv::printString("put ");
+        Riscv::printInteger(data->id + '0');
 
         if (i % (10 * data->id) == 0) {
-            Riscv::printString("dispatching\n");
+            Riscv::printString("dispatched\n");
             thread_dispatch();
+            Riscv::printString("returned from dispatch\n");
         }
+        Riscv::printInteger(cntGlobal);
 
-        if(i == 10)
+        if(cntGlobal == 15)
             threadEnd = 1;
     }
-
-    Riscv::printString("producer done\n");
+    Riscv::printString("producer finished\n");
     sem_signal(data->wait);
 }
 
 void consumer(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
-
-    Riscv::printString("Consumer started...\n");
-
+    Riscv::printString("consumer started\n");
     int i = 0;
     while (!threadEnd) {
-        Riscv::printString("consumer i : ");
-        Riscv::printInteger(i);
         int key = data->buffer->get();
         i++;
 
@@ -80,34 +78,31 @@ void consumer(void *arg) {
         Riscv::printInteger(key);
 
         if (i % (5 * data->id) == 0) {
-            Riscv::printString("dispatching\n");
             thread_dispatch();
         }
 
         if (i % 80 == 0) {
-           Riscv::printString("\n");
+            //putc('\n');
+            Riscv::printString("\n");
         }
     }
-
-    Riscv::printString("consumer done\n");
+    Riscv::printString("consumer finished\n");
     sem_signal(data->wait);
 }
 
-//todo
-//threadNuma hardCoded, timer enables itself as soon as
-//code gets into getString
-//isto za bafer
-void producerConsumer_C_API()
-{
+void producerConsumer_C_API() {
     //char input[30];
     int n, threadNum;
 
     printString("Unesite broj proizvodjaca?\n");
     //getString(input, 30);
-    threadNum = 1;
+    //threadNum = stringToInt(input);
+    threadNum = 3;
 
     printString("Unesite velicinu bafera?\n");
     //getString(input, 30);
+    //n = stringToInt(input);
+
     n = 1;
 
     printString("Broj proizvodjaca "); printInt(threadNum);
@@ -138,8 +133,9 @@ void producerConsumer_C_API()
         //              i > 0 ? producer : producerKeyboard,
         //              data + i);
 
-        thread_create(threads + i, producer, data + i);
-
+        thread_create(threads + i,
+                      producer ,
+                      data + i);
     }
 
     thread_dispatch();

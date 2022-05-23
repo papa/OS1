@@ -33,29 +33,16 @@ void PCB::start()
     Scheduler::put(this);
 }
 
-//todo
 void PCB::runner()
 {
     Riscv::printString("Runner started...\n");
     Riscv::popSppSpie();
 
-    //for(uint64 i = 0 ;i < 10000000000UL;i++) {}
-    //Riscv::printString("ttttttt\n");
-
     running->body(running->args);
 
-    //todo
-    //da li ovde treba da se predje u kernel rezim mozda
-    //mozda moze da se iskoristi lock za neku promenljivu za PCB::running
-    //kako ne bi pristupalo vise niti tome, jer malo je
-    //nezgodna promena rezima ovde
-    //running->setState(PCB::FINISHED);
-    Riscv::printString("PCB finished\n");
+    //Riscv::printString("PCB finished\n");
 
-    //todo
-    //da li thread_exit ili dispatch
     thread_exit();
-    //thread_dispatch();
 }
 
 void PCB::dispatch()
@@ -67,6 +54,12 @@ void PCB::dispatch()
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
     //Riscv::printString("Switching context...\n");
+
+    if(PCB::running->systemThread)
+        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    else
+        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+
 
     PCB::contextSwitch(&old->context, &running->context);
 }

@@ -7,6 +7,7 @@
 
 #include "MemoryAllocator.hpp"
 #include "KSemaphore.hpp"
+#include "../lib/hw.h"
 
 class KConsole
 {
@@ -20,22 +21,34 @@ private:
         char data;
     }Elem;
 
-    static Elem* head;
-    static Elem* tail;
+    static Elem* headInput;
+    static Elem* tailInput;
+    static Elem* headOutput;
+    static Elem* tailOutput;
 
-    static KSemaphore* hasCharacters;
+    static KSemaphore* hasCharactersInput;
+    static KSemaphore* hasCharactersOutput;
 
-    static void putChar(char c);
-    static char getChar();
+    static void putChar(char c,Elem*& head, Elem*& tail);
+    static char getChar(Elem*& head, Elem*& tail);
 
 public:
-    static void putCharacter(char c);
-    static char getCharacter();
+    static void putCharacterInput(char c);
+    static char getCharacterInput();
 
-    static const uint64 CONSOLE_GETC = 0x41;
-    static const uint64 CONSOLE_PUTC = 0x42;
+    static void putCharacterOutput(char c);
+    static char getCharacterOutput();
 
     static void initialize();
+
+    static void getCharactersFromConsole();
+
+    static void sendCharactersToConsole();
+
+    static const uint64 STATUS_READ_MASK = 1UL;
+    static const uint64 STATUS_WRITE_MASK = 1UL << 5UL;
+    static const uint64 CONSOLE_GETC = 0x41;
+    static const uint64 CONSOLE_PUTC = 0x42;
 };
 
 #endif //PROJECT_BASE_V1_0_KCONSOLE_HPP

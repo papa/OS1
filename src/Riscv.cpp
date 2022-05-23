@@ -12,16 +12,6 @@
 #include "../h/Tests.hpp"
 #include "../test/userMain.hpp"
 
-//extern const uint64 CONSOLE_STATUS;
-//extern const uint64 CONSOLE_TX_DATA;
-//extern const uint64 CONSOLE_RX_DATA;
-
-void Riscv::getCharactersFromConsole()
-{
-    //uint64 addr = CONSOLE_STATUS;
-    //__asm__ volatile("ld a0, %0" : : "r"(addr));
-}
-
 void Riscv::initSystem()
 {
     w_stvec((uint64)&Riscv::supervisorTrap);
@@ -134,7 +124,7 @@ void Riscv::handleSupervisorTrap()
         case hwInterrupt: // todo
 
             //Riscv::printString("Hardware interrupt...\n");
-
+            console_handler();
             break;
 
         case operationInterrupt: // todo
@@ -269,18 +259,22 @@ void Riscv::handleSupervisorTrap()
                 //negativna povratna vrednost sta i kako
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
-
                 delete kSem;
-
                 __asm__ volatile("li a0, 0");
+            }
+            else if(operation == KConsole::CONSOLE_GETC)
+            {
+                //todo
+            }
+            else if(operation == KConsole::CONSOLE_PUTC)
+            {
+                //todo
             }
 
             Riscv::w_sepc(sepc);
 
             return;
     }
-
-    console_handler();
 }
 
 void Riscv::kernelMain()
@@ -288,14 +282,11 @@ void Riscv::kernelMain()
     initSystem();
 
     //enableInterrupts();
-    //todo
-    //go to unprivileged mode
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
 
     while(userPCB->getState() != PCB::FINISHED)
     {
-        //Riscv::printString("main\n");
         thread_dispatch();
     }
 
