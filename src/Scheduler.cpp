@@ -56,3 +56,13 @@ PCB *Scheduler::get()
     retval->nextPCB = 0;
     return retval;
 }
+
+void Scheduler::print() {
+    Riscv::printString("Scheduler print\n");
+    PCB* curr = schedulerPCBHead;
+    while(curr != 0)
+    {
+        Riscv::printInteger((uint64)curr);
+        curr = curr->nextPCB;
+    }
+}

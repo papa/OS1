@@ -22,6 +22,8 @@ public:
 
     static int getSize();
 
+    static void print();
+
 private:
     static PCB* schedulerPCBHead;
     static PCB* schedulerPCBTail;

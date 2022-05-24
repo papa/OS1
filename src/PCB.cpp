@@ -44,6 +44,8 @@ void PCB::runner()
 
 void PCB::dispatch()
 {
+    //Scheduler::print();
+    //Riscv::printInteger(Scheduler::getSize());
     //Riscv::printString("Dispatch called...\n");
     PCB* old = running;
     if(old->getState() == PCB::RUNNING)
