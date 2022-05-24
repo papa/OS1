@@ -272,7 +272,7 @@ void memoryAllocationTests()
     //stressTesting();
     //mallocTest();
     //mallocEverything();
-    //mallocGapFillTest();
+    mallocGapFillTest();
 }
 
 
@@ -284,10 +284,9 @@ void semaphoreTests()
 
 void myTests()
 {
-    //memoryAllocationTests();
+    memoryAllocationTests();
     //threadTests();
-    //testQueue();
-    semaphoreTests();
+    //semaphoreTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
@@ -468,7 +467,8 @@ void consumerA(void *arg)
 
 void producerA(void *arg)
 {
-    while(tail!=10) {
+    while(tail!=10)
+    {
         sem_wait(spaceAvailable);
         buffer[tail] = string[tail];
         tail++;

@@ -49,6 +49,11 @@ public:
     //or suspended queue
     PCB* nextPCB;
 
+    static void threadCreateHandler();
+    static void threadExitHandler();
+    static void threadDispatchHandler();
+    static void threadSleepHandler();
+
 private:
 
     uint64 timeSlice;
@@ -67,6 +72,7 @@ private:
     static void runner();
 
     Body body;
+
     void* args;
 
     void* beginSP;

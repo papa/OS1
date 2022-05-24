@@ -111,6 +111,7 @@ void Riscv::handleSupervisorTrap()
 
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
             {
+                //Riscv::printString("Should dispatch...\n");
                 volatile uint64 sepc = Riscv::r_sepc();
                 volatile uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
@@ -193,7 +194,6 @@ void Riscv::handleSupervisorTrap()
                 Riscv::printString("Exiting thread...\n");
                 volatile uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
-                PCB::running->setState(PCB::EXITING);
                 PCB::running->setState(PCB::FINISHED);
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
@@ -272,14 +272,14 @@ void Riscv::kernelMain()
 
     enableInterrupts();
 
-    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
 
-    //while(userPCB->getState() != PCB::FINISHED)
-    //{
-    //    thread_dispatch();
-    //}
+    while(userPCB->getState() != PCB::FINISHED)
+    {
+        thread_dispatch();
+    }
 
-    myTests();
+    //myTests();
 
     disableInterrupts();
 

@@ -4,6 +4,7 @@
 
 #include "../h/PCB.hpp"
 #include "../h/syscall_c.h"
+#include "../h/SleepPCBList.hpp"
 
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
@@ -83,6 +84,45 @@ void PCB::initialize()
     PCB::running->setState(PCB::RUNNING);
 }
 
-bool PCB::isFinished() {
+bool PCB::isFinished()
+{
     return state == PCB::FINISHED;
+}
+
+void PCB::threadCreateHandler()
+{
+
+}
+
+void PCB::threadExitHandler()
+{
+    Riscv::printString("Exiting thread...\n");
+    volatile uint64 sstatus = Riscv::r_sstatus();
+    PCB::timeSliceCounter = 0;
+    PCB::running->setState(PCB::EXITING);
+    PCB::running->setState(PCB::FINISHED);
+    PCB::dispatch();
+    Riscv::w_sstatus(sstatus);
+    __asm__ volatile("li a0, 0");
+}
+
+void PCB::threadDispatchHandler()
+{
+    volatile uint64 sstatus = Riscv::r_sstatus();
+    PCB::timeSliceCounter = 0;
+    PCB::dispatch();
+    Riscv::w_sstatus(sstatus);
+}
+
+void PCB::threadSleepHandler()
+{
+    uint64 time;
+    __asm__ volatile("mv %0, a1" : "=r"(time));
+    volatile uint64 sstatus = Riscv::r_sstatus();
+    PCB::timeSliceCounter = 0;
+    PCB::running->setTimeToSleep(time);
+    SleepPCBList::insertSleepingPCB();
+    PCB::dispatch();
+    Riscv::w_sstatus(sstatus);
+    __asm__ volatile("li a0, 0x0");
 }

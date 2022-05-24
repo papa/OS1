@@ -37,6 +37,10 @@ public:
 
     static void insertNewFreeSegment(void *addr, size_t size);
     static uint64 tryToFreeSegment(void *addr);
+
+    static void memAllocHandler();
+    static void memFreeHandler();
+
 };
 
 void* kmalloc(size_t size);

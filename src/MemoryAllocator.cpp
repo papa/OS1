@@ -177,6 +177,23 @@ uint64 MemoryAllocator::tryToFreeSegment(void* addr)
         return 1;
 }
 
+void MemoryAllocator::memAllocHandler()
+{
+    size_t size;
+    __asm__ volatile("mv %0, a1" : "=r"(size));
+    size*=MEM_BLOCK_SIZE;
+    void* allocatedAddr = kmalloc(size);
+    __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
+}
+
+void MemoryAllocator::memFreeHandler()
+{
+    uint64 addr = 0;
+    __asm__ volatile("mv %0, a1" : "=r"(addr));
+    uint64 retval = kfree((void*)addr);
+    __asm__ volatile("mv a0,%0" : :"r"(retval));
+}
+
 void* kmalloc(size_t size)
 {
     return MemoryAllocator::mem_alloc(size);

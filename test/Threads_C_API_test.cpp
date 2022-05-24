@@ -10,10 +10,6 @@ static bool finishedC = false;
 static bool finishedD = false;
 
 static uint64 fibonacci(uint64 n) {
-    //Riscv::printString("Recursion...\n");
-    //Riscv::printInteger(n);
-    Riscv::printString("calculating...\n");
-    n = 0;
     if (n == 0 || n == 1) {return n; }
     if (n % 10 == 0) { thread_dispatch(); }
     return fibonacci(n - 1) + fibonacci(n - 2);
@@ -33,14 +29,15 @@ void workerBodyA(void* arg) {
     finishedA = true;
 }
 
-void workerBodyB(void* arg) {
+void workerBodyB(void* arg)
+{
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
         for (uint64 j = 0; j < 10000; j++) {
             //Riscv::printString("B j : ");
             //Riscv::printInteger(j);
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
-            //thread_dispatch();
+            thread_dispatch();
         }
     }
     Riscv::printString("B finished!\n");
@@ -98,7 +95,8 @@ void workerBodyD(void* arg) {
 }
 
 
-void Threads_C_API_test() {
+void Threads_C_API_test()
+{
     thread_t threads[4];
     thread_create(&threads[0], workerBodyA, nullptr);
     printString("ThreadA created\n");
@@ -114,7 +112,7 @@ void Threads_C_API_test() {
 
     while (!(finishedA && finishedB && finishedC && finishedD)) {
         //printString("Main thread\n");
-        thread_dispatch();
+        //thread_dispatch();
     }
 
     for (auto &thread: threads) {
