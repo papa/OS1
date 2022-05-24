@@ -9,6 +9,7 @@
 
 class SleepPCBList
 {
+private:
     static PCB* sleepingPCBHead;
 public:
     static void insertSleepingPCB();

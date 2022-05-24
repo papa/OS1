@@ -6,7 +6,6 @@
 #include "../h/syscall_c.h"
 
 PCB* PCB::running = 0;
-PCB* PCB::exitingPCB = 0;
 uint64 PCB::timeSliceCounter = 0;
 
 PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
@@ -39,8 +38,6 @@ void PCB::runner()
     Riscv::popSppSpie();
 
     running->body(running->args);
-
-    //Riscv::printString("PCB finished\n");
 
     thread_exit();
 }

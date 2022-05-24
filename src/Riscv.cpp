@@ -19,9 +19,9 @@ void Riscv::initSystem()
     KConsole::initialize();
 }
 
-void Riscv::endSystem() {
+void Riscv::endSystem()
+{
     //todo
-    //da li treba jos nesto da se ocisti
     Riscv::disableInterrupts();
 }
 
@@ -35,7 +35,8 @@ void Riscv::disableInterrupts()
     mc_sstatus(Riscv::SSTATUS_SIE);
 }
 
-void Riscv::popSppSpie() {
+void Riscv::popSppSpie()
+{
     __asm__ volatile ("csrw sepc, ra");
     __asm__ volatile ("sret");
 }
@@ -100,7 +101,6 @@ void Riscv::handleSupervisorTrap()
 
             Riscv::mc_sip(Riscv::SIP_SSIP);
             //Riscv::printString("timerInterrupt\n");
-
             static uint64 total = 0;
             total++;
             Riscv::printInteger(total);
@@ -190,17 +190,14 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == PCB::THREAD_EXIT)
             {
-                if(PCB::running == 0)
-                {
-                    __asm__ volatile("li a0, 0xffffffffffffffff");
-                    return;
-                }
+                Riscv::printString("Exiting thread...\n");
                 uint64 sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::running->setState(PCB::EXITING);
                 PCB::running->setState(PCB::FINISHED);
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
+                __asm__ volatile("li a0, 0");
             }
             else if(operation == PCB::TIME_SLEEP)
             {
@@ -212,8 +209,6 @@ void Riscv::handleSupervisorTrap()
                 SleepPCBList::insertSleepingPCB();
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
-                //todo
-                //kad treba vratiti kod greske
                 __asm__ volatile("li a0, 0x0");
             }
             else if(operation == KSemaphore::SEM_OPEN)
@@ -235,8 +230,6 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == KSemaphore::SEM_WAIT)
             {
-                //todo
-                //negativna povratna vrednost sta i kako
                 uint64 sstatus = Riscv::r_sstatus();
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
@@ -246,8 +239,6 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == KSemaphore::SEM_SIGNAL)
             {
-                //todo
-                //negativna povratna vrednost sta i kako
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
                 uint64 retval = kSem->signal();
@@ -255,8 +246,6 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == KSemaphore::SEM_CLOSE)
             {
-                //todo
-                //negativna povratna vrednost sta i kako
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
                 delete kSem;

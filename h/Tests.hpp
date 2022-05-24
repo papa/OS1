@@ -56,7 +56,6 @@ void semTest2();
 
 void semaphoreTests();
 
-
 void idle(void* args);
 
 void myTests();

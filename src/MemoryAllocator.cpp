@@ -24,8 +24,6 @@ void MemoryAllocator::initMemory()
     headAllocated = 0;
     headFree = (BlockHeader*)HEAP_START_ADDR;
     headFree->next = 0;
-    //todo
-    //+-1
     headFree->size = (size_t)((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR + 1 - sizeof(BlockHeader));
 }
 

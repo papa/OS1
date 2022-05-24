@@ -297,17 +297,19 @@ void foo2()
 {
     s22->wait();
     Riscv::printString("foo2 exec\n");
-    //s11->signal();
+    s11->signal();
 }
 
 
 void f1(void* p)
 {
     Riscv::printString("f1 started\n");
-    for(int br = 0;br < 2;br++)
+    for(int br = 0;br < 10;br++)
     {
-        //for (int i = 0; i < 2; i++)
-        foo();
+        for (int i = 0; i < 5; i++)
+            foo();
+        if(br == 5)
+            thread_dispatch();
     }
 }
 
@@ -316,7 +318,10 @@ void f2(void* p)
     Riscv::printString("f2 started\n");
     for(int br = 0;br < 1;br++)
     {
-        foo2();
+        for(int j = 0; j < 10;j++)
+            foo2();
+        if(br == 6)
+            thread_dispatch();
     }
 }
 
@@ -325,16 +330,16 @@ void semTest1()
     mutex = new Semaphore(1);
     s11 = new Semaphore(1);
     s22 = new Semaphore(0);
-    //Thread* t1 = new Thread(&f1, 0);
+    Thread* t1 = new Thread(&f1, 0);
     Thread* t2 = new Thread(&f2, 0);
     t2->start();
-    //t1->start();
+    t1->start();
 
     thread_dispatch();
 
     while(true)
     {
-        //thread_dispatch();
+        thread_dispatch();
     }
 }
 
@@ -430,7 +435,7 @@ void myTests()
     //memoryAllocationTests();
     //threadTests();
     //testQueue();
-    semaphoreTests();
+    //semaphoreTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {

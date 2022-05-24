@@ -22,7 +22,6 @@ public:
     static void sleep(time_t);
 
     static PCB* running;
-    static PCB* exitingPCB;
 
     static uint64 timeSliceCounter;
     uint64 getTimeSlice() { return timeSlice;}
@@ -49,10 +48,6 @@ public:
     //or suspended queue
     PCB* nextPCB;
 
-protected:
-    //todo
-    //virtual pravi probleme
-    //virtual void run() {}
 private:
 
     uint64 timeSlice;
@@ -78,9 +73,6 @@ private:
     State state;
 
     Context context;
-
-    //todo need this maybe
-    size_t stackSize;
 };
 
 

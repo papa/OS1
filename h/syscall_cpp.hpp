@@ -18,7 +18,6 @@ class Thread
 public:
     Thread(void (*body)(void*), void* args);
 
-    //todo
     virtual ~Thread();
 
     int start();

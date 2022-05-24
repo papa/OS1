@@ -22,12 +22,9 @@ public:
 
     static int getSize();
 
+private:
     static PCB* schedulerPCBHead;
     static PCB* schedulerPCBTail;
-
-private:
-    //todo maybe need this
-    Queue queuePCB;
 };
 
 #endif //PROJECT_BASE_V1_0_SCHEDULER_HPP
