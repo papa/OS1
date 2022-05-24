@@ -14,6 +14,14 @@ class Test
 public:
     uint64 a;
 };
+struct object{
+    int a,b,c,d,e,f,g,h,i,j,k;
+};
+struct node{
+    object o1, o2, o3;
+    char id;
+    node *next, *prev;
+};
 
 //memory (de)allocation tests
 void mallocFree();
@@ -21,6 +29,9 @@ void bigMalloc();
 void lotOfSmallMallocs();
 void badFree();
 void stressTesting();
+void mallocTest();
+void mallocEverything();
+void mallocGapFillTest();
 void memoryAllocationTests();
 
 //thread tests

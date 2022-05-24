@@ -270,7 +270,7 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    //enableInterrupts();
+    enableInterrupts();
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
 
@@ -281,7 +281,7 @@ void Riscv::kernelMain()
 
     //myTests();
 
-    //disableInterrupts();
+    disableInterrupts();
 
     endSystem();
 

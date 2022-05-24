@@ -9,12 +9,14 @@
 
 class MemoryAllocator
 {
-private:
+public:
     typedef struct BlockHeader
     {
         size_t size;
         struct BlockHeader *next;
     } BlockHeader;
+private:
+
 
     static BlockHeader* headFree;
     static BlockHeader* headAllocated;

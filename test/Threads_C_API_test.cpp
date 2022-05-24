@@ -18,11 +18,11 @@ static uint64 fibonacci(uint64 n) {
 void workerBodyA(void* arg) {
     for (uint64 i = 0; i < 10; i++) {
         printString("A: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 500; j++) {
+        for (uint64 j = 0; j < 1000; j++) {
             //Riscv::printString("A j : ");
             //Riscv::printInteger(j);
-            for (uint64 k = 0; k < 3000; k++) { /* busy wait */ }
-            thread_dispatch();
+            for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
+            //thread_dispatch();
         }
     }
     printString("A finished!\n");
@@ -32,11 +32,11 @@ void workerBodyA(void* arg) {
 void workerBodyB(void* arg) {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 500; j++) {
+        for (uint64 j = 0; j < 1000; j++) {
             //Riscv::printString("B j : ");
             //Riscv::printInteger(j);
-            for (uint64 k = 0; k < 3000; k++) { /* busy wait */ }
-            thread_dispatch();
+            for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
+            //thread_dispatch();
         }
     }
     printString("B finished!\n");
@@ -109,7 +109,7 @@ void Threads_C_API_test() {
     printString("ThreadD created\n");
 
     while (!(finishedA && finishedB && finishedC && finishedD)) {
-        //printString("Main thread\n");
+        printString("Main thread\n");
         thread_dispatch();
     }
 

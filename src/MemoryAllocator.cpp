@@ -3,16 +3,19 @@
 //
 
 #include "../h/MemoryAllocator.hpp"
+#include "../h/Riscv.hpp"
 
 MemoryAllocator::BlockHeader* MemoryAllocator::headAllocated = 0;
 MemoryAllocator::BlockHeader* MemoryAllocator::headFree = 0;
 int MemoryAllocator::memoryInitiliaized = 0;
 
-void *MemoryAllocator::mem_alloc(size_t size) {
+void *MemoryAllocator::mem_alloc(size_t size)
+{
     return tryToAllocateFragment(size);
 }
 
-uint64 MemoryAllocator::mem_free(void * addr) {
+uint64 MemoryAllocator::mem_free(void * addr)
+{
     return tryToFreeSegment(addr);
 }
 
@@ -27,8 +30,8 @@ void MemoryAllocator::initMemory()
     headFree->size = (size_t)((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR + 1 - sizeof(BlockHeader));
 }
 
-void MemoryAllocator::insertNewAllocatedFragment(void *addr, size_t size) {
-
+void MemoryAllocator::insertNewAllocatedFragment(void *addr, size_t size)
+{
     initMemory();
     BlockHeader* prev = 0;
     BlockHeader* curr =  headAllocated;
@@ -52,7 +55,8 @@ void MemoryAllocator::insertNewAllocatedFragment(void *addr, size_t size) {
         prev->next = newAllocated;
 }
 
-void* MemoryAllocator::tryToAllocateFragment(size_t size) {
+void* MemoryAllocator::tryToAllocateFragment(size_t size)
+{
     initMemory();
     uint64 retval = 0;
     BlockHeader* prev = 0;
@@ -129,16 +133,16 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
     else
         prev->next = newSegment;
 
-    //todo
-    //test it
     if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
     {
+        //Riscv::printString("Merged front\n");
         newSegment->size += newSegment->next->size + sizeof(BlockHeader);
         newSegment->next = newSegment->next->next;
     }
 
     if(prev != 0 && (char*)newSegment == (char*)prev + prev->size + sizeof(BlockHeader))
     {
+        //Riscv::printString("Merged back\n");
         prev->size+=newSegment->size + sizeof(BlockHeader);
         prev->next = newSegment->next;
     }
