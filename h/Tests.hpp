@@ -55,15 +55,11 @@ protected:
 };
 
 //semaphore tests
-void f1();
-void f2();
+void consumerA(void *arg);
 
-void f1_2(void* p);
-void f2_2(void* p);
-void f3_2(void* p);
+void producerA(void *arg);
 
 void semTest1();
-void semTest2();
 
 void semaphoreTests();
 

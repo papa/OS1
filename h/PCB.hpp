@@ -44,6 +44,7 @@ public:
 
     static void initialize();
 
+    bool isFinished();
     //next PCB in sleeping queue
     //or suspended queue
     PCB* nextPCB;

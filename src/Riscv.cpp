@@ -272,14 +272,14 @@ void Riscv::kernelMain()
 
     enableInterrupts();
 
-    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
 
-    while(userPCB->getState() != PCB::FINISHED)
-    {
-        thread_dispatch();
-    }
+    //while(userPCB->getState() != PCB::FINISHED)
+    //{
+    //    thread_dispatch();
+    //}
 
-    //myTests();
+    myTests();
 
     disableInterrupts();
 

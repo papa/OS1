@@ -82,3 +82,7 @@ void PCB::initialize()
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
 }
+
+bool PCB::isFinished() {
+    return state == PCB::FINISHED;
+}

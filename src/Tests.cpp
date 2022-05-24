@@ -108,7 +108,7 @@ void threadTests()
 {
     //threadTest1();
     //threadTest2();
-    threadTest3();
+    //threadTest3();
 }
 
 
@@ -216,7 +216,7 @@ void stressTesting()
         addrs[i] = mem_alloc(1);
         if(addrs[i] == 0)
         {
-            //Riscv::printString("not OK\n");
+            Riscv::printString("not OK\n");
             return;
         }
 
@@ -224,24 +224,18 @@ void stressTesting()
     int sz = 300;
     while(sz > 0)
     {
-        //Riscv::printString("sz : ");
-        //Riscv::printInteger(sz);
         for(int i = 0 ; i < num;i+=2)
         {
-            //Riscv::printString("i : ");
-            //Riscv::printInteger(i);
-            //Riscv::printString("free\n");
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                //Riscv::printString("not OK\n");
+                Riscv::printString("not OK\n");
                 return;
             }
-            //Riscv::printString("alloc\n");
             addrs[i] = mem_alloc(sz/2);
             if(addrs[i] == 0)
             {
-                //Riscv::printString("not Ok\n");
+                Riscv::printString("not Ok\n");
                 return;
             }
 
@@ -249,20 +243,16 @@ void stressTesting()
 
         for(int i = 1 ; i < num;i+=2)
         {
-            //Riscv::printString("i : ");
-            //Riscv::printInteger(i);
-            //Riscv::printString("free\n");
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                //Riscv::printString("not OK\n");
+                Riscv::printString("not OK\n");
                 return;
             }
-            //Riscv::printString("alloc\n");
             addrs[i] = mem_alloc(sz);
             if(addrs[i] == 0)
             {
-                //Riscv::printString("not Ok\n");
+                Riscv::printString("not Ok\n");
                 return;
             }
 
@@ -282,163 +272,22 @@ void memoryAllocationTests()
     //stressTesting();
     //mallocTest();
     //mallocEverything();
-    mallocGapFillTest();
-}
-
-//semaphore tests
-static Semaphore* mutex;
-static Semaphore* s11, *s22;
-
-void foo()
-{
-    s11->wait();
-    Riscv::printString("foo exec\n");
-    s22->signal();
-}
-
-void foo2()
-{
-    s22->wait();
-    Riscv::printString("foo2 exec\n");
-    s11->signal();
+    //mallocGapFillTest();
 }
 
 
-void f1(void* p)
-{
-    Riscv::printString("f1 started\n");
-    for(int br = 0;br < 10;br++)
-    {
-        for (int i = 0; i < 5; i++)
-            foo();
-        if(br == 5)
-            thread_dispatch();
-    }
-}
-
-void f2(void* p)
-{
-    Riscv::printString("f2 started\n");
-    for(int br = 0;br < 1;br++)
-    {
-        for(int j = 0; j < 10;j++)
-            foo2();
-        if(br == 6)
-            thread_dispatch();
-    }
-}
-
-void semTest1()
-{
-    mutex = new Semaphore(1);
-    s11 = new Semaphore(1);
-    s22 = new Semaphore(0);
-    Thread* t1 = new Thread(&f1, 0);
-    Thread* t2 = new Thread(&f2, 0);
-    t2->start();
-    t1->start();
-
-    thread_dispatch();
-
-    while(true)
-    {
-        thread_dispatch();
-    }
-}
-
-static Semaphore* s1;
-static Semaphore* s2;
-static Semaphore* s3;
-
-void f1_2(void* p)
-{
-    Riscv::printString("f1_2 started\n");
-    int x = 0;
-    while(true)
-    {
-        x++;
-        s1->wait();
-        __putc('1');
-        __putc('\n');
-        s2->signal();
-        if(x < 5000)
-            thread_dispatch();
-        else
-            thread_exit();
-    }
-}
-
-void f2_2(void* p)
-{
-    Riscv::printString("f2_2 started\n");
-    int x = 0;
-    while(true)
-    {
-        x++;
-        s2->wait();
-        __putc('2');
-        __putc('\n');
-        s3->signal();
-        if(x < 5000)
-            thread_dispatch();
-        else
-            thread_exit();
-    }
-}
-
-void f3_2(void* p)
-{
-    Riscv::printString("f3_2 started\n");
-    int x = 0;
-    while(true)
-    {
-        x++;
-        s3->wait();
-        __putc('3');
-        __putc('\n');
-        s1->signal();
-        if(x < 5000)
-            thread_dispatch();
-        else
-            thread_exit();
-    }
-}
-
-void semTest2()
-{
-    s1 = new Semaphore(1);
-    s2 = new Semaphore(0);
-    s3 = new Semaphore(0);
-    Thread* t1 = new Thread(&f1_2, 0);
-    Thread* t2 = new Thread(&f2_2, 0);
-    Thread* t3 = new Thread(&f3_2, 0);
-    t3->start();
-    t2->start();
-    t1->start();
-
-    int y = 0;
-    while(true)
-    {
-        y++;
-        thread_dispatch();
-        if(y == 200000)
-            break;
-    }
-
-}
 
 void semaphoreTests()
 {
     semTest1();
-    //semTest2();
 }
 
 void myTests()
 {
-    memoryAllocationTests();
+    //memoryAllocationTests();
     //threadTests();
     //testQueue();
-    //semaphoreTests();
+    semaphoreTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
@@ -454,7 +303,8 @@ void TestPeriodic::periodicActivation()
     }
 }
 
-void mallocTest(){
+void mallocTest()
+{
     Riscv::printString("Testing a few mallocs and frees\n\n");
 
     object* o = new object;
@@ -600,3 +450,47 @@ void mallocGapFillTest()
 
     Riscv::printString("SUCCESSFUL: Testing gap filling and chunk merge after multiple mallocs and frees\n\n");
 }
+
+char buffer[10];
+int head = 0;
+int tail = 0;
+sem_t spaceAvailable, itemAvailable;
+char string[11] = "this is ni";
+
+void consumerA(void *arg)
+{
+    while(head!=10){
+        sem_wait(itemAvailable);
+        __putc(buffer[head++]);
+        sem_signal(spaceAvailable);
+    }
+}
+
+void producerA(void *arg)
+{
+    while(tail!=10) {
+        sem_wait(spaceAvailable);
+        buffer[tail] = string[tail];
+        tail++;
+        sem_signal(itemAvailable);
+    }
+}
+
+void semTest1()
+{
+    sem_open(&spaceAvailable, 10);
+
+    sem_open(&itemAvailable, 0);
+
+    thread_t threadA, threadB;
+
+    thread_create(&threadA, producerA, nullptr);
+
+    thread_create(&threadB, consumerA, nullptr);
+
+    while(!((PCB*)threadA)->isFinished() || !((PCB*)threadA)->isFinished())
+        thread_dispatch();
+
+}
+
+
