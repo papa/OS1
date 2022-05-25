@@ -12,6 +12,8 @@
 class PCB
 {
 public:
+    static uint64 savedRegA4;
+
     using Body = void (*)(void*);
 
     PCB(Body body,  void* args, void* stack_space, uint64 timeSlice);

@@ -27,6 +27,12 @@ public:
     static const uint64 SEM_CLOSE = 0x22;
     static const uint64 SEM_WAIT = 0x23;
     static const uint64 SEM_SIGNAL = 0x24;
+
+    static void semOpenHandler();
+    static void semWaitHandler();
+    static void semSignalHandler();
+    static void semCloseHandler();
+
 private:
     int val, beginVal;
 

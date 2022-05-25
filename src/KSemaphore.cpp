@@ -25,6 +25,22 @@ uint64 KSemaphore::signal() {
     return 0;
 }
 
+void KSemaphore::semOpenHandler() {
+    uint64 val;
+    KSemaphore** semaphoreHandle;
+    __asm__ volatile("mv %0, a1" : "=r"(semaphoreHandle));
+    __asm__ volatile("mv %0, a2" : "=r"(val));
+
+    KSemaphore* newSem = new KSemaphore(val);
+
+    (*semaphoreHandle) = newSem;
+
+    if(newSem == 0)
+            __asm__ volatile("li a0, 0xffffffffffffffff");
+    else
+            __asm__ volatile("li a0, 0");
+}
+
 //todo
 //sta treba da vrate ovi PCB-ovi u wait-u
 KSemaphore::~KSemaphore()
@@ -84,6 +100,31 @@ void *KSemaphore::operator new(size_t size) {
     return kmalloc(size);
 }
 
-void KSemaphore::operator delete(void *p) {
+void KSemaphore::operator delete(void *p)
+{
     kfree(p);
+}
+
+void KSemaphore::semWaitHandler()
+{
+    KSemaphore* kSem;
+    __asm__ volatile("mv %0, a1" : "=r"(kSem));
+    uint64 volatile retval = kSem->wait();
+    __asm__ volatile("mv a0,%0" : :"r"(retval));
+}
+
+void KSemaphore::semSignalHandler()
+{
+    KSemaphore* kSem;
+    __asm__ volatile("mv %0, a1" : "=r"(kSem));
+    uint64 volatile retval = kSem->signal();
+    __asm__ volatile("mv a0,%0" : :"r"(retval));
+}
+
+void KSemaphore::semCloseHandler()
+{
+    KSemaphore* kSem;
+    __asm__ volatile("mv %0, a1" : "=r"(kSem));
+    delete kSem;
+    __asm__ volatile("li a0, 0");
 }

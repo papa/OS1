@@ -89,180 +89,91 @@ void Riscv::printInteger(uint64 num)
 
 void Riscv::handleSupervisorTrap()
 {
-    uint64 a4;
-    __asm__ volatile("mv %0, a4" : "=r"(a4));
+    __asm__ volatile("mv %0, a4" : "=r"(PCB::savedRegA4));
 
     uint64 scause = Riscv::r_scause();
 
     switch(scause)
     {
-
         case timerInterrupt:
-
-            Riscv::mc_sip(Riscv::SIP_SSIP);
+        {
+            uint64 volatile sepc = Riscv::r_sepc();
+            uint64 volatile sstatus = Riscv::r_sstatus();
+            mc_sip(Riscv::SIP_SSIP);
             //Riscv::printString("timerInterrupt\n");
             static uint64 total = 0;
             total++;
-            //Riscv::printInteger(total);
 
             PCB::timeSliceCounter++;
-
             SleepPCBList::tryToWakePCBs();
-
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
             {
-                //Riscv::printString("Should dispatch...\n");
-                uint64 volatile sepc = Riscv::r_sepc();
-                uint64 volatile sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::dispatch();
-                Riscv::w_sstatus(sstatus);
-                Riscv::w_sepc(sepc);
             }
 
-            return;
+            Riscv::w_sstatus(sstatus);
+            Riscv::w_sepc(sepc);
 
+            break;
+        }
         case hwInterrupt: // todo
-
+        {
             //Riscv::printString("Hardware interrupt...\n");
             console_handler();
             break;
-
+        }
         case operationInterrupt: // todo
+        {
             break;
-
+        }
         case addrReadInterrupt: // todo
+        {
             break;
-
+        }
         case addrWriteInterrupt: // todo
+        {
             break;
-
+        }
         case ecallSystemInterupt:
-        case ecallUserInterrupt:
-
+        case ecallUserInterrupt: {
             uint64 operation;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
 
-            uint64 volatile sepc = Riscv::r_sepc();
-            sepc+=4;
+            uint64 volatile sepc = Riscv::r_sepc() + 4;
+            uint64 volatile sstatus = Riscv::r_sstatus();
 
-            if(operation == MemoryAllocator::MEM_ALLOC)
-            {
-                size_t size;
-                __asm__ volatile("mv %0, a1" : "=r"(size));
-                size*=MEM_BLOCK_SIZE;
-                void* allocatedAddr = kmalloc(size);
-                __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
-            }
-            else if(operation == MemoryAllocator::MEM_FREE)
-            {
-                uint64 addr = 0;
-                __asm__ volatile("mv %0, a1" : "=r"(addr));
-                uint64 retval = kfree((void*)addr);
-                __asm__ volatile("mv a0,%0" : :"r"(retval));
-            }
-            else if(operation == PCB::THREAD_CREATE)
-            {
-                uint64 start_routine;
-                uint64 args;
-                PCB** threadHandle;
-                __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
-                __asm__ volatile("mv %0, a2" : "=r"(start_routine));
-                __asm__ volatile("mv %0, a3" : "=r"(args));
+            if (operation == MemoryAllocator::MEM_ALLOC)
+                MemoryAllocator::memAllocHandler();
+            else if (operation == MemoryAllocator::MEM_FREE)
+                MemoryAllocator::memFreeHandler();
+            else if (operation == PCB::THREAD_CREATE)
+                PCB::threadCreateHandler();
+            else if (operation == PCB::THREAD_DISPATCH)
+                PCB::threadDispatchHandler();
+            else if (operation == PCB::THREAD_EXIT)
+                PCB::threadExitHandler();
+            else if (operation == PCB::TIME_SLEEP)
+                PCB::threadSleepHandler();
+            else if (operation == KSemaphore::SEM_OPEN)
+                KSemaphore::semOpenHandler();
+            else if (operation == KSemaphore::SEM_WAIT)
+                KSemaphore::semWaitHandler();
+            else if (operation == KSemaphore::SEM_SIGNAL)
+                KSemaphore::semSignalHandler();
+            else if (operation == KSemaphore::SEM_CLOSE)
+                KSemaphore::semCloseHandler();
+            else if (operation == KConsole::CONSOLE_GETC) {
                 //todo
-                //uint64 stack_space;
-                //__asm__ volatile("mv %0, a4" : "=r"(stack_space));
-
-                PCB* newPCB = new PCB((void (*)(void*))start_routine, (void*)args, (void*)a4, DEFAULT_TIME_SLICE);
-
-                (*threadHandle) = newPCB;
-
-                if(newPCB == 0)
-                    __asm__ volatile("li a0, 0xffffffffffffffff");
-                else
-                    __asm__ volatile("li a0, 0");
-            }
-            else if(operation == PCB::THREAD_DISPATCH)
-            {
-                uint64 volatile sstatus = Riscv::r_sstatus();
-                PCB::timeSliceCounter = 0;
-                PCB::dispatch();
-                Riscv::w_sstatus(sstatus);
-            }
-            else if(operation == PCB::THREAD_EXIT)
-            {
-                Riscv::printString("Exiting thread...\n");
-                uint64 volatile sstatus = Riscv::r_sstatus();
-                PCB::timeSliceCounter = 0;
-                PCB::running->setState(PCB::FINISHED);
-                PCB::dispatch();
-                Riscv::w_sstatus(sstatus);
-                __asm__ volatile("li a0, 0");
-            }
-            else if(operation == PCB::TIME_SLEEP)
-            {
-                uint64 time;
-                __asm__ volatile("mv %0, a1" : "=r"(time));
-                uint64 volatile sstatus = Riscv::r_sstatus();
-                PCB::timeSliceCounter = 0;
-                PCB::running->setTimeToSleep(time);
-                SleepPCBList::insertSleepingPCB();
-                PCB::dispatch();
-                Riscv::w_sstatus(sstatus);
-                __asm__ volatile("li a0, 0x0");
-            }
-            else if(operation == KSemaphore::SEM_OPEN)
-            {
-                uint64 val;
-                KSemaphore** semaphoreHandle;
-                __asm__ volatile("mv %0, a1" : "=r"(semaphoreHandle));
-                __asm__ volatile("mv %0, a2" : "=r"(val));
-
-                KSemaphore* newSem = new KSemaphore(val);
-
-                (*semaphoreHandle) = newSem;
-
-                if(newSem == 0)
-                        __asm__ volatile("li a0, 0xffffffffffffffff");
-                else
-                        __asm__ volatile("li a0, 0");
-
-            }
-            else if(operation == KSemaphore::SEM_WAIT)
-            {
-                uint64 volatile sstatus = Riscv::r_sstatus();
-                KSemaphore* kSem;
-                __asm__ volatile("mv %0, a1" : "=r"(kSem));
-                uint64 volatile retval = kSem->wait();
-                Riscv::w_sstatus(sstatus);
-                __asm__ volatile("mv a0,%0" : :"r"(retval));
-            }
-            else if(operation == KSemaphore::SEM_SIGNAL)
-            {
-                KSemaphore* kSem;
-                __asm__ volatile("mv %0, a1" : "=r"(kSem));
-                uint64 volatile retval = kSem->signal();
-                __asm__ volatile("mv a0,%0" : :"r"(retval));
-            }
-            else if(operation == KSemaphore::SEM_CLOSE)
-            {
-                KSemaphore* kSem;
-                __asm__ volatile("mv %0, a1" : "=r"(kSem));
-                delete kSem;
-                __asm__ volatile("li a0, 0");
-            }
-            else if(operation == KConsole::CONSOLE_GETC)
-            {
-                //todo
-            }
-            else if(operation == KConsole::CONSOLE_PUTC)
-            {
+            } else if (operation == KConsole::CONSOLE_PUTC) {
                 //todo
             }
 
+            Riscv::w_sstatus(sstatus);
             Riscv::w_sepc(sepc);
 
-            return;
+            break;
+        }
     }
 }
 
@@ -270,10 +181,9 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    enableInterrupts();
+    //enableInterrupts();
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-
     while(userPCB->getState() != PCB::FINISHED)
     {
         thread_dispatch();
@@ -281,7 +191,7 @@ void Riscv::kernelMain()
 
     //myTests();
 
-    disableInterrupts();
+    //disableInterrupts();
 
     endSystem();
 

@@ -9,8 +9,6 @@
 
 class Riscv
 {
-private:
-
 public:
     static void kernelMain();
 
