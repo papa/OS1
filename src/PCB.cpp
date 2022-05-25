@@ -55,10 +55,10 @@ void PCB::dispatch()
     PCB::running->setState(PCB::RUNNING);
     //Riscv::printString("Switching context...\n");
 
-    if(PCB::running->systemThread)
-        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
-    else
-        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    //if(PCB::running->systemThread)
+    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    //else
+    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 
 
     PCB::contextSwitch(&old->context, &running->context);

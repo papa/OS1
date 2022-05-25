@@ -22,7 +22,7 @@ void workerBodyA(void* arg) {
             //Riscv::printString("A j : ");
             //Riscv::printInteger(j);
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
-            //thread_dispatch();
+            thread_dispatch();
         }
     }
     Riscv::printString("A finished!\n");
@@ -98,21 +98,21 @@ void workerBodyD(void* arg) {
 void Threads_C_API_test()
 {
     thread_t threads[4];
-    thread_create(&threads[0], workerBodyA, nullptr);
+    //thread_create(&threads[0], workerBodyA, nullptr);
     printString("ThreadA created\n");
 
     thread_create(&threads[1], workerBodyB, nullptr);
     printString("ThreadB created\n");
 
-    thread_create(&threads[2], workerBodyC, nullptr);
+    //thread_create(&threads[2], workerBodyC, nullptr);
     printString("ThreadC created\n");
 
-    thread_create(&threads[3], workerBodyD, nullptr);
+    //thread_create(&threads[3], workerBodyD, nullptr);
     printString("ThreadD created\n");
 
-    while (!(finishedA && finishedB && finishedC && finishedD)) {
+    while (!(finishedB)) {
         //printString("Main thread\n");
-        //thread_dispatch();
+        thread_dispatch();
     }
 
     for (auto &thread: threads) {

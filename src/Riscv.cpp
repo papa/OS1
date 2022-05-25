@@ -112,8 +112,8 @@ void Riscv::handleSupervisorTrap()
             if (PCB::timeSliceCounter >= PCB::running->getTimeSlice())
             {
                 //Riscv::printString("Should dispatch...\n");
-                volatile uint64 sepc = Riscv::r_sepc();
-                volatile uint64 sstatus = Riscv::r_sstatus();
+                uint64 volatile sepc = Riscv::r_sepc();
+                uint64 volatile sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
@@ -143,7 +143,7 @@ void Riscv::handleSupervisorTrap()
             uint64 operation;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
 
-            volatile uint64 sepc = Riscv::r_sepc();
+            uint64 volatile sepc = Riscv::r_sepc();
             sepc+=4;
 
             if(operation == MemoryAllocator::MEM_ALLOC)
@@ -184,7 +184,7 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == PCB::THREAD_DISPATCH)
             {
-                volatile uint64 sstatus = Riscv::r_sstatus();
+                uint64 volatile sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::dispatch();
                 Riscv::w_sstatus(sstatus);
@@ -192,7 +192,7 @@ void Riscv::handleSupervisorTrap()
             else if(operation == PCB::THREAD_EXIT)
             {
                 Riscv::printString("Exiting thread...\n");
-                volatile uint64 sstatus = Riscv::r_sstatus();
+                uint64 volatile sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::running->setState(PCB::FINISHED);
                 PCB::dispatch();
@@ -203,7 +203,7 @@ void Riscv::handleSupervisorTrap()
             {
                 uint64 time;
                 __asm__ volatile("mv %0, a1" : "=r"(time));
-                volatile uint64 sstatus = Riscv::r_sstatus();
+                uint64 volatile sstatus = Riscv::r_sstatus();
                 PCB::timeSliceCounter = 0;
                 PCB::running->setTimeToSleep(time);
                 SleepPCBList::insertSleepingPCB();
@@ -230,10 +230,10 @@ void Riscv::handleSupervisorTrap()
             }
             else if(operation == KSemaphore::SEM_WAIT)
             {
-                volatile uint64 sstatus = Riscv::r_sstatus();
+                uint64 volatile sstatus = Riscv::r_sstatus();
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
-                volatile uint64 retval = kSem->wait();
+                uint64 volatile retval = kSem->wait();
                 Riscv::w_sstatus(sstatus);
                 __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
@@ -241,7 +241,7 @@ void Riscv::handleSupervisorTrap()
             {
                 KSemaphore* kSem;
                 __asm__ volatile("mv %0, a1" : "=r"(kSem));
-                volatile uint64 retval = kSem->signal();
+                uint64 volatile retval = kSem->signal();
                 __asm__ volatile("mv a0,%0" : :"r"(retval));
             }
             else if(operation == KSemaphore::SEM_CLOSE)
