@@ -33,6 +33,8 @@ int sem_signal(sem_t id);
 
 int time_sleep(uint64 time);
 
+int thread_start(void* p);
+
 #ifdef __cplusplus
 }
 #endif

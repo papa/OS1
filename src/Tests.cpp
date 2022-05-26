@@ -275,8 +275,6 @@ void memoryAllocationTests()
     mallocGapFillTest();
 }
 
-
-
 void semaphoreTests()
 {
     semTest1();

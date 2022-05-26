@@ -73,7 +73,8 @@ void PCB::operator delete(void *p) {
     kfree(p);
 }
 
-PCB::~PCB() {
+PCB::~PCB()
+{
     kfree(beginSP);
 }
 
@@ -134,4 +135,20 @@ void PCB::threadCreateHandler()
             __asm__ volatile("li a0, 0xffffffffffffffff");
     else
             __asm__ volatile("li a0, 0");
+}
+
+void PCB::threadStartHandler()
+{
+    PCB* pcb;
+    __asm__ volatile("mv %0, a1" : "=r"(pcb));
+    if(pcb != 0)
+    {
+        pcb->start();
+        __asm__ volatile("li a0, 0");
+    }
+    else
+    {
+        __asm__ volatile("li a0, 0xffffffffffffffff");
+    }
+
 }

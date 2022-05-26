@@ -143,30 +143,47 @@ void Riscv::handleSupervisorTrap()
             uint64 volatile sepc = Riscv::r_sepc() + 4;
             uint64 volatile sstatus = Riscv::r_sstatus();
 
-            if (operation == MemoryAllocator::MEM_ALLOC)
-                MemoryAllocator::memAllocHandler();
-            else if (operation == MemoryAllocator::MEM_FREE)
-                MemoryAllocator::memFreeHandler();
-            else if (operation == PCB::THREAD_CREATE)
-                PCB::threadCreateHandler();
-            else if (operation == PCB::THREAD_DISPATCH)
-                PCB::threadDispatchHandler();
-            else if (operation == PCB::THREAD_EXIT)
-                PCB::threadExitHandler();
-            else if (operation == PCB::TIME_SLEEP)
-                PCB::threadSleepHandler();
-            else if (operation == KSemaphore::SEM_OPEN)
-                KSemaphore::semOpenHandler();
-            else if (operation == KSemaphore::SEM_WAIT)
-                KSemaphore::semWaitHandler();
-            else if (operation == KSemaphore::SEM_SIGNAL)
-                KSemaphore::semSignalHandler();
-            else if (operation == KSemaphore::SEM_CLOSE)
-                KSemaphore::semCloseHandler();
-            else if (operation == KConsole::CONSOLE_GETC) {
-                //todo
-            } else if (operation == KConsole::CONSOLE_PUTC) {
-                //todo
+            switch(operation)
+            {
+                case MemoryAllocator::MEM_ALLOC:
+                    MemoryAllocator::memAllocHandler();
+                    break;
+                case MemoryAllocator::MEM_FREE:
+                    MemoryAllocator::memFreeHandler();
+                    break;
+                case PCB::THREAD_START:
+                    PCB::threadStartHandler();
+                    break;
+                case PCB::THREAD_CREATE:
+                    PCB::threadCreateHandler();
+                    break;
+                case PCB::THREAD_DISPATCH:
+                    PCB::threadDispatchHandler();
+                    break;
+                case PCB::THREAD_EXIT:
+                    PCB::threadExitHandler();
+                    break;
+                case PCB::TIME_SLEEP:
+                    PCB::threadSleepHandler();
+                    break;
+                case KSemaphore::SEM_OPEN:
+                    KSemaphore::semOpenHandler();
+                    break;
+                case KSemaphore::SEM_WAIT:
+                    KSemaphore::semWaitHandler();
+                    break;
+                case KSemaphore::SEM_SIGNAL:
+                    KSemaphore::semSignalHandler();
+                    break;
+                case KSemaphore::SEM_CLOSE:
+                    KSemaphore::semCloseHandler();
+                    break;
+                case KConsole::CONSOLE_GETC:
+                    //todo
+                    break;
+                case KConsole::CONSOLE_PUTC:
+                    //todo
+                    break;
             }
 
             Riscv::w_sstatus(sstatus);

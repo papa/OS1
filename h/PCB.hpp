@@ -40,6 +40,7 @@ public:
     static const uint64 THREAD_CREATE = 0x11;
     static const uint64 THREAD_EXIT = 0x12;
     static const uint64 THREAD_DISPATCH = 0x13;
+    static const uint64 THREAD_START = 0x14;
     static const uint64 TIME_SLEEP = 0x31;
 
     bool systemThread = false;
@@ -55,6 +56,7 @@ public:
     static void threadExitHandler();
     static void threadDispatchHandler();
     static void threadSleepHandler();
+    static void threadStartHandler();
 
 private:
 

@@ -161,3 +161,15 @@ int time_sleep(uint64 time)
     __asm__ volatile("mv %0, a0" : "=r"(result));
     return result;
 }
+
+int thread_start(void* p)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)p));
+    __asm__ volatile("li a0, 0x14");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+    return result;
+}
