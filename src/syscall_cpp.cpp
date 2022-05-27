@@ -4,6 +4,12 @@
 
 #include "../h/syscall_cpp.hpp"
 
+struct ArgsPeriodic{
+    void* pt;
+    uint64 time;
+    ArgsPeriodic(void *p, uint64 t) : pt(p), time(t){}
+};
+
 //general
 void * operator new(size_t size)
 {
@@ -19,9 +25,9 @@ void operator delete(void * p)
 
 int Thread::start()
 {
-    if(myHandle == 0)
+    if(myHandle != 0)
     {
-        return thread_create((void**)&myHandle, f, args);
+        return thread_start(myHandle);
     }
     else
     {
@@ -35,24 +41,26 @@ void Thread::dispatch() {
     thread_dispatch();
 }
 
-void Thread::sleep(time_t time) {
+void Thread::sleep(time_t time)
+{
     time_sleep(time);
 }
 
-Thread::Thread(void (*body)(void *), void *args) {
-    myHandle = 0;
-    f = body;
-    this->args = args;
+Thread::Thread(void (*body)(void *), void *args)
+{
+    thread_make_pcb((void**)&myHandle, body, args);
 }
 
 Thread::Thread()
 {
-    f = &Thread::runner;
-    myHandle = 0;
-    args = (void*)this;
+    thread_make_pcb((void**)&myHandle, &Thread::runner, (void*)this);
+    //f = &Thread::runner;
+    //myHandle = 0;
+    //args = (void*)this;
 }
 
-void Thread::runner(void *t) {
+void Thread::runner(void *t)
+{
     Riscv::printString("Thread runner started...\n");
     Thread* thr = (Thread*)t;
     thr->run();
@@ -64,13 +72,15 @@ Thread::~Thread() {
 
 //Semaphore
 
-int Semaphore::wait() {
+int Semaphore::wait()
+{
     if(myHandle == 0)
         return -1;
     return sem_wait((void *) myHandle);
 }
 
-Semaphore::Semaphore(unsigned int init) {
+Semaphore::Semaphore(unsigned int init)
+{
     int retval = sem_open((void**)&myHandle, init);
     if(retval != 0)
     {
@@ -102,16 +112,18 @@ void Console::putc(char) {
 
 //PeriodicThread
 
-PeriodicThread::PeriodicThread(time_t period) : Thread(&PeriodicThread::runner, (void*)this) {
-    this->time = period;
+PeriodicThread::PeriodicThread(time_t period) : Thread(&PeriodicThread::runner, new ArgsPeriodic((void*)this, period)) {
+
 }
 
-void PeriodicThread::runner(void* pt)
+void PeriodicThread::runner(void* arg)
 {
-    PeriodicThread* pThread = (PeriodicThread*)pt;
+    PeriodicThread *pThread =(PeriodicThread*) ((ArgsPeriodic*)arg)->pt;
+    uint64 time = ((ArgsPeriodic*)arg)->time;
+
     while(true)
     {
         pThread->periodicActivation();
-        Thread::sleep(pThread->time);
+        Thread::sleep(time);
     }
 }

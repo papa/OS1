@@ -165,11 +165,40 @@ int time_sleep(uint64 time)
 int thread_start(void* p)
 {
     __asm__ volatile("mv a1, %0" :  : "r"((uint64)p));
-    __asm__ volatile("li a0, 0x14");
+    __asm__ volatile("li a0, 0x15");
 
     __asm__ volatile("ecall");
 
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
+    return result;
+}
+
+int thread_make_pcb(thread_t* handle, void(*start_routine)(void*), void *arg)
+{
+    uint64 handleLocal = (uint64)handle;
+    uint64 startRLocal = (uint64)start_routine;
+    uint64 argsLocal = (uint64)arg;
+    uint64 opLocal = 0x14;
+
+    void * stack_space = mem_alloc(DEFAULT_STACK_SIZE);
+    uint64 stackPointerLocal = (uint64)stack_space;
+    if(stack_space == 0)
+        return -1;
+
+    //initialize registers
+    __asm__ volatile("mv a4, %0" :  : "r"((uint64)stackPointerLocal));
+    __asm__ volatile("mv a3, %0" :  : "r"((uint64)argsLocal));
+    __asm__ volatile("mv a2, %0" :  : "r"((uint64)startRLocal));
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)handleLocal));
+    __asm__ volatile("mv a0, %0" :  : "r"((uint64)opLocal));
+
+
+    __asm__ volatile("ecall");
+
+    //get the result
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+
     return result;
 }

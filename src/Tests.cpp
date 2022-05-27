@@ -65,11 +65,11 @@ void threadTest1()
     Thread* t2 = new Thread(&thread2Function, 0);
     t2->start();
     Riscv::enableInterrupts();
-    while(((PCB*)(t1->myHandle))->getState() != PCB::FINISHED || ((PCB*)(t2->myHandle))->getState()!= PCB::FINISHED)
-    {
-        Riscv::printString("Main thread\n");
-        thread_dispatch();
-    }
+    //while(((PCB*)(t1->myHandle))->getState() != PCB::FINISHED || ((PCB*)(t2->myHandle))->getState()!= PCB::FINISHED)
+    //{
+    //    Riscv::printString("Main thread\n");
+    //    thread_dispatch();
+    //}
 
     Riscv::printString("End...\n");
     Riscv::disableInterrupts();
@@ -86,7 +86,7 @@ void threadTest2()
 
     Riscv::enableInterrupts();
 
-    while(((PCB*)idleThread->myHandle)->getState() != PCB::FINISHED);
+    //while(((PCB*)idleThread->myHandle)->getState() != PCB::FINISHED);
 
     Riscv::printString("End...\n");
 
@@ -108,7 +108,7 @@ void threadTests()
 {
     //threadTest1();
     //threadTest2();
-    //threadTest3();
+    threadTest3();
 }
 
 
@@ -282,8 +282,8 @@ void semaphoreTests()
 
 void myTests()
 {
-    memoryAllocationTests();
-    //threadTests();
+    //memoryAllocationTests();
+    threadTests();
     //semaphoreTests();
 }
 

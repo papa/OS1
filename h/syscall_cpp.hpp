@@ -26,17 +26,12 @@ public:
 
     static void sleep(time_t);
 
-    //todo
-    //vrati u private
-    //ovde je samo za potrebe testiranja
-    thread_t myHandle;
 protected:
     Thread();
 
     virtual void run() {}
 private:
-    void (*f)(void*);
-    void* args;
+    thread_t myHandle;
     static void runner(void* t);
 };
 
@@ -68,7 +63,6 @@ protected:
     virtual void periodicActivation() {};
 private:
     static void runner(void* pt);
-    time_t time;
 };
 
 #endif //PROJECT_BASE_V1_0_SYSCALL_CPP_HPP

@@ -35,6 +35,8 @@ int time_sleep(uint64 time);
 
 int thread_start(void* p);
 
+int thread_make_pcb(thread_t* handle, void(*start_routine)(void*), void *arg);
+
 #ifdef __cplusplus
 }
 #endif

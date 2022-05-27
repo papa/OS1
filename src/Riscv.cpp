@@ -151,11 +151,14 @@ void Riscv::handleSupervisorTrap()
                 case MemoryAllocator::MEM_FREE:
                     MemoryAllocator::memFreeHandler();
                     break;
-                case PCB::THREAD_START:
-                    PCB::threadStartHandler();
+                case PCB::THREAD_MAKE_PCB:
+                    PCB::threadMakePCBHandler();
                     break;
                 case PCB::THREAD_CREATE:
                     PCB::threadCreateHandler();
+                    break;
+                case PCB::THREAD_START:
+                    PCB::threadStartHandler();
                     break;
                 case PCB::THREAD_DISPATCH:
                     PCB::threadDispatchHandler();
@@ -201,6 +204,7 @@ void Riscv::kernelMain()
     //enableInterrupts();
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    userPCB->start();
     while(userPCB->getState() != PCB::FINISHED)
     {
         thread_dispatch();
@@ -215,6 +219,7 @@ void Riscv::kernelMain()
     Riscv::printString("End...");
 }
 
-void Riscv::userMainWrapper(void* ) {
+void Riscv::userMainWrapper(void* )
+{
     userMain();
 }

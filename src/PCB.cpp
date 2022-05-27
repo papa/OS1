@@ -20,7 +20,7 @@ PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
         (uint64)&PCB::runner
     })
 {
-    Scheduler::put(this);
+    //Scheduler::put(this);
     nextPCB = 0;
 }
 
@@ -61,7 +61,6 @@ void PCB::dispatch()
     //else
     //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 
-
     PCB::contextSwitch(&old->context, &running->context);
 }
 
@@ -81,6 +80,7 @@ PCB::~PCB()
 void PCB::initialize()
 {
     PCB* mainSystem = new PCB(0, 0, 0, 0);
+    mainSystem->start();
     mainSystem->systemThread = true;
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
@@ -125,7 +125,6 @@ void PCB::threadCreateHandler()
     __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
     __asm__ volatile("mv %0, a2" : "=r"(start_routine));
     __asm__ volatile("mv %0, a3" : "=r"(args));
-    //todo
 
     PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4, DEFAULT_TIME_SLICE);
 
@@ -134,7 +133,10 @@ void PCB::threadCreateHandler()
     if (newPCB == 0)
             __asm__ volatile("li a0, 0xffffffffffffffff");
     else
-            __asm__ volatile("li a0, 0");
+    {
+        newPCB->start();
+        __asm__ volatile("li a0, 0");
+    }
 }
 
 void PCB::threadStartHandler()
@@ -151,4 +153,24 @@ void PCB::threadStartHandler()
         __asm__ volatile("li a0, 0xffffffffffffffff");
     }
 
+}
+
+void PCB::threadMakePCBHandler()
+{
+    //Riscv::printString("make pcb handler\n");
+    uint64 start_routine;
+    uint64 args;
+    PCB **threadHandle;
+    __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
+    __asm__ volatile("mv %0, a2" : "=r"(start_routine));
+    __asm__ volatile("mv %0, a3" : "=r"(args));
+
+    PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4, DEFAULT_TIME_SLICE);
+
+    (*threadHandle) = newPCB;
+
+    if (newPCB == 0)
+        __asm__ volatile("li a0, 0xffffffffffffffff");
+    else
+        __asm__ volatile("li a0, 0");
 }

@@ -93,6 +93,7 @@ void WorkerD::workerBodyD(void* arg) {
 void Threads_CPP_API_test() {
     Thread* threads[4];
 
+    Riscv::printString("Got here\n");
     threads[0] = new WorkerA();
     printString("ThreadA created\n");
 
@@ -106,11 +107,14 @@ void Threads_CPP_API_test() {
     printString("ThreadD created\n");
 
     for(int i=0; i<4; i++) {
+        Riscv::printString("Starting...\n");
         threads[i]->start();
     }
 
+    Riscv::printString("Thread started\n");
     while (!(finishedA && finishedB && finishedC && finishedD)) {
         Thread::dispatch();
+        //Riscv::printString("main\n");
     }
 
     for (auto thread: threads) { delete thread; }
