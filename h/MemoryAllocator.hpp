@@ -40,7 +40,6 @@ public:
 
     static void memAllocHandler();
     static void memFreeHandler();
-
 };
 
 void* kmalloc(size_t size);

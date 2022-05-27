@@ -4,7 +4,8 @@
 
 #include "../h/syscall_cpp.hpp"
 
-struct ArgsPeriodic{
+struct ArgsPeriodic
+{
     void* pt;
     uint64 time;
     ArgsPeriodic(void *p, uint64 t) : pt(p), time(t){}
@@ -54,9 +55,6 @@ Thread::Thread(void (*body)(void *), void *args)
 Thread::Thread()
 {
     thread_make_pcb((void**)&myHandle, &Thread::runner, (void*)this);
-    //f = &Thread::runner;
-    //myHandle = 0;
-    //args = (void*)this;
 }
 
 void Thread::runner(void *t)
@@ -66,7 +64,8 @@ void Thread::runner(void *t)
     thr->run();
 }
 
-Thread::~Thread() {
+Thread::~Thread()
+{
     mem_free(myHandle);
 }
 
@@ -90,7 +89,8 @@ Semaphore::Semaphore(unsigned int init)
     }
 }
 
-int Semaphore::signal() {
+int Semaphore::signal()
+{
     if(myHandle == 0)
         return -1;
     return sem_signal((void*)myHandle);
@@ -102,17 +102,20 @@ Semaphore::~Semaphore() {
 
 //Console
 
-char Console::getc() {
+char Console::getc()
+{
     return 0;
 }
 
-void Console::putc(char) {
+void Console::putc(char)
+{
 
 }
 
 //PeriodicThread
 
-PeriodicThread::PeriodicThread(time_t period) : Thread(&PeriodicThread::runner, new ArgsPeriodic((void*)this, period)) {
+PeriodicThread::PeriodicThread(time_t period) : Thread(&PeriodicThread::runner, new ArgsPeriodic((void*)this, period))
+{
 
 }
 

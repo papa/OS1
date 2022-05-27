@@ -136,7 +136,8 @@ void Riscv::handleSupervisorTrap()
             break;
         }
         case ecallSystemInterupt:
-        case ecallUserInterrupt: {
+        case ecallUserInterrupt:
+        {
             uint64 operation;
             __asm__ volatile("mv %0, a0" :  "=r"(operation));
 
@@ -203,14 +204,14 @@ void Riscv::kernelMain()
 
     //enableInterrupts();
 
-    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    userPCB->start();
-    while(userPCB->getState() != PCB::FINISHED)
-    {
-        thread_dispatch();
-    }
+    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //userPCB->start();
+    //while(userPCB->getState() != PCB::FINISHED)
+    //{
+    //    thread_dispatch();
+    //}
 
-    //myTests();
+    myTests();
 
     //disableInterrupts();
 

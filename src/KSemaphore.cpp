@@ -25,7 +25,8 @@ uint64 KSemaphore::signal() {
     return 0;
 }
 
-void KSemaphore::semOpenHandler() {
+void KSemaphore::semOpenHandler()
+{
     uint64 val;
     KSemaphore** semaphoreHandle;
     __asm__ volatile("mv %0, a1" : "=r"(semaphoreHandle));

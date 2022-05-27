@@ -283,8 +283,8 @@ void semaphoreTests()
 void myTests()
 {
     //memoryAllocationTests();
-    threadTests();
-    //semaphoreTests();
+    //threadTests();
+    semaphoreTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {

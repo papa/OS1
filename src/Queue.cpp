@@ -13,7 +13,8 @@ void Queue::pop()
         first = last = 0;
 }
 
-void Queue::push(PCB* t) {
+void Queue::push(PCB* t)
+{
     Elem* newElem = (Elem*) kmalloc(sizeof(Elem));
     newElem->data = t;
     newElem->next = 0;
@@ -30,17 +31,20 @@ void Queue::push(PCB* t) {
 }
 
 
-PCB* Queue::front() {
+PCB* Queue::front()
+{
     if(first == 0)
         return 0;
     return first->data;
 }
 
-Queue::Queue() {
+Queue::Queue()
+{
     first = last = 0;
 }
 
-Queue::~Queue() {
+Queue::~Queue()
+{
     Elem* curr = first;
     while(curr != 0)
     {
@@ -50,7 +54,8 @@ Queue::~Queue() {
     }
 }
 
-int Queue::size() {
+int Queue::size()
+{
     Elem* curr = first;
     int cnt = 0;
     while(curr != 0)

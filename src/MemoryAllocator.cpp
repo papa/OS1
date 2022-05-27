@@ -135,14 +135,12 @@ void MemoryAllocator::insertNewFreeSegment(void* addr, size_t size)
 
     if(newSegment->next != 0 && (char*)newSegment->next == (char*)newSegment + newSegment->size + sizeof(BlockHeader))
     {
-        //Riscv::printString("Merged front\n");
         newSegment->size += newSegment->next->size + sizeof(BlockHeader);
         newSegment->next = newSegment->next->next;
     }
 
     if(prev != 0 && (char*)newSegment == (char*)prev + prev->size + sizeof(BlockHeader))
     {
-        //Riscv::printString("Merged back\n");
         prev->size+=newSegment->size + sizeof(BlockHeader);
         prev->next = newSegment->next;
     }

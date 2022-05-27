@@ -157,7 +157,6 @@ void PCB::threadStartHandler()
 
 void PCB::threadMakePCBHandler()
 {
-    //Riscv::printString("make pcb handler\n");
     uint64 start_routine;
     uint64 args;
     PCB **threadHandle;

@@ -193,12 +193,10 @@ int thread_make_pcb(thread_t* handle, void(*start_routine)(void*), void *arg)
     __asm__ volatile("mv a1, %0" :  : "r"((uint64)handleLocal));
     __asm__ volatile("mv a0, %0" :  : "r"((uint64)opLocal));
 
-
     __asm__ volatile("ecall");
 
     //get the result
     uint64 result;
     __asm__ volatile("mv %0, a0" : "=r"(result));
-
     return result;
 }
