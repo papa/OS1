@@ -1,5 +1,4 @@
 #include "buffer_CPP_API.hpp"
-#include "../h/std.hpp"
 
 
 BufferCPP::BufferCPP(int _cap) : cap(_cap), head(0), tail(0) {

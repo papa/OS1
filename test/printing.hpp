@@ -2,7 +2,6 @@
 #define _PRINTING_HPP_
 
 #include "../h/syscall_c.h"
-#include "../h/std.hpp"
 
 void printString(char const *string);
 

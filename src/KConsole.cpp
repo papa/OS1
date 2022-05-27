@@ -4,6 +4,7 @@
 
 
 #include "../h/KConsole.hpp"
+#include "../h/syscall_c.h"
 
 KConsole::Elem* KConsole::headInput = 0;
 KConsole::Elem* KConsole::tailInput = 0;
@@ -11,6 +12,7 @@ KConsole::Elem* KConsole::headOutput = 0;
 KConsole::Elem* KConsole::tailOutput = 0;
 KSemaphore* KConsole::hasCharactersOutput = 0;
 KSemaphore* KConsole::hasCharactersInput = 0;
+int KConsole::cntWInterrupt = 0;
 
 void KConsole::putChar(char c, Elem*& head, Elem*& tail)
 {
@@ -53,41 +55,58 @@ void KConsole::initialize()
 //extern const uint64 CONSOLE_TX_DATA;
 //extern const uint64 CONSOLE_RX_DATA;
 
-void KConsole::getCharactersFromConsole()
+void KConsole::getCharactersFromConsole(void* p)
 {
     while(true)
     {
-        __asm__ volatile("ld a0, CONSOLE_STATUS");
+        uint64 x = CONSOLE_STATUS;
+        __asm__ volatile("mv a0, %0"::"r"(x));
+        __asm__ volatile("lb a1, 0(a0)");
         uint64 operation;
-        __asm__ volatile("mv %0, a0" :  "=r"(operation));
+        __asm__ volatile("mv %0, a1" :  "=r"(operation));
         if(operation & STATUS_READ_MASK)
         {
-            __asm__ volatile("ld a0, CONSOLE_TX_DATA");
-            uint64 data;
-            __asm__ volatile("mv %0, a0" :  "=r"(data));
-            putCharacterInput((char)data);
+            x = CONSOLE_TX_DATA;
+            __asm__ volatile("mv a0, %0"::"r"(x));
+            __asm__ volatile("lb a1,0(a0)");
+            char c;
+            __asm__ volatile("mv %0, a1" :  "=r"(c));
+            //putCharacterOutput(c);
+
+            putCharacterInput(c);
         }
         else
             break;
     }
-
 }
 
-void KConsole::sendCharactersToConsole()
+void KConsole::sendCharactersToConsole(void* p)
 {
     while(true)
     {
-        __asm__ volatile("ld a0, CONSOLE_STATUS");
-        uint64 operation;
-        __asm__ volatile("mv %0, a0" :  "=r"(operation));
-        if(operation & STATUS_WRITE_MASK)
-        {
-            char c = getCharacterOutput();
-            __asm__ volatile("mv a0, %0" :  :"r"((uint64)c));
-            //__asm__ volatile("sd a0, CONSOLE_RX_DATA");
-        }
-        else
-            break;
+
+            uint64 x = CONSOLE_STATUS;
+            __asm__ volatile("mv a0, %0"::"r"(x));
+            __asm__ volatile("lb a1, 0(a0)");
+            uint64 operation;
+            __asm__ volatile("mv %0, a1" :  "=r"(operation));
+            if (operation & STATUS_WRITE_MASK)
+            {
+                //Riscv::printString("ide gas w\n");
+                //Riscv::printString("trazim karakter\n");
+                char volatile c = getCharacterOutput();
+                //Riscv::printInteger(c);
+                //if (c == 0)
+                //{
+                //     break;
+                //}
+                x = CONSOLE_RX_DATA;
+                __asm__ volatile("mv a0, %0"::"r"(x));
+                __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
+                __asm__ volatile("sb a1,0(a0)");
+            }
+            //cntWInterrupt--;
+
     }
 }
 
@@ -113,4 +132,55 @@ char KConsole::getCharacterOutput()
 {
     hasCharactersOutput->wait();
     return getChar(headOutput, tailOutput);
+}
+
+void KConsole::putcHandler()
+{
+    uint64 ch;
+    __asm__ volatile("mv %0, a1" : "=r"(ch));
+    //Riscv::printString("stavio ");
+    //Riscv::printInteger((char)ch);
+    putCharacterOutput((char)ch);
+    //Riscv::printString("Bafer\n");
+    Elem* curr = headOutput;
+    while(curr != 0)
+    {
+        //Riscv::printInteger(curr->data);
+        curr = curr->next;
+    }
+    //Riscv::printString("Kraj bafera\n");
+}
+
+void KConsole::getcHandler()
+{
+    char ch;
+    ch = getCharacterInput();
+    //putCharacterOutput(ch);
+    //while((ch = getCharacterInput()) == 0){}
+    __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
+}
+
+void KConsole::ack()
+{
+    //Riscv::printString("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+    uint64 x = CONSOLE_STATUS;
+    __asm__ volatile("mv a0, %0"::"r"(x));
+    __asm__ volatile("lb a1, 0(a0)");
+    uint64 operation;
+    __asm__ volatile("mv %0, a1" :  "=r"(operation));
+    //Riscv::printInteger(operation);
+    if(operation & STATUS_WRITE_MASK)
+    {
+        cntWInterrupt++;
+    }
+}
+
+void KConsole::printBuffer()
+{
+    Elem* curr = headInput;
+    while(curr != 0)
+    {
+        putc(curr->data);
+        curr = curr->next;
+    }
 }

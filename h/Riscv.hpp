@@ -19,11 +19,15 @@ public:
 
     static void enableInterrupts();
 
+    static void disableTimerInterrupts();
+
     static void disableInterrupts();
 
     static void printString(char const *string);
 
     static void printInteger(uint64 num);
+
+    static void idleRiscv(void* arg);
 
     static void pushRegisters();
     static void popRegisters();
@@ -66,10 +70,14 @@ public:
 
     static void mc_sstatus(uint64 mask);
 
+    static void mc_sie(uint64 mask);
+
     static uint64 r_sstatus();
 
     static void w_sstatus(uint64 sstatus);
 
+    static uint64 r_sie();
+    static void w_sie(uint64 sie);
     static void popSppSpie();
 
     static void supervisorTrap();
@@ -85,6 +93,11 @@ public:
     static const uint64 ecallUserInterrupt = bntZero + 8UL;
     static const uint64 ecallSystemInterupt = bntZero + 9UL;
 };
+
+inline void Riscv::mc_sie(uint64 mask)
+{
+    __asm__ volatile("csrc sie, %0" : :"r"(mask));
+}
 
 inline uint64 Riscv::r_scause() {
     uint64 volatile scause;
@@ -122,6 +135,11 @@ inline uint64 Riscv::r_stval() {
     return stval;
 }
 
+inline void Riscv::w_sie(uint64 sie)
+{
+    __asm__ volatile("csrw sie, %0" : :"r"(sie));
+}
+
 inline void Riscv::w_stval(uint64 stval) {
     __asm__ volatile("csrw stval, %0" : :"r"(stval));
 }
@@ -133,6 +151,14 @@ inline void Riscv::ms_sip(uint64 mask) {
 inline void Riscv::mc_sip(uint64 mask) {
     __asm__ volatile("csrc sip, %0" : :"r"(mask));
 }
+
+inline uint64 Riscv::r_sie()
+{
+    uint64 volatile sie;
+    __asm__ volatile("csrr %0, sip" : "=r"(sie));
+    return sie;
+}
+
 
 inline uint64 Riscv::r_sip() {
     uint64 volatile sip;

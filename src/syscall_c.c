@@ -200,3 +200,21 @@ int thread_make_pcb(thread_t* handle, void(*start_routine)(void*), void *arg)
     __asm__ volatile("mv %0, a0" : "=r"(result));
     return result;
 }
+
+char getc()
+{
+    __asm__ volatile("li a0, 0x41");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+    return (char)result;
+}
+
+void putc(char c)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)c));
+    __asm__ volatile("li a0, 0x42");
+    __asm__ volatile("ecall");
+}

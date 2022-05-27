@@ -456,7 +456,8 @@ char string[11] = "this is ni";
 
 void consumerA(void *arg)
 {
-    while(head!=10){
+    while(head!=10)
+    {
         sem_wait(itemAvailable);
         __putc(buffer[head++]);
         sem_signal(spaceAvailable);
@@ -488,7 +489,6 @@ void semTest1()
 
     while(!((PCB*)threadA)->isFinished() || !((PCB*)threadA)->isFinished())
         thread_dispatch();
-
 }
 
 

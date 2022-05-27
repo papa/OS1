@@ -68,7 +68,8 @@ void KSemaphore::addToBlocked(PCB* pcb)
     }
 }
 
-void KSemaphore::block() {
+void KSemaphore::block()
+{
     PCB::running->setState(PCB::SUSPENDED);
     addToBlocked(PCB::running);
     PCB::dispatch();
@@ -94,9 +95,11 @@ void KSemaphore::unblock() {
     PCB* fr = getFirstBlocked();
     removeFirstBlocked();
     if(fr != 0)
+    {
+        //Riscv::printString("Unblocked thread\n");
         Scheduler::put(fr);
+    }
 }
-
 void *KSemaphore::operator new(size_t size) {
     return kmalloc(size);
 }

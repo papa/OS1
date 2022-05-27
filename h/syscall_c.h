@@ -37,6 +37,9 @@ int thread_start(void* p);
 
 int thread_make_pcb(thread_t* handle, void(*start_routine)(void*), void *arg);
 
+char getc();
+
+void putc(char c);
 #ifdef __cplusplus
 }
 #endif

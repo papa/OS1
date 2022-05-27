@@ -1,4 +1,4 @@
-GAS LISTING /tmp/ccL15Wqi.s 			page 1
+GAS LISTING /tmp/ccG4TxL5.s 			page 1
 
 
    1              		.file	"PCB.cpp"
@@ -6,20 +6,11 @@ GAS LISTING /tmp/ccL15Wqi.s 			page 1
    3              		.option norelax
    4              		.text
    5              	.Ltext0:
-   6              		.section	.rodata.str1.8,"aMS",@progbits,1
-   7              		.align	3
-   8              	.LC0:
-   9 0000 52756E6E 		.string	"Runner started...\n"
-   9      65722073 
-   9      74617274 
-   9      65642E2E 
-   9      2E0A00
-  10              		.text
-  11              		.align	2
-  12              		.globl	_ZN3PCB6runnerEv
-  14              	_ZN3PCB6runnerEv:
-  15              	.LFB26:
-  16              		.file 1 "src/PCB.cpp"
+   6              		.align	2
+   7              		.globl	_ZN3PCB6runnerEv
+   9              	_ZN3PCB6runnerEv:
+  10              	.LFB29:
+  11              		.file 1 "src/PCB.cpp"
    1:src/PCB.cpp   **** //
    2:src/PCB.cpp   **** // Created by os on 4/27/22.
    3:src/PCB.cpp   **** //
@@ -27,247 +18,240 @@ GAS LISTING /tmp/ccL15Wqi.s 			page 1
    5:src/PCB.cpp   **** #include "../h/PCB.hpp"
    6:src/PCB.cpp   **** #include "../h/syscall_c.h"
    7:src/PCB.cpp   **** #include "../h/SleepPCBList.hpp"
-   8:src/PCB.cpp   **** 
-   9:src/PCB.cpp   **** PCB* PCB::running = 0;
-  10:src/PCB.cpp   **** uint64 PCB::timeSliceCounter = 0;
-  11:src/PCB.cpp   **** uint64 PCB::savedRegA4 = 0;
-  12:src/PCB.cpp   **** 
-  13:src/PCB.cpp   **** PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
-  14:src/PCB.cpp   ****     timeSlice(timeSlice),
-  15:src/PCB.cpp   ****     body(body),
-  16:src/PCB.cpp   ****     args(args),
-  17:src/PCB.cpp   ****     beginSP(stack_space),
-  18:src/PCB.cpp   ****     context({
-  19:src/PCB.cpp   ****         (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
-  20:src/PCB.cpp   ****         (uint64)&PCB::runner
-  21:src/PCB.cpp   ****     })
-  22:src/PCB.cpp   **** {
-  23:src/PCB.cpp   ****     //Scheduler::put(this);
-  24:src/PCB.cpp   ****     nextPCB = 0;
-  25:src/PCB.cpp   **** }
-  26:src/PCB.cpp   **** 
-  27:src/PCB.cpp   **** void PCB::sleep(time_t time)
-  28:src/PCB.cpp   **** {
-  29:src/PCB.cpp   ****     //todo
-  30:src/PCB.cpp   **** }
-  31:src/PCB.cpp   **** 
-  32:src/PCB.cpp   **** void PCB::start()
-  33:src/PCB.cpp   **** {
-  34:src/PCB.cpp   ****     Scheduler::put(this);
-  35:src/PCB.cpp   **** }
-  36:src/PCB.cpp   **** 
-  37:src/PCB.cpp   **** void PCB::runner()
-  38:src/PCB.cpp   **** {
-GAS LISTING /tmp/ccL15Wqi.s 			page 2
+   8:src/PCB.cpp   **** #include "../test/printing.hpp"
+   9:src/PCB.cpp   **** #include "../h/KConsole.hpp"
+  10:src/PCB.cpp   **** 
+  11:src/PCB.cpp   **** PCB* PCB::running = 0;
+  12:src/PCB.cpp   **** uint64 PCB::timeSliceCounter = 0;
+  13:src/PCB.cpp   **** uint64 PCB::savedRegA4 = 0;
+  14:src/PCB.cpp   **** 
+  15:src/PCB.cpp   **** PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
+  16:src/PCB.cpp   ****     timeSlice(timeSlice),
+  17:src/PCB.cpp   ****     body(body),
+  18:src/PCB.cpp   ****     args(args),
+  19:src/PCB.cpp   ****     beginSP(stack_space),
+  20:src/PCB.cpp   ****     context({
+  21:src/PCB.cpp   ****         (uint64)((char*)stack_space + DEFAULT_STACK_SIZE),
+  22:src/PCB.cpp   ****         (uint64)&PCB::runner
+  23:src/PCB.cpp   ****     })
+  24:src/PCB.cpp   **** {
+  25:src/PCB.cpp   ****     //Scheduler::put(this);
+  26:src/PCB.cpp   ****     nextPCB = 0;
+  27:src/PCB.cpp   **** }
+  28:src/PCB.cpp   **** 
+  29:src/PCB.cpp   **** void PCB::sleep(time_t time)
+  30:src/PCB.cpp   **** {
+  31:src/PCB.cpp   ****     //todo
+  32:src/PCB.cpp   **** }
+  33:src/PCB.cpp   **** 
+  34:src/PCB.cpp   **** void PCB::start()
+  35:src/PCB.cpp   **** {
+  36:src/PCB.cpp   ****     Scheduler::put(this);
+  37:src/PCB.cpp   **** }
+  38:src/PCB.cpp   **** 
+  39:src/PCB.cpp   **** void PCB::runner()
+  40:src/PCB.cpp   **** {
+  12              		.loc 1 40 1
+  13              		.cfi_startproc
+  14 0000 130101FF 		addi	sp,sp,-16
+  15              		.cfi_def_cfa_offset 16
+  16 0004 23341100 		sd	ra,8(sp)
+  17 0008 23308100 		sd	s0,0(sp)
+  18              		.cfi_offset 1, -8
+GAS LISTING /tmp/ccG4TxL5.s 			page 2
 
 
-  17              		.loc 1 38 1
-  18              		.cfi_startproc
-  19 0000 130101FF 		addi	sp,sp,-16
-  20              		.cfi_def_cfa_offset 16
-  21 0004 23341100 		sd	ra,8(sp)
-  22 0008 23308100 		sd	s0,0(sp)
-  23              		.cfi_offset 1, -8
-  24              		.cfi_offset 8, -16
-  25 000c 13040101 		addi	s0,sp,16
-  26              		.cfi_def_cfa 8, 0
-  39:src/PCB.cpp   ****     Riscv::printString("Runner started...\n");
-  27              		.loc 1 39 5
-  28              		.loc 1 39 23 is_stmt 0
-  29 0010 17050000 		lla	a0,.LC0
-  29      13050500 
-  30 0018 97000000 		call	_ZN5Riscv11printStringEPKc@plt
-  30      E7800000 
-  31              	.LVL0:
-  40:src/PCB.cpp   ****     Riscv::popSppSpie();
-  32              		.loc 1 40 5 is_stmt 1
-  33              		.loc 1 40 22 is_stmt 0
-  34 0020 97000000 		call	_ZN5Riscv10popSppSpieEv@plt
-  34      E7800000 
-  35              	.LVL1:
-  41:src/PCB.cpp   **** 
-  42:src/PCB.cpp   ****     running->body(running->args);
-  36              		.loc 1 42 5 is_stmt 1
-  37              		.loc 1 42 14 is_stmt 0
-  38 0028 97070000 		ld	a5,.LANCHOR0
-  38      83B70700 
-  39 0030 03B70702 		ld	a4,32(a5)
-  40              		.loc 1 42 18
-  41 0034 03B58702 		ld	a0,40(a5)
-  42 0038 E7000700 		jalr	a4
-  43              	.LVL2:
+  19              		.cfi_offset 8, -16
+  20 000c 13040101 		addi	s0,sp,16
+  21              		.cfi_def_cfa 8, 0
+  41:src/PCB.cpp   ****     //Riscv::printString("Runner started...\n");
+  42:src/PCB.cpp   ****     Riscv::popSppSpie();
+  22              		.loc 1 42 5
+  23              		.loc 1 42 22 is_stmt 0
+  24 0010 97000000 		call	_ZN5Riscv10popSppSpieEv@plt
+  24      E7800000 
+  25              	.LVL0:
   43:src/PCB.cpp   **** 
-  44:src/PCB.cpp   ****     thread_exit();
-  44              		.loc 1 44 5 is_stmt 1
-  45              		.loc 1 44 16 is_stmt 0
-  46 003c 97000000 		call	thread_exit@plt
-  46      E7800000 
-  47              	.LVL3:
-  45:src/PCB.cpp   **** }
-  48              		.loc 1 45 1
-  49 0044 83308100 		ld	ra,8(sp)
-  50              		.cfi_restore 1
-  51 0048 03340100 		ld	s0,0(sp)
-  52              		.cfi_restore 8
-  53              		.cfi_def_cfa 2, 16
-  54 004c 13010101 		addi	sp,sp,16
-  55              		.cfi_def_cfa_offset 0
-  56 0050 67800000 		jr	ra
-  57              		.cfi_endproc
-  58              	.LFE26:
-  60              		.align	2
-  61              		.globl	_ZN3PCBC2EPFvPvES0_S0_m
-  63              	_ZN3PCBC2EPFvPvES0_S0_m:
-GAS LISTING /tmp/ccL15Wqi.s 			page 3
+  44:src/PCB.cpp   ****     running->body(running->args);
+  26              		.loc 1 44 5 is_stmt 1
+  27              		.loc 1 44 14 is_stmt 0
+  28 0018 97070000 		ld	a5,.LANCHOR0
+  28      83B70700 
+  29 0020 03B70702 		ld	a4,32(a5)
+  30              		.loc 1 44 18
+  31 0024 03B58702 		ld	a0,40(a5)
+  32 0028 E7000700 		jalr	a4
+  33              	.LVL1:
+  45:src/PCB.cpp   **** 
+  46:src/PCB.cpp   ****     thread_exit();
+  34              		.loc 1 46 5 is_stmt 1
+  35              		.loc 1 46 16 is_stmt 0
+  36 002c 97000000 		call	thread_exit@plt
+  36      E7800000 
+  37              	.LVL2:
+  47:src/PCB.cpp   **** }
+  38              		.loc 1 47 1
+  39 0034 83308100 		ld	ra,8(sp)
+  40              		.cfi_restore 1
+  41 0038 03340100 		ld	s0,0(sp)
+  42              		.cfi_restore 8
+  43              		.cfi_def_cfa 2, 16
+  44 003c 13010101 		addi	sp,sp,16
+  45              		.cfi_def_cfa_offset 0
+  46 0040 67800000 		jr	ra
+  47              		.cfi_endproc
+  48              	.LFE29:
+  50              		.align	2
+  51              		.globl	_ZN3PCBC2EPFvPvES0_S0_m
+  53              	_ZN3PCBC2EPFvPvES0_S0_m:
+  54              	.LFB25:
+  15:src/PCB.cpp   ****     timeSlice(timeSlice),
+  55              		.loc 1 15 1 is_stmt 1
+  56              		.cfi_startproc
+  57              	.LVL3:
+  58 0044 130101FF 		addi	sp,sp,-16
+  59              		.cfi_def_cfa_offset 16
+  60 0048 23348100 		sd	s0,8(sp)
+  61              		.cfi_offset 8, -8
+  62 004c 13040101 		addi	s0,sp,16
+  63              		.cfi_def_cfa 8, 0
+  64              	.LBB12:
+  23:src/PCB.cpp   **** {
+  65              		.loc 1 23 6 is_stmt 0
+GAS LISTING /tmp/ccG4TxL5.s 			page 3
 
 
-  64              	.LFB22:
-  13:src/PCB.cpp   ****     timeSlice(timeSlice),
-  65              		.loc 1 13 1 is_stmt 1
-  66              		.cfi_startproc
-  67              	.LVL4:
-  68 0054 130101FF 		addi	sp,sp,-16
-  69              		.cfi_def_cfa_offset 16
-  70 0058 23348100 		sd	s0,8(sp)
-  71              		.cfi_offset 8, -8
-  72 005c 13040101 		addi	s0,sp,16
-  73              		.cfi_def_cfa 8, 0
-  74              	.LBB12:
-  21:src/PCB.cpp   **** {
-  75              		.loc 1 21 6 is_stmt 0
-  76 0060 23000500 		sb	zero,0(a0)
-  77 0064 2338E500 		sd	a4,16(a0)
-  78 0068 233C0500 		sd	zero,24(a0)
-  79 006c 2330B502 		sd	a1,32(a0)
-  80 0070 2334C502 		sd	a2,40(a0)
-  81 0074 2338D502 		sd	a3,48(a0)
-  19:src/PCB.cpp   ****         (uint64)&PCB::runner
-  82              		.loc 1 19 37
-  83 0078 B7170000 		li	a5,4096
-  84 007c B386F600 		add	a3,a3,a5
-  85              	.LVL5:
-  21:src/PCB.cpp   **** {
-  86              		.loc 1 21 6
-  87 0080 2330D504 		sd	a3,64(a0)
-  88 0084 97070000 		lla	a5,_ZN3PCB6runnerEv
-  88      93870700 
-  89 008c 2334F504 		sd	a5,72(a0)
-  24:src/PCB.cpp   **** }
-  90              		.loc 1 24 5 is_stmt 1
-  24:src/PCB.cpp   **** }
-  91              		.loc 1 24 13 is_stmt 0
-  92 0090 23340500 		sd	zero,8(a0)
-  93              	.LBE12:
-  25:src/PCB.cpp   **** 
-  94              		.loc 1 25 1
-  95 0094 03348100 		ld	s0,8(sp)
-  96              		.cfi_restore 8
-  97              		.cfi_def_cfa 2, 16
-  98 0098 13010101 		addi	sp,sp,16
-  99              		.cfi_def_cfa_offset 0
- 100 009c 67800000 		jr	ra
- 101              		.cfi_endproc
- 102              	.LFE22:
- 104              		.globl	_ZN3PCBC1EPFvPvES0_S0_m
- 105              		.set	_ZN3PCBC1EPFvPvES0_S0_m,_ZN3PCBC2EPFvPvES0_S0_m
- 106              		.align	2
- 107              		.globl	_ZN3PCB5sleepEm
- 109              	_ZN3PCB5sleepEm:
- 110              	.LFB24:
-  28:src/PCB.cpp   ****     //todo
- 111              		.loc 1 28 1 is_stmt 1
- 112              		.cfi_startproc
- 113              	.LVL6:
-GAS LISTING /tmp/ccL15Wqi.s 			page 4
+  66 0050 23000500 		sb	zero,0(a0)
+  67 0054 2338E500 		sd	a4,16(a0)
+  68 0058 233C0500 		sd	zero,24(a0)
+  69 005c 2330B502 		sd	a1,32(a0)
+  70 0060 2334C502 		sd	a2,40(a0)
+  71 0064 2338D502 		sd	a3,48(a0)
+  21:src/PCB.cpp   ****         (uint64)&PCB::runner
+  72              		.loc 1 21 37
+  73 0068 B7170000 		li	a5,4096
+  74 006c B386F600 		add	a3,a3,a5
+  75              	.LVL4:
+  23:src/PCB.cpp   **** {
+  76              		.loc 1 23 6
+  77 0070 2330D504 		sd	a3,64(a0)
+  78 0074 97070000 		lla	a5,_ZN3PCB6runnerEv
+  78      93870700 
+  79 007c 2334F504 		sd	a5,72(a0)
+  26:src/PCB.cpp   **** }
+  80              		.loc 1 26 5 is_stmt 1
+  26:src/PCB.cpp   **** }
+  81              		.loc 1 26 13 is_stmt 0
+  82 0080 23340500 		sd	zero,8(a0)
+  83              	.LBE12:
+  27:src/PCB.cpp   **** 
+  84              		.loc 1 27 1
+  85 0084 03348100 		ld	s0,8(sp)
+  86              		.cfi_restore 8
+  87              		.cfi_def_cfa 2, 16
+  88 0088 13010101 		addi	sp,sp,16
+  89              		.cfi_def_cfa_offset 0
+  90 008c 67800000 		jr	ra
+  91              		.cfi_endproc
+  92              	.LFE25:
+  94              		.globl	_ZN3PCBC1EPFvPvES0_S0_m
+  95              		.set	_ZN3PCBC1EPFvPvES0_S0_m,_ZN3PCBC2EPFvPvES0_S0_m
+  96              		.align	2
+  97              		.globl	_ZN3PCB5sleepEm
+  99              	_ZN3PCB5sleepEm:
+ 100              	.LFB27:
+  30:src/PCB.cpp   ****     //todo
+ 101              		.loc 1 30 1 is_stmt 1
+ 102              		.cfi_startproc
+ 103              	.LVL5:
+ 104 0090 130101FF 		addi	sp,sp,-16
+ 105              		.cfi_def_cfa_offset 16
+ 106 0094 23348100 		sd	s0,8(sp)
+ 107              		.cfi_offset 8, -8
+ 108 0098 13040101 		addi	s0,sp,16
+ 109              		.cfi_def_cfa 8, 0
+  32:src/PCB.cpp   **** 
+ 110              		.loc 1 32 1 is_stmt 0
+ 111 009c 03348100 		ld	s0,8(sp)
+ 112              		.cfi_restore 8
+ 113              		.cfi_def_cfa 2, 16
+ 114 00a0 13010101 		addi	sp,sp,16
+ 115              		.cfi_def_cfa_offset 0
+ 116 00a4 67800000 		jr	ra
+GAS LISTING /tmp/ccG4TxL5.s 			page 4
 
 
- 114 00a0 130101FF 		addi	sp,sp,-16
- 115              		.cfi_def_cfa_offset 16
- 116 00a4 23348100 		sd	s0,8(sp)
- 117              		.cfi_offset 8, -8
- 118 00a8 13040101 		addi	s0,sp,16
- 119              		.cfi_def_cfa 8, 0
-  30:src/PCB.cpp   **** 
- 120              		.loc 1 30 1 is_stmt 0
- 121 00ac 03348100 		ld	s0,8(sp)
- 122              		.cfi_restore 8
- 123              		.cfi_def_cfa 2, 16
- 124 00b0 13010101 		addi	sp,sp,16
- 125              		.cfi_def_cfa_offset 0
- 126 00b4 67800000 		jr	ra
- 127              		.cfi_endproc
- 128              	.LFE24:
- 130              		.align	2
- 131              		.globl	_ZN3PCB5startEv
- 133              	_ZN3PCB5startEv:
- 134              	.LFB25:
-  33:src/PCB.cpp   ****     Scheduler::put(this);
- 135              		.loc 1 33 1 is_stmt 1
- 136              		.cfi_startproc
- 137              	.LVL7:
- 138 00b8 130101FF 		addi	sp,sp,-16
- 139              		.cfi_def_cfa_offset 16
- 140 00bc 23341100 		sd	ra,8(sp)
- 141 00c0 23308100 		sd	s0,0(sp)
- 142              		.cfi_offset 1, -8
- 143              		.cfi_offset 8, -16
- 144 00c4 13040101 		addi	s0,sp,16
- 145              		.cfi_def_cfa 8, 0
-  34:src/PCB.cpp   **** }
- 146              		.loc 1 34 5
-  34:src/PCB.cpp   **** }
- 147              		.loc 1 34 19 is_stmt 0
- 148 00c8 97000000 		call	_ZN9Scheduler3putEP3PCB@plt
- 148      E7800000 
- 149              	.LVL8:
-  35:src/PCB.cpp   **** 
- 150              		.loc 1 35 1
- 151 00d0 83308100 		ld	ra,8(sp)
- 152              		.cfi_restore 1
- 153 00d4 03340100 		ld	s0,0(sp)
- 154              		.cfi_restore 8
- 155              		.cfi_def_cfa 2, 16
- 156 00d8 13010101 		addi	sp,sp,16
- 157              		.cfi_def_cfa_offset 0
- 158 00dc 67800000 		jr	ra
- 159              		.cfi_endproc
- 160              	.LFE25:
- 162              		.align	2
- 163              		.globl	_ZN3PCB8dispatchEv
- 165              	_ZN3PCB8dispatchEv:
- 166              	.LFB27:
-  46:src/PCB.cpp   **** 
-  47:src/PCB.cpp   **** void PCB::dispatch()
-GAS LISTING /tmp/ccL15Wqi.s 			page 5
-
-
-  48:src/PCB.cpp   **** {
- 167              		.loc 1 48 1 is_stmt 1
- 168              		.cfi_startproc
- 169 00e0 130101FE 		addi	sp,sp,-32
- 170              		.cfi_def_cfa_offset 32
- 171 00e4 233C1100 		sd	ra,24(sp)
- 172 00e8 23388100 		sd	s0,16(sp)
- 173 00ec 23349100 		sd	s1,8(sp)
- 174              		.cfi_offset 1, -8
- 175              		.cfi_offset 8, -16
- 176              		.cfi_offset 9, -24
- 177 00f0 13040102 		addi	s0,sp,32
- 178              		.cfi_def_cfa 8, 0
-  49:src/PCB.cpp   ****     //Scheduler::print();
-  50:src/PCB.cpp   ****     //Riscv::printInteger(Scheduler::getSize());
+ 117              		.cfi_endproc
+ 118              	.LFE27:
+ 120              		.align	2
+ 121              		.globl	_ZN3PCB5startEv
+ 123              	_ZN3PCB5startEv:
+ 124              	.LFB28:
+  35:src/PCB.cpp   ****     Scheduler::put(this);
+ 125              		.loc 1 35 1 is_stmt 1
+ 126              		.cfi_startproc
+ 127              	.LVL6:
+ 128 00a8 130101FF 		addi	sp,sp,-16
+ 129              		.cfi_def_cfa_offset 16
+ 130 00ac 23341100 		sd	ra,8(sp)
+ 131 00b0 23308100 		sd	s0,0(sp)
+ 132              		.cfi_offset 1, -8
+ 133              		.cfi_offset 8, -16
+ 134 00b4 13040101 		addi	s0,sp,16
+ 135              		.cfi_def_cfa 8, 0
+  36:src/PCB.cpp   **** }
+ 136              		.loc 1 36 5
+  36:src/PCB.cpp   **** }
+ 137              		.loc 1 36 19 is_stmt 0
+ 138 00b8 97000000 		call	_ZN9Scheduler3putEP3PCB@plt
+ 138      E7800000 
+ 139              	.LVL7:
+  37:src/PCB.cpp   **** 
+ 140              		.loc 1 37 1
+ 141 00c0 83308100 		ld	ra,8(sp)
+ 142              		.cfi_restore 1
+ 143 00c4 03340100 		ld	s0,0(sp)
+ 144              		.cfi_restore 8
+ 145              		.cfi_def_cfa 2, 16
+ 146 00c8 13010101 		addi	sp,sp,16
+ 147              		.cfi_def_cfa_offset 0
+ 148 00cc 67800000 		jr	ra
+ 149              		.cfi_endproc
+ 150              	.LFE28:
+ 152              		.align	2
+ 153              		.globl	_ZN3PCB8dispatchEv
+ 155              	_ZN3PCB8dispatchEv:
+ 156              	.LFB30:
+  48:src/PCB.cpp   **** 
+  49:src/PCB.cpp   **** void PCB::dispatch()
+  50:src/PCB.cpp   **** {
+ 157              		.loc 1 50 1 is_stmt 1
+ 158              		.cfi_startproc
+ 159 00d0 130101FE 		addi	sp,sp,-32
+ 160              		.cfi_def_cfa_offset 32
+ 161 00d4 233C1100 		sd	ra,24(sp)
+ 162 00d8 23388100 		sd	s0,16(sp)
+ 163 00dc 23349100 		sd	s1,8(sp)
+ 164              		.cfi_offset 1, -8
+ 165              		.cfi_offset 8, -16
+ 166              		.cfi_offset 9, -24
+ 167 00e0 13040102 		addi	s0,sp,32
+ 168              		.cfi_def_cfa 8, 0
   51:src/PCB.cpp   ****     //Riscv::printString("Dispatch called...\n");
+GAS LISTING /tmp/ccG4TxL5.s 			page 5
+
+
   52:src/PCB.cpp   ****     PCB* old = running;
- 179              		.loc 1 52 5
- 180              		.loc 1 52 10 is_stmt 0
- 181 00f4 97040000 		ld	s1,.LANCHOR0
- 181      83B40400 
- 182              	.LVL9:
+ 169              		.loc 1 52 5
+ 170              		.loc 1 52 10 is_stmt 0
+ 171 00e4 97040000 		ld	s1,.LANCHOR0
+ 171      83B40400 
+ 172              	.LVL8:
   53:src/PCB.cpp   ****     if(old->getState() == PCB::RUNNING)
- 183              		.loc 1 53 5 is_stmt 1
- 184              	.LBB13:
- 185              	.LBB14:
- 186              		.file 2 "src/../h/PCB.hpp"
+ 173              		.loc 1 53 5 is_stmt 1
+ 174              	.LBB13:
+ 175              	.LBB14:
+ 176              		.file 2 "src/../h/PCB.hpp"
    1:src/../h/PCB.hpp **** //
    2:src/../h/PCB.hpp **** // Created by os on 4/27/22.
    3:src/../h/PCB.hpp **** //
@@ -298,47 +282,47 @@ GAS LISTING /tmp/ccL15Wqi.s 			page 1
   28:src/../h/PCB.hpp ****     static uint64 timeSliceCounter;
   29:src/../h/PCB.hpp ****     uint64 getTimeSlice() { return timeSlice;}
   30:src/../h/PCB.hpp **** 
-GAS LISTING /tmp/ccL15Wqi.s 			page 6
-
-
   31:src/../h/PCB.hpp ****     void* operator new(size_t size);
   32:src/../h/PCB.hpp ****     void operator delete(void *p);
   33:src/../h/PCB.hpp **** 
   34:src/../h/PCB.hpp ****     enum State{READY, RUNNING, SUSPENDED, FINISHED, EXITING, SLEEPING};
   35:src/../h/PCB.hpp ****     State getState() {return state;}
- 187              		.loc 2 35 23
- 188              		.loc 2 35 30 is_stmt 0
- 189 00fc 03A78403 		lw	a4,56(s1)
- 190              	.LVL10:
- 191              	.LBE14:
- 192              	.LBE13:
- 193              		.loc 1 53 5
- 194 0100 93071000 		li	a5,1
- 195 0104 6300F704 		beq	a4,a5,.L12
- 196              	.L10:
+ 177              		.loc 2 35 23
+ 178              		.loc 2 35 30 is_stmt 0
+ 179 00ec 03A78403 		lw	a4,56(s1)
+ 180              	.LVL9:
+ 181              	.LBE14:
+ 182              	.LBE13:
+ 183              		.loc 1 53 5
+ 184 00f0 93071000 		li	a5,1
+ 185 00f4 6300F704 		beq	a4,a5,.L12
+ 186              	.L10:
   54:src/PCB.cpp   ****         Scheduler::put(old);
+GAS LISTING /tmp/ccG4TxL5.s 			page 6
+
+
   55:src/PCB.cpp   ****     PCB::running = Scheduler::get();
- 197              		.loc 1 55 5 is_stmt 1
- 198              		.loc 1 55 34 is_stmt 0
- 199 0108 97000000 		call	_ZN9Scheduler3getEv@plt
- 199      E7800000 
- 200              	.LVL11:
- 201              		.loc 1 55 18
- 202 0110 97070000 		sd	a0,.LANCHOR0,a5
- 202      23B0A700 
+ 187              		.loc 1 55 5 is_stmt 1
+ 188              		.loc 1 55 34 is_stmt 0
+ 189 00f8 97000000 		call	_ZN9Scheduler3getEv@plt
+ 189      E7800000 
+ 190              	.LVL10:
+ 191              		.loc 1 55 18
+ 192 0100 97070000 		sd	a0,.LANCHOR0,a5
+ 192      23B0A700 
   56:src/PCB.cpp   ****     PCB::running->setState(PCB::RUNNING);
- 203              		.loc 1 56 5 is_stmt 1
- 204              	.LVL12:
- 205              	.LBB15:
- 206              	.LBB16:
+ 193              		.loc 1 56 5 is_stmt 1
+ 194              	.LVL11:
+ 195              	.LBB15:
+ 196              	.LBB16:
   36:src/../h/PCB.hpp ****     void setState(State s) {state = s;}
- 207              		.loc 2 36 29
- 208              		.loc 2 36 35 is_stmt 0
- 209 0118 93071000 		li	a5,1
- 210 011c 232CF502 		sw	a5,56(a0)
- 211              	.LVL13:
- 212              	.LBE16:
- 213              	.LBE15:
+ 197              		.loc 2 36 29
+ 198              		.loc 2 36 35 is_stmt 0
+ 199 0108 93071000 		li	a5,1
+ 200 010c 232CF502 		sw	a5,56(a0)
+ 201              	.LVL12:
+ 202              	.LBE16:
+ 203              	.LBE15:
   57:src/PCB.cpp   ****     //Riscv::printString("Switching context...\n");
   58:src/PCB.cpp   **** 
   59:src/PCB.cpp   ****     //if(PCB::running->systemThread)
@@ -347,1683 +331,1811 @@ GAS LISTING /tmp/ccL15Wqi.s 			page 1
   62:src/PCB.cpp   ****     //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
   63:src/PCB.cpp   **** 
   64:src/PCB.cpp   ****     PCB::contextSwitch(&old->context, &running->context);
- 214              		.loc 1 64 5 is_stmt 1
- 215              		.loc 1 64 23 is_stmt 0
- 216 0120 93050504 		addi	a1,a0,64
- 217 0124 13850404 		addi	a0,s1,64
- 218 0128 97000000 		call	_ZN3PCB13contextSwitchEPNS_7ContextES1_@plt
- 218      E7800000 
- 219              	.LVL14:
+ 204              		.loc 1 64 5 is_stmt 1
+ 205              		.loc 1 64 23 is_stmt 0
+ 206 0110 93050504 		addi	a1,a0,64
+ 207 0114 13850404 		addi	a0,s1,64
+ 208 0118 97000000 		call	_ZN3PCB13contextSwitchEPNS_7ContextES1_@plt
+ 208      E7800000 
+ 209              	.LVL13:
   65:src/PCB.cpp   **** }
- 220              		.loc 1 65 1
- 221 0130 83308101 		ld	ra,24(sp)
- 222              		.cfi_remember_state
-GAS LISTING /tmp/ccL15Wqi.s 			page 7
+ 210              		.loc 1 65 1
+ 211 0120 83308101 		ld	ra,24(sp)
+ 212              		.cfi_remember_state
+ 213              		.cfi_restore 1
+ 214 0124 03340101 		ld	s0,16(sp)
+ 215              		.cfi_restore 8
+ 216              		.cfi_def_cfa 2, 32
+ 217 0128 83348100 		ld	s1,8(sp)
+ 218              		.cfi_restore 9
+ 219              	.LVL14:
+ 220 012c 13010102 		addi	sp,sp,32
+ 221              		.cfi_def_cfa_offset 0
+ 222 0130 67800000 		jr	ra
+ 223              	.LVL15:
+ 224              	.L12:
+ 225              		.cfi_restore_state
+  54:src/PCB.cpp   ****     PCB::running = Scheduler::get();
+ 226              		.loc 1 54 9 is_stmt 1
+  54:src/PCB.cpp   ****     PCB::running = Scheduler::get();
+GAS LISTING /tmp/ccG4TxL5.s 			page 7
 
 
- 223              		.cfi_restore 1
- 224 0134 03340101 		ld	s0,16(sp)
- 225              		.cfi_restore 8
- 226              		.cfi_def_cfa 2, 32
- 227 0138 83348100 		ld	s1,8(sp)
- 228              		.cfi_restore 9
- 229              	.LVL15:
- 230 013c 13010102 		addi	sp,sp,32
- 231              		.cfi_def_cfa_offset 0
- 232 0140 67800000 		jr	ra
- 233              	.LVL16:
- 234              	.L12:
- 235              		.cfi_restore_state
-  54:src/PCB.cpp   ****     PCB::running = Scheduler::get();
- 236              		.loc 1 54 9 is_stmt 1
-  54:src/PCB.cpp   ****     PCB::running = Scheduler::get();
- 237              		.loc 1 54 23 is_stmt 0
- 238 0144 13850400 		mv	a0,s1
- 239 0148 97000000 		call	_ZN9Scheduler3putEP3PCB@plt
- 239      E7800000 
- 240              	.LVL17:
- 241 0150 6FF09FFB 		j	.L10
- 242              		.cfi_endproc
- 243              	.LFE27:
- 245              		.align	2
- 246              		.globl	_ZN3PCBnwEm
- 248              	_ZN3PCBnwEm:
- 249              	.LFB28:
+ 227              		.loc 1 54 23 is_stmt 0
+ 228 0134 13850400 		mv	a0,s1
+ 229 0138 97000000 		call	_ZN9Scheduler3putEP3PCB@plt
+ 229      E7800000 
+ 230              	.LVL16:
+ 231 0140 6FF09FFB 		j	.L10
+ 232              		.cfi_endproc
+ 233              	.LFE30:
+ 235              		.align	2
+ 236              		.globl	_ZN3PCBnwEm
+ 238              	_ZN3PCBnwEm:
+ 239              	.LFB31:
   66:src/PCB.cpp   **** 
   67:src/PCB.cpp   **** void *PCB::operator new(size_t size) {
- 250              		.loc 1 67 38 is_stmt 1
- 251              		.cfi_startproc
- 252              	.LVL18:
- 253 0154 130101FF 		addi	sp,sp,-16
- 254              		.cfi_def_cfa_offset 16
- 255 0158 23341100 		sd	ra,8(sp)
- 256 015c 23308100 		sd	s0,0(sp)
- 257              		.cfi_offset 1, -8
- 258              		.cfi_offset 8, -16
- 259 0160 13040101 		addi	s0,sp,16
- 260              		.cfi_def_cfa 8, 0
+ 240              		.loc 1 67 38 is_stmt 1
+ 241              		.cfi_startproc
+ 242              	.LVL17:
+ 243 0144 130101FF 		addi	sp,sp,-16
+ 244              		.cfi_def_cfa_offset 16
+ 245 0148 23341100 		sd	ra,8(sp)
+ 246 014c 23308100 		sd	s0,0(sp)
+ 247              		.cfi_offset 1, -8
+ 248              		.cfi_offset 8, -16
+ 249 0150 13040101 		addi	s0,sp,16
+ 250              		.cfi_def_cfa 8, 0
   68:src/PCB.cpp   ****     return kmalloc(size);
- 261              		.loc 1 68 5
- 262              		.loc 1 68 19 is_stmt 0
- 263 0164 97000000 		call	_Z7kmallocm@plt
- 263      E7800000 
- 264              	.LVL19:
+ 251              		.loc 1 68 5
+ 252              		.loc 1 68 19 is_stmt 0
+ 253 0154 97000000 		call	_Z7kmallocm@plt
+ 253      E7800000 
+ 254              	.LVL18:
   69:src/PCB.cpp   **** }
- 265              		.loc 1 69 1
- 266 016c 83308100 		ld	ra,8(sp)
- 267              		.cfi_restore 1
- 268 0170 03340100 		ld	s0,0(sp)
- 269              		.cfi_restore 8
- 270              		.cfi_def_cfa 2, 16
- 271 0174 13010101 		addi	sp,sp,16
- 272              		.cfi_def_cfa_offset 0
- 273 0178 67800000 		jr	ra
-GAS LISTING /tmp/ccL15Wqi.s 			page 8
-
-
- 274              		.cfi_endproc
- 275              	.LFE28:
- 277              		.align	2
- 278              		.globl	_ZN3PCBdlEPv
- 280              	_ZN3PCBdlEPv:
- 281              	.LFB29:
+ 255              		.loc 1 69 1
+ 256 015c 83308100 		ld	ra,8(sp)
+ 257              		.cfi_restore 1
+ 258 0160 03340100 		ld	s0,0(sp)
+ 259              		.cfi_restore 8
+ 260              		.cfi_def_cfa 2, 16
+ 261 0164 13010101 		addi	sp,sp,16
+ 262              		.cfi_def_cfa_offset 0
+ 263 0168 67800000 		jr	ra
+ 264              		.cfi_endproc
+ 265              	.LFE31:
+ 267              		.align	2
+ 268              		.globl	_ZN3PCBdlEPv
+ 270              	_ZN3PCBdlEPv:
+ 271              	.LFB32:
   70:src/PCB.cpp   **** 
   71:src/PCB.cpp   **** void PCB::operator delete(void *p) {
- 282              		.loc 1 71 36 is_stmt 1
- 283              		.cfi_startproc
- 284              	.LVL20:
- 285 017c 130101FF 		addi	sp,sp,-16
- 286              		.cfi_def_cfa_offset 16
- 287 0180 23341100 		sd	ra,8(sp)
- 288 0184 23308100 		sd	s0,0(sp)
- 289              		.cfi_offset 1, -8
- 290              		.cfi_offset 8, -16
- 291 0188 13040101 		addi	s0,sp,16
- 292              		.cfi_def_cfa 8, 0
+ 272              		.loc 1 71 36 is_stmt 1
+ 273              		.cfi_startproc
+ 274              	.LVL19:
+ 275 016c 130101FF 		addi	sp,sp,-16
+ 276              		.cfi_def_cfa_offset 16
+ 277 0170 23341100 		sd	ra,8(sp)
+ 278 0174 23308100 		sd	s0,0(sp)
+ 279              		.cfi_offset 1, -8
+GAS LISTING /tmp/ccG4TxL5.s 			page 8
+
+
+ 280              		.cfi_offset 8, -16
+ 281 0178 13040101 		addi	s0,sp,16
+ 282              		.cfi_def_cfa 8, 0
   72:src/PCB.cpp   ****     kfree(p);
- 293              		.loc 1 72 5
- 294              		.loc 1 72 10 is_stmt 0
- 295 018c 97000000 		call	_Z5kfreePv@plt
- 295      E7800000 
- 296              	.LVL21:
+ 283              		.loc 1 72 5
+ 284              		.loc 1 72 10 is_stmt 0
+ 285 017c 97000000 		call	_Z5kfreePv@plt
+ 285      E7800000 
+ 286              	.LVL20:
   73:src/PCB.cpp   **** }
- 297              		.loc 1 73 1
- 298 0194 83308100 		ld	ra,8(sp)
- 299              		.cfi_restore 1
- 300 0198 03340100 		ld	s0,0(sp)
- 301              		.cfi_restore 8
- 302              		.cfi_def_cfa 2, 16
- 303 019c 13010101 		addi	sp,sp,16
- 304              		.cfi_def_cfa_offset 0
- 305 01a0 67800000 		jr	ra
- 306              		.cfi_endproc
- 307              	.LFE29:
- 309              		.align	2
- 310              		.globl	_ZN3PCBD2Ev
- 312              	_ZN3PCBD2Ev:
- 313              	.LFB31:
+ 287              		.loc 1 73 1
+ 288 0184 83308100 		ld	ra,8(sp)
+ 289              		.cfi_restore 1
+ 290 0188 03340100 		ld	s0,0(sp)
+ 291              		.cfi_restore 8
+ 292              		.cfi_def_cfa 2, 16
+ 293 018c 13010101 		addi	sp,sp,16
+ 294              		.cfi_def_cfa_offset 0
+ 295 0190 67800000 		jr	ra
+ 296              		.cfi_endproc
+ 297              	.LFE32:
+ 299              		.align	2
+ 300              		.globl	_ZN3PCBD2Ev
+ 302              	_ZN3PCBD2Ev:
+ 303              	.LFB34:
   74:src/PCB.cpp   **** 
   75:src/PCB.cpp   **** PCB::~PCB()
- 314              		.loc 1 75 1 is_stmt 1
- 315              		.cfi_startproc
- 316              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
- 317              		.cfi_lsda 0x1b,.LLSDA31
- 318              	.LVL22:
- 319 01a4 130101FF 		addi	sp,sp,-16
- 320              		.cfi_def_cfa_offset 16
- 321 01a8 23341100 		sd	ra,8(sp)
- 322 01ac 23308100 		sd	s0,0(sp)
- 323              		.cfi_offset 1, -8
- 324              		.cfi_offset 8, -16
- 325 01b0 13040101 		addi	s0,sp,16
- 326              		.cfi_def_cfa 8, 0
- 327              	.LBB17:
-GAS LISTING /tmp/ccL15Wqi.s 			page 9
-
-
+ 304              		.loc 1 75 1 is_stmt 1
+ 305              		.cfi_startproc
+ 306              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+ 307              		.cfi_lsda 0x1b,.LLSDA34
+ 308              	.LVL21:
+ 309 0194 130101FF 		addi	sp,sp,-16
+ 310              		.cfi_def_cfa_offset 16
+ 311 0198 23341100 		sd	ra,8(sp)
+ 312 019c 23308100 		sd	s0,0(sp)
+ 313              		.cfi_offset 1, -8
+ 314              		.cfi_offset 8, -16
+ 315 01a0 13040101 		addi	s0,sp,16
+ 316              		.cfi_def_cfa 8, 0
+ 317              	.LBB17:
   76:src/PCB.cpp   **** {
   77:src/PCB.cpp   ****     kfree(beginSP);
- 328              		.loc 1 77 5
- 329              		.loc 1 77 10 is_stmt 0
- 330 01b4 03350503 		ld	a0,48(a0)
- 331              	.LVL23:
- 332 01b8 97000000 		call	_Z5kfreePv@plt
- 332      E7800000 
- 333              	.LVL24:
- 334              	.LBE17:
+ 318              		.loc 1 77 5
+ 319              		.loc 1 77 10 is_stmt 0
+ 320 01a4 03350503 		ld	a0,48(a0)
+ 321              	.LVL22:
+ 322 01a8 97000000 		call	_Z5kfreePv@plt
+ 322      E7800000 
+ 323              	.LVL23:
+ 324              	.LBE17:
   78:src/PCB.cpp   **** }
- 335              		.loc 1 78 1
- 336 01c0 83308100 		ld	ra,8(sp)
- 337              		.cfi_restore 1
- 338 01c4 03340100 		ld	s0,0(sp)
- 339              		.cfi_restore 8
- 340              		.cfi_def_cfa 2, 16
- 341 01c8 13010101 		addi	sp,sp,16
- 342              		.cfi_def_cfa_offset 0
- 343 01cc 67800000 		jr	ra
- 344              		.cfi_endproc
- 345              	.LFE31:
- 346              		.globl	__gxx_personality_v0
- 347              		.section	.gcc_except_table,"a",@progbits
- 348              	.LLSDA31:
- 349 0000 FF       		.byte	0xff
- 350 0001 FF       		.byte	0xff
- 351 0002 03       		.byte	0x3
- 352 0003 00       		.byte	0
- 353              		.text
- 355              		.globl	_ZN3PCBD1Ev
- 356              		.set	_ZN3PCBD1Ev,_ZN3PCBD2Ev
- 357              		.align	2
- 358              		.globl	_ZN3PCB10initializeEv
- 360              	_ZN3PCB10initializeEv:
- 361              	.LFB33:
+ 325              		.loc 1 78 1
+ 326 01b0 83308100 		ld	ra,8(sp)
+ 327              		.cfi_restore 1
+ 328 01b4 03340100 		ld	s0,0(sp)
+ 329              		.cfi_restore 8
+GAS LISTING /tmp/ccG4TxL5.s 			page 9
+
+
+ 330              		.cfi_def_cfa 2, 16
+ 331 01b8 13010101 		addi	sp,sp,16
+ 332              		.cfi_def_cfa_offset 0
+ 333 01bc 67800000 		jr	ra
+ 334              		.cfi_endproc
+ 335              	.LFE34:
+ 336              		.globl	__gxx_personality_v0
+ 337              		.section	.gcc_except_table,"a",@progbits
+ 338              	.LLSDA34:
+ 339 0000 FF       		.byte	0xff
+ 340 0001 FF       		.byte	0xff
+ 341 0002 03       		.byte	0x3
+ 342 0003 00       		.byte	0
+ 343              		.text
+ 345              		.globl	_ZN3PCBD1Ev
+ 346              		.set	_ZN3PCBD1Ev,_ZN3PCBD2Ev
+ 347              		.align	2
+ 348              		.globl	_ZN3PCB10initializeEv
+ 350              	_ZN3PCB10initializeEv:
+ 351              	.LFB36:
   79:src/PCB.cpp   **** 
   80:src/PCB.cpp   **** void PCB::initialize()
   81:src/PCB.cpp   **** {
- 362              		.loc 1 81 1 is_stmt 1
- 363              		.cfi_startproc
- 364 01d0 130101FE 		addi	sp,sp,-32
- 365              		.cfi_def_cfa_offset 32
- 366 01d4 233C1100 		sd	ra,24(sp)
- 367 01d8 23388100 		sd	s0,16(sp)
- 368 01dc 23349100 		sd	s1,8(sp)
- 369              		.cfi_offset 1, -8
- 370              		.cfi_offset 8, -16
- 371              		.cfi_offset 9, -24
- 372 01e0 13040102 		addi	s0,sp,32
- 373              		.cfi_def_cfa 8, 0
+ 352              		.loc 1 81 1 is_stmt 1
+ 353              		.cfi_startproc
+ 354 01c0 130101FD 		addi	sp,sp,-48
+ 355              		.cfi_def_cfa_offset 48
+ 356 01c4 23341102 		sd	ra,40(sp)
+ 357 01c8 23308102 		sd	s0,32(sp)
+ 358 01cc 233C9100 		sd	s1,24(sp)
+ 359 01d0 23382101 		sd	s2,16(sp)
+ 360 01d4 23343101 		sd	s3,8(sp)
+ 361 01d8 23304101 		sd	s4,0(sp)
+ 362              		.cfi_offset 1, -8
+ 363              		.cfi_offset 8, -16
+ 364              		.cfi_offset 9, -24
+ 365              		.cfi_offset 18, -32
+ 366              		.cfi_offset 19, -40
+ 367              		.cfi_offset 20, -48
+ 368 01dc 13040103 		addi	s0,sp,48
+ 369              		.cfi_def_cfa 8, 0
   82:src/PCB.cpp   ****     PCB* mainSystem = new PCB(0, 0, 0, 0);
- 374              		.loc 1 82 5
- 375              		.loc 1 82 41 is_stmt 0
- 376 01e4 13050005 		li	a0,80
- 377 01e8 97000000 		call	_ZN3PCBnwEm
- 377      E7800000 
-GAS LISTING /tmp/ccL15Wqi.s 			page 10
-
-
- 378              	.LVL25:
- 379 01f0 93040500 		mv	s1,a0
- 380 01f4 13070000 		li	a4,0
- 381 01f8 93060000 		li	a3,0
- 382 01fc 13060000 		li	a2,0
- 383 0200 93050000 		li	a1,0
- 384 0204 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
- 384      E7800000 
- 385              	.LVL26:
+ 370              		.loc 1 82 5
+ 371              		.loc 1 82 41 is_stmt 0
+ 372 01e0 13050005 		li	a0,80
+ 373 01e4 97000000 		call	_ZN3PCBnwEm
+ 373      E7800000 
+ 374              	.LVL24:
+ 375 01ec 93040500 		mv	s1,a0
+ 376 01f0 13070000 		li	a4,0
+ 377 01f4 93060000 		li	a3,0
+ 378 01f8 13060000 		li	a2,0
+ 379 01fc 93050000 		li	a1,0
+ 380 0200 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
+ 380      E7800000 
+ 381              	.LVL25:
   83:src/PCB.cpp   ****     mainSystem->start();
- 386              		.loc 1 83 5 is_stmt 1
- 387              		.loc 1 83 22 is_stmt 0
- 388 020c 13850400 		mv	a0,s1
- 389 0210 97000000 		call	_ZN3PCB5startEv
- 389      E7800000 
- 390              	.LVL27:
+GAS LISTING /tmp/ccG4TxL5.s 			page 10
+
+
+ 382              		.loc 1 83 5 is_stmt 1
+ 383              		.loc 1 83 22 is_stmt 0
+ 384 0208 13850400 		mv	a0,s1
+ 385 020c 97000000 		call	_ZN3PCB5startEv
+ 385      E7800000 
+ 386              	.LVL26:
   84:src/PCB.cpp   ****     mainSystem->systemThread = true;
- 391              		.loc 1 84 5 is_stmt 1
- 392              		.loc 1 84 30 is_stmt 0
- 393 0218 93071000 		li	a5,1
- 394 021c 2380F400 		sb	a5,0(s1)
+ 387              		.loc 1 84 5 is_stmt 1
+ 388              		.loc 1 84 30 is_stmt 0
+ 389 0214 93091000 		li	s3,1
+ 390 0218 23803401 		sb	s3,0(s1)
   85:src/PCB.cpp   ****     PCB::running = Scheduler::get();
- 395              		.loc 1 85 5 is_stmt 1
- 396              		.loc 1 85 34 is_stmt 0
- 397 0220 97000000 		call	_ZN9Scheduler3getEv@plt
- 397      E7800000 
- 398              	.LVL28:
- 399              		.loc 1 85 18
- 400 0228 97070000 		sd	a0,.LANCHOR0,a5
- 400      23B0A700 
+ 391              		.loc 1 85 5 is_stmt 1
+ 392              		.loc 1 85 34 is_stmt 0
+ 393 021c 97000000 		call	_ZN9Scheduler3getEv@plt
+ 393      E7800000 
+ 394              	.LVL27:
+ 395              		.loc 1 85 18
+ 396 0224 97070000 		sd	a0,.LANCHOR0,a5
+ 396      23B0A700 
   86:src/PCB.cpp   ****     PCB::running->setState(PCB::RUNNING);
- 401              		.loc 1 86 5 is_stmt 1
- 402              	.LVL29:
- 403              	.LBB18:
- 404              	.LBB19:
- 405              		.loc 2 36 29
- 406              		.loc 2 36 35 is_stmt 0
- 407 0230 93071000 		li	a5,1
- 408 0234 232CF502 		sw	a5,56(a0)
- 409              	.LVL30:
- 410              	.LBE19:
- 411              	.LBE18:
-  87:src/PCB.cpp   **** }
- 412              		.loc 1 87 1
- 413 0238 83308101 		ld	ra,24(sp)
- 414              		.cfi_restore 1
- 415 023c 03340101 		ld	s0,16(sp)
- 416              		.cfi_restore 8
- 417              		.cfi_def_cfa 2, 32
- 418 0240 83348100 		ld	s1,8(sp)
- 419              		.cfi_restore 9
- 420              	.LVL31:
- 421 0244 13010102 		addi	sp,sp,32
- 422              		.cfi_def_cfa_offset 0
- 423 0248 67800000 		jr	ra
- 424              		.cfi_endproc
- 425              	.LFE33:
-GAS LISTING /tmp/ccL15Wqi.s 			page 11
+ 397              		.loc 1 86 5 is_stmt 1
+ 398              	.LVL28:
+ 399              	.LBB18:
+ 400              	.LBB19:
+ 401              		.loc 2 36 29
+ 402              		.loc 2 36 35 is_stmt 0
+ 403 022c 130A1000 		li	s4,1
+ 404 0230 232C4503 		sw	s4,56(a0)
+ 405              	.LVL29:
+ 406              	.LBE19:
+ 407              	.LBE18:
+  87:src/PCB.cpp   ****     PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), D
+ 408              		.loc 1 87 5 is_stmt 1
+ 409              		.loc 1 87 77 is_stmt 0
+ 410 0234 37150000 		li	a0,4096
+ 411 0238 97000000 		call	_Z7kmallocm@plt
+ 411      E7800000 
+ 412              	.LVL30:
+ 413 0240 13090500 		mv	s2,a0
+ 414              		.loc 1 87 117
+ 415 0244 13050005 		li	a0,80
+ 416 0248 97000000 		call	_ZN3PCBnwEm
+ 416      E7800000 
+ 417              	.LVL31:
+ 418 0250 93040500 		mv	s1,a0
+ 419              	.LVL32:
+ 420 0254 13072000 		li	a4,2
+ 421 0258 93060900 		mv	a3,s2
+ 422 025c 13060000 		li	a2,0
+ 423 0260 97050000 		la	a1,_ZN8KConsole23sendCharactersToConsoleEPv
+ 423      83B50500 
+ 424 0268 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
+ 424      E7800000 
+ 425              	.LVL33:
+  88:src/PCB.cpp   ****     consolePCB->systemThread = true;
+ 426              		.loc 1 88 5 is_stmt 1
+GAS LISTING /tmp/ccG4TxL5.s 			page 11
 
 
- 427              		.align	2
- 428              		.globl	_ZN3PCB10isFinishedEv
- 430              	_ZN3PCB10isFinishedEv:
- 431              	.LFB34:
-  88:src/PCB.cpp   **** 
-  89:src/PCB.cpp   **** bool PCB::isFinished()
-  90:src/PCB.cpp   **** {
- 432              		.loc 1 90 1 is_stmt 1
- 433              		.cfi_startproc
- 434              	.LVL32:
- 435 024c 130101FF 		addi	sp,sp,-16
- 436              		.cfi_def_cfa_offset 16
- 437 0250 23348100 		sd	s0,8(sp)
- 438              		.cfi_offset 8, -8
- 439 0254 13040101 		addi	s0,sp,16
- 440              		.cfi_def_cfa 8, 0
-  91:src/PCB.cpp   ****     return state == PCB::FINISHED;
- 441              		.loc 1 91 5
- 442              		.loc 1 91 12 is_stmt 0
- 443 0258 03258503 		lw	a0,56(a0)
- 444              	.LVL33:
- 445              		.loc 1 91 26
- 446 025c 1305D5FF 		addi	a0,a0,-3
-  92:src/PCB.cpp   **** }
- 447              		.loc 1 92 1
- 448 0260 13351500 		seqz	a0,a0
- 449 0264 03348100 		ld	s0,8(sp)
- 450              		.cfi_restore 8
- 451              		.cfi_def_cfa 2, 16
- 452 0268 13010101 		addi	sp,sp,16
- 453              		.cfi_def_cfa_offset 0
- 454 026c 67800000 		jr	ra
- 455              		.cfi_endproc
- 456              	.LFE34:
- 458              		.section	.rodata.str1.8
- 459 0013 00000000 		.align	3
- 459      00
- 460              	.LC1:
- 461 0018 45786974 		.string	"Exiting thread...\n"
- 461      696E6720 
- 461      74687265 
- 461      61642E2E 
- 461      2E0A00
- 462              		.text
- 463              		.align	2
- 464              		.globl	_ZN3PCB17threadExitHandlerEv
- 466              	_ZN3PCB17threadExitHandlerEv:
- 467              	.LFB35:
-  93:src/PCB.cpp   **** 
-  94:src/PCB.cpp   **** void PCB::threadExitHandler()
-  95:src/PCB.cpp   **** {
- 468              		.loc 1 95 1 is_stmt 1
- 469              		.cfi_startproc
- 470 0270 130101FF 		addi	sp,sp,-16
- 471              		.cfi_def_cfa_offset 16
- 472 0274 23341100 		sd	ra,8(sp)
- 473 0278 23308100 		sd	s0,0(sp)
-GAS LISTING /tmp/ccL15Wqi.s 			page 12
+ 427              		.loc 1 88 30 is_stmt 0
+ 428 0270 23804401 		sb	s4,0(s1)
+  89:src/PCB.cpp   ****     consolePCB->start();
+ 429              		.loc 1 89 5 is_stmt 1
+ 430              		.loc 1 89 22 is_stmt 0
+ 431 0274 13850400 		mv	a0,s1
+ 432 0278 97000000 		call	_ZN3PCB5startEv
+ 432      E7800000 
+ 433              	.LVL34:
+  90:src/PCB.cpp   ****     PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+ 434              		.loc 1 90 5 is_stmt 1
+ 435              		.loc 1 90 57 is_stmt 0
+ 436 0280 37150000 		li	a0,4096
+ 437 0284 97000000 		call	_Z7kmallocm@plt
+ 437      E7800000 
+ 438              	.LVL35:
+ 439 028c 13090500 		mv	s2,a0
+ 440              		.loc 1 90 97
+ 441 0290 13050005 		li	a0,80
+ 442 0294 97000000 		call	_ZN3PCBnwEm
+ 442      E7800000 
+ 443              	.LVL36:
+ 444 029c 93040500 		mv	s1,a0
+ 445              	.LVL37:
+ 446 02a0 13072000 		li	a4,2
+ 447 02a4 93060900 		mv	a3,s2
+ 448 02a8 13060000 		li	a2,0
+ 449 02ac 97050000 		la	a1,_ZN5Riscv9idleRiscvEPv
+ 449      83B50500 
+ 450 02b4 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
+ 450      E7800000 
+ 451              	.LVL38:
+  91:src/PCB.cpp   ****     idlePCB->start();
+ 452              		.loc 1 91 5 is_stmt 1
+ 453              		.loc 1 91 19 is_stmt 0
+ 454 02bc 13850400 		mv	a0,s1
+ 455 02c0 97000000 		call	_ZN3PCB5startEv
+ 455      E7800000 
+ 456              	.LVL39:
+  92:src/PCB.cpp   ****     idlePCB->systemThread = true;
+ 457              		.loc 1 92 5 is_stmt 1
+ 458              		.loc 1 92 27 is_stmt 0
+ 459 02c8 23803401 		sb	s3,0(s1)
+  93:src/PCB.cpp   ****     //PCB* consolePCBGetc = new PCB(&KConsole::getCharactersFromConsole, 0, kmalloc(DEFAULT_STACK_S
+  94:src/PCB.cpp   ****     //consolePCBGetc->systemThread = true;
+  95:src/PCB.cpp   ****     //consolePCBGetc->start();
+  96:src/PCB.cpp   **** }
+ 460              		.loc 1 96 1
+ 461 02cc 83308102 		ld	ra,40(sp)
+ 462              		.cfi_restore 1
+ 463 02d0 03340102 		ld	s0,32(sp)
+ 464              		.cfi_restore 8
+ 465              		.cfi_def_cfa 2, 48
+ 466 02d4 83348101 		ld	s1,24(sp)
+ 467              		.cfi_restore 9
+ 468              	.LVL40:
+ 469 02d8 03390101 		ld	s2,16(sp)
+GAS LISTING /tmp/ccG4TxL5.s 			page 12
 
 
- 474              		.cfi_offset 1, -8
- 475              		.cfi_offset 8, -16
- 476 027c 13040101 		addi	s0,sp,16
- 477              		.cfi_def_cfa 8, 0
-  96:src/PCB.cpp   ****     Riscv::printString("Exiting thread...\n");
- 478              		.loc 1 96 5
- 479              		.loc 1 96 23 is_stmt 0
- 480 0280 17050000 		lla	a0,.LC1
- 480      13050500 
- 481 0288 97000000 		call	_ZN5Riscv11printStringEPKc@plt
- 481      E7800000 
- 482              	.LVL34:
-  97:src/PCB.cpp   ****     PCB::timeSliceCounter = 0;
- 483              		.loc 1 97 5 is_stmt 1
- 484              		.loc 1 97 27 is_stmt 0
- 485 0290 97070000 		lla	a5,.LANCHOR0
- 485      93870700 
- 486 0298 23B40700 		sd	zero,8(a5)
-  98:src/PCB.cpp   ****     PCB::running->setState(PCB::FINISHED);
- 487              		.loc 1 98 5 is_stmt 1
- 488              		.loc 1 98 27 is_stmt 0
- 489 029c 83B70700 		ld	a5,0(a5)
- 490              	.LVL35:
- 491              	.LBB20:
- 492              	.LBB21:
- 493              		.loc 2 36 29 is_stmt 1
- 494              		.loc 2 36 35 is_stmt 0
- 495 02a0 13073000 		li	a4,3
- 496 02a4 23ACE702 		sw	a4,56(a5)
- 497              	.LVL36:
- 498              	.LBE21:
- 499              	.LBE20:
-  99:src/PCB.cpp   ****     PCB::dispatch();
- 500              		.loc 1 99 5 is_stmt 1
- 501              		.loc 1 99 18 is_stmt 0
- 502 02a8 97000000 		call	_ZN3PCB8dispatchEv
- 502      E7800000 
- 503              	.LVL37:
- 100:src/PCB.cpp   ****     __asm__ volatile("li a0, 0");
- 504              		.loc 1 100 5 is_stmt 1
- 505              		.loc 1 100 33 is_stmt 0
- 506              	#APP
- 507              	# 100 "src/PCB.cpp" 1
- 101              	}
- 508              		li a0, 0
- 509              	# 0 "" 2
- 510              		.loc 1 101 1
- 511              	#NO_APP
- 512 02b4 83308100 		ld	ra,8(sp)
- 513              		.cfi_restore 1
- 514 02b8 03340100 		ld	s0,0(sp)
- 515              		.cfi_restore 8
- 516              		.cfi_def_cfa 2, 16
- 517 02bc 13010101 		addi	sp,sp,16
- 518              		.cfi_def_cfa_offset 0
- 519 02c0 67800000 		jr	ra
- 520              		.cfi_endproc
-GAS LISTING /tmp/ccL15Wqi.s 			page 13
+ 470              		.cfi_restore 18
+ 471 02dc 83398100 		ld	s3,8(sp)
+ 472              		.cfi_restore 19
+ 473 02e0 033A0100 		ld	s4,0(sp)
+ 474              		.cfi_restore 20
+ 475 02e4 13010103 		addi	sp,sp,48
+ 476              		.cfi_def_cfa_offset 0
+ 477 02e8 67800000 		jr	ra
+ 478              		.cfi_endproc
+ 479              	.LFE36:
+ 481              		.align	2
+ 482              		.globl	_ZN3PCB10isFinishedEv
+ 484              	_ZN3PCB10isFinishedEv:
+ 485              	.LFB37:
+  97:src/PCB.cpp   **** 
+  98:src/PCB.cpp   **** bool PCB::isFinished()
+  99:src/PCB.cpp   **** {
+ 486              		.loc 1 99 1 is_stmt 1
+ 487              		.cfi_startproc
+ 488              	.LVL41:
+ 489 02ec 130101FF 		addi	sp,sp,-16
+ 490              		.cfi_def_cfa_offset 16
+ 491 02f0 23348100 		sd	s0,8(sp)
+ 492              		.cfi_offset 8, -8
+ 493 02f4 13040101 		addi	s0,sp,16
+ 494              		.cfi_def_cfa 8, 0
+ 100:src/PCB.cpp   ****     return state == PCB::FINISHED;
+ 495              		.loc 1 100 5
+ 496              		.loc 1 100 12 is_stmt 0
+ 497 02f8 03258503 		lw	a0,56(a0)
+ 498              	.LVL42:
+ 499              		.loc 1 100 26
+ 500 02fc 1305D5FF 		addi	a0,a0,-3
+ 101:src/PCB.cpp   **** }
+ 501              		.loc 1 101 1
+ 502 0300 13351500 		seqz	a0,a0
+ 503 0304 03348100 		ld	s0,8(sp)
+ 504              		.cfi_restore 8
+ 505              		.cfi_def_cfa 2, 16
+ 506 0308 13010101 		addi	sp,sp,16
+ 507              		.cfi_def_cfa_offset 0
+ 508 030c 67800000 		jr	ra
+ 509              		.cfi_endproc
+ 510              	.LFE37:
+ 512              		.section	.rodata.str1.8,"aMS",@progbits,1
+ 513              		.align	3
+ 514              	.LC0:
+ 515 0000 45786974 		.string	"Exiting thread...\n"
+ 515      696E6720 
+ 515      74687265 
+ 515      61642E2E 
+ 515      2E0A00
+ 516              		.text
+ 517              		.align	2
+ 518              		.globl	_ZN3PCB17threadExitHandlerEv
+ 520              	_ZN3PCB17threadExitHandlerEv:
+ 521              	.LFB38:
+GAS LISTING /tmp/ccG4TxL5.s 			page 13
 
 
- 521              	.LFE35:
- 523              		.align	2
- 524              		.globl	_ZN3PCB21threadDispatchHandlerEv
- 526              	_ZN3PCB21threadDispatchHandlerEv:
- 527              	.LFB36:
  102:src/PCB.cpp   **** 
- 103:src/PCB.cpp   **** void PCB::threadDispatchHandler()
+ 103:src/PCB.cpp   **** void PCB::threadExitHandler()
  104:src/PCB.cpp   **** {
- 528              		.loc 1 104 1 is_stmt 1
- 529              		.cfi_startproc
- 530 02c4 130101FF 		addi	sp,sp,-16
- 531              		.cfi_def_cfa_offset 16
- 532 02c8 23341100 		sd	ra,8(sp)
- 533 02cc 23308100 		sd	s0,0(sp)
- 534              		.cfi_offset 1, -8
- 535              		.cfi_offset 8, -16
- 536 02d0 13040101 		addi	s0,sp,16
- 537              		.cfi_def_cfa 8, 0
- 105:src/PCB.cpp   ****     PCB::timeSliceCounter = 0;
- 538              		.loc 1 105 5
- 539              		.loc 1 105 27 is_stmt 0
- 540 02d4 97070000 		sd	zero,.LANCHOR0+8,a5
- 540      23B00700 
- 106:src/PCB.cpp   ****     PCB::dispatch();
- 541              		.loc 1 106 5 is_stmt 1
- 542              		.loc 1 106 18 is_stmt 0
- 543 02dc 97000000 		call	_ZN3PCB8dispatchEv
- 543      E7800000 
- 544              	.LVL38:
- 107:src/PCB.cpp   **** }
- 545              		.loc 1 107 1
- 546 02e4 83308100 		ld	ra,8(sp)
- 547              		.cfi_restore 1
- 548 02e8 03340100 		ld	s0,0(sp)
- 549              		.cfi_restore 8
- 550              		.cfi_def_cfa 2, 16
- 551 02ec 13010101 		addi	sp,sp,16
- 552              		.cfi_def_cfa_offset 0
- 553 02f0 67800000 		jr	ra
- 554              		.cfi_endproc
- 555              	.LFE36:
- 557              		.align	2
- 558              		.globl	_ZN3PCB18threadSleepHandlerEv
- 560              	_ZN3PCB18threadSleepHandlerEv:
- 561              	.LFB37:
- 108:src/PCB.cpp   **** 
- 109:src/PCB.cpp   **** void PCB::threadSleepHandler()
- 110:src/PCB.cpp   **** {
- 562              		.loc 1 110 1 is_stmt 1
- 563              		.cfi_startproc
- 564 02f4 130101FF 		addi	sp,sp,-16
- 565              		.cfi_def_cfa_offset 16
- 566 02f8 23341100 		sd	ra,8(sp)
- 567 02fc 23308100 		sd	s0,0(sp)
- 568              		.cfi_offset 1, -8
- 569              		.cfi_offset 8, -16
- 570 0300 13040101 		addi	s0,sp,16
-GAS LISTING /tmp/ccL15Wqi.s 			page 14
+ 522              		.loc 1 104 1 is_stmt 1
+ 523              		.cfi_startproc
+ 524 0310 130101FF 		addi	sp,sp,-16
+ 525              		.cfi_def_cfa_offset 16
+ 526 0314 23341100 		sd	ra,8(sp)
+ 527 0318 23308100 		sd	s0,0(sp)
+ 528              		.cfi_offset 1, -8
+ 529              		.cfi_offset 8, -16
+ 530 031c 13040101 		addi	s0,sp,16
+ 531              		.cfi_def_cfa 8, 0
+ 105:src/PCB.cpp   ****     Riscv::printString("Exiting thread...\n");
+ 532              		.loc 1 105 5
+ 533              		.loc 1 105 23 is_stmt 0
+ 534 0320 17050000 		lla	a0,.LC0
+ 534      13050500 
+ 535 0328 97000000 		call	_ZN5Riscv11printStringEPKc@plt
+ 535      E7800000 
+ 536              	.LVL43:
+ 106:src/PCB.cpp   ****     PCB::timeSliceCounter = 0;
+ 537              		.loc 1 106 5 is_stmt 1
+ 538              		.loc 1 106 27 is_stmt 0
+ 539 0330 97070000 		lla	a5,.LANCHOR0
+ 539      93870700 
+ 540 0338 23B40700 		sd	zero,8(a5)
+ 107:src/PCB.cpp   ****     PCB::running->setState(PCB::FINISHED);
+ 541              		.loc 1 107 5 is_stmt 1
+ 542              		.loc 1 107 27 is_stmt 0
+ 543 033c 83B70700 		ld	a5,0(a5)
+ 544              	.LVL44:
+ 545              	.LBB20:
+ 546              	.LBB21:
+ 547              		.loc 2 36 29 is_stmt 1
+ 548              		.loc 2 36 35 is_stmt 0
+ 549 0340 13073000 		li	a4,3
+ 550 0344 23ACE702 		sw	a4,56(a5)
+ 551              	.LVL45:
+ 552              	.LBE21:
+ 553              	.LBE20:
+ 108:src/PCB.cpp   ****     PCB::dispatch();
+ 554              		.loc 1 108 5 is_stmt 1
+ 555              		.loc 1 108 18 is_stmt 0
+ 556 0348 97000000 		call	_ZN3PCB8dispatchEv
+ 556      E7800000 
+ 557              	.LVL46:
+ 109:src/PCB.cpp   ****     __asm__ volatile("li a0, 0");
+ 558              		.loc 1 109 5 is_stmt 1
+ 559              		.loc 1 109 33 is_stmt 0
+ 560              	#APP
+ 561              	# 109 "src/PCB.cpp" 1
+ 110              	}
+ 562              		li a0, 0
+ 563              	# 0 "" 2
+ 564              		.loc 1 110 1
+ 565              	#NO_APP
+GAS LISTING /tmp/ccG4TxL5.s 			page 14
 
 
- 571              		.cfi_def_cfa 8, 0
- 111:src/PCB.cpp   ****     uint64 time;
- 572              		.loc 1 111 5
- 112:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(time));
- 573              		.loc 1 112 5
- 574              		.loc 1 112 47 is_stmt 0
- 575              	#APP
- 576              	# 112 "src/PCB.cpp" 1
- 113              	    PCB::timeSliceCounter = 0;
- 577              		mv a4, a1
- 578              	# 0 "" 2
- 579              	.LVL39:
- 580              		.loc 1 113 5 is_stmt 1
- 581              		.loc 1 113 27 is_stmt 0
- 582              	#NO_APP
- 583 0308 97070000 		lla	a5,.LANCHOR0
- 583      93870700 
- 584 0310 23B40700 		sd	zero,8(a5)
- 114:src/PCB.cpp   ****     PCB::running->setTimeToSleep(time);
- 585              		.loc 1 114 5 is_stmt 1
- 586              		.loc 1 114 33 is_stmt 0
- 587 0314 83B70700 		ld	a5,0(a5)
- 588              	.LVL40:
- 589              	.LBB22:
- 590              	.LBB23:
+ 566 0354 83308100 		ld	ra,8(sp)
+ 567              		.cfi_restore 1
+ 568 0358 03340100 		ld	s0,0(sp)
+ 569              		.cfi_restore 8
+ 570              		.cfi_def_cfa 2, 16
+ 571 035c 13010101 		addi	sp,sp,16
+ 572              		.cfi_def_cfa_offset 0
+ 573 0360 67800000 		jr	ra
+ 574              		.cfi_endproc
+ 575              	.LFE38:
+ 577              		.align	2
+ 578              		.globl	_ZN3PCB21threadDispatchHandlerEv
+ 580              	_ZN3PCB21threadDispatchHandlerEv:
+ 581              	.LFB39:
+ 111:src/PCB.cpp   **** 
+ 112:src/PCB.cpp   **** void PCB::threadDispatchHandler()
+ 113:src/PCB.cpp   **** {
+ 582              		.loc 1 113 1 is_stmt 1
+ 583              		.cfi_startproc
+ 584 0364 130101FF 		addi	sp,sp,-16
+ 585              		.cfi_def_cfa_offset 16
+ 586 0368 23341100 		sd	ra,8(sp)
+ 587 036c 23308100 		sd	s0,0(sp)
+ 588              		.cfi_offset 1, -8
+ 589              		.cfi_offset 8, -16
+ 590 0370 13040101 		addi	s0,sp,16
+ 591              		.cfi_def_cfa 8, 0
+ 114:src/PCB.cpp   ****     PCB::timeSliceCounter = 0;
+ 592              		.loc 1 114 5
+ 593              		.loc 1 114 27 is_stmt 0
+ 594 0374 97070000 		sd	zero,.LANCHOR0+8,a5
+ 594      23B00700 
+ 115:src/PCB.cpp   ****     PCB::dispatch();
+ 595              		.loc 1 115 5 is_stmt 1
+ 596              		.loc 1 115 18 is_stmt 0
+ 597 037c 97000000 		call	_ZN3PCB8dispatchEv
+ 597      E7800000 
+ 598              	.LVL47:
+ 116:src/PCB.cpp   **** }
+ 599              		.loc 1 116 1
+ 600 0384 83308100 		ld	ra,8(sp)
+ 601              		.cfi_restore 1
+ 602 0388 03340100 		ld	s0,0(sp)
+ 603              		.cfi_restore 8
+ 604              		.cfi_def_cfa 2, 16
+ 605 038c 13010101 		addi	sp,sp,16
+ 606              		.cfi_def_cfa_offset 0
+ 607 0390 67800000 		jr	ra
+ 608              		.cfi_endproc
+ 609              	.LFE39:
+ 611              		.align	2
+ 612              		.globl	_ZN3PCB18threadSleepHandlerEv
+ 614              	_ZN3PCB18threadSleepHandlerEv:
+ 615              	.LFB40:
+ 117:src/PCB.cpp   **** 
+ 118:src/PCB.cpp   **** void PCB::threadSleepHandler()
+ 119:src/PCB.cpp   **** {
+GAS LISTING /tmp/ccG4TxL5.s 			page 15
+
+
+ 616              		.loc 1 119 1 is_stmt 1
+ 617              		.cfi_startproc
+ 618 0394 130101FF 		addi	sp,sp,-16
+ 619              		.cfi_def_cfa_offset 16
+ 620 0398 23341100 		sd	ra,8(sp)
+ 621 039c 23308100 		sd	s0,0(sp)
+ 622              		.cfi_offset 1, -8
+ 623              		.cfi_offset 8, -16
+ 624 03a0 13040101 		addi	s0,sp,16
+ 625              		.cfi_def_cfa 8, 0
+ 120:src/PCB.cpp   ****     uint64 time;
+ 626              		.loc 1 120 5
+ 121:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(time));
+ 627              		.loc 1 121 5
+ 628              		.loc 1 121 47 is_stmt 0
+ 629              	#APP
+ 630              	# 121 "src/PCB.cpp" 1
+ 122              	    PCB::timeSliceCounter = 0;
+ 631              		mv a4, a1
+ 632              	# 0 "" 2
+ 633              	.LVL48:
+ 634              		.loc 1 122 5 is_stmt 1
+ 635              		.loc 1 122 27 is_stmt 0
+ 636              	#NO_APP
+ 637 03a8 97070000 		lla	a5,.LANCHOR0
+ 637      93870700 
+ 638 03b0 23B40700 		sd	zero,8(a5)
+ 123:src/PCB.cpp   ****     PCB::running->setTimeToSleep(time);
+ 639              		.loc 1 123 5 is_stmt 1
+ 640              		.loc 1 123 33 is_stmt 0
+ 641 03b4 83B70700 		ld	a5,0(a5)
+ 642              	.LVL49:
+ 643              	.LBB22:
+ 644              	.LBB23:
   37:src/../h/PCB.hpp ****     void setTimeToSleep(uint64 time) {timeToSleep = time;}
- 591              		.loc 2 37 39 is_stmt 1
- 592              		.loc 2 37 51 is_stmt 0
- 593 0318 23BCE700 		sd	a4,24(a5)
- 594              	.LVL41:
- 595              	.LBE23:
- 596              	.LBE22:
- 115:src/PCB.cpp   ****     SleepPCBList::insertSleepingPCB();
- 597              		.loc 1 115 5 is_stmt 1
- 598              		.loc 1 115 36 is_stmt 0
- 599 031c 97000000 		call	_ZN12SleepPCBList17insertSleepingPCBEv@plt
- 599      E7800000 
- 600              	.LVL42:
- 116:src/PCB.cpp   ****     PCB::dispatch();
- 601              		.loc 1 116 5 is_stmt 1
- 602              		.loc 1 116 18 is_stmt 0
- 603 0324 97000000 		call	_ZN3PCB8dispatchEv
- 603      E7800000 
- 604              	.LVL43:
- 117:src/PCB.cpp   ****     __asm__ volatile("li a0, 0x0");
- 605              		.loc 1 117 5 is_stmt 1
- 606              		.loc 1 117 35 is_stmt 0
- 607              	#APP
- 608              	# 117 "src/PCB.cpp" 1
- 118              	}
- 609              		li a0, 0x0
- 610              	# 0 "" 2
- 611              		.loc 1 118 1
- 612              	#NO_APP
- 613 0330 83308100 		ld	ra,8(sp)
- 614              		.cfi_restore 1
- 615 0334 03340100 		ld	s0,0(sp)
-GAS LISTING /tmp/ccL15Wqi.s 			page 15
+ 645              		.loc 2 37 39 is_stmt 1
+ 646              		.loc 2 37 51 is_stmt 0
+ 647 03b8 23BCE700 		sd	a4,24(a5)
+ 648              	.LVL50:
+ 649              	.LBE23:
+ 650              	.LBE22:
+ 124:src/PCB.cpp   ****     SleepPCBList::insertSleepingPCB();
+ 651              		.loc 1 124 5 is_stmt 1
+ 652              		.loc 1 124 36 is_stmt 0
+ 653 03bc 97000000 		call	_ZN12SleepPCBList17insertSleepingPCBEv@plt
+ 653      E7800000 
+ 654              	.LVL51:
+ 125:src/PCB.cpp   ****     PCB::dispatch();
+ 655              		.loc 1 125 5 is_stmt 1
+ 656              		.loc 1 125 18 is_stmt 0
+ 657 03c4 97000000 		call	_ZN3PCB8dispatchEv
+ 657      E7800000 
+ 658              	.LVL52:
+ 126:src/PCB.cpp   ****     __asm__ volatile("li a0, 0x0");
+ 659              		.loc 1 126 5 is_stmt 1
+ 660              		.loc 1 126 35 is_stmt 0
+ 661              	#APP
+GAS LISTING /tmp/ccG4TxL5.s 			page 16
 
 
- 616              		.cfi_restore 8
- 617              		.cfi_def_cfa 2, 16
- 618 0338 13010101 		addi	sp,sp,16
- 619              		.cfi_def_cfa_offset 0
- 620 033c 67800000 		jr	ra
- 621              		.cfi_endproc
- 622              	.LFE37:
- 624              		.align	2
- 625              		.globl	_ZN3PCB19threadCreateHandlerEv
- 627              	_ZN3PCB19threadCreateHandlerEv:
- 628              	.LFB38:
- 119:src/PCB.cpp   **** 
- 120:src/PCB.cpp   **** void PCB::threadCreateHandler()
- 121:src/PCB.cpp   **** {
- 629              		.loc 1 121 1 is_stmt 1
- 630              		.cfi_startproc
- 631 0340 130101FD 		addi	sp,sp,-48
- 632              		.cfi_def_cfa_offset 48
- 633 0344 23341102 		sd	ra,40(sp)
- 634 0348 23308102 		sd	s0,32(sp)
- 635 034c 233C9100 		sd	s1,24(sp)
- 636 0350 23382101 		sd	s2,16(sp)
- 637 0354 23343101 		sd	s3,8(sp)
- 638 0358 23304101 		sd	s4,0(sp)
- 639              		.cfi_offset 1, -8
- 640              		.cfi_offset 8, -16
- 641              		.cfi_offset 9, -24
- 642              		.cfi_offset 18, -32
- 643              		.cfi_offset 19, -40
- 644              		.cfi_offset 20, -48
- 645 035c 13040103 		addi	s0,sp,48
- 646              		.cfi_def_cfa 8, 0
- 122:src/PCB.cpp   ****     uint64 start_routine;
- 647              		.loc 1 122 5
- 123:src/PCB.cpp   ****     uint64 args;
- 648              		.loc 1 123 5
- 124:src/PCB.cpp   ****     PCB **threadHandle;
- 649              		.loc 1 124 5
- 125:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
- 650              		.loc 1 125 5
- 651              		.loc 1 125 55 is_stmt 0
- 652              	#APP
- 653              	# 125 "src/PCB.cpp" 1
- 126              	    __asm__ volatile("mv %0, a2" : "=r"(start_routine));
- 654              		mv s2, a1
- 655              	# 0 "" 2
- 656              	.LVL44:
- 657              		.loc 1 126 5 is_stmt 1
- 658              		.loc 1 126 56 is_stmt 0
- 659              	# 126 "src/PCB.cpp" 1
- 127              	    __asm__ volatile("mv %0, a3" : "=r"(args));
- 660              		mv s3, a2
- 661              	# 0 "" 2
- 662              	.LVL45:
- 663              		.loc 1 127 5 is_stmt 1
- 664              		.loc 1 127 47 is_stmt 0
- 665              	# 127 "src/PCB.cpp" 1
-GAS LISTING /tmp/ccL15Wqi.s 			page 16
+ 662              	# 126 "src/PCB.cpp" 1
+ 127              	}
+ 663              		li a0, 0x0
+ 664              	# 0 "" 2
+ 665              		.loc 1 127 1
+ 666              	#NO_APP
+ 667 03d0 83308100 		ld	ra,8(sp)
+ 668              		.cfi_restore 1
+ 669 03d4 03340100 		ld	s0,0(sp)
+ 670              		.cfi_restore 8
+ 671              		.cfi_def_cfa 2, 16
+ 672 03d8 13010101 		addi	sp,sp,16
+ 673              		.cfi_def_cfa_offset 0
+ 674 03dc 67800000 		jr	ra
+ 675              		.cfi_endproc
+ 676              	.LFE40:
+ 678              		.align	2
+ 679              		.globl	_ZN3PCB19threadCreateHandlerEv
+ 681              	_ZN3PCB19threadCreateHandlerEv:
+ 682              	.LFB41:
+ 128:src/PCB.cpp   **** 
+ 129:src/PCB.cpp   **** void PCB::threadCreateHandler()
+ 130:src/PCB.cpp   **** {
+ 683              		.loc 1 130 1 is_stmt 1
+ 684              		.cfi_startproc
+ 685 03e0 130101FD 		addi	sp,sp,-48
+ 686              		.cfi_def_cfa_offset 48
+ 687 03e4 23341102 		sd	ra,40(sp)
+ 688 03e8 23308102 		sd	s0,32(sp)
+ 689 03ec 233C9100 		sd	s1,24(sp)
+ 690 03f0 23382101 		sd	s2,16(sp)
+ 691 03f4 23343101 		sd	s3,8(sp)
+ 692 03f8 23304101 		sd	s4,0(sp)
+ 693              		.cfi_offset 1, -8
+ 694              		.cfi_offset 8, -16
+ 695              		.cfi_offset 9, -24
+ 696              		.cfi_offset 18, -32
+ 697              		.cfi_offset 19, -40
+ 698              		.cfi_offset 20, -48
+ 699 03fc 13040103 		addi	s0,sp,48
+ 700              		.cfi_def_cfa 8, 0
+ 131:src/PCB.cpp   ****     uint64 start_routine;
+ 701              		.loc 1 131 5
+ 132:src/PCB.cpp   ****     uint64 args;
+ 702              		.loc 1 132 5
+ 133:src/PCB.cpp   ****     PCB **threadHandle;
+ 703              		.loc 1 133 5
+ 134:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
+ 704              		.loc 1 134 5
+ 705              		.loc 1 134 55 is_stmt 0
+ 706              	#APP
+ 707              	# 134 "src/PCB.cpp" 1
+ 135              	    __asm__ volatile("mv %0, a2" : "=r"(start_routine));
+ 708              		mv s2, a1
+ 709              	# 0 "" 2
+ 710              	.LVL53:
+ 711              		.loc 1 135 5 is_stmt 1
+GAS LISTING /tmp/ccG4TxL5.s 			page 17
 
 
- 128              	
- 666              		mv s4, a3
- 667              	# 0 "" 2
- 668              	.LVL46:
- 129:src/PCB.cpp   ****     PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4
- 669              		.loc 1 129 5 is_stmt 1
- 670              		.loc 1 129 120 is_stmt 0
- 671              	#NO_APP
- 672 036c 13050005 		li	a0,80
- 673 0370 97000000 		call	_ZN3PCBnwEm
- 673      E7800000 
- 674              	.LVL47:
- 675 0378 93040500 		mv	s1,a0
- 676 037c 13072000 		li	a4,2
- 677 0380 97060000 		ld	a3,.LANCHOR0+16
- 677      83B60600 
- 678 0388 13060A00 		mv	a2,s4
- 679 038c 93850900 		mv	a1,s3
- 680 0390 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
- 680      E7800000 
- 681              	.LVL48:
- 130:src/PCB.cpp   **** 
- 131:src/PCB.cpp   ****     (*threadHandle) = newPCB;
- 682              		.loc 1 131 5 is_stmt 1
- 683              		.loc 1 131 21 is_stmt 0
- 684 0398 23309900 		sd	s1,0(s2)
- 132:src/PCB.cpp   **** 
- 133:src/PCB.cpp   ****     if (newPCB == 0)
- 685              		.loc 1 133 5 is_stmt 1
- 686 039c 638A0402 		beqz	s1,.L33
- 134:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
- 135:src/PCB.cpp   ****     else
- 136:src/PCB.cpp   ****     {
- 137:src/PCB.cpp   ****         newPCB->start();
- 687              		.loc 1 137 9
- 688              		.loc 1 137 22 is_stmt 0
- 689 03a0 13850400 		mv	a0,s1
- 690 03a4 97000000 		call	_ZN3PCB5startEv
- 690      E7800000 
- 691              	.LVL49:
- 138:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
- 692              		.loc 1 138 9 is_stmt 1
- 693              		.loc 1 138 37 is_stmt 0
- 694              	#APP
- 695              	# 138 "src/PCB.cpp" 1
- 139              	    }
- 696              		li a0, 0
- 697              	# 0 "" 2
- 698              	#NO_APP
- 699              	.L29:
- 140:src/PCB.cpp   **** }
- 700              		.loc 1 140 1
- 701 03b0 83308102 		ld	ra,40(sp)
- 702              		.cfi_remember_state
- 703              		.cfi_restore 1
- 704 03b4 03340102 		ld	s0,32(sp)
- 705              		.cfi_restore 8
-GAS LISTING /tmp/ccL15Wqi.s 			page 17
-
-
- 706              		.cfi_def_cfa 2, 48
- 707 03b8 83348101 		ld	s1,24(sp)
- 708              		.cfi_restore 9
- 709              	.LVL50:
- 710 03bc 03390101 		ld	s2,16(sp)
- 711              		.cfi_restore 18
- 712              	.LVL51:
- 713 03c0 83398100 		ld	s3,8(sp)
- 714              		.cfi_restore 19
- 715              	.LVL52:
- 716 03c4 033A0100 		ld	s4,0(sp)
- 717              		.cfi_restore 20
- 718              	.LVL53:
- 719 03c8 13010103 		addi	sp,sp,48
- 720              		.cfi_def_cfa_offset 0
- 721 03cc 67800000 		jr	ra
- 722              	.LVL54:
- 723              	.L33:
- 724              		.cfi_restore_state
- 134:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
- 725              		.loc 1 134 13 is_stmt 1
- 134:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
- 726              		.loc 1 134 58 is_stmt 0
- 727              	#APP
- 728              	# 134 "src/PCB.cpp" 1
- 729              		li a0, 0xffffffffffffffff
- 730              	# 0 "" 2
- 731              	#NO_APP
- 732 03d4 6FF0DFFD 		j	.L29
- 733              		.cfi_endproc
- 734              	.LFE38:
- 736              		.align	2
- 737              		.globl	_ZN3PCB18threadStartHandlerEv
- 739              	_ZN3PCB18threadStartHandlerEv:
- 740              	.LFB39:
+ 712              		.loc 1 135 56 is_stmt 0
+ 713              	# 135 "src/PCB.cpp" 1
+ 136              	    __asm__ volatile("mv %0, a3" : "=r"(args));
+ 714              		mv s3, a2
+ 715              	# 0 "" 2
+ 716              	.LVL54:
+ 717              		.loc 1 136 5 is_stmt 1
+ 718              		.loc 1 136 47 is_stmt 0
+ 719              	# 136 "src/PCB.cpp" 1
+ 137              	
+ 720              		mv s4, a3
+ 721              	# 0 "" 2
+ 722              	.LVL55:
+ 138:src/PCB.cpp   ****     PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4
+ 723              		.loc 1 138 5 is_stmt 1
+ 724              		.loc 1 138 120 is_stmt 0
+ 725              	#NO_APP
+ 726 040c 13050005 		li	a0,80
+ 727 0410 97000000 		call	_ZN3PCBnwEm
+ 727      E7800000 
+ 728              	.LVL56:
+ 729 0418 93040500 		mv	s1,a0
+ 730 041c 13072000 		li	a4,2
+ 731 0420 97060000 		ld	a3,.LANCHOR0+16
+ 731      83B60600 
+ 732 0428 13060A00 		mv	a2,s4
+ 733 042c 93850900 		mv	a1,s3
+ 734 0430 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
+ 734      E7800000 
+ 735              	.LVL57:
+ 139:src/PCB.cpp   **** 
+ 140:src/PCB.cpp   ****     (*threadHandle) = newPCB;
+ 736              		.loc 1 140 5 is_stmt 1
+ 737              		.loc 1 140 21 is_stmt 0
+ 738 0438 23309900 		sd	s1,0(s2)
  141:src/PCB.cpp   **** 
- 142:src/PCB.cpp   **** void PCB::threadStartHandler()
- 143:src/PCB.cpp   **** {
- 741              		.loc 1 143 1 is_stmt 1
- 742              		.cfi_startproc
- 144:src/PCB.cpp   ****     PCB* pcb;
- 743              		.loc 1 144 5
- 145:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(pcb));
- 744              		.loc 1 145 5
- 745              		.loc 1 145 46 is_stmt 0
- 746              	#APP
- 747              	# 145 "src/PCB.cpp" 1
- 146              	    if(pcb != 0)
- 748              		mv a0, a1
- 749              	# 0 "" 2
- 750              	.LVL55:
- 751              		.loc 1 146 5 is_stmt 1
+ 142:src/PCB.cpp   ****     if (newPCB == 0)
+ 739              		.loc 1 142 5 is_stmt 1
+ 740 043c 638A0402 		beqz	s1,.L33
+ 143:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
+ 144:src/PCB.cpp   ****     else
+ 145:src/PCB.cpp   ****     {
+ 146:src/PCB.cpp   ****         newPCB->start();
+ 741              		.loc 1 146 9
+ 742              		.loc 1 146 22 is_stmt 0
+ 743 0440 13850400 		mv	a0,s1
+ 744 0444 97000000 		call	_ZN3PCB5startEv
+ 744      E7800000 
+ 745              	.LVL58:
+ 147:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
+ 746              		.loc 1 147 9 is_stmt 1
+ 747              		.loc 1 147 37 is_stmt 0
+ 748              	#APP
+ 749              	# 147 "src/PCB.cpp" 1
+ 148              	    }
+ 750              		li a0, 0
+ 751              	# 0 "" 2
+GAS LISTING /tmp/ccG4TxL5.s 			page 18
+
+
  752              	#NO_APP
- 753 03dc 63080502 		beqz	a0,.L35
- 143:src/PCB.cpp   ****     PCB* pcb;
- 754              		.loc 1 143 1 is_stmt 0
- 755 03e0 130101FF 		addi	sp,sp,-16
-GAS LISTING /tmp/ccL15Wqi.s 			page 18
+ 753              	.L29:
+ 149:src/PCB.cpp   **** }
+ 754              		.loc 1 149 1
+ 755 0450 83308102 		ld	ra,40(sp)
+ 756              		.cfi_remember_state
+ 757              		.cfi_restore 1
+ 758 0454 03340102 		ld	s0,32(sp)
+ 759              		.cfi_restore 8
+ 760              		.cfi_def_cfa 2, 48
+ 761 0458 83348101 		ld	s1,24(sp)
+ 762              		.cfi_restore 9
+ 763              	.LVL59:
+ 764 045c 03390101 		ld	s2,16(sp)
+ 765              		.cfi_restore 18
+ 766              	.LVL60:
+ 767 0460 83398100 		ld	s3,8(sp)
+ 768              		.cfi_restore 19
+ 769              	.LVL61:
+ 770 0464 033A0100 		ld	s4,0(sp)
+ 771              		.cfi_restore 20
+ 772              	.LVL62:
+ 773 0468 13010103 		addi	sp,sp,48
+ 774              		.cfi_def_cfa_offset 0
+ 775 046c 67800000 		jr	ra
+ 776              	.LVL63:
+ 777              	.L33:
+ 778              		.cfi_restore_state
+ 143:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
+ 779              		.loc 1 143 13 is_stmt 1
+ 143:src/PCB.cpp   ****             __asm__ volatile("li a0, 0xffffffffffffffff");
+ 780              		.loc 1 143 58 is_stmt 0
+ 781              	#APP
+ 782              	# 143 "src/PCB.cpp" 1
+ 783              		li a0, 0xffffffffffffffff
+ 784              	# 0 "" 2
+ 785              	#NO_APP
+ 786 0474 6FF0DFFD 		j	.L29
+ 787              		.cfi_endproc
+ 788              	.LFE41:
+ 790              		.align	2
+ 791              		.globl	_ZN3PCB18threadStartHandlerEv
+ 793              	_ZN3PCB18threadStartHandlerEv:
+ 794              	.LFB42:
+ 150:src/PCB.cpp   **** 
+ 151:src/PCB.cpp   **** void PCB::threadStartHandler()
+ 152:src/PCB.cpp   **** {
+ 795              		.loc 1 152 1 is_stmt 1
+ 796              		.cfi_startproc
+ 153:src/PCB.cpp   ****     PCB* pcb;
+ 797              		.loc 1 153 5
+ 154:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(pcb));
+ 798              		.loc 1 154 5
+ 799              		.loc 1 154 46 is_stmt 0
+ 800              	#APP
+ 801              	# 154 "src/PCB.cpp" 1
+ 155              	    if(pcb != 0)
+GAS LISTING /tmp/ccG4TxL5.s 			page 19
 
 
- 756              		.cfi_def_cfa_offset 16
- 757 03e4 23341100 		sd	ra,8(sp)
- 758 03e8 23308100 		sd	s0,0(sp)
- 759              		.cfi_offset 1, -8
- 760              		.cfi_offset 8, -16
- 761 03ec 13040101 		addi	s0,sp,16
- 762              		.cfi_def_cfa 8, 0
- 147:src/PCB.cpp   ****     {
- 148:src/PCB.cpp   ****         pcb->start();
- 763              		.loc 1 148 9 is_stmt 1
- 764              		.loc 1 148 19 is_stmt 0
- 765 03f0 97000000 		call	_ZN3PCB5startEv
- 765      E7800000 
- 766              	.LVL56:
- 149:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
- 767              		.loc 1 149 9 is_stmt 1
- 768              		.loc 1 149 37 is_stmt 0
- 769              	#APP
- 770              	# 149 "src/PCB.cpp" 1
- 150              	    }
- 151:src/PCB.cpp   ****     else
- 152:src/PCB.cpp   ****     {
- 153:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
- 154:src/PCB.cpp   ****     }
- 155:src/PCB.cpp   **** 
- 156:src/PCB.cpp   **** }
- 771              		li a0, 0
- 772              	# 0 "" 2
- 773              		.loc 1 156 1
- 774              	#NO_APP
- 775 03fc 83308100 		ld	ra,8(sp)
- 776              		.cfi_restore 1
- 777 0400 03340100 		ld	s0,0(sp)
- 778              		.cfi_restore 8
- 779              		.cfi_def_cfa 2, 16
- 780 0404 13010101 		addi	sp,sp,16
- 781              		.cfi_def_cfa_offset 0
- 782 0408 67800000 		jr	ra
- 783              	.LVL57:
- 784              	.L35:
- 153:src/PCB.cpp   ****     }
- 785              		.loc 1 153 9 is_stmt 1
- 153:src/PCB.cpp   ****     }
- 786              		.loc 1 153 54 is_stmt 0
- 787              	#APP
- 788              	# 153 "src/PCB.cpp" 1
- 789              		li a0, 0xffffffffffffffff
- 790              	# 0 "" 2
- 791              	#NO_APP
- 792 0410 67800000 		ret
- 793              		.cfi_endproc
- 794              	.LFE39:
- 796              		.align	2
- 797              		.globl	_ZN3PCB20threadMakePCBHandlerEv
- 799              	_ZN3PCB20threadMakePCBHandlerEv:
- 800              	.LFB40:
- 157:src/PCB.cpp   **** 
-GAS LISTING /tmp/ccL15Wqi.s 			page 19
+ 802              		mv a0, a1
+ 803              	# 0 "" 2
+ 804              	.LVL64:
+ 805              		.loc 1 155 5 is_stmt 1
+ 806              	#NO_APP
+ 807 047c 63080502 		beqz	a0,.L35
+ 152:src/PCB.cpp   ****     PCB* pcb;
+ 808              		.loc 1 152 1 is_stmt 0
+ 809 0480 130101FF 		addi	sp,sp,-16
+ 810              		.cfi_def_cfa_offset 16
+ 811 0484 23341100 		sd	ra,8(sp)
+ 812 0488 23308100 		sd	s0,0(sp)
+ 813              		.cfi_offset 1, -8
+ 814              		.cfi_offset 8, -16
+ 815 048c 13040101 		addi	s0,sp,16
+ 816              		.cfi_def_cfa 8, 0
+ 156:src/PCB.cpp   ****     {
+ 157:src/PCB.cpp   ****         pcb->start();
+ 817              		.loc 1 157 9 is_stmt 1
+ 818              		.loc 1 157 19 is_stmt 0
+ 819 0490 97000000 		call	_ZN3PCB5startEv
+ 819      E7800000 
+ 820              	.LVL65:
+ 158:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
+ 821              		.loc 1 158 9 is_stmt 1
+ 822              		.loc 1 158 37 is_stmt 0
+ 823              	#APP
+ 824              	# 158 "src/PCB.cpp" 1
+ 159              	    }
+ 160:src/PCB.cpp   ****     else
+ 161:src/PCB.cpp   ****     {
+ 162:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
+ 163:src/PCB.cpp   ****     }
+ 164:src/PCB.cpp   **** 
+ 165:src/PCB.cpp   **** }
+ 825              		li a0, 0
+ 826              	# 0 "" 2
+ 827              		.loc 1 165 1
+ 828              	#NO_APP
+ 829 049c 83308100 		ld	ra,8(sp)
+ 830              		.cfi_restore 1
+ 831 04a0 03340100 		ld	s0,0(sp)
+ 832              		.cfi_restore 8
+ 833              		.cfi_def_cfa 2, 16
+ 834 04a4 13010101 		addi	sp,sp,16
+ 835              		.cfi_def_cfa_offset 0
+ 836 04a8 67800000 		jr	ra
+ 837              	.LVL66:
+ 838              	.L35:
+ 162:src/PCB.cpp   ****     }
+ 839              		.loc 1 162 9 is_stmt 1
+ 162:src/PCB.cpp   ****     }
+ 840              		.loc 1 162 54 is_stmt 0
+ 841              	#APP
+ 842              	# 162 "src/PCB.cpp" 1
+ 843              		li a0, 0xffffffffffffffff
+ 844              	# 0 "" 2
+GAS LISTING /tmp/ccG4TxL5.s 			page 20
 
 
- 158:src/PCB.cpp   **** void PCB::threadMakePCBHandler()
- 159:src/PCB.cpp   **** {
- 801              		.loc 1 159 1 is_stmt 1
- 802              		.cfi_startproc
- 803 0414 130101FD 		addi	sp,sp,-48
- 804              		.cfi_def_cfa_offset 48
- 805 0418 23341102 		sd	ra,40(sp)
- 806 041c 23308102 		sd	s0,32(sp)
- 807 0420 233C9100 		sd	s1,24(sp)
- 808 0424 23382101 		sd	s2,16(sp)
- 809 0428 23343101 		sd	s3,8(sp)
- 810 042c 23304101 		sd	s4,0(sp)
- 811              		.cfi_offset 1, -8
- 812              		.cfi_offset 8, -16
- 813              		.cfi_offset 9, -24
- 814              		.cfi_offset 18, -32
- 815              		.cfi_offset 19, -40
- 816              		.cfi_offset 20, -48
- 817 0430 13040103 		addi	s0,sp,48
- 818              		.cfi_def_cfa 8, 0
- 160:src/PCB.cpp   ****     uint64 start_routine;
- 819              		.loc 1 160 5
- 161:src/PCB.cpp   ****     uint64 args;
- 820              		.loc 1 161 5
- 162:src/PCB.cpp   ****     PCB **threadHandle;
- 821              		.loc 1 162 5
- 163:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
- 822              		.loc 1 163 5
- 823              		.loc 1 163 55 is_stmt 0
- 824              	#APP
- 825              	# 163 "src/PCB.cpp" 1
- 164              	    __asm__ volatile("mv %0, a2" : "=r"(start_routine));
- 826              		mv s2, a1
- 827              	# 0 "" 2
- 828              	.LVL58:
- 829              		.loc 1 164 5 is_stmt 1
- 830              		.loc 1 164 56 is_stmt 0
- 831              	# 164 "src/PCB.cpp" 1
- 165              	    __asm__ volatile("mv %0, a3" : "=r"(args));
- 832              		mv s3, a2
- 833              	# 0 "" 2
- 834              	.LVL59:
- 835              		.loc 1 165 5 is_stmt 1
- 836              		.loc 1 165 47 is_stmt 0
- 837              	# 165 "src/PCB.cpp" 1
- 166              	
- 838              		mv s4, a3
- 839              	# 0 "" 2
- 840              	.LVL60:
- 167:src/PCB.cpp   ****     PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4
- 841              		.loc 1 167 5 is_stmt 1
- 842              		.loc 1 167 120 is_stmt 0
- 843              	#NO_APP
- 844 0440 13050005 		li	a0,80
- 845 0444 97000000 		call	_ZN3PCBnwEm
- 845      E7800000 
- 846              	.LVL61:
-GAS LISTING /tmp/ccL15Wqi.s 			page 20
+ 845              	#NO_APP
+ 846 04b0 67800000 		ret
+ 847              		.cfi_endproc
+ 848              	.LFE42:
+ 850              		.align	2
+ 851              		.globl	_ZN3PCB20threadMakePCBHandlerEv
+ 853              	_ZN3PCB20threadMakePCBHandlerEv:
+ 854              	.LFB43:
+ 166:src/PCB.cpp   **** 
+ 167:src/PCB.cpp   **** void PCB::threadMakePCBHandler()
+ 168:src/PCB.cpp   **** {
+ 855              		.loc 1 168 1 is_stmt 1
+ 856              		.cfi_startproc
+ 857 04b4 130101FD 		addi	sp,sp,-48
+ 858              		.cfi_def_cfa_offset 48
+ 859 04b8 23341102 		sd	ra,40(sp)
+ 860 04bc 23308102 		sd	s0,32(sp)
+ 861 04c0 233C9100 		sd	s1,24(sp)
+ 862 04c4 23382101 		sd	s2,16(sp)
+ 863 04c8 23343101 		sd	s3,8(sp)
+ 864 04cc 23304101 		sd	s4,0(sp)
+ 865              		.cfi_offset 1, -8
+ 866              		.cfi_offset 8, -16
+ 867              		.cfi_offset 9, -24
+ 868              		.cfi_offset 18, -32
+ 869              		.cfi_offset 19, -40
+ 870              		.cfi_offset 20, -48
+ 871 04d0 13040103 		addi	s0,sp,48
+ 872              		.cfi_def_cfa 8, 0
+ 169:src/PCB.cpp   ****     uint64 start_routine;
+ 873              		.loc 1 169 5
+ 170:src/PCB.cpp   ****     uint64 args;
+ 874              		.loc 1 170 5
+ 171:src/PCB.cpp   ****     PCB **threadHandle;
+ 875              		.loc 1 171 5
+ 172:src/PCB.cpp   ****     __asm__ volatile("mv %0, a1" : "=r"(threadHandle));
+ 876              		.loc 1 172 5
+ 877              		.loc 1 172 55 is_stmt 0
+ 878              	#APP
+ 879              	# 172 "src/PCB.cpp" 1
+ 173              	    __asm__ volatile("mv %0, a2" : "=r"(start_routine));
+ 880              		mv s2, a1
+ 881              	# 0 "" 2
+ 882              	.LVL67:
+ 883              		.loc 1 173 5 is_stmt 1
+ 884              		.loc 1 173 56 is_stmt 0
+ 885              	# 173 "src/PCB.cpp" 1
+ 174              	    __asm__ volatile("mv %0, a3" : "=r"(args));
+ 886              		mv s3, a2
+ 887              	# 0 "" 2
+ 888              	.LVL68:
+ 889              		.loc 1 174 5 is_stmt 1
+ 890              		.loc 1 174 47 is_stmt 0
+ 891              	# 174 "src/PCB.cpp" 1
+ 175              	
+ 892              		mv s4, a3
+ 893              	# 0 "" 2
+GAS LISTING /tmp/ccG4TxL5.s 			page 21
 
 
- 847 044c 93040500 		mv	s1,a0
- 848 0450 13072000 		li	a4,2
- 849 0454 97060000 		ld	a3,.LANCHOR0+16
- 849      83B60600 
- 850 045c 13060A00 		mv	a2,s4
- 851 0460 93850900 		mv	a1,s3
- 852 0464 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
- 852      E7800000 
- 853              	.LVL62:
- 168:src/PCB.cpp   **** 
- 169:src/PCB.cpp   ****     (*threadHandle) = newPCB;
- 854              		.loc 1 169 5 is_stmt 1
- 855              		.loc 1 169 21 is_stmt 0
- 856 046c 23309900 		sd	s1,0(s2)
- 170:src/PCB.cpp   **** 
- 171:src/PCB.cpp   ****     if (newPCB == 0)
- 857              		.loc 1 171 5 is_stmt 1
- 858 0470 63840402 		beqz	s1,.L45
- 172:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
- 173:src/PCB.cpp   ****     else
- 174:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
- 859              		.loc 1 174 9
- 860              		.loc 1 174 37 is_stmt 0
- 861              	#APP
- 862              	# 174 "src/PCB.cpp" 1
- 175              	}
- 863              		li a0, 0
- 864              	# 0 "" 2
- 865              	#NO_APP
- 866              	.L41:
- 867              		.loc 1 175 1
- 868 0478 83308102 		ld	ra,40(sp)
- 869              		.cfi_remember_state
- 870              		.cfi_restore 1
- 871 047c 03340102 		ld	s0,32(sp)
- 872              		.cfi_restore 8
- 873              		.cfi_def_cfa 2, 48
- 874 0480 83348101 		ld	s1,24(sp)
- 875              		.cfi_restore 9
- 876              	.LVL63:
- 877 0484 03390101 		ld	s2,16(sp)
- 878              		.cfi_restore 18
- 879              	.LVL64:
- 880 0488 83398100 		ld	s3,8(sp)
- 881              		.cfi_restore 19
- 882              	.LVL65:
- 883 048c 033A0100 		ld	s4,0(sp)
- 884              		.cfi_restore 20
- 885              	.LVL66:
- 886 0490 13010103 		addi	sp,sp,48
- 887              		.cfi_def_cfa_offset 0
- 888 0494 67800000 		jr	ra
- 889              	.LVL67:
- 890              	.L45:
- 891              		.cfi_restore_state
- 172:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
- 892              		.loc 1 172 9 is_stmt 1
-GAS LISTING /tmp/ccL15Wqi.s 			page 21
+ 894              	.LVL69:
+ 176:src/PCB.cpp   ****     PCB *newPCB = new PCB((void (*)(void *)) start_routine, (void *) args, (void *) PCB::savedRegA4
+ 895              		.loc 1 176 5 is_stmt 1
+ 896              		.loc 1 176 120 is_stmt 0
+ 897              	#NO_APP
+ 898 04e0 13050005 		li	a0,80
+ 899 04e4 97000000 		call	_ZN3PCBnwEm
+ 899      E7800000 
+ 900              	.LVL70:
+ 901 04ec 93040500 		mv	s1,a0
+ 902 04f0 13072000 		li	a4,2
+ 903 04f4 97060000 		ld	a3,.LANCHOR0+16
+ 903      83B60600 
+ 904 04fc 13060A00 		mv	a2,s4
+ 905 0500 93850900 		mv	a1,s3
+ 906 0504 97000000 		call	_ZN3PCBC1EPFvPvES0_S0_m
+ 906      E7800000 
+ 907              	.LVL71:
+ 177:src/PCB.cpp   **** 
+ 178:src/PCB.cpp   ****     (*threadHandle) = newPCB;
+ 908              		.loc 1 178 5 is_stmt 1
+ 909              		.loc 1 178 21 is_stmt 0
+ 910 050c 23309900 		sd	s1,0(s2)
+ 179:src/PCB.cpp   **** 
+ 180:src/PCB.cpp   ****     if (newPCB == 0)
+ 911              		.loc 1 180 5 is_stmt 1
+ 912 0510 63840402 		beqz	s1,.L45
+ 181:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
+ 182:src/PCB.cpp   ****     else
+ 183:src/PCB.cpp   ****         __asm__ volatile("li a0, 0");
+ 913              		.loc 1 183 9
+ 914              		.loc 1 183 37 is_stmt 0
+ 915              	#APP
+ 916              	# 183 "src/PCB.cpp" 1
+ 184              	}
+ 917              		li a0, 0
+ 918              	# 0 "" 2
+ 919              	#NO_APP
+ 920              	.L41:
+ 921              		.loc 1 184 1
+ 922 0518 83308102 		ld	ra,40(sp)
+ 923              		.cfi_remember_state
+ 924              		.cfi_restore 1
+ 925 051c 03340102 		ld	s0,32(sp)
+ 926              		.cfi_restore 8
+ 927              		.cfi_def_cfa 2, 48
+ 928 0520 83348101 		ld	s1,24(sp)
+ 929              		.cfi_restore 9
+ 930              	.LVL72:
+ 931 0524 03390101 		ld	s2,16(sp)
+ 932              		.cfi_restore 18
+ 933              	.LVL73:
+ 934 0528 83398100 		ld	s3,8(sp)
+ 935              		.cfi_restore 19
+ 936              	.LVL74:
+ 937 052c 033A0100 		ld	s4,0(sp)
+ 938              		.cfi_restore 20
+GAS LISTING /tmp/ccG4TxL5.s 			page 22
 
 
- 172:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
- 893              		.loc 1 172 54 is_stmt 0
- 894              	#APP
- 895              	# 172 "src/PCB.cpp" 1
- 896              		li a0, 0xffffffffffffffff
- 897              	# 0 "" 2
- 898              	#NO_APP
- 899 049c 6FF0DFFD 		j	.L41
- 900              		.cfi_endproc
- 901              	.LFE40:
- 903              		.globl	_ZN3PCB10savedRegA4E
- 904              		.globl	_ZN3PCB16timeSliceCounterE
- 905              		.globl	_ZN3PCB7runningE
- 906              		.bss
- 907              		.align	3
- 908              		.set	.LANCHOR0,. + 0
- 911              	_ZN3PCB7runningE:
- 912 0000 00000000 		.zero	8
- 912      00000000 
- 915              	_ZN3PCB16timeSliceCounterE:
- 916 0008 00000000 		.zero	8
- 916      00000000 
- 919              	_ZN3PCB10savedRegA4E:
- 920 0010 00000000 		.zero	8
- 920      00000000 
- 921              		.text
- 922              	.Letext0:
- 923              		.file 3 "src/../h/../lib/hw.h"
- 924              		.file 4 "src/../h/Scheduler.hpp"
- 925              		.file 5 "src/../h/Riscv.hpp"
- 926              		.file 6 "src/../h/SleepPCBList.hpp"
- 927              		.file 7 "src/../h/MemoryAllocator.hpp"
- 928              		.file 8 "src/../h/syscall_c.h"
- 4526              		.align	3
- 4529              	DW.ref.__gxx_personality_v0:
- 4530 0000 00000000 		.dword	__gxx_personality_v0
- 4530      00000000 
- 4531              		.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
- 4532              		.section	.note.GNU-stack,"",@progbits
-GAS LISTING /tmp/ccL15Wqi.s 			page 22
+ 939              	.LVL75:
+ 940 0530 13010103 		addi	sp,sp,48
+ 941              		.cfi_def_cfa_offset 0
+ 942 0534 67800000 		jr	ra
+ 943              	.LVL76:
+ 944              	.L45:
+ 945              		.cfi_restore_state
+ 181:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
+ 946              		.loc 1 181 9 is_stmt 1
+ 181:src/PCB.cpp   ****         __asm__ volatile("li a0, 0xffffffffffffffff");
+ 947              		.loc 1 181 54 is_stmt 0
+ 948              	#APP
+ 949              	# 181 "src/PCB.cpp" 1
+ 950              		li a0, 0xffffffffffffffff
+ 951              	# 0 "" 2
+ 952              	#NO_APP
+ 953 053c 6FF0DFFD 		j	.L41
+ 954              		.cfi_endproc
+ 955              	.LFE43:
+ 957              		.globl	_ZN3PCB10savedRegA4E
+ 958              		.globl	_ZN3PCB16timeSliceCounterE
+ 959              		.globl	_ZN3PCB7runningE
+ 960              		.bss
+ 961              		.align	3
+ 962              		.set	.LANCHOR0,. + 0
+ 965              	_ZN3PCB7runningE:
+ 966 0000 00000000 		.zero	8
+ 966      00000000 
+ 969              	_ZN3PCB16timeSliceCounterE:
+ 970 0008 00000000 		.zero	8
+ 970      00000000 
+ 973              	_ZN3PCB10savedRegA4E:
+ 974 0010 00000000 		.zero	8
+ 974      00000000 
+ 975              		.text
+ 976              	.Letext0:
+ 977              		.file 3 "src/../h/../lib/hw.h"
+ 978              		.file 4 "src/../h/Scheduler.hpp"
+ 979              		.file 5 "src/../h/Riscv.hpp"
+ 980              		.file 6 "src/../h/SleepPCBList.hpp"
+ 981              		.file 7 "src/../h/MemoryAllocator.hpp"
+ 982              		.file 8 "src/../h/syscall_c.h"
+ 4786              		.align	3
+ 4789              	DW.ref.__gxx_personality_v0:
+ 4790 0000 00000000 		.dword	__gxx_personality_v0
+ 4790      00000000 
+ 4791              		.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+ 4792              		.section	.note.GNU-stack,"",@progbits
+GAS LISTING /tmp/ccG4TxL5.s 			page 23
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 PCB.cpp
-     /tmp/ccL15Wqi.s:14     .text:0000000000000000 _ZN3PCB6runnerEv
-     /tmp/ccL15Wqi.s:18     .text:0000000000000000 .L0 
-     /tmp/ccL15Wqi.s:19     .text:0000000000000000 .L0 
-     /tmp/ccL15Wqi.s:20     .text:0000000000000004 .L0 
-     /tmp/ccL15Wqi.s:23     .text:000000000000000c .L0 
-     /tmp/ccL15Wqi.s:24     .text:000000000000000c .L0 
-     /tmp/ccL15Wqi.s:26     .text:0000000000000010 .L0 
-     /tmp/ccL15Wqi.s:28     .text:0000000000000010 .L0 
-     /tmp/ccL15Wqi.s:29     .text:0000000000000010 .L0 
-     /tmp/ccL15Wqi.s:33     .text:0000000000000020 .L0 
-     /tmp/ccL15Wqi.s:34     .text:0000000000000020 .L0 
-     /tmp/ccL15Wqi.s:37     .text:0000000000000028 .L0 
-     /tmp/ccL15Wqi.s:38     .text:0000000000000028 .L0 
-     /tmp/ccL15Wqi.s:41     .text:0000000000000034 .L0 
-     /tmp/ccL15Wqi.s:45     .text:000000000000003c .L0 
-     /tmp/ccL15Wqi.s:46     .text:000000000000003c .L0 
-     /tmp/ccL15Wqi.s:49     .text:0000000000000044 .L0 
-     /tmp/ccL15Wqi.s:50     .text:0000000000000048 .L0 
-     /tmp/ccL15Wqi.s:52     .text:000000000000004c .L0 
-     /tmp/ccL15Wqi.s:53     .text:000000000000004c .L0 
-     /tmp/ccL15Wqi.s:55     .text:0000000000000050 .L0 
-     /tmp/ccL15Wqi.s:57     .text:0000000000000054 .L0 
-     /tmp/ccL15Wqi.s:63     .text:0000000000000054 _ZN3PCBC2EPFvPvES0_S0_m
-     /tmp/ccL15Wqi.s:66     .text:0000000000000054 .L0 
-     /tmp/ccL15Wqi.s:68     .text:0000000000000054 .L0 
-     /tmp/ccL15Wqi.s:69     .text:0000000000000058 .L0 
-     /tmp/ccL15Wqi.s:71     .text:000000000000005c .L0 
-     /tmp/ccL15Wqi.s:73     .text:0000000000000060 .L0 
-     /tmp/ccL15Wqi.s:76     .text:0000000000000060 .L0 
-     /tmp/ccL15Wqi.s:83     .text:0000000000000078 .L0 
-     /tmp/ccL15Wqi.s:87     .text:0000000000000080 .L0 
-     /tmp/ccL15Wqi.s:91     .text:0000000000000090 .L0 
-     /tmp/ccL15Wqi.s:92     .text:0000000000000090 .L0 
-     /tmp/ccL15Wqi.s:95     .text:0000000000000094 .L0 
-     /tmp/ccL15Wqi.s:96     .text:0000000000000098 .L0 
-     /tmp/ccL15Wqi.s:97     .text:0000000000000098 .L0 
-     /tmp/ccL15Wqi.s:99     .text:000000000000009c .L0 
-     /tmp/ccL15Wqi.s:101    .text:00000000000000a0 .L0 
-     /tmp/ccL15Wqi.s:63     .text:0000000000000054 _ZN3PCBC1EPFvPvES0_S0_m
-     /tmp/ccL15Wqi.s:109    .text:00000000000000a0 _ZN3PCB5sleepEm
-     /tmp/ccL15Wqi.s:112    .text:00000000000000a0 .L0 
-     /tmp/ccL15Wqi.s:114    .text:00000000000000a0 .L0 
-     /tmp/ccL15Wqi.s:115    .text:00000000000000a4 .L0 
-     /tmp/ccL15Wqi.s:117    .text:00000000000000a8 .L0 
-     /tmp/ccL15Wqi.s:119    .text:00000000000000ac .L0 
-     /tmp/ccL15Wqi.s:121    .text:00000000000000ac .L0 
-     /tmp/ccL15Wqi.s:122    .text:00000000000000b0 .L0 
-     /tmp/ccL15Wqi.s:123    .text:00000000000000b0 .L0 
-     /tmp/ccL15Wqi.s:125    .text:00000000000000b4 .L0 
-     /tmp/ccL15Wqi.s:127    .text:00000000000000b8 .L0 
-     /tmp/ccL15Wqi.s:133    .text:00000000000000b8 _ZN3PCB5startEv
-     /tmp/ccL15Wqi.s:136    .text:00000000000000b8 .L0 
-     /tmp/ccL15Wqi.s:138    .text:00000000000000b8 .L0 
-     /tmp/ccL15Wqi.s:139    .text:00000000000000bc .L0 
-     /tmp/ccL15Wqi.s:142    .text:00000000000000c4 .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 23
+     /tmp/ccG4TxL5.s:9      .text:0000000000000000 _ZN3PCB6runnerEv
+     /tmp/ccG4TxL5.s:13     .text:0000000000000000 .L0 
+     /tmp/ccG4TxL5.s:14     .text:0000000000000000 .L0 
+     /tmp/ccG4TxL5.s:15     .text:0000000000000004 .L0 
+     /tmp/ccG4TxL5.s:18     .text:000000000000000c .L0 
+     /tmp/ccG4TxL5.s:19     .text:000000000000000c .L0 
+     /tmp/ccG4TxL5.s:21     .text:0000000000000010 .L0 
+     /tmp/ccG4TxL5.s:23     .text:0000000000000010 .L0 
+     /tmp/ccG4TxL5.s:24     .text:0000000000000010 .L0 
+     /tmp/ccG4TxL5.s:27     .text:0000000000000018 .L0 
+     /tmp/ccG4TxL5.s:28     .text:0000000000000018 .L0 
+     /tmp/ccG4TxL5.s:31     .text:0000000000000024 .L0 
+     /tmp/ccG4TxL5.s:35     .text:000000000000002c .L0 
+     /tmp/ccG4TxL5.s:36     .text:000000000000002c .L0 
+     /tmp/ccG4TxL5.s:39     .text:0000000000000034 .L0 
+     /tmp/ccG4TxL5.s:40     .text:0000000000000038 .L0 
+     /tmp/ccG4TxL5.s:42     .text:000000000000003c .L0 
+     /tmp/ccG4TxL5.s:43     .text:000000000000003c .L0 
+     /tmp/ccG4TxL5.s:45     .text:0000000000000040 .L0 
+     /tmp/ccG4TxL5.s:47     .text:0000000000000044 .L0 
+     /tmp/ccG4TxL5.s:53     .text:0000000000000044 _ZN3PCBC2EPFvPvES0_S0_m
+     /tmp/ccG4TxL5.s:56     .text:0000000000000044 .L0 
+     /tmp/ccG4TxL5.s:58     .text:0000000000000044 .L0 
+     /tmp/ccG4TxL5.s:59     .text:0000000000000048 .L0 
+     /tmp/ccG4TxL5.s:61     .text:000000000000004c .L0 
+     /tmp/ccG4TxL5.s:63     .text:0000000000000050 .L0 
+     /tmp/ccG4TxL5.s:66     .text:0000000000000050 .L0 
+     /tmp/ccG4TxL5.s:73     .text:0000000000000068 .L0 
+     /tmp/ccG4TxL5.s:77     .text:0000000000000070 .L0 
+     /tmp/ccG4TxL5.s:81     .text:0000000000000080 .L0 
+     /tmp/ccG4TxL5.s:82     .text:0000000000000080 .L0 
+     /tmp/ccG4TxL5.s:85     .text:0000000000000084 .L0 
+     /tmp/ccG4TxL5.s:86     .text:0000000000000088 .L0 
+     /tmp/ccG4TxL5.s:87     .text:0000000000000088 .L0 
+     /tmp/ccG4TxL5.s:89     .text:000000000000008c .L0 
+     /tmp/ccG4TxL5.s:91     .text:0000000000000090 .L0 
+     /tmp/ccG4TxL5.s:53     .text:0000000000000044 _ZN3PCBC1EPFvPvES0_S0_m
+     /tmp/ccG4TxL5.s:99     .text:0000000000000090 _ZN3PCB5sleepEm
+     /tmp/ccG4TxL5.s:102    .text:0000000000000090 .L0 
+     /tmp/ccG4TxL5.s:104    .text:0000000000000090 .L0 
+     /tmp/ccG4TxL5.s:105    .text:0000000000000094 .L0 
+     /tmp/ccG4TxL5.s:107    .text:0000000000000098 .L0 
+     /tmp/ccG4TxL5.s:109    .text:000000000000009c .L0 
+     /tmp/ccG4TxL5.s:111    .text:000000000000009c .L0 
+     /tmp/ccG4TxL5.s:112    .text:00000000000000a0 .L0 
+     /tmp/ccG4TxL5.s:113    .text:00000000000000a0 .L0 
+     /tmp/ccG4TxL5.s:115    .text:00000000000000a4 .L0 
+     /tmp/ccG4TxL5.s:117    .text:00000000000000a8 .L0 
+     /tmp/ccG4TxL5.s:123    .text:00000000000000a8 _ZN3PCB5startEv
+     /tmp/ccG4TxL5.s:126    .text:00000000000000a8 .L0 
+     /tmp/ccG4TxL5.s:128    .text:00000000000000a8 .L0 
+     /tmp/ccG4TxL5.s:129    .text:00000000000000ac .L0 
+     /tmp/ccG4TxL5.s:132    .text:00000000000000b4 .L0 
+     /tmp/ccG4TxL5.s:133    .text:00000000000000b4 .L0 
+     /tmp/ccG4TxL5.s:135    .text:00000000000000b8 .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 24
 
 
-     /tmp/ccL15Wqi.s:143    .text:00000000000000c4 .L0 
-     /tmp/ccL15Wqi.s:145    .text:00000000000000c8 .L0 
-     /tmp/ccL15Wqi.s:147    .text:00000000000000c8 .L0 
-     /tmp/ccL15Wqi.s:148    .text:00000000000000c8 .L0 
-     /tmp/ccL15Wqi.s:151    .text:00000000000000d0 .L0 
-     /tmp/ccL15Wqi.s:152    .text:00000000000000d4 .L0 
-     /tmp/ccL15Wqi.s:154    .text:00000000000000d8 .L0 
-     /tmp/ccL15Wqi.s:155    .text:00000000000000d8 .L0 
-     /tmp/ccL15Wqi.s:157    .text:00000000000000dc .L0 
-     /tmp/ccL15Wqi.s:159    .text:00000000000000e0 .L0 
-     /tmp/ccL15Wqi.s:165    .text:00000000000000e0 _ZN3PCB8dispatchEv
-     /tmp/ccL15Wqi.s:168    .text:00000000000000e0 .L0 
-     /tmp/ccL15Wqi.s:169    .text:00000000000000e0 .L0 
-     /tmp/ccL15Wqi.s:170    .text:00000000000000e4 .L0 
-     /tmp/ccL15Wqi.s:174    .text:00000000000000f0 .L0 
-     /tmp/ccL15Wqi.s:175    .text:00000000000000f0 .L0 
-     /tmp/ccL15Wqi.s:176    .text:00000000000000f0 .L0 
-     /tmp/ccL15Wqi.s:178    .text:00000000000000f4 .L0 
-     /tmp/ccL15Wqi.s:180    .text:00000000000000f4 .L0 
-     /tmp/ccL15Wqi.s:181    .text:00000000000000f4 .L0 
-     /tmp/ccL15Wqi.s:187    .text:00000000000000fc .L0 
-     /tmp/ccL15Wqi.s:188    .text:00000000000000fc .L0 
-     /tmp/ccL15Wqi.s:189    .text:00000000000000fc .L0 
-     /tmp/ccL15Wqi.s:194    .text:0000000000000100 .L0 
-     /tmp/ccL15Wqi.s:198    .text:0000000000000108 .L0 
-     /tmp/ccL15Wqi.s:199    .text:0000000000000108 .L0 
-     /tmp/ccL15Wqi.s:202    .text:0000000000000110 .L0 
-     /tmp/ccL15Wqi.s:207    .text:0000000000000118 .L0 
-     /tmp/ccL15Wqi.s:208    .text:0000000000000118 .L0 
-     /tmp/ccL15Wqi.s:209    .text:0000000000000118 .L0 
-     /tmp/ccL15Wqi.s:215    .text:0000000000000120 .L0 
-     /tmp/ccL15Wqi.s:216    .text:0000000000000120 .L0 
-     /tmp/ccL15Wqi.s:221    .text:0000000000000130 .L0 
-     /tmp/ccL15Wqi.s:222    .text:0000000000000134 .L0 
-     /tmp/ccL15Wqi.s:223    .text:0000000000000134 .L0 
-     /tmp/ccL15Wqi.s:225    .text:0000000000000138 .L0 
-     /tmp/ccL15Wqi.s:226    .text:0000000000000138 .L0 
-     /tmp/ccL15Wqi.s:228    .text:000000000000013c .L0 
-     /tmp/ccL15Wqi.s:231    .text:0000000000000140 .L0 
-     /tmp/ccL15Wqi.s:235    .text:0000000000000144 .L0 
-     /tmp/ccL15Wqi.s:237    .text:0000000000000144 .L0 
-     /tmp/ccL15Wqi.s:238    .text:0000000000000144 .L0 
-     /tmp/ccL15Wqi.s:242    .text:0000000000000154 .L0 
-     /tmp/ccL15Wqi.s:248    .text:0000000000000154 _ZN3PCBnwEm
-     /tmp/ccL15Wqi.s:251    .text:0000000000000154 .L0 
-     /tmp/ccL15Wqi.s:253    .text:0000000000000154 .L0 
-     /tmp/ccL15Wqi.s:254    .text:0000000000000158 .L0 
-     /tmp/ccL15Wqi.s:257    .text:0000000000000160 .L0 
-     /tmp/ccL15Wqi.s:258    .text:0000000000000160 .L0 
-     /tmp/ccL15Wqi.s:260    .text:0000000000000164 .L0 
-     /tmp/ccL15Wqi.s:262    .text:0000000000000164 .L0 
-     /tmp/ccL15Wqi.s:263    .text:0000000000000164 .L0 
-     /tmp/ccL15Wqi.s:266    .text:000000000000016c .L0 
-     /tmp/ccL15Wqi.s:267    .text:0000000000000170 .L0 
-     /tmp/ccL15Wqi.s:269    .text:0000000000000174 .L0 
-     /tmp/ccL15Wqi.s:270    .text:0000000000000174 .L0 
-     /tmp/ccL15Wqi.s:272    .text:0000000000000178 .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 24
+     /tmp/ccG4TxL5.s:137    .text:00000000000000b8 .L0 
+     /tmp/ccG4TxL5.s:138    .text:00000000000000b8 .L0 
+     /tmp/ccG4TxL5.s:141    .text:00000000000000c0 .L0 
+     /tmp/ccG4TxL5.s:142    .text:00000000000000c4 .L0 
+     /tmp/ccG4TxL5.s:144    .text:00000000000000c8 .L0 
+     /tmp/ccG4TxL5.s:145    .text:00000000000000c8 .L0 
+     /tmp/ccG4TxL5.s:147    .text:00000000000000cc .L0 
+     /tmp/ccG4TxL5.s:149    .text:00000000000000d0 .L0 
+     /tmp/ccG4TxL5.s:155    .text:00000000000000d0 _ZN3PCB8dispatchEv
+     /tmp/ccG4TxL5.s:158    .text:00000000000000d0 .L0 
+     /tmp/ccG4TxL5.s:159    .text:00000000000000d0 .L0 
+     /tmp/ccG4TxL5.s:160    .text:00000000000000d4 .L0 
+     /tmp/ccG4TxL5.s:164    .text:00000000000000e0 .L0 
+     /tmp/ccG4TxL5.s:165    .text:00000000000000e0 .L0 
+     /tmp/ccG4TxL5.s:166    .text:00000000000000e0 .L0 
+     /tmp/ccG4TxL5.s:168    .text:00000000000000e4 .L0 
+     /tmp/ccG4TxL5.s:170    .text:00000000000000e4 .L0 
+     /tmp/ccG4TxL5.s:171    .text:00000000000000e4 .L0 
+     /tmp/ccG4TxL5.s:177    .text:00000000000000ec .L0 
+     /tmp/ccG4TxL5.s:178    .text:00000000000000ec .L0 
+     /tmp/ccG4TxL5.s:179    .text:00000000000000ec .L0 
+     /tmp/ccG4TxL5.s:184    .text:00000000000000f0 .L0 
+     /tmp/ccG4TxL5.s:188    .text:00000000000000f8 .L0 
+     /tmp/ccG4TxL5.s:189    .text:00000000000000f8 .L0 
+     /tmp/ccG4TxL5.s:192    .text:0000000000000100 .L0 
+     /tmp/ccG4TxL5.s:197    .text:0000000000000108 .L0 
+     /tmp/ccG4TxL5.s:198    .text:0000000000000108 .L0 
+     /tmp/ccG4TxL5.s:199    .text:0000000000000108 .L0 
+     /tmp/ccG4TxL5.s:205    .text:0000000000000110 .L0 
+     /tmp/ccG4TxL5.s:206    .text:0000000000000110 .L0 
+     /tmp/ccG4TxL5.s:211    .text:0000000000000120 .L0 
+     /tmp/ccG4TxL5.s:212    .text:0000000000000124 .L0 
+     /tmp/ccG4TxL5.s:213    .text:0000000000000124 .L0 
+     /tmp/ccG4TxL5.s:215    .text:0000000000000128 .L0 
+     /tmp/ccG4TxL5.s:216    .text:0000000000000128 .L0 
+     /tmp/ccG4TxL5.s:218    .text:000000000000012c .L0 
+     /tmp/ccG4TxL5.s:221    .text:0000000000000130 .L0 
+     /tmp/ccG4TxL5.s:225    .text:0000000000000134 .L0 
+     /tmp/ccG4TxL5.s:227    .text:0000000000000134 .L0 
+     /tmp/ccG4TxL5.s:228    .text:0000000000000134 .L0 
+     /tmp/ccG4TxL5.s:232    .text:0000000000000144 .L0 
+     /tmp/ccG4TxL5.s:238    .text:0000000000000144 _ZN3PCBnwEm
+     /tmp/ccG4TxL5.s:241    .text:0000000000000144 .L0 
+     /tmp/ccG4TxL5.s:243    .text:0000000000000144 .L0 
+     /tmp/ccG4TxL5.s:244    .text:0000000000000148 .L0 
+     /tmp/ccG4TxL5.s:247    .text:0000000000000150 .L0 
+     /tmp/ccG4TxL5.s:248    .text:0000000000000150 .L0 
+     /tmp/ccG4TxL5.s:250    .text:0000000000000154 .L0 
+     /tmp/ccG4TxL5.s:252    .text:0000000000000154 .L0 
+     /tmp/ccG4TxL5.s:253    .text:0000000000000154 .L0 
+     /tmp/ccG4TxL5.s:256    .text:000000000000015c .L0 
+     /tmp/ccG4TxL5.s:257    .text:0000000000000160 .L0 
+     /tmp/ccG4TxL5.s:259    .text:0000000000000164 .L0 
+     /tmp/ccG4TxL5.s:260    .text:0000000000000164 .L0 
+     /tmp/ccG4TxL5.s:262    .text:0000000000000168 .L0 
+     /tmp/ccG4TxL5.s:264    .text:000000000000016c .L0 
+     /tmp/ccG4TxL5.s:270    .text:000000000000016c _ZN3PCBdlEPv
+GAS LISTING /tmp/ccG4TxL5.s 			page 25
 
 
-     /tmp/ccL15Wqi.s:274    .text:000000000000017c .L0 
-     /tmp/ccL15Wqi.s:280    .text:000000000000017c _ZN3PCBdlEPv
-     /tmp/ccL15Wqi.s:283    .text:000000000000017c .L0 
-     /tmp/ccL15Wqi.s:285    .text:000000000000017c .L0 
-     /tmp/ccL15Wqi.s:286    .text:0000000000000180 .L0 
-     /tmp/ccL15Wqi.s:289    .text:0000000000000188 .L0 
-     /tmp/ccL15Wqi.s:290    .text:0000000000000188 .L0 
-     /tmp/ccL15Wqi.s:292    .text:000000000000018c .L0 
-     /tmp/ccL15Wqi.s:294    .text:000000000000018c .L0 
-     /tmp/ccL15Wqi.s:295    .text:000000000000018c .L0 
-     /tmp/ccL15Wqi.s:298    .text:0000000000000194 .L0 
-     /tmp/ccL15Wqi.s:299    .text:0000000000000198 .L0 
-     /tmp/ccL15Wqi.s:301    .text:000000000000019c .L0 
-     /tmp/ccL15Wqi.s:302    .text:000000000000019c .L0 
-     /tmp/ccL15Wqi.s:304    .text:00000000000001a0 .L0 
-     /tmp/ccL15Wqi.s:306    .text:00000000000001a4 .L0 
-     /tmp/ccL15Wqi.s:312    .text:00000000000001a4 _ZN3PCBD2Ev
-     /tmp/ccL15Wqi.s:315    .text:00000000000001a4 .L0 
-     /tmp/ccL15Wqi.s:4529   .data.rel.local.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
-     /tmp/ccL15Wqi.s:319    .text:00000000000001a4 .L0 
-     /tmp/ccL15Wqi.s:320    .text:00000000000001a8 .L0 
-     /tmp/ccL15Wqi.s:323    .text:00000000000001b0 .L0 
-     /tmp/ccL15Wqi.s:324    .text:00000000000001b0 .L0 
-     /tmp/ccL15Wqi.s:326    .text:00000000000001b4 .L0 
-     /tmp/ccL15Wqi.s:329    .text:00000000000001b4 .L0 
-     /tmp/ccL15Wqi.s:330    .text:00000000000001b4 .L0 
-     /tmp/ccL15Wqi.s:336    .text:00000000000001c0 .L0 
-     /tmp/ccL15Wqi.s:337    .text:00000000000001c4 .L0 
-     /tmp/ccL15Wqi.s:339    .text:00000000000001c8 .L0 
-     /tmp/ccL15Wqi.s:340    .text:00000000000001c8 .L0 
-     /tmp/ccL15Wqi.s:342    .text:00000000000001cc .L0 
-     /tmp/ccL15Wqi.s:344    .text:00000000000001d0 .L0 
-     /tmp/ccL15Wqi.s:312    .text:00000000000001a4 _ZN3PCBD1Ev
-     /tmp/ccL15Wqi.s:360    .text:00000000000001d0 _ZN3PCB10initializeEv
-     /tmp/ccL15Wqi.s:363    .text:00000000000001d0 .L0 
-     /tmp/ccL15Wqi.s:364    .text:00000000000001d0 .L0 
-     /tmp/ccL15Wqi.s:365    .text:00000000000001d4 .L0 
-     /tmp/ccL15Wqi.s:369    .text:00000000000001e0 .L0 
-     /tmp/ccL15Wqi.s:370    .text:00000000000001e0 .L0 
-     /tmp/ccL15Wqi.s:371    .text:00000000000001e0 .L0 
-     /tmp/ccL15Wqi.s:373    .text:00000000000001e4 .L0 
-     /tmp/ccL15Wqi.s:375    .text:00000000000001e4 .L0 
-     /tmp/ccL15Wqi.s:376    .text:00000000000001e4 .L0 
-     /tmp/ccL15Wqi.s:387    .text:000000000000020c .L0 
-     /tmp/ccL15Wqi.s:388    .text:000000000000020c .L0 
-     /tmp/ccL15Wqi.s:392    .text:0000000000000218 .L0 
-     /tmp/ccL15Wqi.s:393    .text:0000000000000218 .L0 
-     /tmp/ccL15Wqi.s:396    .text:0000000000000220 .L0 
-     /tmp/ccL15Wqi.s:397    .text:0000000000000220 .L0 
-     /tmp/ccL15Wqi.s:400    .text:0000000000000228 .L0 
-     /tmp/ccL15Wqi.s:405    .text:0000000000000230 .L0 
-     /tmp/ccL15Wqi.s:406    .text:0000000000000230 .L0 
-     /tmp/ccL15Wqi.s:407    .text:0000000000000230 .L0 
-     /tmp/ccL15Wqi.s:413    .text:0000000000000238 .L0 
-     /tmp/ccL15Wqi.s:414    .text:000000000000023c .L0 
-     /tmp/ccL15Wqi.s:416    .text:0000000000000240 .L0 
-     /tmp/ccL15Wqi.s:417    .text:0000000000000240 .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 25
+     /tmp/ccG4TxL5.s:273    .text:000000000000016c .L0 
+     /tmp/ccG4TxL5.s:275    .text:000000000000016c .L0 
+     /tmp/ccG4TxL5.s:276    .text:0000000000000170 .L0 
+     /tmp/ccG4TxL5.s:279    .text:0000000000000178 .L0 
+     /tmp/ccG4TxL5.s:280    .text:0000000000000178 .L0 
+     /tmp/ccG4TxL5.s:282    .text:000000000000017c .L0 
+     /tmp/ccG4TxL5.s:284    .text:000000000000017c .L0 
+     /tmp/ccG4TxL5.s:285    .text:000000000000017c .L0 
+     /tmp/ccG4TxL5.s:288    .text:0000000000000184 .L0 
+     /tmp/ccG4TxL5.s:289    .text:0000000000000188 .L0 
+     /tmp/ccG4TxL5.s:291    .text:000000000000018c .L0 
+     /tmp/ccG4TxL5.s:292    .text:000000000000018c .L0 
+     /tmp/ccG4TxL5.s:294    .text:0000000000000190 .L0 
+     /tmp/ccG4TxL5.s:296    .text:0000000000000194 .L0 
+     /tmp/ccG4TxL5.s:302    .text:0000000000000194 _ZN3PCBD2Ev
+     /tmp/ccG4TxL5.s:305    .text:0000000000000194 .L0 
+     /tmp/ccG4TxL5.s:4789   .data.rel.local.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+     /tmp/ccG4TxL5.s:309    .text:0000000000000194 .L0 
+     /tmp/ccG4TxL5.s:310    .text:0000000000000198 .L0 
+     /tmp/ccG4TxL5.s:313    .text:00000000000001a0 .L0 
+     /tmp/ccG4TxL5.s:314    .text:00000000000001a0 .L0 
+     /tmp/ccG4TxL5.s:316    .text:00000000000001a4 .L0 
+     /tmp/ccG4TxL5.s:319    .text:00000000000001a4 .L0 
+     /tmp/ccG4TxL5.s:320    .text:00000000000001a4 .L0 
+     /tmp/ccG4TxL5.s:326    .text:00000000000001b0 .L0 
+     /tmp/ccG4TxL5.s:327    .text:00000000000001b4 .L0 
+     /tmp/ccG4TxL5.s:329    .text:00000000000001b8 .L0 
+     /tmp/ccG4TxL5.s:330    .text:00000000000001b8 .L0 
+     /tmp/ccG4TxL5.s:332    .text:00000000000001bc .L0 
+     /tmp/ccG4TxL5.s:334    .text:00000000000001c0 .L0 
+     /tmp/ccG4TxL5.s:302    .text:0000000000000194 _ZN3PCBD1Ev
+     /tmp/ccG4TxL5.s:350    .text:00000000000001c0 _ZN3PCB10initializeEv
+     /tmp/ccG4TxL5.s:353    .text:00000000000001c0 .L0 
+     /tmp/ccG4TxL5.s:354    .text:00000000000001c0 .L0 
+     /tmp/ccG4TxL5.s:355    .text:00000000000001c4 .L0 
+     /tmp/ccG4TxL5.s:362    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:363    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:364    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:365    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:366    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:367    .text:00000000000001dc .L0 
+     /tmp/ccG4TxL5.s:369    .text:00000000000001e0 .L0 
+     /tmp/ccG4TxL5.s:371    .text:00000000000001e0 .L0 
+     /tmp/ccG4TxL5.s:372    .text:00000000000001e0 .L0 
+     /tmp/ccG4TxL5.s:383    .text:0000000000000208 .L0 
+     /tmp/ccG4TxL5.s:384    .text:0000000000000208 .L0 
+     /tmp/ccG4TxL5.s:388    .text:0000000000000214 .L0 
+     /tmp/ccG4TxL5.s:389    .text:0000000000000214 .L0 
+     /tmp/ccG4TxL5.s:392    .text:000000000000021c .L0 
+     /tmp/ccG4TxL5.s:393    .text:000000000000021c .L0 
+     /tmp/ccG4TxL5.s:396    .text:0000000000000224 .L0 
+     /tmp/ccG4TxL5.s:401    .text:000000000000022c .L0 
+     /tmp/ccG4TxL5.s:402    .text:000000000000022c .L0 
+     /tmp/ccG4TxL5.s:403    .text:000000000000022c .L0 
+     /tmp/ccG4TxL5.s:409    .text:0000000000000234 .L0 
+     /tmp/ccG4TxL5.s:410    .text:0000000000000234 .L0 
+     /tmp/ccG4TxL5.s:415    .text:0000000000000244 .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 26
 
 
-     /tmp/ccL15Wqi.s:419    .text:0000000000000244 .L0 
-     /tmp/ccL15Wqi.s:422    .text:0000000000000248 .L0 
-     /tmp/ccL15Wqi.s:424    .text:000000000000024c .L0 
-     /tmp/ccL15Wqi.s:430    .text:000000000000024c _ZN3PCB10isFinishedEv
-     /tmp/ccL15Wqi.s:433    .text:000000000000024c .L0 
-     /tmp/ccL15Wqi.s:435    .text:000000000000024c .L0 
-     /tmp/ccL15Wqi.s:436    .text:0000000000000250 .L0 
-     /tmp/ccL15Wqi.s:438    .text:0000000000000254 .L0 
-     /tmp/ccL15Wqi.s:440    .text:0000000000000258 .L0 
-     /tmp/ccL15Wqi.s:442    .text:0000000000000258 .L0 
-     /tmp/ccL15Wqi.s:443    .text:0000000000000258 .L0 
-     /tmp/ccL15Wqi.s:446    .text:000000000000025c .L0 
-     /tmp/ccL15Wqi.s:448    .text:0000000000000260 .L0 
-     /tmp/ccL15Wqi.s:450    .text:0000000000000268 .L0 
-     /tmp/ccL15Wqi.s:451    .text:0000000000000268 .L0 
-     /tmp/ccL15Wqi.s:453    .text:000000000000026c .L0 
-     /tmp/ccL15Wqi.s:455    .text:0000000000000270 .L0 
-     /tmp/ccL15Wqi.s:466    .text:0000000000000270 _ZN3PCB17threadExitHandlerEv
-     /tmp/ccL15Wqi.s:469    .text:0000000000000270 .L0 
-     /tmp/ccL15Wqi.s:470    .text:0000000000000270 .L0 
-     /tmp/ccL15Wqi.s:471    .text:0000000000000274 .L0 
-     /tmp/ccL15Wqi.s:474    .text:000000000000027c .L0 
-     /tmp/ccL15Wqi.s:475    .text:000000000000027c .L0 
-     /tmp/ccL15Wqi.s:477    .text:0000000000000280 .L0 
-     /tmp/ccL15Wqi.s:479    .text:0000000000000280 .L0 
-     /tmp/ccL15Wqi.s:480    .text:0000000000000280 .L0 
-     /tmp/ccL15Wqi.s:484    .text:0000000000000290 .L0 
-     /tmp/ccL15Wqi.s:485    .text:0000000000000290 .L0 
-     /tmp/ccL15Wqi.s:488    .text:000000000000029c .L0 
-     /tmp/ccL15Wqi.s:489    .text:000000000000029c .L0 
-     /tmp/ccL15Wqi.s:494    .text:00000000000002a0 .L0 
-     /tmp/ccL15Wqi.s:495    .text:00000000000002a0 .L0 
-     /tmp/ccL15Wqi.s:501    .text:00000000000002a8 .L0 
-     /tmp/ccL15Wqi.s:502    .text:00000000000002a8 .L0 
-     /tmp/ccL15Wqi.s:505    .text:00000000000002b0 .L0 
-         src/PCB.cpp:100    .text:00000000000002b0 .L0 
-     /tmp/ccL15Wqi.s:512    .text:00000000000002b4 .L0 
-     /tmp/ccL15Wqi.s:513    .text:00000000000002b8 .L0 
-     /tmp/ccL15Wqi.s:515    .text:00000000000002bc .L0 
-     /tmp/ccL15Wqi.s:516    .text:00000000000002bc .L0 
-     /tmp/ccL15Wqi.s:518    .text:00000000000002c0 .L0 
-     /tmp/ccL15Wqi.s:520    .text:00000000000002c4 .L0 
-     /tmp/ccL15Wqi.s:526    .text:00000000000002c4 _ZN3PCB21threadDispatchHandlerEv
-     /tmp/ccL15Wqi.s:529    .text:00000000000002c4 .L0 
-     /tmp/ccL15Wqi.s:530    .text:00000000000002c4 .L0 
-     /tmp/ccL15Wqi.s:531    .text:00000000000002c8 .L0 
-     /tmp/ccL15Wqi.s:534    .text:00000000000002d0 .L0 
-     /tmp/ccL15Wqi.s:535    .text:00000000000002d0 .L0 
-     /tmp/ccL15Wqi.s:537    .text:00000000000002d4 .L0 
-     /tmp/ccL15Wqi.s:539    .text:00000000000002d4 .L0 
-     /tmp/ccL15Wqi.s:540    .text:00000000000002d4 .L0 
-     /tmp/ccL15Wqi.s:542    .text:00000000000002dc .L0 
-     /tmp/ccL15Wqi.s:543    .text:00000000000002dc .L0 
-     /tmp/ccL15Wqi.s:546    .text:00000000000002e4 .L0 
-     /tmp/ccL15Wqi.s:547    .text:00000000000002e8 .L0 
-     /tmp/ccL15Wqi.s:549    .text:00000000000002ec .L0 
-     /tmp/ccL15Wqi.s:550    .text:00000000000002ec .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 26
+     /tmp/ccG4TxL5.s:427    .text:0000000000000270 .L0 
+     /tmp/ccG4TxL5.s:428    .text:0000000000000270 .L0 
+     /tmp/ccG4TxL5.s:430    .text:0000000000000274 .L0 
+     /tmp/ccG4TxL5.s:431    .text:0000000000000274 .L0 
+     /tmp/ccG4TxL5.s:435    .text:0000000000000280 .L0 
+     /tmp/ccG4TxL5.s:436    .text:0000000000000280 .L0 
+     /tmp/ccG4TxL5.s:441    .text:0000000000000290 .L0 
+     /tmp/ccG4TxL5.s:453    .text:00000000000002bc .L0 
+     /tmp/ccG4TxL5.s:454    .text:00000000000002bc .L0 
+     /tmp/ccG4TxL5.s:458    .text:00000000000002c8 .L0 
+     /tmp/ccG4TxL5.s:459    .text:00000000000002c8 .L0 
+     /tmp/ccG4TxL5.s:461    .text:00000000000002cc .L0 
+     /tmp/ccG4TxL5.s:462    .text:00000000000002d0 .L0 
+     /tmp/ccG4TxL5.s:464    .text:00000000000002d4 .L0 
+     /tmp/ccG4TxL5.s:465    .text:00000000000002d4 .L0 
+     /tmp/ccG4TxL5.s:467    .text:00000000000002d8 .L0 
+     /tmp/ccG4TxL5.s:470    .text:00000000000002dc .L0 
+     /tmp/ccG4TxL5.s:472    .text:00000000000002e0 .L0 
+     /tmp/ccG4TxL5.s:474    .text:00000000000002e4 .L0 
+     /tmp/ccG4TxL5.s:476    .text:00000000000002e8 .L0 
+     /tmp/ccG4TxL5.s:478    .text:00000000000002ec .L0 
+     /tmp/ccG4TxL5.s:484    .text:00000000000002ec _ZN3PCB10isFinishedEv
+     /tmp/ccG4TxL5.s:487    .text:00000000000002ec .L0 
+     /tmp/ccG4TxL5.s:489    .text:00000000000002ec .L0 
+     /tmp/ccG4TxL5.s:490    .text:00000000000002f0 .L0 
+     /tmp/ccG4TxL5.s:492    .text:00000000000002f4 .L0 
+     /tmp/ccG4TxL5.s:494    .text:00000000000002f8 .L0 
+     /tmp/ccG4TxL5.s:496    .text:00000000000002f8 .L0 
+     /tmp/ccG4TxL5.s:497    .text:00000000000002f8 .L0 
+     /tmp/ccG4TxL5.s:500    .text:00000000000002fc .L0 
+     /tmp/ccG4TxL5.s:502    .text:0000000000000300 .L0 
+     /tmp/ccG4TxL5.s:504    .text:0000000000000308 .L0 
+     /tmp/ccG4TxL5.s:505    .text:0000000000000308 .L0 
+     /tmp/ccG4TxL5.s:507    .text:000000000000030c .L0 
+     /tmp/ccG4TxL5.s:509    .text:0000000000000310 .L0 
+     /tmp/ccG4TxL5.s:520    .text:0000000000000310 _ZN3PCB17threadExitHandlerEv
+     /tmp/ccG4TxL5.s:523    .text:0000000000000310 .L0 
+     /tmp/ccG4TxL5.s:524    .text:0000000000000310 .L0 
+     /tmp/ccG4TxL5.s:525    .text:0000000000000314 .L0 
+     /tmp/ccG4TxL5.s:528    .text:000000000000031c .L0 
+     /tmp/ccG4TxL5.s:529    .text:000000000000031c .L0 
+     /tmp/ccG4TxL5.s:531    .text:0000000000000320 .L0 
+     /tmp/ccG4TxL5.s:533    .text:0000000000000320 .L0 
+     /tmp/ccG4TxL5.s:534    .text:0000000000000320 .L0 
+     /tmp/ccG4TxL5.s:538    .text:0000000000000330 .L0 
+     /tmp/ccG4TxL5.s:539    .text:0000000000000330 .L0 
+     /tmp/ccG4TxL5.s:542    .text:000000000000033c .L0 
+     /tmp/ccG4TxL5.s:543    .text:000000000000033c .L0 
+     /tmp/ccG4TxL5.s:548    .text:0000000000000340 .L0 
+     /tmp/ccG4TxL5.s:549    .text:0000000000000340 .L0 
+     /tmp/ccG4TxL5.s:555    .text:0000000000000348 .L0 
+     /tmp/ccG4TxL5.s:556    .text:0000000000000348 .L0 
+     /tmp/ccG4TxL5.s:559    .text:0000000000000350 .L0 
+         src/PCB.cpp:109    .text:0000000000000350 .L0 
+     /tmp/ccG4TxL5.s:566    .text:0000000000000354 .L0 
+     /tmp/ccG4TxL5.s:567    .text:0000000000000358 .L0 
+     /tmp/ccG4TxL5.s:569    .text:000000000000035c .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 27
 
 
-     /tmp/ccL15Wqi.s:552    .text:00000000000002f0 .L0 
-     /tmp/ccL15Wqi.s:554    .text:00000000000002f4 .L0 
-     /tmp/ccL15Wqi.s:560    .text:00000000000002f4 _ZN3PCB18threadSleepHandlerEv
-     /tmp/ccL15Wqi.s:563    .text:00000000000002f4 .L0 
-     /tmp/ccL15Wqi.s:564    .text:00000000000002f4 .L0 
-     /tmp/ccL15Wqi.s:565    .text:00000000000002f8 .L0 
-     /tmp/ccL15Wqi.s:568    .text:0000000000000300 .L0 
-     /tmp/ccL15Wqi.s:569    .text:0000000000000300 .L0 
-     /tmp/ccL15Wqi.s:571    .text:0000000000000304 .L0 
-     /tmp/ccL15Wqi.s:573    .text:0000000000000304 .L0 
-     /tmp/ccL15Wqi.s:574    .text:0000000000000304 .L0 
-         src/PCB.cpp:112    .text:0000000000000304 .L0 
-     /tmp/ccL15Wqi.s:581    .text:0000000000000308 .L0 
-     /tmp/ccL15Wqi.s:583    .text:0000000000000308 .L0 
-     /tmp/ccL15Wqi.s:586    .text:0000000000000314 .L0 
-     /tmp/ccL15Wqi.s:587    .text:0000000000000314 .L0 
-     /tmp/ccL15Wqi.s:592    .text:0000000000000318 .L0 
-     /tmp/ccL15Wqi.s:593    .text:0000000000000318 .L0 
-     /tmp/ccL15Wqi.s:598    .text:000000000000031c .L0 
-     /tmp/ccL15Wqi.s:599    .text:000000000000031c .L0 
-     /tmp/ccL15Wqi.s:602    .text:0000000000000324 .L0 
-     /tmp/ccL15Wqi.s:603    .text:0000000000000324 .L0 
-     /tmp/ccL15Wqi.s:606    .text:000000000000032c .L0 
-         src/PCB.cpp:117    .text:000000000000032c .L0 
-     /tmp/ccL15Wqi.s:613    .text:0000000000000330 .L0 
-     /tmp/ccL15Wqi.s:614    .text:0000000000000334 .L0 
-     /tmp/ccL15Wqi.s:616    .text:0000000000000338 .L0 
-     /tmp/ccL15Wqi.s:617    .text:0000000000000338 .L0 
-     /tmp/ccL15Wqi.s:619    .text:000000000000033c .L0 
-     /tmp/ccL15Wqi.s:621    .text:0000000000000340 .L0 
-     /tmp/ccL15Wqi.s:627    .text:0000000000000340 _ZN3PCB19threadCreateHandlerEv
-     /tmp/ccL15Wqi.s:630    .text:0000000000000340 .L0 
-     /tmp/ccL15Wqi.s:631    .text:0000000000000340 .L0 
-     /tmp/ccL15Wqi.s:632    .text:0000000000000344 .L0 
-     /tmp/ccL15Wqi.s:639    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:640    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:641    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:642    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:643    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:644    .text:000000000000035c .L0 
-     /tmp/ccL15Wqi.s:646    .text:0000000000000360 .L0 
-     /tmp/ccL15Wqi.s:648    .text:0000000000000360 .L0 
-     /tmp/ccL15Wqi.s:649    .text:0000000000000360 .L0 
-     /tmp/ccL15Wqi.s:650    .text:0000000000000360 .L0 
-     /tmp/ccL15Wqi.s:651    .text:0000000000000360 .L0 
-         src/PCB.cpp:125    .text:0000000000000360 .L0 
-     /tmp/ccL15Wqi.s:658    .text:0000000000000364 .L0 
-         src/PCB.cpp:126    .text:0000000000000364 .L0 
-     /tmp/ccL15Wqi.s:664    .text:0000000000000368 .L0 
-         src/PCB.cpp:127    .text:0000000000000368 .L0 
-     /tmp/ccL15Wqi.s:670    .text:000000000000036c .L0 
-     /tmp/ccL15Wqi.s:672    .text:000000000000036c .L0 
-     /tmp/ccL15Wqi.s:683    .text:0000000000000398 .L0 
-     /tmp/ccL15Wqi.s:684    .text:0000000000000398 .L0 
-     /tmp/ccL15Wqi.s:686    .text:000000000000039c .L0 
-     /tmp/ccL15Wqi.s:688    .text:00000000000003a0 .L0 
-     /tmp/ccL15Wqi.s:689    .text:00000000000003a0 .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 27
+     /tmp/ccG4TxL5.s:570    .text:000000000000035c .L0 
+     /tmp/ccG4TxL5.s:572    .text:0000000000000360 .L0 
+     /tmp/ccG4TxL5.s:574    .text:0000000000000364 .L0 
+     /tmp/ccG4TxL5.s:580    .text:0000000000000364 _ZN3PCB21threadDispatchHandlerEv
+     /tmp/ccG4TxL5.s:583    .text:0000000000000364 .L0 
+     /tmp/ccG4TxL5.s:584    .text:0000000000000364 .L0 
+     /tmp/ccG4TxL5.s:585    .text:0000000000000368 .L0 
+     /tmp/ccG4TxL5.s:588    .text:0000000000000370 .L0 
+     /tmp/ccG4TxL5.s:589    .text:0000000000000370 .L0 
+     /tmp/ccG4TxL5.s:591    .text:0000000000000374 .L0 
+     /tmp/ccG4TxL5.s:593    .text:0000000000000374 .L0 
+     /tmp/ccG4TxL5.s:594    .text:0000000000000374 .L0 
+     /tmp/ccG4TxL5.s:596    .text:000000000000037c .L0 
+     /tmp/ccG4TxL5.s:597    .text:000000000000037c .L0 
+     /tmp/ccG4TxL5.s:600    .text:0000000000000384 .L0 
+     /tmp/ccG4TxL5.s:601    .text:0000000000000388 .L0 
+     /tmp/ccG4TxL5.s:603    .text:000000000000038c .L0 
+     /tmp/ccG4TxL5.s:604    .text:000000000000038c .L0 
+     /tmp/ccG4TxL5.s:606    .text:0000000000000390 .L0 
+     /tmp/ccG4TxL5.s:608    .text:0000000000000394 .L0 
+     /tmp/ccG4TxL5.s:614    .text:0000000000000394 _ZN3PCB18threadSleepHandlerEv
+     /tmp/ccG4TxL5.s:617    .text:0000000000000394 .L0 
+     /tmp/ccG4TxL5.s:618    .text:0000000000000394 .L0 
+     /tmp/ccG4TxL5.s:619    .text:0000000000000398 .L0 
+     /tmp/ccG4TxL5.s:622    .text:00000000000003a0 .L0 
+     /tmp/ccG4TxL5.s:623    .text:00000000000003a0 .L0 
+     /tmp/ccG4TxL5.s:625    .text:00000000000003a4 .L0 
+     /tmp/ccG4TxL5.s:627    .text:00000000000003a4 .L0 
+     /tmp/ccG4TxL5.s:628    .text:00000000000003a4 .L0 
+         src/PCB.cpp:121    .text:00000000000003a4 .L0 
+     /tmp/ccG4TxL5.s:635    .text:00000000000003a8 .L0 
+     /tmp/ccG4TxL5.s:637    .text:00000000000003a8 .L0 
+     /tmp/ccG4TxL5.s:640    .text:00000000000003b4 .L0 
+     /tmp/ccG4TxL5.s:641    .text:00000000000003b4 .L0 
+     /tmp/ccG4TxL5.s:646    .text:00000000000003b8 .L0 
+     /tmp/ccG4TxL5.s:647    .text:00000000000003b8 .L0 
+     /tmp/ccG4TxL5.s:652    .text:00000000000003bc .L0 
+     /tmp/ccG4TxL5.s:653    .text:00000000000003bc .L0 
+     /tmp/ccG4TxL5.s:656    .text:00000000000003c4 .L0 
+     /tmp/ccG4TxL5.s:657    .text:00000000000003c4 .L0 
+     /tmp/ccG4TxL5.s:660    .text:00000000000003cc .L0 
+         src/PCB.cpp:126    .text:00000000000003cc .L0 
+     /tmp/ccG4TxL5.s:667    .text:00000000000003d0 .L0 
+     /tmp/ccG4TxL5.s:668    .text:00000000000003d4 .L0 
+     /tmp/ccG4TxL5.s:670    .text:00000000000003d8 .L0 
+     /tmp/ccG4TxL5.s:671    .text:00000000000003d8 .L0 
+     /tmp/ccG4TxL5.s:673    .text:00000000000003dc .L0 
+     /tmp/ccG4TxL5.s:675    .text:00000000000003e0 .L0 
+     /tmp/ccG4TxL5.s:681    .text:00000000000003e0 _ZN3PCB19threadCreateHandlerEv
+     /tmp/ccG4TxL5.s:684    .text:00000000000003e0 .L0 
+     /tmp/ccG4TxL5.s:685    .text:00000000000003e0 .L0 
+     /tmp/ccG4TxL5.s:686    .text:00000000000003e4 .L0 
+     /tmp/ccG4TxL5.s:693    .text:00000000000003fc .L0 
+     /tmp/ccG4TxL5.s:694    .text:00000000000003fc .L0 
+     /tmp/ccG4TxL5.s:695    .text:00000000000003fc .L0 
+     /tmp/ccG4TxL5.s:696    .text:00000000000003fc .L0 
+     /tmp/ccG4TxL5.s:697    .text:00000000000003fc .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 28
 
 
-     /tmp/ccL15Wqi.s:693    .text:00000000000003ac .L0 
-         src/PCB.cpp:138    .text:00000000000003ac .L0 
-     /tmp/ccL15Wqi.s:701    .text:00000000000003b0 .L0 
-     /tmp/ccL15Wqi.s:702    .text:00000000000003b4 .L0 
-     /tmp/ccL15Wqi.s:703    .text:00000000000003b4 .L0 
-     /tmp/ccL15Wqi.s:705    .text:00000000000003b8 .L0 
-     /tmp/ccL15Wqi.s:706    .text:00000000000003b8 .L0 
-     /tmp/ccL15Wqi.s:708    .text:00000000000003bc .L0 
-     /tmp/ccL15Wqi.s:711    .text:00000000000003c0 .L0 
-     /tmp/ccL15Wqi.s:714    .text:00000000000003c4 .L0 
-     /tmp/ccL15Wqi.s:717    .text:00000000000003c8 .L0 
-     /tmp/ccL15Wqi.s:720    .text:00000000000003cc .L0 
-     /tmp/ccL15Wqi.s:724    .text:00000000000003d0 .L0 
-     /tmp/ccL15Wqi.s:726    .text:00000000000003d0 .L0 
-         src/PCB.cpp:134    .text:00000000000003d0 .L0 
-     /tmp/ccL15Wqi.s:733    .text:00000000000003d8 .L0 
-     /tmp/ccL15Wqi.s:739    .text:00000000000003d8 _ZN3PCB18threadStartHandlerEv
-     /tmp/ccL15Wqi.s:742    .text:00000000000003d8 .L0 
-     /tmp/ccL15Wqi.s:743    .text:00000000000003d8 .L0 
-     /tmp/ccL15Wqi.s:744    .text:00000000000003d8 .L0 
-     /tmp/ccL15Wqi.s:745    .text:00000000000003d8 .L0 
-         src/PCB.cpp:145    .text:00000000000003d8 .L0 
-     /tmp/ccL15Wqi.s:753    .text:00000000000003dc .L0 
-     /tmp/ccL15Wqi.s:755    .text:00000000000003e0 .L0 
-     /tmp/ccL15Wqi.s:756    .text:00000000000003e4 .L0 
-     /tmp/ccL15Wqi.s:759    .text:00000000000003ec .L0 
-     /tmp/ccL15Wqi.s:760    .text:00000000000003ec .L0 
-     /tmp/ccL15Wqi.s:762    .text:00000000000003f0 .L0 
-     /tmp/ccL15Wqi.s:764    .text:00000000000003f0 .L0 
-     /tmp/ccL15Wqi.s:765    .text:00000000000003f0 .L0 
-     /tmp/ccL15Wqi.s:768    .text:00000000000003f8 .L0 
-         src/PCB.cpp:149    .text:00000000000003f8 .L0 
-     /tmp/ccL15Wqi.s:775    .text:00000000000003fc .L0 
-     /tmp/ccL15Wqi.s:776    .text:0000000000000400 .L0 
-     /tmp/ccL15Wqi.s:778    .text:0000000000000404 .L0 
-     /tmp/ccL15Wqi.s:779    .text:0000000000000404 .L0 
-     /tmp/ccL15Wqi.s:781    .text:0000000000000408 .L0 
-     /tmp/ccL15Wqi.s:786    .text:000000000000040c .L0 
-         src/PCB.cpp:153    .text:000000000000040c .L0 
-     /tmp/ccL15Wqi.s:793    .text:0000000000000414 .L0 
-     /tmp/ccL15Wqi.s:799    .text:0000000000000414 _ZN3PCB20threadMakePCBHandlerEv
-     /tmp/ccL15Wqi.s:802    .text:0000000000000414 .L0 
-     /tmp/ccL15Wqi.s:803    .text:0000000000000414 .L0 
-     /tmp/ccL15Wqi.s:804    .text:0000000000000418 .L0 
-     /tmp/ccL15Wqi.s:811    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:812    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:813    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:814    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:815    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:816    .text:0000000000000430 .L0 
-     /tmp/ccL15Wqi.s:818    .text:0000000000000434 .L0 
-     /tmp/ccL15Wqi.s:820    .text:0000000000000434 .L0 
-     /tmp/ccL15Wqi.s:821    .text:0000000000000434 .L0 
-     /tmp/ccL15Wqi.s:822    .text:0000000000000434 .L0 
-     /tmp/ccL15Wqi.s:823    .text:0000000000000434 .L0 
-         src/PCB.cpp:163    .text:0000000000000434 .L0 
-     /tmp/ccL15Wqi.s:830    .text:0000000000000438 .L0 
-GAS LISTING /tmp/ccL15Wqi.s 			page 28
+     /tmp/ccG4TxL5.s:698    .text:00000000000003fc .L0 
+     /tmp/ccG4TxL5.s:700    .text:0000000000000400 .L0 
+     /tmp/ccG4TxL5.s:702    .text:0000000000000400 .L0 
+     /tmp/ccG4TxL5.s:703    .text:0000000000000400 .L0 
+     /tmp/ccG4TxL5.s:704    .text:0000000000000400 .L0 
+     /tmp/ccG4TxL5.s:705    .text:0000000000000400 .L0 
+         src/PCB.cpp:134    .text:0000000000000400 .L0 
+     /tmp/ccG4TxL5.s:712    .text:0000000000000404 .L0 
+         src/PCB.cpp:135    .text:0000000000000404 .L0 
+     /tmp/ccG4TxL5.s:718    .text:0000000000000408 .L0 
+         src/PCB.cpp:136    .text:0000000000000408 .L0 
+     /tmp/ccG4TxL5.s:724    .text:000000000000040c .L0 
+     /tmp/ccG4TxL5.s:726    .text:000000000000040c .L0 
+     /tmp/ccG4TxL5.s:737    .text:0000000000000438 .L0 
+     /tmp/ccG4TxL5.s:738    .text:0000000000000438 .L0 
+     /tmp/ccG4TxL5.s:740    .text:000000000000043c .L0 
+     /tmp/ccG4TxL5.s:742    .text:0000000000000440 .L0 
+     /tmp/ccG4TxL5.s:743    .text:0000000000000440 .L0 
+     /tmp/ccG4TxL5.s:747    .text:000000000000044c .L0 
+         src/PCB.cpp:147    .text:000000000000044c .L0 
+     /tmp/ccG4TxL5.s:755    .text:0000000000000450 .L0 
+     /tmp/ccG4TxL5.s:756    .text:0000000000000454 .L0 
+     /tmp/ccG4TxL5.s:757    .text:0000000000000454 .L0 
+     /tmp/ccG4TxL5.s:759    .text:0000000000000458 .L0 
+     /tmp/ccG4TxL5.s:760    .text:0000000000000458 .L0 
+     /tmp/ccG4TxL5.s:762    .text:000000000000045c .L0 
+     /tmp/ccG4TxL5.s:765    .text:0000000000000460 .L0 
+     /tmp/ccG4TxL5.s:768    .text:0000000000000464 .L0 
+     /tmp/ccG4TxL5.s:771    .text:0000000000000468 .L0 
+     /tmp/ccG4TxL5.s:774    .text:000000000000046c .L0 
+     /tmp/ccG4TxL5.s:778    .text:0000000000000470 .L0 
+     /tmp/ccG4TxL5.s:780    .text:0000000000000470 .L0 
+         src/PCB.cpp:143    .text:0000000000000470 .L0 
+     /tmp/ccG4TxL5.s:787    .text:0000000000000478 .L0 
+     /tmp/ccG4TxL5.s:793    .text:0000000000000478 _ZN3PCB18threadStartHandlerEv
+     /tmp/ccG4TxL5.s:796    .text:0000000000000478 .L0 
+     /tmp/ccG4TxL5.s:797    .text:0000000000000478 .L0 
+     /tmp/ccG4TxL5.s:798    .text:0000000000000478 .L0 
+     /tmp/ccG4TxL5.s:799    .text:0000000000000478 .L0 
+         src/PCB.cpp:154    .text:0000000000000478 .L0 
+     /tmp/ccG4TxL5.s:807    .text:000000000000047c .L0 
+     /tmp/ccG4TxL5.s:809    .text:0000000000000480 .L0 
+     /tmp/ccG4TxL5.s:810    .text:0000000000000484 .L0 
+     /tmp/ccG4TxL5.s:813    .text:000000000000048c .L0 
+     /tmp/ccG4TxL5.s:814    .text:000000000000048c .L0 
+     /tmp/ccG4TxL5.s:816    .text:0000000000000490 .L0 
+     /tmp/ccG4TxL5.s:818    .text:0000000000000490 .L0 
+     /tmp/ccG4TxL5.s:819    .text:0000000000000490 .L0 
+     /tmp/ccG4TxL5.s:822    .text:0000000000000498 .L0 
+         src/PCB.cpp:158    .text:0000000000000498 .L0 
+     /tmp/ccG4TxL5.s:829    .text:000000000000049c .L0 
+     /tmp/ccG4TxL5.s:830    .text:00000000000004a0 .L0 
+     /tmp/ccG4TxL5.s:832    .text:00000000000004a4 .L0 
+     /tmp/ccG4TxL5.s:833    .text:00000000000004a4 .L0 
+     /tmp/ccG4TxL5.s:835    .text:00000000000004a8 .L0 
+     /tmp/ccG4TxL5.s:840    .text:00000000000004ac .L0 
+         src/PCB.cpp:162    .text:00000000000004ac .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 29
 
 
-         src/PCB.cpp:164    .text:0000000000000438 .L0 
-     /tmp/ccL15Wqi.s:836    .text:000000000000043c .L0 
-         src/PCB.cpp:165    .text:000000000000043c .L0 
-     /tmp/ccL15Wqi.s:842    .text:0000000000000440 .L0 
-     /tmp/ccL15Wqi.s:844    .text:0000000000000440 .L0 
-     /tmp/ccL15Wqi.s:855    .text:000000000000046c .L0 
-     /tmp/ccL15Wqi.s:856    .text:000000000000046c .L0 
-     /tmp/ccL15Wqi.s:858    .text:0000000000000470 .L0 
-     /tmp/ccL15Wqi.s:860    .text:0000000000000474 .L0 
-         src/PCB.cpp:174    .text:0000000000000474 .L0 
-     /tmp/ccL15Wqi.s:868    .text:0000000000000478 .L0 
-     /tmp/ccL15Wqi.s:869    .text:000000000000047c .L0 
-     /tmp/ccL15Wqi.s:870    .text:000000000000047c .L0 
-     /tmp/ccL15Wqi.s:872    .text:0000000000000480 .L0 
-     /tmp/ccL15Wqi.s:873    .text:0000000000000480 .L0 
-     /tmp/ccL15Wqi.s:875    .text:0000000000000484 .L0 
-     /tmp/ccL15Wqi.s:878    .text:0000000000000488 .L0 
-     /tmp/ccL15Wqi.s:881    .text:000000000000048c .L0 
-     /tmp/ccL15Wqi.s:884    .text:0000000000000490 .L0 
-     /tmp/ccL15Wqi.s:887    .text:0000000000000494 .L0 
-     /tmp/ccL15Wqi.s:891    .text:0000000000000498 .L0 
-     /tmp/ccL15Wqi.s:893    .text:0000000000000498 .L0 
-         src/PCB.cpp:172    .text:0000000000000498 .L0 
-     /tmp/ccL15Wqi.s:900    .text:00000000000004a0 .L0 
-     /tmp/ccL15Wqi.s:919    .bss:0000000000000010 _ZN3PCB10savedRegA4E
-     /tmp/ccL15Wqi.s:915    .bss:0000000000000008 _ZN3PCB16timeSliceCounterE
-     /tmp/ccL15Wqi.s:911    .bss:0000000000000000 _ZN3PCB7runningE
-     /tmp/ccL15Wqi.s:908    .bss:0000000000000000 .LANCHOR0
-     /tmp/ccL15Wqi.s:929    .text:00000000000004a0 .L0 
-     /tmp/ccL15Wqi.s:8      .rodata.str1.8:0000000000000000 .LC0
-     /tmp/ccL15Wqi.s:29     .text:0000000000000010 .L0 
-     /tmp/ccL15Wqi.s:38     .text:0000000000000028 .L0 
-     /tmp/ccL15Wqi.s:88     .text:0000000000000084 .L0 
-     /tmp/ccL15Wqi.s:181    .text:00000000000000f4 .L0 
-     /tmp/ccL15Wqi.s:202    .text:0000000000000110 .L0 
-     /tmp/ccL15Wqi.s:400    .text:0000000000000228 .L0 
-     /tmp/ccL15Wqi.s:460    .rodata.str1.8:0000000000000018 .LC1
-     /tmp/ccL15Wqi.s:480    .text:0000000000000280 .L0 
-     /tmp/ccL15Wqi.s:485    .text:0000000000000290 .L0 
-     /tmp/ccL15Wqi.s:540    .text:00000000000002d4 .L0 
-     /tmp/ccL15Wqi.s:583    .text:0000000000000308 .L0 
-     /tmp/ccL15Wqi.s:677    .text:0000000000000380 .L0 
-     /tmp/ccL15Wqi.s:849    .text:0000000000000454 .L0 
-     /tmp/ccL15Wqi.s:234    .text:0000000000000144 .L12
-     /tmp/ccL15Wqi.s:196    .text:0000000000000108 .L10
-     /tmp/ccL15Wqi.s:723    .text:00000000000003d0 .L33
-     /tmp/ccL15Wqi.s:699    .text:00000000000003b0 .L29
-     /tmp/ccL15Wqi.s:784    .text:000000000000040c .L35
-     /tmp/ccL15Wqi.s:890    .text:0000000000000498 .L45
-     /tmp/ccL15Wqi.s:866    .text:0000000000000478 .L41
-     /tmp/ccL15Wqi.s:2758   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
-     /tmp/ccL15Wqi.s:4165   .debug_str:000000000000016c .LASF190
-     /tmp/ccL15Wqi.s:4459   .debug_str:0000000000000b2b .LASF191
-     /tmp/ccL15Wqi.s:4449   .debug_str:0000000000000ac4 .LASF192
-     /tmp/ccL15Wqi.s:5      .text:0000000000000000 .Ltext0
-     /tmp/ccL15Wqi.s:922    .text:00000000000004a0 .Letext0
-     /tmp/ccL15Wqi.s:4121   .debug_line:0000000000000000 .Ldebug_line0
-GAS LISTING /tmp/ccL15Wqi.s 			page 29
+     /tmp/ccG4TxL5.s:847    .text:00000000000004b4 .L0 
+     /tmp/ccG4TxL5.s:853    .text:00000000000004b4 _ZN3PCB20threadMakePCBHandlerEv
+     /tmp/ccG4TxL5.s:856    .text:00000000000004b4 .L0 
+     /tmp/ccG4TxL5.s:857    .text:00000000000004b4 .L0 
+     /tmp/ccG4TxL5.s:858    .text:00000000000004b8 .L0 
+     /tmp/ccG4TxL5.s:865    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:866    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:867    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:868    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:869    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:870    .text:00000000000004d0 .L0 
+     /tmp/ccG4TxL5.s:872    .text:00000000000004d4 .L0 
+     /tmp/ccG4TxL5.s:874    .text:00000000000004d4 .L0 
+     /tmp/ccG4TxL5.s:875    .text:00000000000004d4 .L0 
+     /tmp/ccG4TxL5.s:876    .text:00000000000004d4 .L0 
+     /tmp/ccG4TxL5.s:877    .text:00000000000004d4 .L0 
+         src/PCB.cpp:172    .text:00000000000004d4 .L0 
+     /tmp/ccG4TxL5.s:884    .text:00000000000004d8 .L0 
+         src/PCB.cpp:173    .text:00000000000004d8 .L0 
+     /tmp/ccG4TxL5.s:890    .text:00000000000004dc .L0 
+         src/PCB.cpp:174    .text:00000000000004dc .L0 
+     /tmp/ccG4TxL5.s:896    .text:00000000000004e0 .L0 
+     /tmp/ccG4TxL5.s:898    .text:00000000000004e0 .L0 
+     /tmp/ccG4TxL5.s:909    .text:000000000000050c .L0 
+     /tmp/ccG4TxL5.s:910    .text:000000000000050c .L0 
+     /tmp/ccG4TxL5.s:912    .text:0000000000000510 .L0 
+     /tmp/ccG4TxL5.s:914    .text:0000000000000514 .L0 
+         src/PCB.cpp:183    .text:0000000000000514 .L0 
+     /tmp/ccG4TxL5.s:922    .text:0000000000000518 .L0 
+     /tmp/ccG4TxL5.s:923    .text:000000000000051c .L0 
+     /tmp/ccG4TxL5.s:924    .text:000000000000051c .L0 
+     /tmp/ccG4TxL5.s:926    .text:0000000000000520 .L0 
+     /tmp/ccG4TxL5.s:927    .text:0000000000000520 .L0 
+     /tmp/ccG4TxL5.s:929    .text:0000000000000524 .L0 
+     /tmp/ccG4TxL5.s:932    .text:0000000000000528 .L0 
+     /tmp/ccG4TxL5.s:935    .text:000000000000052c .L0 
+     /tmp/ccG4TxL5.s:938    .text:0000000000000530 .L0 
+     /tmp/ccG4TxL5.s:941    .text:0000000000000534 .L0 
+     /tmp/ccG4TxL5.s:945    .text:0000000000000538 .L0 
+     /tmp/ccG4TxL5.s:947    .text:0000000000000538 .L0 
+         src/PCB.cpp:181    .text:0000000000000538 .L0 
+     /tmp/ccG4TxL5.s:954    .text:0000000000000540 .L0 
+     /tmp/ccG4TxL5.s:973    .bss:0000000000000010 _ZN3PCB10savedRegA4E
+     /tmp/ccG4TxL5.s:969    .bss:0000000000000008 _ZN3PCB16timeSliceCounterE
+     /tmp/ccG4TxL5.s:965    .bss:0000000000000000 _ZN3PCB7runningE
+     /tmp/ccG4TxL5.s:962    .bss:0000000000000000 .LANCHOR0
+     /tmp/ccG4TxL5.s:983    .text:0000000000000540 .L0 
+     /tmp/ccG4TxL5.s:28     .text:0000000000000018 .L0 
+     /tmp/ccG4TxL5.s:78     .text:0000000000000074 .L0 
+     /tmp/ccG4TxL5.s:171    .text:00000000000000e4 .L0 
+     /tmp/ccG4TxL5.s:192    .text:0000000000000100 .L0 
+     /tmp/ccG4TxL5.s:396    .text:0000000000000224 .L0 
+     /tmp/ccG4TxL5.s:423    .text:0000000000000260 .L0 
+     /tmp/ccG4TxL5.s:449    .text:00000000000002ac .L0 
+     /tmp/ccG4TxL5.s:514    .rodata.str1.8:0000000000000000 .LC0
+     /tmp/ccG4TxL5.s:534    .text:0000000000000320 .L0 
+     /tmp/ccG4TxL5.s:539    .text:0000000000000330 .L0 
+GAS LISTING /tmp/ccG4TxL5.s 			page 30
 
 
-     /tmp/ccL15Wqi.s:4253   .debug_str:00000000000004a6 .LASF0
-     /tmp/ccL15Wqi.s:4283   .debug_str:000000000000059b .LASF1
-     /tmp/ccL15Wqi.s:4385   .debug_str:00000000000008fc .LASF2
-     /tmp/ccL15Wqi.s:4395   .debug_str:000000000000094a .LASF4
-     /tmp/ccL15Wqi.s:4269   .debug_str:0000000000000521 .LASF3
-     /tmp/ccL15Wqi.s:4137   .debug_str:0000000000000061 .LASF5
-     /tmp/ccL15Wqi.s:4361   .debug_str:000000000000082d .LASF6
-     /tmp/ccL15Wqi.s:4349   .debug_str:00000000000007d5 .LASF7
-     /tmp/ccL15Wqi.s:4275   .debug_str:0000000000000562 .LASF8
-     /tmp/ccL15Wqi.s:4237   .debug_str:0000000000000425 .LASF9
-     /tmp/ccL15Wqi.s:4241   .debug_str:0000000000000451 .LASF10
-     /tmp/ccL15Wqi.s:4179   .debug_str:0000000000000285 .LASF11
-     /tmp/ccL15Wqi.s:4227   .debug_str:00000000000003ee .LASF12
-     /tmp/ccL15Wqi.s:4185   .debug_str:00000000000002a7 .LASF13
-     /tmp/ccL15Wqi.s:4177   .debug_str:0000000000000275 .LASF14
-     /tmp/ccL15Wqi.s:4429   .debug_str:0000000000000a5c .LASF15
-     /tmp/ccL15Wqi.s:4221   .debug_str:00000000000003a5 .LASF16
-     /tmp/ccL15Wqi.s:4419   .debug_str:00000000000009eb .LASF17
-     /tmp/ccL15Wqi.s:4437   .debug_str:0000000000000a80 .LASF193
-     /tmp/ccL15Wqi.s:4173   .debug_str:000000000000025b .LASF18
-     /tmp/ccL15Wqi.s:4413   .debug_str:00000000000009ca .LASF19
-     /tmp/ccL15Wqi.s:4183   .debug_str:000000000000029d .LASF20
-     /tmp/ccL15Wqi.s:4161   .debug_str:0000000000000155 .LASF21
-     /tmp/ccL15Wqi.s:4353   .debug_str:00000000000007fe .LASF22
-     /tmp/ccL15Wqi.s:4181   .debug_str:0000000000000294 .LASF23
-     /tmp/ccL15Wqi.s:4431   .debug_str:0000000000000a68 .LASF84
-     /tmp/ccL15Wqi.s:4247   .debug_str:000000000000047d .LASF24
-     /tmp/ccL15Wqi.s:4141   .debug_str:0000000000000082 .LASF29
-     /tmp/ccL15Wqi.s:4453   .debug_str:0000000000000aef .LASF194
-     /tmp/ccL15Wqi.s:4337   .debug_str:000000000000077c .LASF195
-     /tmp/ccL15Wqi.s:4281   .debug_str:0000000000000596 .LASF25
-     /tmp/ccL15Wqi.s:4507   .debug_str:0000000000000c86 .LASF27
-     /tmp/ccL15Wqi.s:4501   .debug_str:0000000000000c56 .LASF26
-     /tmp/ccL15Wqi.s:4443   .debug_str:0000000000000a96 .LASF28
-     /tmp/ccL15Wqi.s:4207   .debug_str:000000000000034e .LASF54
-     /tmp/ccL15Wqi.s:4149   .debug_str:00000000000000cd .LASF56
-     /tmp/ccL15Wqi.s:4285   .debug_str:00000000000005ae .LASF34
-     /tmp/ccL15Wqi.s:4341   .debug_str:0000000000000794 .LASF36
-     /tmp/ccL15Wqi.s:4439   .debug_str:0000000000000a86 .LASF30
-     /tmp/ccL15Wqi.s:4405   .debug_str:0000000000000981 .LASF31
-     /tmp/ccL15Wqi.s:4287   .debug_str:00000000000005b4 .LASF38
-     /tmp/ccL15Wqi.s:4293   .debug_str:00000000000005eb .LASF40
-     /tmp/ccL15Wqi.s:4511   .debug_str:0000000000000caa .LASF32
-     /tmp/ccL15Wqi.s:4223   .debug_str:00000000000003bb .LASF33
-     /tmp/ccL15Wqi.s:4129   .debug_str:000000000000002a .LASF35
-     /tmp/ccL15Wqi.s:4265   .debug_str:0000000000000508 .LASF37
-     /tmp/ccL15Wqi.s:4409   .debug_str:00000000000009a3 .LASF39
-     /tmp/ccL15Wqi.s:4315   .debug_str:00000000000006a7 .LASF41
-     /tmp/ccL15Wqi.s:4393   .debug_str:0000000000000941 .LASF42
-     /tmp/ccL15Wqi.s:4425   .debug_str:0000000000000a39 .LASF43
-     /tmp/ccL15Wqi.s:4317   .debug_str:00000000000006ba .LASF44
-     /tmp/ccL15Wqi.s:4125   .debug_str:000000000000000b .LASF45
-     /tmp/ccL15Wqi.s:4489   .debug_str:0000000000000c05 .LASF46
-     /tmp/ccL15Wqi.s:4347   .debug_str:00000000000007bb .LASF47
-     /tmp/ccL15Wqi.s:4417   .debug_str:00000000000009dd .LASF48
-     /tmp/ccL15Wqi.s:4363   .debug_str:0000000000000834 .LASF49
-     /tmp/ccL15Wqi.s:4203   .debug_str:000000000000032c .LASF50
-GAS LISTING /tmp/ccL15Wqi.s 			page 30
+     /tmp/ccG4TxL5.s:594    .text:0000000000000374 .L0 
+     /tmp/ccG4TxL5.s:637    .text:00000000000003a8 .L0 
+     /tmp/ccG4TxL5.s:731    .text:0000000000000420 .L0 
+     /tmp/ccG4TxL5.s:903    .text:00000000000004f4 .L0 
+     /tmp/ccG4TxL5.s:224    .text:0000000000000134 .L12
+     /tmp/ccG4TxL5.s:186    .text:00000000000000f8 .L10
+     /tmp/ccG4TxL5.s:777    .text:0000000000000470 .L33
+     /tmp/ccG4TxL5.s:753    .text:0000000000000450 .L29
+     /tmp/ccG4TxL5.s:838    .text:00000000000004ac .L35
+     /tmp/ccG4TxL5.s:944    .text:0000000000000538 .L45
+     /tmp/ccG4TxL5.s:920    .text:0000000000000518 .L41
+     /tmp/ccG4TxL5.s:2980   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccG4TxL5.s:4403   .debug_str:0000000000000176 .LASF202
+     /tmp/ccG4TxL5.s:4715   .debug_str:0000000000000bae .LASF203
+     /tmp/ccG4TxL5.s:4705   .debug_str:0000000000000b47 .LASF204
+     /tmp/ccG4TxL5.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccG4TxL5.s:976    .text:0000000000000540 .Letext0
+     /tmp/ccG4TxL5.s:4357   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccG4TxL5.s:4501   .debug_str:00000000000004fd .LASF0
+     /tmp/ccG4TxL5.s:4533   .debug_str:0000000000000605 .LASF1
+     /tmp/ccG4TxL5.s:4639   .debug_str:0000000000000978 .LASF2
+     /tmp/ccG4TxL5.s:4651   .debug_str:00000000000009cd .LASF4
+     /tmp/ccG4TxL5.s:4519   .debug_str:000000000000058b .LASF3
+     /tmp/ccG4TxL5.s:4373   .debug_str:0000000000000061 .LASF5
+     /tmp/ccG4TxL5.s:4611   .debug_str:0000000000000897 .LASF6
+     /tmp/ccG4TxL5.s:4599   .debug_str:000000000000083f .LASF7
+     /tmp/ccG4TxL5.s:4525   .debug_str:00000000000005cc .LASF8
+     /tmp/ccG4TxL5.s:4479   .debug_str:000000000000044d .LASF9
+     /tmp/ccG4TxL5.s:4485   .debug_str:0000000000000490 .LASF10
+     /tmp/ccG4TxL5.s:4419   .debug_str:00000000000002a2 .LASF11
+     /tmp/ccG4TxL5.s:4467   .debug_str:000000000000040e .LASF12
+     /tmp/ccG4TxL5.s:4425   .debug_str:00000000000002c4 .LASF13
+     /tmp/ccG4TxL5.s:4417   .debug_str:0000000000000292 .LASF14
+     /tmp/ccG4TxL5.s:4685   .debug_str:0000000000000adf .LASF15
+     /tmp/ccG4TxL5.s:4461   .debug_str:00000000000003c5 .LASF16
+     /tmp/ccG4TxL5.s:4675   .debug_str:0000000000000a6e .LASF17
+     /tmp/ccG4TxL5.s:4693   .debug_str:0000000000000b03 .LASF205
+     /tmp/ccG4TxL5.s:4411   .debug_str:0000000000000265 .LASF18
+     /tmp/ccG4TxL5.s:4669   .debug_str:0000000000000a4d .LASF19
+     /tmp/ccG4TxL5.s:4423   .debug_str:00000000000002ba .LASF20
+     /tmp/ccG4TxL5.s:4399   .debug_str:000000000000015f .LASF21
+     /tmp/ccG4TxL5.s:4603   .debug_str:0000000000000868 .LASF22
+     /tmp/ccG4TxL5.s:4421   .debug_str:00000000000002b1 .LASF23
+     /tmp/ccG4TxL5.s:4687   .debug_str:0000000000000aeb .LASF84
+     /tmp/ccG4TxL5.s:4491   .debug_str:00000000000004c3 .LASF24
+     /tmp/ccG4TxL5.s:4377   .debug_str:0000000000000082 .LASF29
+     /tmp/ccG4TxL5.s:4709   .debug_str:0000000000000b72 .LASF206
+     /tmp/ccG4TxL5.s:4587   .debug_str:00000000000007e6 .LASF207
+     /tmp/ccG4TxL5.s:4531   .debug_str:0000000000000600 .LASF25
+     /tmp/ccG4TxL5.s:4767   .debug_str:0000000000000d3f .LASF27
+     /tmp/ccG4TxL5.s:4761   .debug_str:0000000000000d0f .LASF26
+     /tmp/ccG4TxL5.s:4699   .debug_str:0000000000000b19 .LASF28
+     /tmp/ccG4TxL5.s:4447   .debug_str:000000000000036a .LASF54
+     /tmp/ccG4TxL5.s:4385   .debug_str:00000000000000cd .LASF56
+     /tmp/ccG4TxL5.s:4535   .debug_str:0000000000000618 .LASF34
+     /tmp/ccG4TxL5.s:4591   .debug_str:00000000000007fe .LASF36
+     /tmp/ccG4TxL5.s:4695   .debug_str:0000000000000b09 .LASF30
+GAS LISTING /tmp/ccG4TxL5.s 			page 31
 
 
-     /tmp/ccL15Wqi.s:4231   .debug_str:0000000000000405 .LASF51
-     /tmp/ccL15Wqi.s:4377   .debug_str:00000000000008bb .LASF52
-     /tmp/ccL15Wqi.s:4495   .debug_str:0000000000000c36 .LASF53
-     /tmp/ccL15Wqi.s:4271   .debug_str:0000000000000533 .LASF60
-     /tmp/ccL15Wqi.s:4415   .debug_str:00000000000009d2 .LASF55
-     /tmp/ccL15Wqi.s:4505   .debug_str:0000000000000c70 .LASF57
-     /tmp/ccL15Wqi.s:4433   .debug_str:0000000000000a70 .LASF58
-     /tmp/ccL15Wqi.s:4195   .debug_str:00000000000002fe .LASF59
-     /tmp/ccL15Wqi.s:4401   .debug_str:000000000000096b .LASF61
-     /tmp/ccL15Wqi.s:4255   .debug_str:00000000000004b3 .LASF62
-     /tmp/ccL15Wqi.s:4325   .debug_str:00000000000006f4 .LASF63
-     /tmp/ccL15Wqi.s:4189   .debug_str:00000000000002c8 .LASF64
-     /tmp/ccL15Wqi.s:4367   .debug_str:0000000000000847 .LASF65
-     /tmp/ccL15Wqi.s:4521   .debug_str:0000000000000ce2 .LASF66
-     /tmp/ccL15Wqi.s:4329   .debug_str:000000000000071a .LASF67
-     /tmp/ccL15Wqi.s:4391   .debug_str:000000000000092e .LASF68
-     /tmp/ccL15Wqi.s:4411   .debug_str:00000000000009ac .LASF69
-     /tmp/ccL15Wqi.s:4465   .debug_str:0000000000000b45 .LASF70
-     /tmp/ccL15Wqi.s:4307   .debug_str:000000000000065f .LASF71
-     /tmp/ccL15Wqi.s:4455   .debug_str:0000000000000b07 .LASF72
-     /tmp/ccL15Wqi.s:4423   .debug_str:0000000000000a19 .LASF73
-     /tmp/ccL15Wqi.s:4447   .debug_str:0000000000000aba .LASF74
-     /tmp/ccL15Wqi.s:4343   .debug_str:00000000000007a4 .LASF75
-     /tmp/ccL15Wqi.s:4499   .debug_str:0000000000000c48 .LASF76
-     /tmp/ccL15Wqi.s:4155   .debug_str:0000000000000108 .LASF78
-     /tmp/ccL15Wqi.s:4257   .debug_str:00000000000004c7 .LASF77
-     /tmp/ccL15Wqi.s:4171   .debug_str:000000000000022f .LASF79
-     /tmp/ccL15Wqi.s:4487   .debug_str:0000000000000bfe .LASF196
-     /tmp/ccL15Wqi.s:4169   .debug_str:000000000000021e .LASF197
-     /tmp/ccL15Wqi.s:4127   .debug_str:0000000000000025 .LASF80
-     /tmp/ccL15Wqi.s:4463   .debug_str:0000000000000b40 .LASF81
-     /tmp/ccL15Wqi.s:4297   .debug_str:000000000000061e .LASF82
-     /tmp/ccL15Wqi.s:4209   .debug_str:0000000000000357 .LASF83
-     /tmp/ccL15Wqi.s:4451   .debug_str:0000000000000ae7 .LASF85
-     /tmp/ccL15Wqi.s:4235   .debug_str:000000000000041b .LASF86
-     /tmp/ccL15Wqi.s:4143   .debug_str:000000000000008d .LASF198
-     /tmp/ccL15Wqi.s:4503   .debug_str:0000000000000c5c .LASF199
-     /tmp/ccL15Wqi.s:4157   .debug_str:0000000000000130 .LASF87
-     /tmp/ccL15Wqi.s:4339   .debug_str:0000000000000781 .LASF88
-     /tmp/ccL15Wqi.s:4441   .debug_str:0000000000000a8e .LASF89
-     /tmp/ccL15Wqi.s:4379   .debug_str:00000000000008c8 .LASF116
-     /tmp/ccL15Wqi.s:4167   .debug_str:0000000000000218 .LASF90
-     /tmp/ccL15Wqi.s:4323   .debug_str:00000000000006de .LASF91
-     /tmp/ccL15Wqi.s:4407   .debug_str:0000000000000992 .LASF92
-     /tmp/ccL15Wqi.s:4187   .debug_str:00000000000002b7 .LASF93
-     /tmp/ccL15Wqi.s:4475   .debug_str:0000000000000bb4 .LASF94
-     /tmp/ccL15Wqi.s:4249   .debug_str:0000000000000483 .LASF95
-     /tmp/ccL15Wqi.s:4421   .debug_str:0000000000000a01 .LASF96
-     /tmp/ccL15Wqi.s:4345   .debug_str:00000000000007b0 .LASF97
-     /tmp/ccL15Wqi.s:4303   .debug_str:0000000000000637 .LASF98
-     /tmp/ccL15Wqi.s:4219   .debug_str:000000000000039b .LASF99
-     /tmp/ccL15Wqi.s:4351   .debug_str:00000000000007e8 .LASF100
-     /tmp/ccL15Wqi.s:4305   .debug_str:000000000000064f .LASF101
-     /tmp/ccL15Wqi.s:4471   .debug_str:0000000000000b8c .LASF102
-     /tmp/ccL15Wqi.s:4467   .debug_str:0000000000000b58 .LASF103
-     /tmp/ccL15Wqi.s:4291   .debug_str:00000000000005cd .LASF104
-     /tmp/ccL15Wqi.s:4263   .debug_str:00000000000004f6 .LASF105
-GAS LISTING /tmp/ccL15Wqi.s 			page 31
+     /tmp/ccG4TxL5.s:4661   .debug_str:0000000000000a04 .LASF31
+     /tmp/ccG4TxL5.s:4537   .debug_str:000000000000061e .LASF38
+     /tmp/ccG4TxL5.s:4543   .debug_str:0000000000000655 .LASF40
+     /tmp/ccG4TxL5.s:4771   .debug_str:0000000000000d63 .LASF32
+     /tmp/ccG4TxL5.s:4463   .debug_str:00000000000003db .LASF33
+     /tmp/ccG4TxL5.s:4365   .debug_str:000000000000002a .LASF35
+     /tmp/ccG4TxL5.s:4513   .debug_str:000000000000055f .LASF37
+     /tmp/ccG4TxL5.s:4665   .debug_str:0000000000000a26 .LASF39
+     /tmp/ccG4TxL5.s:4565   .debug_str:0000000000000711 .LASF41
+     /tmp/ccG4TxL5.s:4649   .debug_str:00000000000009c4 .LASF42
+     /tmp/ccG4TxL5.s:4681   .debug_str:0000000000000abc .LASF43
+     /tmp/ccG4TxL5.s:4567   .debug_str:0000000000000724 .LASF44
+     /tmp/ccG4TxL5.s:4361   .debug_str:000000000000000b .LASF45
+     /tmp/ccG4TxL5.s:4747   .debug_str:0000000000000c9a .LASF46
+     /tmp/ccG4TxL5.s:4597   .debug_str:0000000000000825 .LASF47
+     /tmp/ccG4TxL5.s:4673   .debug_str:0000000000000a60 .LASF48
+     /tmp/ccG4TxL5.s:4613   .debug_str:000000000000089e .LASF49
+     /tmp/ccG4TxL5.s:4443   .debug_str:0000000000000348 .LASF50
+     /tmp/ccG4TxL5.s:4473   .debug_str:000000000000042d .LASF51
+     /tmp/ccG4TxL5.s:4631   .debug_str:0000000000000937 .LASF52
+     /tmp/ccG4TxL5.s:4753   .debug_str:0000000000000ccb .LASF53
+     /tmp/ccG4TxL5.s:4521   .debug_str:000000000000059d .LASF60
+     /tmp/ccG4TxL5.s:4671   .debug_str:0000000000000a55 .LASF55
+     /tmp/ccG4TxL5.s:4765   .debug_str:0000000000000d29 .LASF57
+     /tmp/ccG4TxL5.s:4689   .debug_str:0000000000000af3 .LASF58
+     /tmp/ccG4TxL5.s:4435   .debug_str:000000000000031b .LASF59
+     /tmp/ccG4TxL5.s:4657   .debug_str:00000000000009ee .LASF61
+     /tmp/ccG4TxL5.s:4503   .debug_str:000000000000050a .LASF62
+     /tmp/ccG4TxL5.s:4575   .debug_str:000000000000075e .LASF63
+     /tmp/ccG4TxL5.s:4429   .debug_str:00000000000002e5 .LASF64
+     /tmp/ccG4TxL5.s:4617   .debug_str:00000000000008b1 .LASF65
+     /tmp/ccG4TxL5.s:4781   .debug_str:0000000000000d9b .LASF66
+     /tmp/ccG4TxL5.s:4579   .debug_str:0000000000000784 .LASF67
+     /tmp/ccG4TxL5.s:4647   .debug_str:00000000000009b1 .LASF68
+     /tmp/ccG4TxL5.s:4667   .debug_str:0000000000000a2f .LASF69
+     /tmp/ccG4TxL5.s:4721   .debug_str:0000000000000bc8 .LASF70
+     /tmp/ccG4TxL5.s:4557   .debug_str:00000000000006c9 .LASF71
+     /tmp/ccG4TxL5.s:4711   .debug_str:0000000000000b8a .LASF72
+     /tmp/ccG4TxL5.s:4679   .debug_str:0000000000000a9c .LASF73
+     /tmp/ccG4TxL5.s:4703   .debug_str:0000000000000b3d .LASF74
+     /tmp/ccG4TxL5.s:4593   .debug_str:000000000000080e .LASF75
+     /tmp/ccG4TxL5.s:4759   .debug_str:0000000000000d01 .LASF76
+     /tmp/ccG4TxL5.s:4391   .debug_str:0000000000000108 .LASF78
+     /tmp/ccG4TxL5.s:4505   .debug_str:000000000000051e .LASF77
+     /tmp/ccG4TxL5.s:4409   .debug_str:0000000000000239 .LASF79
+     /tmp/ccG4TxL5.s:4745   .debug_str:0000000000000c93 .LASF208
+     /tmp/ccG4TxL5.s:4407   .debug_str:0000000000000228 .LASF209
+     /tmp/ccG4TxL5.s:4363   .debug_str:0000000000000025 .LASF80
+     /tmp/ccG4TxL5.s:4719   .debug_str:0000000000000bc3 .LASF81
+     /tmp/ccG4TxL5.s:4547   .debug_str:0000000000000688 .LASF82
+     /tmp/ccG4TxL5.s:4449   .debug_str:0000000000000373 .LASF83
+     /tmp/ccG4TxL5.s:4707   .debug_str:0000000000000b6a .LASF85
+     /tmp/ccG4TxL5.s:4477   .debug_str:0000000000000443 .LASF86
+     /tmp/ccG4TxL5.s:4379   .debug_str:000000000000008d .LASF210
+     /tmp/ccG4TxL5.s:4763   .debug_str:0000000000000d15 .LASF211
+     /tmp/ccG4TxL5.s:4395   .debug_str:000000000000013a .LASF87
+     /tmp/ccG4TxL5.s:4589   .debug_str:00000000000007eb .LASF88
+GAS LISTING /tmp/ccG4TxL5.s 			page 32
 
 
-     /tmp/ccL15Wqi.s:4191   .debug_str:00000000000002da .LASF106
-     /tmp/ccL15Wqi.s:4493   .debug_str:0000000000000c2a .LASF107
-     /tmp/ccL15Wqi.s:4151   .debug_str:00000000000000e0 .LASF108
-     /tmp/ccL15Wqi.s:4359   .debug_str:0000000000000820 .LASF109
-     /tmp/ccL15Wqi.s:4139   .debug_str:0000000000000068 .LASF110
-     /tmp/ccL15Wqi.s:4403   .debug_str:0000000000000973 .LASF111
-     /tmp/ccL15Wqi.s:4375   .debug_str:00000000000008a0 .LASF112
-     /tmp/ccL15Wqi.s:4319   .debug_str:00000000000006c9 .LASF113
-     /tmp/ccL15Wqi.s:4481   .debug_str:0000000000000bcf .LASF114
-     /tmp/ccL15Wqi.s:4461   .debug_str:0000000000000b37 .LASF115
-     /tmp/ccL15Wqi.s:4133   .debug_str:0000000000000042 .LASF117
-     /tmp/ccL15Wqi.s:4517   .debug_str:0000000000000cd1 .LASF118
-     /tmp/ccL15Wqi.s:4333   .debug_str:000000000000074f .LASF119
-     /tmp/ccL15Wqi.s:4365   .debug_str:0000000000000840 .LASF120
-     /tmp/ccL15Wqi.s:4369   .debug_str:0000000000000864 .LASF121
-     /tmp/ccL15Wqi.s:4327   .debug_str:0000000000000713 .LASF122
-     /tmp/ccL15Wqi.s:4277   .debug_str:0000000000000575 .LASF123
-     /tmp/ccL15Wqi.s:4483   .debug_str:0000000000000be9 .LASF124
-     /tmp/ccL15Wqi.s:4445   .debug_str:0000000000000aa6 .LASF125
-     /tmp/ccL15Wqi.s:4321   .debug_str:00000000000006d6 .LASF126
-     /tmp/ccL15Wqi.s:4331   .debug_str:000000000000073b .LASF127
-     /tmp/ccL15Wqi.s:4311   .debug_str:000000000000068d .LASF128
-     /tmp/ccL15Wqi.s:4371   .debug_str:0000000000000877 .LASF129
-     /tmp/ccL15Wqi.s:4519   .debug_str:0000000000000cda .LASF130
-     /tmp/ccL15Wqi.s:4261   .debug_str:00000000000004e2 .LASF131
-     /tmp/ccL15Wqi.s:4427   .debug_str:0000000000000a55 .LASF132
-     /tmp/ccL15Wqi.s:4397   .debug_str:0000000000000951 .LASF133
-     /tmp/ccL15Wqi.s:4399   .debug_str:0000000000000964 .LASF134
-     /tmp/ccL15Wqi.s:4217   .debug_str:0000000000000388 .LASF135
-     /tmp/ccL15Wqi.s:4211   .debug_str:000000000000035d .LASF136
-     /tmp/ccL15Wqi.s:4145   .debug_str:00000000000000a5 .LASF137
-     /tmp/ccL15Wqi.s:4259   .debug_str:00000000000004dc .LASF138
-     /tmp/ccL15Wqi.s:4205   .debug_str:000000000000033c .LASF139
-     /tmp/ccL15Wqi.s:4123   .debug_str:0000000000000000 .LASF140
-     /tmp/ccL15Wqi.s:4389   .debug_str:0000000000000916 .LASF141
-     /tmp/ccL15Wqi.s:4383   .debug_str:00000000000008f1 .LASF142
-     /tmp/ccL15Wqi.s:4509   .debug_str:0000000000000c92 .LASF143
-     /tmp/ccL15Wqi.s:4479   .debug_str:0000000000000bc5 .LASF144
-     /tmp/ccL15Wqi.s:4491   .debug_str:0000000000000c14 .LASF145
-     /tmp/ccL15Wqi.s:4473   .debug_str:0000000000000baa .LASF146
-     /tmp/ccL15Wqi.s:4147   .debug_str:00000000000000b7 .LASF147
-     /tmp/ccL15Wqi.s:4245   .debug_str:0000000000000472 .LASF148
-     /tmp/ccL15Wqi.s:4251   .debug_str:000000000000048e .LASF149
-     /tmp/ccL15Wqi.s:4457   .debug_str:0000000000000b1c .LASF150
-     /tmp/ccL15Wqi.s:4239   .debug_str:0000000000000435 .LASF151
-     /tmp/ccL15Wqi.s:4357   .debug_str:000000000000080b .LASF152
-     /tmp/ccL15Wqi.s:4273   .debug_str:0000000000000540 .LASF153
-     /tmp/ccL15Wqi.s:4201   .debug_str:0000000000000325 .LASF154
-     /tmp/ccL15Wqi.s:4131   .debug_str:000000000000003a .LASF155
-     /tmp/ccL15Wqi.s:4513   .debug_str:0000000000000cb7 .LASF156
-     /tmp/ccL15Wqi.s:4289   .debug_str:00000000000005c1 .LASF157
-     /tmp/ccL15Wqi.s:4159   .debug_str:0000000000000142 .LASF158
-     /tmp/ccL15Wqi.s:4313   .debug_str:0000000000000695 .LASF159
-     /tmp/ccL15Wqi.s:4243   .debug_str:000000000000045f .LASF160
-     /tmp/ccL15Wqi.s:4213   .debug_str:0000000000000363 .LASF161
-     /tmp/ccL15Wqi.s:4175   .debug_str:0000000000000261 .LASF162
-     /tmp/ccL15Wqi.s:4435   .debug_str:0000000000000a7b .LASF163
-GAS LISTING /tmp/ccL15Wqi.s 			page 32
+     /tmp/ccG4TxL5.s:4697   .debug_str:0000000000000b11 .LASF89
+     /tmp/ccG4TxL5.s:4633   .debug_str:0000000000000944 .LASF120
+     /tmp/ccG4TxL5.s:4405   .debug_str:0000000000000222 .LASF90
+     /tmp/ccG4TxL5.s:4573   .debug_str:0000000000000748 .LASF91
+     /tmp/ccG4TxL5.s:4663   .debug_str:0000000000000a15 .LASF92
+     /tmp/ccG4TxL5.s:4427   .debug_str:00000000000002d4 .LASF93
+     /tmp/ccG4TxL5.s:4733   .debug_str:0000000000000c49 .LASF94
+     /tmp/ccG4TxL5.s:4497   .debug_str:00000000000004da .LASF95
+     /tmp/ccG4TxL5.s:4677   .debug_str:0000000000000a84 .LASF96
+     /tmp/ccG4TxL5.s:4595   .debug_str:000000000000081a .LASF97
+     /tmp/ccG4TxL5.s:4553   .debug_str:00000000000006a1 .LASF98
+     /tmp/ccG4TxL5.s:4459   .debug_str:00000000000003bb .LASF99
+     /tmp/ccG4TxL5.s:4601   .debug_str:0000000000000852 .LASF100
+     /tmp/ccG4TxL5.s:4555   .debug_str:00000000000006b9 .LASF101
+     /tmp/ccG4TxL5.s:4727   .debug_str:0000000000000c0f .LASF102
+     /tmp/ccG4TxL5.s:4723   .debug_str:0000000000000bdb .LASF103
+     /tmp/ccG4TxL5.s:4541   .debug_str:0000000000000637 .LASF104
+     /tmp/ccG4TxL5.s:4453   .debug_str:000000000000037f .LASF105
+     /tmp/ccG4TxL5.s:4757   .debug_str:0000000000000cdd .LASF106
+     /tmp/ccG4TxL5.s:4511   .debug_str:000000000000054d .LASF107
+     /tmp/ccG4TxL5.s:4431   .debug_str:00000000000002f7 .LASF108
+     /tmp/ccG4TxL5.s:4751   .debug_str:0000000000000cbf .LASF109
+     /tmp/ccG4TxL5.s:4387   .debug_str:00000000000000e0 .LASF110
+     /tmp/ccG4TxL5.s:4609   .debug_str:000000000000088a .LASF111
+     /tmp/ccG4TxL5.s:4375   .debug_str:0000000000000068 .LASF112
+     /tmp/ccG4TxL5.s:4393   .debug_str:0000000000000130 .LASF113
+     /tmp/ccG4TxL5.s:4481   .debug_str:000000000000045d .LASF114
+     /tmp/ccG4TxL5.s:4659   .debug_str:00000000000009f6 .LASF115
+     /tmp/ccG4TxL5.s:4627   .debug_str:0000000000000915 .LASF116
+     /tmp/ccG4TxL5.s:4569   .debug_str:0000000000000733 .LASF117
+     /tmp/ccG4TxL5.s:4739   .debug_str:0000000000000c64 .LASF118
+     /tmp/ccG4TxL5.s:4717   .debug_str:0000000000000bba .LASF119
+     /tmp/ccG4TxL5.s:4369   .debug_str:0000000000000042 .LASF121
+     /tmp/ccG4TxL5.s:4777   .debug_str:0000000000000d8a .LASF122
+     /tmp/ccG4TxL5.s:4583   .debug_str:00000000000007b9 .LASF123
+     /tmp/ccG4TxL5.s:4615   .debug_str:00000000000008aa .LASF124
+     /tmp/ccG4TxL5.s:4619   .debug_str:00000000000008ce .LASF125
+     /tmp/ccG4TxL5.s:4577   .debug_str:000000000000077d .LASF126
+     /tmp/ccG4TxL5.s:4527   .debug_str:00000000000005df .LASF127
+     /tmp/ccG4TxL5.s:4741   .debug_str:0000000000000c7e .LASF128
+     /tmp/ccG4TxL5.s:4701   .debug_str:0000000000000b29 .LASF129
+     /tmp/ccG4TxL5.s:4571   .debug_str:0000000000000740 .LASF130
+     /tmp/ccG4TxL5.s:4581   .debug_str:00000000000007a5 .LASF131
+     /tmp/ccG4TxL5.s:4561   .debug_str:00000000000006f7 .LASF132
+     /tmp/ccG4TxL5.s:4623   .debug_str:00000000000008ec .LASF133
+     /tmp/ccG4TxL5.s:4779   .debug_str:0000000000000d93 .LASF134
+     /tmp/ccG4TxL5.s:4509   .debug_str:0000000000000539 .LASF135
+     /tmp/ccG4TxL5.s:4683   .debug_str:0000000000000ad8 .LASF136
+     /tmp/ccG4TxL5.s:4653   .debug_str:00000000000009d4 .LASF137
+     /tmp/ccG4TxL5.s:4655   .debug_str:00000000000009e7 .LASF138
+     /tmp/ccG4TxL5.s:4457   .debug_str:00000000000003a8 .LASF139
+     /tmp/ccG4TxL5.s:4451   .debug_str:0000000000000379 .LASF140
+     /tmp/ccG4TxL5.s:4381   .debug_str:00000000000000a5 .LASF141
+     /tmp/ccG4TxL5.s:4507   .debug_str:0000000000000533 .LASF142
+     /tmp/ccG4TxL5.s:4445   .debug_str:0000000000000358 .LASF143
+     /tmp/ccG4TxL5.s:4359   .debug_str:0000000000000000 .LASF144
+     /tmp/ccG4TxL5.s:4645   .debug_str:0000000000000999 .LASF145
+GAS LISTING /tmp/ccG4TxL5.s 			page 33
 
 
-     /tmp/ccL15Wqi.s:4299   .debug_str:0000000000000626 .LASF164
-     /tmp/ccL15Wqi.s:4485   .debug_str:0000000000000bf1 .LASF165
-     /tmp/ccL15Wqi.s:4309   .debug_str:000000000000067d .LASF166
-     /tmp/ccL15Wqi.s:4215   .debug_str:0000000000000376 .LASF167
-     /tmp/ccL15Wqi.s:4225   .debug_str:00000000000003c7 .LASF168
-     /tmp/ccL15Wqi.s:4163   .debug_str:000000000000015e .LASF169
-     /tmp/ccL15Wqi.s:4469   .debug_str:0000000000000b69 .LASF170
-     /tmp/ccL15Wqi.s:4381   .debug_str:00000000000008e0 .LASF171
-     /tmp/ccL15Wqi.s:4295   .debug_str:0000000000000603 .LASF172
-     /tmp/ccL15Wqi.s:4373   .debug_str:000000000000088b .LASF173
-     /tmp/ccL15Wqi.s:800    .text:0000000000000414 .LFB40
-     /tmp/ccL15Wqi.s:901    .text:00000000000004a0 .LFE40
-     /tmp/ccL15Wqi.s:4279   .debug_str:0000000000000588 .LASF174
-     /tmp/ccL15Wqi.s:3831   .debug_loc:0000000000000000 .LLST23
-     /tmp/ccL15Wqi.s:3842   .debug_loc:0000000000000036 .LLST24
-     /tmp/ccL15Wqi.s:4153   .debug_str:00000000000000fb .LASF175
-     /tmp/ccL15Wqi.s:3853   .debug_loc:000000000000006c .LLST25
-     /tmp/ccL15Wqi.s:4497   .debug_str:0000000000000c41 .LASF176
-     /tmp/ccL15Wqi.s:3864   .debug_loc:00000000000000a2 .LLST26
-     /tmp/ccL15Wqi.s:846    .text:000000000000044c .LVL61
-     /tmp/ccL15Wqi.s:853    .text:000000000000046c .LVL62
-     /tmp/ccL15Wqi.s:740    .text:00000000000003d8 .LFB39
-     /tmp/ccL15Wqi.s:794    .text:0000000000000414 .LFE39
-     /tmp/ccL15Wqi.s:3880   .debug_loc:00000000000000ec .LLST22
-     /tmp/ccL15Wqi.s:766    .text:00000000000003f8 .LVL56
-     /tmp/ccL15Wqi.s:628    .text:0000000000000340 .LFB38
-     /tmp/ccL15Wqi.s:734    .text:00000000000003d8 .LFE38
-     /tmp/ccL15Wqi.s:3891   .debug_loc:0000000000000122 .LLST18
-     /tmp/ccL15Wqi.s:3902   .debug_loc:0000000000000158 .LLST19
-     /tmp/ccL15Wqi.s:3913   .debug_loc:000000000000018e .LLST20
-     /tmp/ccL15Wqi.s:3924   .debug_loc:00000000000001c4 .LLST21
-     /tmp/ccL15Wqi.s:674    .text:0000000000000378 .LVL47
-     /tmp/ccL15Wqi.s:681    .text:0000000000000398 .LVL48
-     /tmp/ccL15Wqi.s:691    .text:00000000000003ac .LVL49
-     /tmp/ccL15Wqi.s:561    .text:00000000000002f4 .LFB37
-     /tmp/ccL15Wqi.s:622    .text:0000000000000340 .LFE37
-     /tmp/ccL15Wqi.s:4355   .debug_str:0000000000000806 .LASF177
-     /tmp/ccL15Wqi.s:3935   .debug_loc:00000000000001fa .LLST15
-     /tmp/ccL15Wqi.s:589    .text:0000000000000318 .LBB22
-     /tmp/ccL15Wqi.s:596    .text:000000000000031c .LBE22
-     /tmp/ccL15Wqi.s:3942   .debug_loc:000000000000021d .LLST16
-     /tmp/ccL15Wqi.s:3949   .debug_loc:0000000000000240 .LLST17
-     /tmp/ccL15Wqi.s:600    .text:0000000000000324 .LVL42
-     /tmp/ccL15Wqi.s:604    .text:000000000000032c .LVL43
-     /tmp/ccL15Wqi.s:527    .text:00000000000002c4 .LFB36
-     /tmp/ccL15Wqi.s:555    .text:00000000000002f4 .LFE36
-     /tmp/ccL15Wqi.s:544    .text:00000000000002e4 .LVL38
-     /tmp/ccL15Wqi.s:467    .text:0000000000000270 .LFB35
-     /tmp/ccL15Wqi.s:521    .text:00000000000002c4 .LFE35
-     /tmp/ccL15Wqi.s:491    .text:00000000000002a0 .LBB20
-     /tmp/ccL15Wqi.s:499    .text:00000000000002a8 .LBE20
-     /tmp/ccL15Wqi.s:3956   .debug_loc:0000000000000263 .LLST13
-     /tmp/ccL15Wqi.s:3964   .debug_loc:0000000000000287 .LLST14
-     /tmp/ccL15Wqi.s:482    .text:0000000000000290 .LVL34
-     /tmp/ccL15Wqi.s:503    .text:00000000000002b0 .LVL37
-     /tmp/ccL15Wqi.s:431    .text:000000000000024c .LFB34
-     /tmp/ccL15Wqi.s:456    .text:0000000000000270 .LFE34
-GAS LISTING /tmp/ccL15Wqi.s 			page 33
+     /tmp/ccG4TxL5.s:4637   .debug_str:000000000000096d .LASF146
+     /tmp/ccG4TxL5.s:4769   .debug_str:0000000000000d4b .LASF147
+     /tmp/ccG4TxL5.s:4643   .debug_str:0000000000000992 .LASF148
+     /tmp/ccG4TxL5.s:4415   .debug_str:000000000000027f .LASF149
+     /tmp/ccG4TxL5.s:4737   .debug_str:0000000000000c5a .LASF150
+     /tmp/ccG4TxL5.s:4749   .debug_str:0000000000000ca9 .LASF151
+     /tmp/ccG4TxL5.s:4729   .debug_str:0000000000000c2d .LASF152
+     /tmp/ccG4TxL5.s:4383   .debug_str:00000000000000b7 .LASF153
+     /tmp/ccG4TxL5.s:4441   .debug_str:0000000000000342 .LASF154
+     /tmp/ccG4TxL5.s:4489   .debug_str:00000000000004b1 .LASF155
+     /tmp/ccG4TxL5.s:4495   .debug_str:00000000000004d4 .LASF156
+     /tmp/ccG4TxL5.s:4731   .debug_str:0000000000000c37 .LASF157
+     /tmp/ccG4TxL5.s:4493   .debug_str:00000000000004c9 .LASF158
+     /tmp/ccG4TxL5.s:4499   .debug_str:00000000000004e5 .LASF159
+     /tmp/ccG4TxL5.s:4713   .debug_str:0000000000000b9f .LASF160
+     /tmp/ccG4TxL5.s:4483   .debug_str:0000000000000474 .LASF161
+     /tmp/ccG4TxL5.s:4607   .debug_str:0000000000000875 .LASF162
+     /tmp/ccG4TxL5.s:4523   .debug_str:00000000000005aa .LASF163
+     /tmp/ccG4TxL5.s:4629   .debug_str:0000000000000930 .LASF164
+     /tmp/ccG4TxL5.s:4367   .debug_str:000000000000003a .LASF165
+     /tmp/ccG4TxL5.s:4773   .debug_str:0000000000000d70 .LASF166
+     /tmp/ccG4TxL5.s:4539   .debug_str:000000000000062b .LASF167
+     /tmp/ccG4TxL5.s:4397   .debug_str:000000000000014c .LASF168
+     /tmp/ccG4TxL5.s:4563   .debug_str:00000000000006ff .LASF169
+     /tmp/ccG4TxL5.s:4487   .debug_str:000000000000049e .LASF170
+     /tmp/ccG4TxL5.s:4517   .debug_str:0000000000000578 .LASF171
+     /tmp/ccG4TxL5.s:4413   .debug_str:000000000000026b .LASF172
+     /tmp/ccG4TxL5.s:4691   .debug_str:0000000000000afe .LASF173
+     /tmp/ccG4TxL5.s:4549   .debug_str:0000000000000690 .LASF174
+     /tmp/ccG4TxL5.s:4743   .debug_str:0000000000000c86 .LASF175
+     /tmp/ccG4TxL5.s:4559   .debug_str:00000000000006e7 .LASF176
+     /tmp/ccG4TxL5.s:4455   .debug_str:0000000000000396 .LASF177
+     /tmp/ccG4TxL5.s:4465   .debug_str:00000000000003e7 .LASF178
+     /tmp/ccG4TxL5.s:4401   .debug_str:0000000000000168 .LASF179
+     /tmp/ccG4TxL5.s:4725   .debug_str:0000000000000bec .LASF180
+     /tmp/ccG4TxL5.s:4635   .debug_str:000000000000095c .LASF181
+     /tmp/ccG4TxL5.s:4545   .debug_str:000000000000066d .LASF182
+     /tmp/ccG4TxL5.s:4625   .debug_str:0000000000000900 .LASF183
+     /tmp/ccG4TxL5.s:854    .text:00000000000004b4 .LFB43
+     /tmp/ccG4TxL5.s:955    .text:0000000000000540 .LFE43
+     /tmp/ccG4TxL5.s:4529   .debug_str:00000000000005f2 .LASF184
+     /tmp/ccG4TxL5.s:4053   .debug_loc:0000000000000000 .LLST25
+     /tmp/ccG4TxL5.s:4064   .debug_loc:0000000000000036 .LLST26
+     /tmp/ccG4TxL5.s:4389   .debug_str:00000000000000fb .LASF185
+     /tmp/ccG4TxL5.s:4075   .debug_loc:000000000000006c .LLST27
+     /tmp/ccG4TxL5.s:4755   .debug_str:0000000000000cd6 .LASF186
+     /tmp/ccG4TxL5.s:4086   .debug_loc:00000000000000a2 .LLST28
+     /tmp/ccG4TxL5.s:900    .text:00000000000004ec .LVL70
+     /tmp/ccG4TxL5.s:907    .text:000000000000050c .LVL71
+     /tmp/ccG4TxL5.s:794    .text:0000000000000478 .LFB42
+     /tmp/ccG4TxL5.s:848    .text:00000000000004b4 .LFE42
+     /tmp/ccG4TxL5.s:4102   .debug_loc:00000000000000ec .LLST24
+     /tmp/ccG4TxL5.s:820    .text:0000000000000498 .LVL65
+     /tmp/ccG4TxL5.s:682    .text:00000000000003e0 .LFB41
+     /tmp/ccG4TxL5.s:788    .text:0000000000000478 .LFE41
+     /tmp/ccG4TxL5.s:4113   .debug_loc:0000000000000122 .LLST20
+     /tmp/ccG4TxL5.s:4124   .debug_loc:0000000000000158 .LLST21
+GAS LISTING /tmp/ccG4TxL5.s 			page 34
 
 
-     /tmp/ccL15Wqi.s:4199   .debug_str:0000000000000320 .LASF179
-     /tmp/ccL15Wqi.s:3971   .debug_loc:00000000000002aa .LLST12
-     /tmp/ccL15Wqi.s:361    .text:00000000000001d0 .LFB33
-     /tmp/ccL15Wqi.s:425    .text:000000000000024c .LFE33
-     /tmp/ccL15Wqi.s:4477   .debug_str:0000000000000bba .LASF178
-     /tmp/ccL15Wqi.s:3985   .debug_loc:00000000000002e3 .LLST9
-     /tmp/ccL15Wqi.s:403    .text:0000000000000230 .LBB18
-     /tmp/ccL15Wqi.s:411    .text:0000000000000238 .LBE18
-     /tmp/ccL15Wqi.s:3992   .debug_loc:0000000000000306 .LLST10
-     /tmp/ccL15Wqi.s:4000   .debug_loc:000000000000032a .LLST11
-     /tmp/ccL15Wqi.s:378    .text:00000000000001f0 .LVL25
-     /tmp/ccL15Wqi.s:385    .text:000000000000020c .LVL26
-     /tmp/ccL15Wqi.s:390    .text:0000000000000218 .LVL27
-     /tmp/ccL15Wqi.s:398    .text:0000000000000228 .LVL28
-     /tmp/ccL15Wqi.s:4135   .debug_str:0000000000000057 .LASF180
-     /tmp/ccL15Wqi.s:4197   .debug_str:0000000000000314 .LASF183
-     /tmp/ccL15Wqi.s:313    .text:00000000000001a4 .LFB31
-     /tmp/ccL15Wqi.s:345    .text:00000000000001d0 .LFE31
-     /tmp/ccL15Wqi.s:4007   .debug_loc:000000000000034d .LLST8
-     /tmp/ccL15Wqi.s:333    .text:00000000000001c0 .LVL24
-     /tmp/ccL15Wqi.s:281    .text:000000000000017c .LFB29
-     /tmp/ccL15Wqi.s:307    .text:00000000000001a4 .LFE29
-     /tmp/ccL15Wqi.s:4021   .debug_loc:0000000000000386 .LLST7
-     /tmp/ccL15Wqi.s:296    .text:0000000000000194 .LVL21
-     /tmp/ccL15Wqi.s:249    .text:0000000000000154 .LFB28
-     /tmp/ccL15Wqi.s:275    .text:000000000000017c .LFE28
-     /tmp/ccL15Wqi.s:4193   .debug_str:00000000000002f9 .LASF181
-     /tmp/ccL15Wqi.s:4035   .debug_loc:00000000000003bf .LLST6
-     /tmp/ccL15Wqi.s:264    .text:000000000000016c .LVL19
-     /tmp/ccL15Wqi.s:166    .text:00000000000000e0 .LFB27
-     /tmp/ccL15Wqi.s:243    .text:0000000000000154 .LFE27
-     /tmp/ccL15Wqi.s:4049   .debug_loc:00000000000003f8 .LLST2
-     /tmp/ccL15Wqi.s:184    .text:00000000000000fc .LBB13
-     /tmp/ccL15Wqi.s:192    .text:0000000000000100 .LBE13
-     /tmp/ccL15Wqi.s:4060   .debug_loc:000000000000042e .LLST3
-     /tmp/ccL15Wqi.s:205    .text:0000000000000118 .LBB15
-     /tmp/ccL15Wqi.s:213    .text:0000000000000120 .LBE15
-     /tmp/ccL15Wqi.s:4067   .debug_loc:0000000000000451 .LLST4
-     /tmp/ccL15Wqi.s:4075   .debug_loc:0000000000000475 .LLST5
-     /tmp/ccL15Wqi.s:200    .text:0000000000000110 .LVL11
-     /tmp/ccL15Wqi.s:219    .text:0000000000000130 .LVL14
-     /tmp/ccL15Wqi.s:240    .text:0000000000000150 .LVL17
-     /tmp/ccL15Wqi.s:15     .text:0000000000000000 .LFB26
-     /tmp/ccL15Wqi.s:58     .text:0000000000000054 .LFE26
-     /tmp/ccL15Wqi.s:31     .text:0000000000000020 .LVL0
-     /tmp/ccL15Wqi.s:35     .text:0000000000000028 .LVL1
-     /tmp/ccL15Wqi.s:47     .text:0000000000000044 .LVL3
-     /tmp/ccL15Wqi.s:134    .text:00000000000000b8 .LFB25
-     /tmp/ccL15Wqi.s:160    .text:00000000000000e0 .LFE25
-     /tmp/ccL15Wqi.s:4082   .debug_loc:0000000000000498 .LLST1
-     /tmp/ccL15Wqi.s:149    .text:00000000000000d0 .LVL8
-     /tmp/ccL15Wqi.s:110    .text:00000000000000a0 .LFB24
-     /tmp/ccL15Wqi.s:128    .text:00000000000000b8 .LFE24
-     /tmp/ccL15Wqi.s:4301   .debug_str:000000000000062b .LASF182
-     /tmp/ccL15Wqi.s:4335   .debug_str:0000000000000764 .LASF184
-     /tmp/ccL15Wqi.s:64     .text:0000000000000054 .LFB22
-     /tmp/ccL15Wqi.s:102    .text:00000000000000a0 .LFE22
-GAS LISTING /tmp/ccL15Wqi.s 			page 34
+     /tmp/ccG4TxL5.s:4135   .debug_loc:000000000000018e .LLST22
+     /tmp/ccG4TxL5.s:4146   .debug_loc:00000000000001c4 .LLST23
+     /tmp/ccG4TxL5.s:728    .text:0000000000000418 .LVL56
+     /tmp/ccG4TxL5.s:735    .text:0000000000000438 .LVL57
+     /tmp/ccG4TxL5.s:745    .text:000000000000044c .LVL58
+     /tmp/ccG4TxL5.s:615    .text:0000000000000394 .LFB40
+     /tmp/ccG4TxL5.s:676    .text:00000000000003e0 .LFE40
+     /tmp/ccG4TxL5.s:4605   .debug_str:0000000000000870 .LASF187
+     /tmp/ccG4TxL5.s:4157   .debug_loc:00000000000001fa .LLST17
+     /tmp/ccG4TxL5.s:643    .text:00000000000003b8 .LBB22
+     /tmp/ccG4TxL5.s:650    .text:00000000000003bc .LBE22
+     /tmp/ccG4TxL5.s:4164   .debug_loc:000000000000021d .LLST18
+     /tmp/ccG4TxL5.s:4171   .debug_loc:0000000000000240 .LLST19
+     /tmp/ccG4TxL5.s:654    .text:00000000000003c4 .LVL51
+     /tmp/ccG4TxL5.s:658    .text:00000000000003cc .LVL52
+     /tmp/ccG4TxL5.s:581    .text:0000000000000364 .LFB39
+     /tmp/ccG4TxL5.s:609    .text:0000000000000394 .LFE39
+     /tmp/ccG4TxL5.s:598    .text:0000000000000384 .LVL47
+     /tmp/ccG4TxL5.s:521    .text:0000000000000310 .LFB38
+     /tmp/ccG4TxL5.s:575    .text:0000000000000364 .LFE38
+     /tmp/ccG4TxL5.s:545    .text:0000000000000340 .LBB20
+     /tmp/ccG4TxL5.s:553    .text:0000000000000348 .LBE20
+     /tmp/ccG4TxL5.s:4178   .debug_loc:0000000000000263 .LLST15
+     /tmp/ccG4TxL5.s:4186   .debug_loc:0000000000000287 .LLST16
+     /tmp/ccG4TxL5.s:536    .text:0000000000000330 .LVL43
+     /tmp/ccG4TxL5.s:557    .text:0000000000000350 .LVL46
+     /tmp/ccG4TxL5.s:485    .text:00000000000002ec .LFB37
+     /tmp/ccG4TxL5.s:510    .text:0000000000000310 .LFE37
+     /tmp/ccG4TxL5.s:4439   .debug_str:000000000000033d .LASF191
+     /tmp/ccG4TxL5.s:4193   .debug_loc:00000000000002aa .LLST14
+     /tmp/ccG4TxL5.s:351    .text:00000000000001c0 .LFB36
+     /tmp/ccG4TxL5.s:479    .text:00000000000002ec .LFE36
+     /tmp/ccG4TxL5.s:4735   .debug_str:0000000000000c4f .LASF188
+     /tmp/ccG4TxL5.s:4207   .debug_loc:00000000000002e3 .LLST9
+     /tmp/ccG4TxL5.s:4621   .debug_str:00000000000008e1 .LASF189
+     /tmp/ccG4TxL5.s:4214   .debug_loc:0000000000000306 .LLST10
+     /tmp/ccG4TxL5.s:4469   .debug_str:000000000000041d .LASF190
+     /tmp/ccG4TxL5.s:4221   .debug_loc:0000000000000329 .LLST11
+     /tmp/ccG4TxL5.s:399    .text:000000000000022c .LBB18
+     /tmp/ccG4TxL5.s:407    .text:0000000000000234 .LBE18
+     /tmp/ccG4TxL5.s:4228   .debug_loc:000000000000034c .LLST12
+     /tmp/ccG4TxL5.s:4236   .debug_loc:0000000000000370 .LLST13
+     /tmp/ccG4TxL5.s:374    .text:00000000000001ec .LVL24
+     /tmp/ccG4TxL5.s:381    .text:0000000000000208 .LVL25
+     /tmp/ccG4TxL5.s:386    .text:0000000000000214 .LVL26
+     /tmp/ccG4TxL5.s:394    .text:0000000000000224 .LVL27
+     /tmp/ccG4TxL5.s:412    .text:0000000000000240 .LVL30
+     /tmp/ccG4TxL5.s:417    .text:0000000000000250 .LVL31
+     /tmp/ccG4TxL5.s:425    .text:0000000000000270 .LVL33
+     /tmp/ccG4TxL5.s:433    .text:0000000000000280 .LVL34
+     /tmp/ccG4TxL5.s:438    .text:000000000000028c .LVL35
+     /tmp/ccG4TxL5.s:443    .text:000000000000029c .LVL36
+     /tmp/ccG4TxL5.s:451    .text:00000000000002bc .LVL38
+     /tmp/ccG4TxL5.s:456    .text:00000000000002c8 .LVL39
+     /tmp/ccG4TxL5.s:4371   .debug_str:0000000000000057 .LASF192
+     /tmp/ccG4TxL5.s:4437   .debug_str:0000000000000331 .LASF195
+     /tmp/ccG4TxL5.s:303    .text:0000000000000194 .LFB34
+GAS LISTING /tmp/ccG4TxL5.s 			page 35
 
 
-     /tmp/ccL15Wqi.s:4096   .debug_loc:00000000000004d1 .LLST0
-     /tmp/ccL15Wqi.s:4515   .debug_str:0000000000000cc6 .LASF185
-     /tmp/ccL15Wqi.s:4233   .debug_str:0000000000000415 .LASF187
-     /tmp/ccL15Wqi.s:4387   .debug_str:000000000000090a .LASF186
-     /tmp/ccL15Wqi.s:4229   .debug_str:00000000000003fd .LASF188
-     /tmp/ccL15Wqi.s:4267   .debug_str:0000000000000515 .LASF189
-     /tmp/ccL15Wqi.s:834    .text:000000000000043c .LVL59
-     /tmp/ccL15Wqi.s:882    .text:000000000000048c .LVL65
-     /tmp/ccL15Wqi.s:889    .text:0000000000000498 .LVL67
-     /tmp/ccL15Wqi.s:840    .text:0000000000000440 .LVL60
-     /tmp/ccL15Wqi.s:885    .text:0000000000000490 .LVL66
-     /tmp/ccL15Wqi.s:828    .text:0000000000000438 .LVL58
-     /tmp/ccL15Wqi.s:879    .text:0000000000000488 .LVL64
-     /tmp/ccL15Wqi.s:876    .text:0000000000000484 .LVL63
-     /tmp/ccL15Wqi.s:750    .text:00000000000003dc .LVL55
-     /tmp/ccL15Wqi.s:783    .text:000000000000040c .LVL57
-     /tmp/ccL15Wqi.s:662    .text:0000000000000368 .LVL45
-     /tmp/ccL15Wqi.s:715    .text:00000000000003c4 .LVL52
-     /tmp/ccL15Wqi.s:722    .text:00000000000003d0 .LVL54
-     /tmp/ccL15Wqi.s:668    .text:000000000000036c .LVL46
-     /tmp/ccL15Wqi.s:718    .text:00000000000003c8 .LVL53
-     /tmp/ccL15Wqi.s:656    .text:0000000000000364 .LVL44
-     /tmp/ccL15Wqi.s:712    .text:00000000000003c0 .LVL51
-     /tmp/ccL15Wqi.s:709    .text:00000000000003bc .LVL50
-     /tmp/ccL15Wqi.s:579    .text:0000000000000308 .LVL39
-     /tmp/ccL15Wqi.s:588    .text:0000000000000318 .LVL40
-     /tmp/ccL15Wqi.s:594    .text:000000000000031c .LVL41
-     /tmp/ccL15Wqi.s:490    .text:00000000000002a0 .LVL35
-     /tmp/ccL15Wqi.s:497    .text:00000000000002a8 .LVL36
-     /tmp/ccL15Wqi.s:434    .text:000000000000024c .LVL32
-     /tmp/ccL15Wqi.s:444    .text:000000000000025c .LVL33
-     /tmp/ccL15Wqi.s:420    .text:0000000000000244 .LVL31
-     /tmp/ccL15Wqi.s:402    .text:0000000000000230 .LVL29
-     /tmp/ccL15Wqi.s:409    .text:0000000000000238 .LVL30
-     /tmp/ccL15Wqi.s:318    .text:00000000000001a4 .LVL22
-     /tmp/ccL15Wqi.s:331    .text:00000000000001b8 .LVL23
-     /tmp/ccL15Wqi.s:284    .text:000000000000017c .LVL20
-     /tmp/ccL15Wqi.s:252    .text:0000000000000154 .LVL18
-     /tmp/ccL15Wqi.s:182    .text:00000000000000fc .LVL9
-     /tmp/ccL15Wqi.s:229    .text:000000000000013c .LVL15
-     /tmp/ccL15Wqi.s:233    .text:0000000000000144 .LVL16
-     /tmp/ccL15Wqi.s:190    .text:0000000000000100 .LVL10
-     /tmp/ccL15Wqi.s:204    .text:0000000000000118 .LVL12
-     /tmp/ccL15Wqi.s:211    .text:0000000000000120 .LVL13
-     /tmp/ccL15Wqi.s:137    .text:00000000000000b8 .LVL7
-     /tmp/ccL15Wqi.s:67     .text:0000000000000054 .LVL4
-     /tmp/ccL15Wqi.s:85     .text:0000000000000080 .LVL5
-     /tmp/ccL15Wqi.s:930    .debug_info:0000000000000000 .Ldebug_info0
-     /tmp/ccL15Wqi.s:348    .gcc_except_table:0000000000000000 .LLSDA31
+     /tmp/ccG4TxL5.s:335    .text:00000000000001c0 .LFE34
+     /tmp/ccG4TxL5.s:4243   .debug_loc:0000000000000393 .LLST8
+     /tmp/ccG4TxL5.s:323    .text:00000000000001b0 .LVL23
+     /tmp/ccG4TxL5.s:271    .text:000000000000016c .LFB32
+     /tmp/ccG4TxL5.s:297    .text:0000000000000194 .LFE32
+     /tmp/ccG4TxL5.s:4257   .debug_loc:00000000000003cc .LLST7
+     /tmp/ccG4TxL5.s:286    .text:0000000000000184 .LVL20
+     /tmp/ccG4TxL5.s:239    .text:0000000000000144 .LFB31
+     /tmp/ccG4TxL5.s:265    .text:000000000000016c .LFE31
+     /tmp/ccG4TxL5.s:4433   .debug_str:0000000000000316 .LASF193
+     /tmp/ccG4TxL5.s:4271   .debug_loc:0000000000000405 .LLST6
+     /tmp/ccG4TxL5.s:254    .text:000000000000015c .LVL18
+     /tmp/ccG4TxL5.s:156    .text:00000000000000d0 .LFB30
+     /tmp/ccG4TxL5.s:233    .text:0000000000000144 .LFE30
+     /tmp/ccG4TxL5.s:4285   .debug_loc:000000000000043e .LLST2
+     /tmp/ccG4TxL5.s:174    .text:00000000000000ec .LBB13
+     /tmp/ccG4TxL5.s:182    .text:00000000000000f0 .LBE13
+     /tmp/ccG4TxL5.s:4296   .debug_loc:0000000000000474 .LLST3
+     /tmp/ccG4TxL5.s:195    .text:0000000000000108 .LBB15
+     /tmp/ccG4TxL5.s:203    .text:0000000000000110 .LBE15
+     /tmp/ccG4TxL5.s:4303   .debug_loc:0000000000000497 .LLST4
+     /tmp/ccG4TxL5.s:4311   .debug_loc:00000000000004bb .LLST5
+     /tmp/ccG4TxL5.s:190    .text:0000000000000100 .LVL10
+     /tmp/ccG4TxL5.s:209    .text:0000000000000120 .LVL13
+     /tmp/ccG4TxL5.s:230    .text:0000000000000140 .LVL16
+     /tmp/ccG4TxL5.s:10     .text:0000000000000000 .LFB29
+     /tmp/ccG4TxL5.s:48     .text:0000000000000044 .LFE29
+     /tmp/ccG4TxL5.s:25     .text:0000000000000018 .LVL0
+     /tmp/ccG4TxL5.s:37     .text:0000000000000034 .LVL2
+     /tmp/ccG4TxL5.s:124    .text:00000000000000a8 .LFB28
+     /tmp/ccG4TxL5.s:150    .text:00000000000000d0 .LFE28
+     /tmp/ccG4TxL5.s:4318   .debug_loc:00000000000004de .LLST1
+     /tmp/ccG4TxL5.s:139    .text:00000000000000c0 .LVL7
+     /tmp/ccG4TxL5.s:100    .text:0000000000000090 .LFB27
+     /tmp/ccG4TxL5.s:118    .text:00000000000000a8 .LFE27
+     /tmp/ccG4TxL5.s:4551   .debug_str:0000000000000695 .LASF194
+     /tmp/ccG4TxL5.s:4585   .debug_str:00000000000007ce .LASF196
+     /tmp/ccG4TxL5.s:54     .text:0000000000000044 .LFB25
+     /tmp/ccG4TxL5.s:92     .text:0000000000000090 .LFE25
+     /tmp/ccG4TxL5.s:4332   .debug_loc:0000000000000517 .LLST0
+     /tmp/ccG4TxL5.s:4641   .debug_str:0000000000000986 .LASF197
+     /tmp/ccG4TxL5.s:4471   .debug_str:0000000000000425 .LASF199
+     /tmp/ccG4TxL5.s:4775   .debug_str:0000000000000d7f .LASF198
+     /tmp/ccG4TxL5.s:4475   .debug_str:000000000000043d .LASF200
+     /tmp/ccG4TxL5.s:4515   .debug_str:000000000000056c .LASF201
+     /tmp/ccG4TxL5.s:888    .text:00000000000004dc .LVL68
+     /tmp/ccG4TxL5.s:936    .text:000000000000052c .LVL74
+     /tmp/ccG4TxL5.s:943    .text:0000000000000538 .LVL76
+     /tmp/ccG4TxL5.s:894    .text:00000000000004e0 .LVL69
+     /tmp/ccG4TxL5.s:939    .text:0000000000000530 .LVL75
+     /tmp/ccG4TxL5.s:882    .text:00000000000004d8 .LVL67
+     /tmp/ccG4TxL5.s:933    .text:0000000000000528 .LVL73
+     /tmp/ccG4TxL5.s:930    .text:0000000000000524 .LVL72
+     /tmp/ccG4TxL5.s:804    .text:000000000000047c .LVL64
+     /tmp/ccG4TxL5.s:837    .text:00000000000004ac .LVL66
+     /tmp/ccG4TxL5.s:716    .text:0000000000000408 .LVL54
+     /tmp/ccG4TxL5.s:769    .text:0000000000000464 .LVL61
+GAS LISTING /tmp/ccG4TxL5.s 			page 36
+
+
+     /tmp/ccG4TxL5.s:776    .text:0000000000000470 .LVL63
+     /tmp/ccG4TxL5.s:722    .text:000000000000040c .LVL55
+     /tmp/ccG4TxL5.s:772    .text:0000000000000468 .LVL62
+     /tmp/ccG4TxL5.s:710    .text:0000000000000404 .LVL53
+     /tmp/ccG4TxL5.s:766    .text:0000000000000460 .LVL60
+     /tmp/ccG4TxL5.s:763    .text:000000000000045c .LVL59
+     /tmp/ccG4TxL5.s:633    .text:00000000000003a8 .LVL48
+     /tmp/ccG4TxL5.s:642    .text:00000000000003b8 .LVL49
+     /tmp/ccG4TxL5.s:648    .text:00000000000003bc .LVL50
+     /tmp/ccG4TxL5.s:544    .text:0000000000000340 .LVL44
+     /tmp/ccG4TxL5.s:551    .text:0000000000000348 .LVL45
+     /tmp/ccG4TxL5.s:488    .text:00000000000002ec .LVL41
+     /tmp/ccG4TxL5.s:498    .text:00000000000002fc .LVL42
+     /tmp/ccG4TxL5.s:419    .text:0000000000000254 .LVL32
+     /tmp/ccG4TxL5.s:445    .text:00000000000002a0 .LVL37
+     /tmp/ccG4TxL5.s:468    .text:00000000000002d8 .LVL40
+     /tmp/ccG4TxL5.s:398    .text:000000000000022c .LVL28
+     /tmp/ccG4TxL5.s:405    .text:0000000000000234 .LVL29
+     /tmp/ccG4TxL5.s:308    .text:0000000000000194 .LVL21
+     /tmp/ccG4TxL5.s:321    .text:00000000000001a8 .LVL22
+     /tmp/ccG4TxL5.s:274    .text:000000000000016c .LVL19
+     /tmp/ccG4TxL5.s:242    .text:0000000000000144 .LVL17
+     /tmp/ccG4TxL5.s:172    .text:00000000000000ec .LVL8
+     /tmp/ccG4TxL5.s:219    .text:000000000000012c .LVL14
+     /tmp/ccG4TxL5.s:223    .text:0000000000000134 .LVL15
+     /tmp/ccG4TxL5.s:180    .text:00000000000000f0 .LVL9
+     /tmp/ccG4TxL5.s:194    .text:0000000000000108 .LVL11
+     /tmp/ccG4TxL5.s:201    .text:0000000000000110 .LVL12
+     /tmp/ccG4TxL5.s:127    .text:00000000000000a8 .LVL6
+     /tmp/ccG4TxL5.s:57     .text:0000000000000044 .LVL3
+     /tmp/ccG4TxL5.s:75     .text:0000000000000070 .LVL4
+     /tmp/ccG4TxL5.s:984    .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/ccG4TxL5.s:338    .gcc_except_table:0000000000000000 .LLSDA34
 
 UNDEFINED SYMBOLS
-_ZN5Riscv11printStringEPKc
 _ZN5Riscv10popSppSpieEv
 thread_exit
 _ZN9Scheduler3putEP3PCB
 _ZN9Scheduler3getEv
 _ZN3PCB13contextSwitchEPNS_7ContextES1_
-GAS LISTING /tmp/ccL15Wqi.s 			page 35
-
-
 _Z7kmallocm
 _Z5kfreePv
 __gxx_personality_v0
+_ZN8KConsole23sendCharactersToConsoleEPv
+_ZN5Riscv9idleRiscvEPv
+_ZN5Riscv11printStringEPKc
 _ZN12SleepPCBList17insertSleepingPCBEv

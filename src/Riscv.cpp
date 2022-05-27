@@ -119,8 +119,28 @@ void Riscv::handleSupervisorTrap()
         }
         case hwInterrupt: // todo
         {
-            //Riscv::printString("Hardware interrupt...\n");
+            //console_handler();
+
+            uint64 x = CONSOLE_STATUS;
+            __asm__ volatile("mv a0, %0"::"r"(x));
+            __asm__ volatile("lb a1, 0(a0)");
+            uint64 operation;
+            __asm__ volatile("mv %0, a1" :  "=r"(operation));
+            if(operation & KConsole::STATUS_READ_MASK)
+            {
+                x = CONSOLE_TX_DATA;
+                __asm__ volatile("mv a0, %0"::"r"(x));
+                __asm__ volatile("lb a1,0(a0)");
+                char c;
+                __asm__ volatile("mv %0, a1" :  "=r"(c));
+                //putCharacterOutput(c);
+
+                KConsole::putCharacterInput(c);
+            }
+
             console_handler();
+            //plic_complete(plic_claim());
+
             break;
         }
         case operationInterrupt: // todo
@@ -143,6 +163,7 @@ void Riscv::handleSupervisorTrap()
 
             uint64 volatile sepc = Riscv::r_sepc() + 4;
             uint64 volatile sstatus = Riscv::r_sstatus();
+            //uint64 volatile sie = Riscv::r_sie();
 
             switch(operation)
             {
@@ -183,13 +204,14 @@ void Riscv::handleSupervisorTrap()
                     KSemaphore::semCloseHandler();
                     break;
                 case KConsole::CONSOLE_GETC:
-                    //todo
+                    KConsole::getcHandler();
                     break;
                 case KConsole::CONSOLE_PUTC:
-                    //todo
+                    KConsole::putcHandler();
                     break;
             }
 
+            //Riscv::w_sie(sie);
             Riscv::w_sstatus(sstatus);
             Riscv::w_sepc(sepc);
 
@@ -202,20 +224,42 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    //enableInterrupts();
+    //disableTimerInterrupts();
+    enableInterrupts();
 
     //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //userPCB->start();
-    //while(userPCB->getState() != PCB::FINISHED)
+    //while(!userPCB->isFinished())
     //{
     //    thread_dispatch();
     //}
+    //userMain();
+    //myTests();
 
-    myTests();
 
-    //disableInterrupts();
+    //Riscv::printString("Sigurno radi\n");
+   for(int i = 0; i < 100;i++)
+   {
+       char c = getc();
+       putc(c);
+   }
 
-    endSystem();
+    /*while(true)
+    {
+        putc(c);
+        c++;
+        if(c == 'q')
+            break;
+    }*/
+
+
+    /*for(int i = 0; i < 10;i++)
+    {
+        putc(getc());
+    }*/
+
+    disableInterrupts();
+    //endSystem();
 
     Riscv::printString("End...");
 }
@@ -223,4 +267,20 @@ void Riscv::kernelMain()
 void Riscv::userMainWrapper(void* )
 {
     userMain();
+}
+
+void Riscv::disableTimerInterrupts()
+{
+    //uint64 x = 0x200;
+    //__asm__ volatile("csrs sie, %0"::"r"(x));
+    uint64 x = 0x2;
+    __asm__ volatile("csrc sie, %0"::"r"(x));
+}
+
+void Riscv::idleRiscv(void* p)
+{
+    while(true)
+    {
+
+    }
 }

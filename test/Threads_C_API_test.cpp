@@ -3,6 +3,7 @@
 //
 
 #include "Threads_C_API_test.hpp"
+#include "../h/Scheduler.hpp"
 
 static bool finishedA = false;
 static bool finishedB = false;
@@ -33,15 +34,15 @@ void workerBodyB(void* arg)
 {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 10000; j++) {
+        for (uint64 j = 0; j < 10; j++) {
             //Riscv::printString("B j : ");
             //Riscv::printInteger(j);
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
             thread_dispatch();
         }
     }
-    Riscv::printString("B finished!\n");
     thread_dispatch();
+    Riscv::printString("B finished!\n");
     finishedB = true;
 }
 
@@ -67,8 +68,8 @@ void workerBodyC(void* arg) {
         printString("C: i="); printInt(i); printString("\n");
     }
 
-    printString("C finished!\n");
     thread_dispatch();
+    printString("C finished!\n");
     finishedC = true;
 }
 
@@ -89,8 +90,8 @@ void workerBodyD(void* arg) {
         printString("D: i="); printInt(i); printString("\n");
     }
 
-    printString("D finished!\n");
     thread_dispatch();
+    printString("D finished!\n");
     finishedD = true;
 }
 
@@ -101,24 +102,24 @@ void Threads_C_API_test()
     thread_create(&threads[0], workerBodyA, nullptr);
     printString("ThreadA created\n");
 
-    thread_create(&threads[1], workerBodyB, nullptr);
+    //thread_create(&threads[1], workerBodyB, nullptr);
     printString("ThreadB created\n");
 
-    thread_create(&threads[2], workerBodyC, nullptr);
+    //thread_create(&threads[2], workerBodyC, nullptr);
     printString("ThreadC created\n");
 
-    thread_create(&threads[3], workerBodyD, nullptr);
+    //thread_create(&threads[3], workerBodyD, nullptr);
     printString("ThreadD created\n");
 
-    while (!(finishedB)) {
+    while (!finishedA) {
         //printString("Main thread\n");
         thread_dispatch();
     }
-
-    for (auto &thread: threads) {
+    for (auto &thread: threads)
+    {
         //todo
         //in order to syscall.c to stay .c it gotta be converted
-        delete (PCB*)thread;
+        delete (uint64*)thread;
     }
 }
 

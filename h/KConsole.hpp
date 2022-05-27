@@ -26,6 +26,8 @@ private:
     static Elem* headOutput;
     static Elem* tailOutput;
 
+    static int cntWInterrupt;
+
     static KSemaphore* hasCharactersInput;
     static KSemaphore* hasCharactersOutput;
 
@@ -41,14 +43,21 @@ public:
 
     static void initialize();
 
-    static void getCharactersFromConsole();
+    static void getCharactersFromConsole(void* p);
 
-    static void sendCharactersToConsole();
+    static void sendCharactersToConsole(void* p);
+
+    static void printBuffer();
+
+    static void ack();
 
     static const uint64 STATUS_READ_MASK = 1UL;
     static const uint64 STATUS_WRITE_MASK = 1UL << 5UL;
     static const uint64 CONSOLE_GETC = 0x41;
     static const uint64 CONSOLE_PUTC = 0x42;
+
+    static void putcHandler();
+    static void getcHandler();
 };
 
 #endif //PROJECT_BASE_V1_0_KCONSOLE_HPP

@@ -5,6 +5,8 @@
 #include "../h/PCB.hpp"
 #include "../h/syscall_c.h"
 #include "../h/SleepPCBList.hpp"
+#include "../test/printing.hpp"
+#include "../h/KConsole.hpp"
 
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
@@ -36,7 +38,7 @@ void PCB::start()
 
 void PCB::runner()
 {
-    Riscv::printString("Runner started...\n");
+    //Riscv::printString("Runner started...\n");
     Riscv::popSppSpie();
 
     running->body(running->args);
@@ -46,8 +48,6 @@ void PCB::runner()
 
 void PCB::dispatch()
 {
-    //Scheduler::print();
-    //Riscv::printInteger(Scheduler::getSize());
     //Riscv::printString("Dispatch called...\n");
     PCB* old = running;
     if(old->getState() == PCB::RUNNING)
@@ -84,6 +84,15 @@ void PCB::initialize()
     mainSystem->systemThread = true;
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
+    PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    consolePCB->systemThread = true;
+    consolePCB->start();
+    PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    idlePCB->start();
+    idlePCB->systemThread = true;
+    //PCB* consolePCBGetc = new PCB(&KConsole::getCharactersFromConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //consolePCBGetc->systemThread = true;
+    //consolePCBGetc->start();
 }
 
 bool PCB::isFinished()

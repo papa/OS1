@@ -4,9 +4,9 @@ build/src/Riscv.o: src/Riscv.cpp src/../h/Riscv.hpp src/../h/../lib/hw.h \
  src/../lib/console.h src/../h/syscall_cpp.hpp src/../h/syscall_c.h \
  src/../h/PCB.hpp src/../h/KSemaphore.hpp src/../h/SleepPCBList.hpp \
  src/../h/KConsole.hpp src/../h/Tests.hpp src/../h/syscall_cpp.hpp \
- src/../test/userMain.hpp src/../test/ThreadSleep_C_API_test.hpp \
- src/../test/../h/syscall_c.h src/../test/printing.hpp \
- src/../test/../h/std.hpp
+ src/../test/userMain.hpp src/../test/Threads_C_API_test.hpp \
+ src/../test/../h/syscall_c.h src/../test/../h/PCB.hpp \
+ src/../test/printing.hpp
 
 src/../h/Riscv.hpp:
 
@@ -44,10 +44,10 @@ src/../h/syscall_cpp.hpp:
 
 src/../test/userMain.hpp:
 
-src/../test/ThreadSleep_C_API_test.hpp:
+src/../test/Threads_C_API_test.hpp:
 
 src/../test/../h/syscall_c.h:
 
-src/../test/printing.hpp:
+src/../test/../h/PCB.hpp:
 
-src/../test/../h/std.hpp:
+src/../test/printing.hpp:

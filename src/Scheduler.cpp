@@ -4,10 +4,10 @@
 
 #include "../h/Scheduler.hpp"
 #include "../h/PCB.hpp"
+#include "../test/printing.hpp"
 
 PCB* Scheduler::schedulerPCBHead = 0;
 PCB* Scheduler::schedulerPCBTail = 0;
-
 
 void *Scheduler::operator new(size_t size)
 {
@@ -62,7 +62,8 @@ void Scheduler::print() {
     PCB* curr = schedulerPCBHead;
     while(curr != 0)
     {
-        Riscv::printInteger((uint64)curr);
+        printInt((uint64)curr, 16);
+        Riscv::printString("\n");
         curr = curr->nextPCB;
     }
 }
