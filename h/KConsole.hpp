@@ -49,8 +49,6 @@ public:
 
     static void printBuffer();
 
-    static void ack();
-
     static const uint64 STATUS_READ_MASK = 1UL;
     static const uint64 STATUS_WRITE_MASK = 1UL << 5UL;
     static const uint64 CONSOLE_GETC = 0x41;

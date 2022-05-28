@@ -119,8 +119,6 @@ void Riscv::handleSupervisorTrap()
         }
         case hwInterrupt: // todo
         {
-            //console_handler();
-
             uint64 x = CONSOLE_STATUS;
             __asm__ volatile("mv a0, %0"::"r"(x));
             __asm__ volatile("lb a1, 0(a0)");
@@ -136,10 +134,10 @@ void Riscv::handleSupervisorTrap()
                 //putCharacterOutput(c);
 
                 KConsole::putCharacterInput(c);
+                KConsole::putCharacterOutput(c);
             }
 
-            console_handler();
-            //plic_complete(plic_claim());
+            plic_complete(plic_claim());
 
             break;
         }
@@ -163,7 +161,6 @@ void Riscv::handleSupervisorTrap()
 
             uint64 volatile sepc = Riscv::r_sepc() + 4;
             uint64 volatile sstatus = Riscv::r_sstatus();
-            //uint64 volatile sie = Riscv::r_sie();
 
             switch(operation)
             {
@@ -211,7 +208,6 @@ void Riscv::handleSupervisorTrap()
                     break;
             }
 
-            //Riscv::w_sie(sie);
             Riscv::w_sstatus(sstatus);
             Riscv::w_sepc(sepc);
 
@@ -224,42 +220,20 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    //disableTimerInterrupts();
     enableInterrupts();
 
     //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //userPCB->start();
-    //while(!userPCB->isFinished())
-    //{
-    //    thread_dispatch();
-    //}
-    //userMain();
-    //myTests();
-
-
-    //Riscv::printString("Sigurno radi\n");
-   for(int i = 0; i < 100;i++)
-   {
-       char c = getc();
-       putc(c);
-   }
-
-    /*while(true)
+    PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    userPCB->start();
+    while(!userPCB->isFinished())
     {
-        putc(c);
-        c++;
-        if(c == 'q')
-            break;
-    }*/
+        thread_dispatch();
+    }
 
 
-    /*for(int i = 0; i < 10;i++)
-    {
-        putc(getc());
-    }*/
+    //disableInterrupts();
 
-    disableInterrupts();
-    //endSystem();
+    endSystem();
 
     Riscv::printString("End...");
 }
@@ -267,6 +241,11 @@ void Riscv::kernelMain()
 void Riscv::userMainWrapper(void* )
 {
     userMain();
+}
+
+void Riscv::myTestsWrapper(void* p)
+{
+    myTests();
 }
 
 void Riscv::disableTimerInterrupts()

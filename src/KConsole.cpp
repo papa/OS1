@@ -71,9 +71,9 @@ void KConsole::getCharactersFromConsole(void* p)
             __asm__ volatile("lb a1,0(a0)");
             char c;
             __asm__ volatile("mv %0, a1" :  "=r"(c));
-            //putCharacterOutput(c);
 
             putCharacterInput(c);
+            putCharacterOutput(c);
         }
         else
             break;
@@ -92,21 +92,12 @@ void KConsole::sendCharactersToConsole(void* p)
             __asm__ volatile("mv %0, a1" :  "=r"(operation));
             if (operation & STATUS_WRITE_MASK)
             {
-                //Riscv::printString("ide gas w\n");
-                //Riscv::printString("trazim karakter\n");
                 char volatile c = getCharacterOutput();
-                //Riscv::printInteger(c);
-                //if (c == 0)
-                //{
-                //     break;
-                //}
                 x = CONSOLE_RX_DATA;
                 __asm__ volatile("mv a0, %0"::"r"(x));
                 __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
                 __asm__ volatile("sb a1,0(a0)");
             }
-            //cntWInterrupt--;
-
     }
 }
 
@@ -138,41 +129,19 @@ void KConsole::putcHandler()
 {
     uint64 ch;
     __asm__ volatile("mv %0, a1" : "=r"(ch));
-    //Riscv::printString("stavio ");
-    //Riscv::printInteger((char)ch);
     putCharacterOutput((char)ch);
-    //Riscv::printString("Bafer\n");
     Elem* curr = headOutput;
     while(curr != 0)
     {
-        //Riscv::printInteger(curr->data);
         curr = curr->next;
     }
-    //Riscv::printString("Kraj bafera\n");
 }
 
 void KConsole::getcHandler()
 {
     char ch;
     ch = getCharacterInput();
-    //putCharacterOutput(ch);
-    //while((ch = getCharacterInput()) == 0){}
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
-}
-
-void KConsole::ack()
-{
-    //Riscv::printString("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-    uint64 x = CONSOLE_STATUS;
-    __asm__ volatile("mv a0, %0"::"r"(x));
-    __asm__ volatile("lb a1, 0(a0)");
-    uint64 operation;
-    __asm__ volatile("mv %0, a1" :  "=r"(operation));
-    //Riscv::printInteger(operation);
-    if(operation & STATUS_WRITE_MASK)
-    {
-        cntWInterrupt++;
-    }
 }
 
 void KConsole::printBuffer()

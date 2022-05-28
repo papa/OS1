@@ -284,7 +284,8 @@ void myTests()
 {
     //memoryAllocationTests();
     //threadTests();
-    semaphoreTests();
+    //semaphoreTests();
+    consoleTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
@@ -491,4 +492,16 @@ void semTest1()
         thread_dispatch();
 }
 
+void consoleTest1()
+{
+    for(int i = 0; i < 100;i++)
+    {
+        getc();
+    }
+}
+
+void consoleTests()
+{
+    consoleTest1();
+}
 

@@ -10,18 +10,20 @@ static bool finishedB = false;
 static bool finishedC = false;
 static bool finishedD = false;
 
-static uint64 fibonacci(uint64 n) {
+static uint64 fibonacci(uint64 n)
+{
     if (n == 0 || n == 1) {return n; }
     if (n % 10 == 0) { thread_dispatch(); }
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-void workerBodyA(void* arg) {
-    for (uint64 i = 0; i < 10; i++) {
+void workerBodyA(void* arg)
+{
+    for (uint64 i = 0; i < 10; i++)
+    {
         printString("A: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 10000; j++) {
-            //Riscv::printString("A j : ");
-            //Riscv::printInteger(j);
+        for (uint64 j = 0; j < 10000; j++)
+        {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
             thread_dispatch();
         }
@@ -34,9 +36,8 @@ void workerBodyB(void* arg)
 {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
-        for (uint64 j = 0; j < 10; j++) {
-            //Riscv::printString("B j : ");
-            //Riscv::printInteger(j);
+        for (uint64 j = 0; j < 10; j++)
+        {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
             thread_dispatch();
         }
@@ -46,9 +47,11 @@ void workerBodyB(void* arg)
     finishedB = true;
 }
 
-void workerBodyC(void* arg) {
+void workerBodyC(void* arg)
+{
     uint8 i = 0;
-    for (; i < 3; i++) {
+    for (; i < 3; i++)
+    {
         printString("C: i="); printInt(i); printString("\n");
     }
 
@@ -73,7 +76,8 @@ void workerBodyC(void* arg) {
     finishedC = true;
 }
 
-void workerBodyD(void* arg) {
+void workerBodyD(void* arg)
+{
     uint8 i = 10;
     for (; i < 13; i++) {
         printString("D: i="); printInt(i); printString("\n");
@@ -102,16 +106,17 @@ void Threads_C_API_test()
     thread_create(&threads[0], workerBodyA, nullptr);
     printString("ThreadA created\n");
 
-    //thread_create(&threads[1], workerBodyB, nullptr);
+    thread_create(&threads[1], workerBodyB, nullptr);
     printString("ThreadB created\n");
 
-    //thread_create(&threads[2], workerBodyC, nullptr);
+    thread_create(&threads[2], workerBodyC, nullptr);
     printString("ThreadC created\n");
 
-    //thread_create(&threads[3], workerBodyD, nullptr);
+    thread_create(&threads[3], workerBodyD, nullptr);
     printString("ThreadD created\n");
 
-    while (!finishedA) {
+    while (!finishedA || !finishedB || !finishedC || !finishedD)
+    {
         //printString("Main thread\n");
         thread_dispatch();
     }

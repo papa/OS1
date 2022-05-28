@@ -83,6 +83,8 @@ public:
     static void supervisorTrap();
     static void handleSupervisorTrap();
 
+    static void myTestsWrapper(void* );
+
     static const uint64 bntOne = 1UL << 63;;
     static const uint64 bntZero = 0UL;
     static const uint64 timerInterrupt = bntOne + 1UL;

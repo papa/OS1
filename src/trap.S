@@ -6,6 +6,7 @@
 _ZN5Riscv14supervisorTrapEv:
 
     addi sp, sp, -256
+    #csrw sscratch, sp
     sd x0, 0(sp)
     sd x1, 8(sp)
     sd x2, 16(sp)

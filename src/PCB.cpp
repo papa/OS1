@@ -87,12 +87,9 @@ void PCB::initialize()
     PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     consolePCB->systemThread = true;
     consolePCB->start();
-    PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    idlePCB->start();
-    idlePCB->systemThread = true;
-    //PCB* consolePCBGetc = new PCB(&KConsole::getCharactersFromConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //consolePCBGetc->systemThread = true;
-    //consolePCBGetc->start();
+    //PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //idlePCB->start();
+    //idlePCB->systemThread = true;
 }
 
 bool PCB::isFinished()

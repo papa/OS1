@@ -65,6 +65,10 @@ void semaphoreTests();
 
 void idle(void* args);
 
+void consoleTest1();
+void consoleTests();
+
+
 void myTests();
 
 #endif //PROJECT_BASE_V1_0_TESTS_HPP
