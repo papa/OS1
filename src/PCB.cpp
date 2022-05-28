@@ -104,6 +104,7 @@ void PCB::threadExitHandler()
     PCB::running->setState(PCB::FINISHED);
     PCB::dispatch();
     __asm__ volatile("li a0, 0");
+    Riscv::w_a0_sscratch();
 }
 
 void PCB::threadDispatchHandler()
@@ -121,6 +122,7 @@ void PCB::threadSleepHandler()
     SleepPCBList::insertSleepingPCB();
     PCB::dispatch();
     __asm__ volatile("li a0, 0x0");
+    Riscv::w_a0_sscratch();
 }
 
 void PCB::threadCreateHandler()
@@ -143,6 +145,7 @@ void PCB::threadCreateHandler()
         newPCB->start();
         __asm__ volatile("li a0, 0");
     }
+    Riscv::w_a0_sscratch();
 }
 
 void PCB::threadStartHandler()
@@ -158,7 +161,7 @@ void PCB::threadStartHandler()
     {
         __asm__ volatile("li a0, 0xffffffffffffffff");
     }
-
+    Riscv::w_a0_sscratch();
 }
 
 void PCB::threadMakePCBHandler()
@@ -178,4 +181,5 @@ void PCB::threadMakePCBHandler()
         __asm__ volatile("li a0, 0xffffffffffffffff");
     else
         __asm__ volatile("li a0, 0");
+    Riscv::w_a0_sscratch();
 }

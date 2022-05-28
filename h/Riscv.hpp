@@ -66,6 +66,8 @@ public:
         SSTATUS_SPP = (1 << 8),
     };
 
+    static void w_a0_sscratch();
+
     static void ms_sstatus(uint64 mask);
 
     static void mc_sstatus(uint64 mask);

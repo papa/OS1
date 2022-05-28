@@ -222,8 +222,8 @@ void Riscv::kernelMain()
 
     enableInterrupts();
 
-    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     userPCB->start();
     while(!userPCB->isFinished())
     {
@@ -231,7 +231,7 @@ void Riscv::kernelMain()
     }
 
 
-    //disableInterrupts();
+    disableInterrupts();
 
     endSystem();
 
@@ -263,3 +263,13 @@ void Riscv::idleRiscv(void* p)
 
     }
 }
+
+void Riscv::w_a0_sscratch()
+{
+    uint64 a1Temp;
+    __asm__ volatile("mv %0, a1":"=r"(a1Temp));
+    __asm__ volatile("csrr a1, sscratch");
+    __asm__ volatile("sd a0, 80(a1)");
+    __asm__ volatile("mv a1,%0"::"r"(a1Temp));
+}
+

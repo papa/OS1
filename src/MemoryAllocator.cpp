@@ -182,6 +182,7 @@ void MemoryAllocator::memAllocHandler()
     size*=MEM_BLOCK_SIZE;
     void* allocatedAddr = kmalloc(size);
     __asm__ volatile("mv a0,%0" : : "r"((uint64)allocatedAddr));
+    Riscv::w_a0_sscratch();
 }
 
 void MemoryAllocator::memFreeHandler()
@@ -190,6 +191,7 @@ void MemoryAllocator::memFreeHandler()
     __asm__ volatile("mv %0, a1" : "=r"(addr));
     uint64 retval = kfree((void*)addr);
     __asm__ volatile("mv a0,%0" : :"r"(retval));
+    Riscv::w_a0_sscratch();
 }
 
 void* kmalloc(size_t size)

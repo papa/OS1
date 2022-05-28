@@ -6,7 +6,7 @@
 _ZN5Riscv14supervisorTrapEv:
 
     addi sp, sp, -256
-    #csrw sscratch, sp
+    csrw sscratch, sp
     sd x0, 0(sp)
     sd x1, 8(sp)
     sd x2, 16(sp)
@@ -17,7 +17,7 @@ _ZN5Riscv14supervisorTrapEv:
     sd x7, 56(sp)
     sd x8, 64(sp)
     sd x9, 72(sp)
-    #sd x10, 80(sp)
+    sd x10, 80(sp)
     sd x11, 88(sp)
     sd x12, 96(sp)
     sd x13, 104(sp)
@@ -52,7 +52,7 @@ _ZN5Riscv14supervisorTrapEv:
     ld x7, 56(sp)
     ld x8, 64(sp)
     ld x9, 72(sp)
-    #ld x10, 80(sp)
+    ld x10, 80(sp)
     ld x11, 88(sp)
     ld x12, 96(sp)
     ld x13, 104(sp)

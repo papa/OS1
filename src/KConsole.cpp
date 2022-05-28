@@ -142,6 +142,7 @@ void KConsole::getcHandler()
     char ch;
     ch = getCharacterInput();
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
+    Riscv::w_a0_sscratch();
 }
 
 void KConsole::printBuffer()

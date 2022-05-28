@@ -115,6 +115,7 @@ void KSemaphore::semWaitHandler()
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
     uint64 volatile retval = kSem->wait();
     __asm__ volatile("mv a0,%0" : :"r"(retval));
+    Riscv::w_a0_sscratch();
 }
 
 void KSemaphore::semSignalHandler()
@@ -123,6 +124,7 @@ void KSemaphore::semSignalHandler()
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
     uint64 volatile retval = kSem->signal();
     __asm__ volatile("mv a0,%0" : :"r"(retval));
+    Riscv::w_a0_sscratch();
 }
 
 void KSemaphore::semCloseHandler()
@@ -131,4 +133,5 @@ void KSemaphore::semCloseHandler()
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
     delete kSem;
     __asm__ volatile("li a0, 0");
+    Riscv::w_a0_sscratch();
 }
