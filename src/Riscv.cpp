@@ -12,6 +12,8 @@
 #include "../h/Tests.hpp"
 #include "../test/userMain.hpp"
 
+uint64 Riscv::totalTime = 0;
+
 void Riscv::initSystem()
 {
     w_stvec((uint64)&Riscv::supervisorTrap);
@@ -101,8 +103,9 @@ void Riscv::handleSupervisorTrap()
             uint64 volatile sstatus = Riscv::r_sstatus();
             mc_sip(Riscv::SIP_SSIP);
             //Riscv::printString("timerInterrupt\n");
-            static uint64 total = 0;
-            total++;
+            //static uint64 total = 0;
+            totalTime++;
+            Riscv::printInteger(totalTime);
 
             PCB::timeSliceCounter++;
             SleepPCBList::tryToWakePCBs();
@@ -133,8 +136,12 @@ void Riscv::handleSupervisorTrap()
                 __asm__ volatile("mv %0, a1" :  "=r"(c));
                 //putCharacterOutput(c);
 
-                KConsole::putCharacterInput(c);
-                KConsole::putCharacterOutput(c);
+                if(KConsole::pendingGetc > 0)
+                {
+                    KConsole::pendingGetc--;
+                    KConsole::putCharacterInput(c);
+                    KConsole::putCharacterOutput(c);
+                }
             }
 
             plic_complete(plic_claim());

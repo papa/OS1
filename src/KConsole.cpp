@@ -12,7 +12,7 @@ KConsole::Elem* KConsole::headOutput = 0;
 KConsole::Elem* KConsole::tailOutput = 0;
 KSemaphore* KConsole::hasCharactersOutput = 0;
 KSemaphore* KConsole::hasCharactersInput = 0;
-int KConsole::cntWInterrupt = 0;
+uint64 KConsole::pendingGetc = 0;
 
 void KConsole::putChar(char c, Elem*& head, Elem*& tail)
 {
@@ -98,6 +98,8 @@ void KConsole::sendCharactersToConsole(void* p)
                 __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
                 __asm__ volatile("sb a1,0(a0)");
             }
+            else
+                thread_dispatch();
     }
 }
 
@@ -139,6 +141,7 @@ void KConsole::putcHandler()
 
 void KConsole::getcHandler()
 {
+    pendingGetc++;
     char ch;
     ch = getCharacterInput();
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));

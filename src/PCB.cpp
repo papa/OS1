@@ -118,7 +118,7 @@ void PCB::threadSleepHandler()
     uint64 time;
     __asm__ volatile("mv %0, a1" : "=r"(time));
     PCB::timeSliceCounter = 0;
-    PCB::running->setTimeToSleep(time);
+    PCB::running->setTimeToSleep(time + Riscv::totalTime);
     SleepPCBList::insertSleepingPCB();
     PCB::dispatch();
     __asm__ volatile("li a0, 0x0");

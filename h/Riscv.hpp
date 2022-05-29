@@ -96,6 +96,8 @@ public:
     static const uint64 addrWriteInterrupt = bntZero + 7UL;
     static const uint64 ecallUserInterrupt = bntZero + 8UL;
     static const uint64 ecallSystemInterupt = bntZero + 9UL;
+
+    static uint64 totalTime;
 };
 
 inline void Riscv::mc_sie(uint64 mask)

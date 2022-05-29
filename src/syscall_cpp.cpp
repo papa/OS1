@@ -59,7 +59,6 @@ Thread::Thread()
 
 void Thread::runner(void *t)
 {
-    Riscv::printString("Thread runner started...\n");
     Thread* thr = (Thread*)t;
     thr->run();
 }

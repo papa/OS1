@@ -35,6 +35,8 @@ private:
     static char getChar(Elem*& head, Elem*& tail);
 
 public:
+    static uint64 pendingGetc;
+
     static void putCharacterInput(char c);
     static char getCharacterInput();
 
