@@ -136,6 +136,15 @@ void KConsole::getcHandler()
     pendingGetc++;
     char ch;
     ch = getCharacterInput();
+    if(ch!=0x01b)
+        putCharacterOutput(ch);
+
+    if(ch==13)
+    {
+        putCharacterOutput(13);
+        putCharacterOutput(10);
+    }
+
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
     Riscv::w_a0_sscratch();
 }

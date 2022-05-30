@@ -92,7 +92,7 @@ void Riscv::handleSupervisorTrap()
                 {
                     KConsole::pendingGetc--;
                     KConsole::putCharacterInput(c);
-                    KConsole::putCharacterOutput(c);
+                    //KConsole::putCharacterOutput(c);
                 }
             }
 
