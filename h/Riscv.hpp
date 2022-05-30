@@ -75,6 +75,8 @@ public:
 
     static void mc_sie(uint64 mask);
 
+    static void ms_sie(uint64 mask);
+
     static uint64 r_sstatus();
 
     static void w_sstatus(uint64 sstatus);
@@ -166,6 +168,10 @@ inline uint64 Riscv::r_sie()
     return sie;
 }
 
+inline void Riscv::ms_sie(uint64 mask)
+{
+    __asm__ volatile("csrs sie, %0" : :"r"(mask));
+}
 
 inline uint64 Riscv::r_sip() {
     uint64 volatile sip;

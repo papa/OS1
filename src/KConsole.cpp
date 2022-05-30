@@ -6,44 +6,16 @@
 #include "../h/KConsole.hpp"
 #include "../h/syscall_c.h"
 
-KConsole::Elem* KConsole::headInput = 0;
-KConsole::Elem* KConsole::tailInput = 0;
-KConsole::Elem* KConsole::headOutput = 0;
-KConsole::Elem* KConsole::tailOutput = 0;
+uint64 KConsole::inputHead = 0;
+uint64 KConsole::inputTail = 0;
+uint64 KConsole::outputHead = 0;
+uint64 KConsole::outputTail = 0;
 KSemaphore* KConsole::hasCharactersOutput = 0;
 KSemaphore* KConsole::hasCharactersInput = 0;
 uint64 KConsole::pendingGetc = 0;
-
-void KConsole::putChar(char c, Elem*& head, Elem*& tail)
-{
-    Elem* newElem = (Elem*)kmalloc(sizeof(Elem));
-    newElem->next = 0;
-    newElem->data = c;
-    if(head == 0)
-    {
-        head = tail = newElem;
-    }
-    else
-    {
-        tail->next = newElem;
-        tail = newElem;
-    }
-}
-
-char KConsole::getChar(Elem*& head, Elem*& tail)
-{
-    if(head == 0)
-        return 0;
-
-    Elem* ret = head;
-    head = head->next;
-    if(head == 0)
-        tail = 0;
-
-    char c = ret->data;
-    kfree(ret);
-    return c;
-}
+char KConsole::inputBuffer[bufferSize];
+char KConsole::outputBuffer[bufferSize];
+uint64 KConsole::pendingPutc = 0;
 
 void KConsole::initialize()
 {
@@ -82,6 +54,8 @@ void KConsole::getCharactersFromConsole(void* p)
 
 void KConsole::sendCharactersToConsole(void* p)
 {
+    uint64 sie = Riscv::r_sie();
+    Riscv::mc_sie(Riscv::SIP_SSIP);
     while(true)
     {
             if(Riscv::finishSystem && KConsole::outputBufferEmpty() && pendingGetc == 0)
@@ -95,38 +69,64 @@ void KConsole::sendCharactersToConsole(void* p)
             if (operation & STATUS_WRITE_MASK)
             {
                 char volatile c = getCharacterOutput();
+                pendingPutc--;
                 x = CONSOLE_RX_DATA;
                 __asm__ volatile("mv a0, %0"::"r"(x));
                 __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
                 __asm__ volatile("sb a1,0(a0)");
             }
             else
+            {
+                Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
                 thread_dispatch();
+                sie = Riscv::r_sie();
+                Riscv::mc_sie(Riscv::SIP_SSIP);
+            }
     }
 }
 
 void KConsole::putCharacterInput(char c)
 {
-    putChar(c, headInput, tailInput);
+    if((inputTail+1)%bufferSize == inputHead)
+        return;
+    inputBuffer[inputTail] = c;
+    inputTail = (inputTail+1)%bufferSize;
     hasCharactersInput->signal();
 }
 
 char KConsole::getCharacterInput()
 {
     hasCharactersInput->wait();
-    return getChar(headInput, tailInput);
+    if(inputHead == inputTail)
+        return -1;
+    char c = inputBuffer[inputHead];
+
+    inputHead = (inputHead+1)%bufferSize;
+
+    return c;
 }
 
 void KConsole::putCharacterOutput(char c)
 {
-    putChar(c, headOutput, tailOutput);
+    if((outputTail+1)%bufferSize == outputHead)
+        return;
+    pendingPutc++;
+    outputBuffer[outputTail] = c;
+    outputTail = (outputTail+1)%bufferSize;
     hasCharactersOutput->signal();
 }
 
 char KConsole::getCharacterOutput()
 {
     hasCharactersOutput->wait();
-    return getChar(headOutput, tailOutput);
+    if(outputHead == outputTail)
+        return -1;
+
+    char c = outputBuffer[outputHead];
+
+    outputHead = (outputHead+1)%bufferSize;
+
+    return c;
 }
 
 void KConsole::putcHandler()
@@ -134,33 +134,17 @@ void KConsole::putcHandler()
     uint64 ch;
     __asm__ volatile("mv %0, a1" : "=r"(ch));
     putCharacterOutput((char)ch);
-    Elem* curr = headOutput;
-    while(curr != 0)
-    {
-        curr = curr->next;
-    }
 }
 
 void KConsole::getcHandler()
 {
-    pendingGetc++;
     char ch;
     ch = getCharacterInput();
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
     Riscv::w_a0_sscratch();
 }
 
-void KConsole::printBuffer()
-{
-    Elem* curr = headInput;
-    while(curr != 0)
-    {
-        putc(curr->data);
-        curr = curr->next;
-    }
-}
-
 bool KConsole::outputBufferEmpty()
 {
-    return headOutput == 0;
+    return pendingPutc == 0;
 }

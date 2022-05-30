@@ -15,10 +15,8 @@ void sleepyRun(void *arg) {
         printInt(sleep_time);
         printString(" !\n");
         time_sleep(sleep_time);
-        printString("woke...\n");
     }
     finished[sleep_time/10-1] = true;
-    printString("Finished...\n");
 }
 
 void testSleeping()
@@ -31,5 +29,7 @@ void testSleeping()
         thread_create(&sleepyThread[i], sleepyRun, sleep_times + i);
     }
 
-    while (!(finished[0] && finished[1])) {}
+    while (!(finished[0] && finished[1])) {
+        //thread_dispatch();
+    }
 }

@@ -39,7 +39,7 @@ void PCB::start()
 
 void PCB::runner()
 {
-    trapPrintString("Runner started...\n");
+    //trapPrintString("Runner started...\n");
     Riscv::popSppSpie();
 
     running->body(running->args);
@@ -96,7 +96,7 @@ bool PCB::isFinished()
 
 void PCB::threadExitHandler()
 {
-    trapPrintString("Exiting thread...\n");
+    //trapPrintString("Exiting thread...\n");
     PCB::timeSliceCounter = 0;
     PCB::running->setState(PCB::FINISHED);
     PCB::dispatch();

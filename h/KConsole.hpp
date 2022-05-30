@@ -13,29 +13,21 @@ class KConsole
 {
 private:
 
-    //todo
-    //probaj da iskoristis queue template
-    typedef struct Elem
-    {
-        Elem* next;
-        char data;
-    }Elem;
-
-    static Elem* headInput;
-    static Elem* tailInput;
-    static Elem* headOutput;
-    static Elem* tailOutput;
-
-    static int cntWInterrupt;
-
     static KSemaphore* hasCharactersInput;
     static KSemaphore* hasCharactersOutput;
 
-    static void putChar(char c,Elem*& head, Elem*& tail);
-    static char getChar(Elem*& head, Elem*& tail);
+    static uint64 inputHead;
+    static uint64 outputHead;
+    static uint64 inputTail;
+    static uint64 outputTail;
 
+    static const uint64 bufferSize = 8192;
+
+    static char inputBuffer[bufferSize];
+    static char outputBuffer[bufferSize];
 public:
     static uint64 pendingGetc;
+    static uint64 pendingPutc;
 
     static bool outputBufferEmpty();
 
@@ -50,8 +42,6 @@ public:
     static void getCharactersFromConsole(void* p);
 
     static void sendCharactersToConsole(void* p);
-
-    static void printBuffer();
 
     static const uint64 STATUS_READ_MASK = 1UL;
     static const uint64 STATUS_WRITE_MASK = 1UL << 5UL;

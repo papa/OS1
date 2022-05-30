@@ -183,7 +183,6 @@ void Riscv::kernelMain()
     //disableTimerInterrupts();
     enableInterrupts();
 
-
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     userPCB->start();
@@ -240,9 +239,9 @@ void Riscv::w_a0_sscratch()
 
 void Riscv::changePrivMode()
 {
-    if(PCB::running->systemThread)
-        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
-    else
-        Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
+    //if(PCB::running->systemThread)
+    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    //else
+    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 }
 
