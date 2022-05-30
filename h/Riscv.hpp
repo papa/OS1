@@ -6,6 +6,7 @@
 #define PROJECT_BASE_V1_0_RISCV_HPP
 
 #include "../lib/hw.h"
+#include "../test/printing.hpp"
 
 class Riscv
 {
@@ -22,10 +23,6 @@ public:
     static void disableTimerInterrupts();
 
     static void disableInterrupts();
-
-    static void printString(char const *string);
-
-    static void printInteger(uint64 num);
 
     static void idleRiscv(void* arg);
 

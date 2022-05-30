@@ -5,7 +5,6 @@
 #include "../h/Riscv.hpp"
 #include "../h/MemoryAllocator.hpp"
 #include "../h/PCB.hpp"
-#include "../lib/console.h"
 #include "../h/syscall_cpp.hpp"
 #include "../h/SleepPCBList.hpp"
 #include "../h/KConsole.hpp"
@@ -27,7 +26,6 @@ void Riscv::endSystem()
     Riscv::disableInterrupts();
 }
 
-
 void Riscv::enableInterrupts() {
     ms_sstatus(Riscv::SSTATUS_SIE);
 }
@@ -43,55 +41,10 @@ void Riscv::popSppSpie()
     __asm__ volatile ("sret");
 }
 
-void Riscv::printString(const char *string)
-{
-    uint64 sstatus = r_sstatus();
-    mc_sstatus(SSTATUS_SIE);
-    while (*string != '\0')
-    {
-        __putc(*string);
-        string++;
-    }
-    ms_sstatus(sstatus & SSTATUS_SIE ? SSTATUS_SIE : 0);
-}
-
-void Riscv::printInteger(uint64 num)
-{
-    uint64 sstatus = r_sstatus();
-    mc_sstatus(SSTATUS_SIE);
-    static char digits[] = "0123456789";
-    char buf[16];
-    int i, neg;
-    uint x;
-
-    neg = 0;
-    if(num < 0)
-    {
-        neg = 1;
-        x = -num;
-    }
-    else
-        x = num;
-
-    i = 0;
-    do
-    {
-        buf[i++] = digits[x%10];
-    }while((x/=10) != 0);
-    if(neg)
-        buf[i++] = '-';
-
-    while(--i >= 0)
-        __putc(buf[i]);
-
-    __putc('\n');
-
-    ms_sstatus(sstatus & SSTATUS_SIE ? SSTATUS_SIE : 0);
-}
-
 void Riscv::handleSupervisorTrap()
 {
     __asm__ volatile("mv %0, a4" : "=r"(PCB::savedRegA4));
+    __asm__ volatile("csrr %0, sscratch":"=r"(PCB::running->sscratch));
 
     uint64 scause = Riscv::r_scause();
 
@@ -105,7 +58,7 @@ void Riscv::handleSupervisorTrap()
             //Riscv::printString("timerInterrupt\n");
             //static uint64 total = 0;
             totalTime++;
-            Riscv::printInteger(totalTime);
+            //printInt(totalTime);
 
             PCB::timeSliceCounter++;
             SleepPCBList::tryToWakePCBs();
@@ -237,12 +190,11 @@ void Riscv::kernelMain()
         thread_dispatch();
     }
 
-
     disableInterrupts();
 
     endSystem();
 
-    Riscv::printString("End...");
+    ::printString("End...\n");
 }
 
 void Riscv::userMainWrapper(void* )
@@ -275,7 +227,8 @@ void Riscv::w_a0_sscratch()
 {
     uint64 a1Temp;
     __asm__ volatile("mv %0, a1":"=r"(a1Temp));
-    __asm__ volatile("csrr a1, sscratch");
+    __asm__ volatile("mv a1, %0"::"r"(PCB::running->sscratch));
+    //__asm__ volatile("csrr a1, sscratch");
     __asm__ volatile("sd a0, 80(a1)");
     __asm__ volatile("mv a1,%0"::"r"(a1Temp));
 }

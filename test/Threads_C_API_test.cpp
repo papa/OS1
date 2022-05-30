@@ -28,7 +28,7 @@ void workerBodyA(void* arg)
             thread_dispatch();
         }
     }
-    Riscv::printString("A finished!\n");
+    printString("A finished!\n");
     finishedA = true;
 }
 
@@ -43,7 +43,7 @@ void workerBodyB(void* arg)
         }
     }
     thread_dispatch();
-    Riscv::printString("B finished!\n");
+    printString("B finished!\n");
     finishedB = true;
 }
 

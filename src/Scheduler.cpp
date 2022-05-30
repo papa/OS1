@@ -58,12 +58,12 @@ PCB *Scheduler::get()
 }
 
 void Scheduler::print() {
-    Riscv::printString("Scheduler print\n");
+    printString("Scheduler print\n");
     PCB* curr = schedulerPCBHead;
     while(curr != 0)
     {
         printInt((uint64)curr, 16);
-        Riscv::printString("\n");
+        printString("\n");
         curr = curr->nextPCB;
     }
 }

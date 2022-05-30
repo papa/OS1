@@ -84,9 +84,9 @@ void PCB::initialize()
     mainSystem->systemThread = true;
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    consolePCB->systemThread = true;
-    consolePCB->start();
+    //PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //consolePCB->systemThread = true;
+    //consolePCB->start();
     //PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //idlePCB->start();
     //idlePCB->systemThread = true;
@@ -99,7 +99,7 @@ bool PCB::isFinished()
 
 void PCB::threadExitHandler()
 {
-    Riscv::printString("Exiting thread...\n");
+    printString("Exiting thread...\n");
     PCB::timeSliceCounter = 0;
     PCB::running->setState(PCB::FINISHED);
     PCB::dispatch();

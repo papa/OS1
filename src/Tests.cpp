@@ -4,47 +4,48 @@
 
 #include "../h/Tests.hpp"
 #include "../lib/console.h"
+#include "../test/printing.hpp"
 
 void idle(void* args)
 {
     while(true)
     {
-        Riscv::printString("Idle\n");
+        printString("Idle\n");
         thread_dispatch();
     }
 }
 
 void thread1Function(void* p)
 {
-    Riscv::printString("Thread 1 started...\n");
+    printString("Thread 1 started...\n");
     uint64 num = 10000;
     for(uint64 i = 0; i < num;i++)
     {
         if(i % 150 == 0 && i > 0)
             thread_dispatch();
-        Riscv::printString("i : ");
-        Riscv::printInteger(i);
-        Riscv::printString("\n");
+        printString("i : ");
+        printInt(i);
+        printString("\n");
     }
 }
 
 void thread2Function(void* p)
 {
-    Riscv::printString("Thread 2 started...\n");
+    printString("Thread 2 started...\n");
     uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
         if(j % 50 == 0 && j > 0)
             thread_dispatch();
-        Riscv::printString("j : ");
-        Riscv::printInteger(j);
-        Riscv::printString("\n");
+        printString("j : ");
+        printInt(j);
+        printString("\n");
     }
 }
 
 void thread2FunctionTest2(void* p)
 {
-    Riscv::printString("Thread 2 started...\n");
+    printString("Thread 2 started...\n");
     uint64 num = 10000;
     for(uint64 j = 0; j < num;j++)
     {
@@ -52,9 +53,9 @@ void thread2FunctionTest2(void* p)
             thread_exit();
         if(j % 50 == 0 && j > 0)
             thread_dispatch();
-        Riscv::printString("j : ");
-        Riscv::printInteger(j);
-        Riscv::printString("\n");
+        printString("j : ");
+        printInt(j);
+        printString("\n");
     }
 }
 
@@ -71,7 +72,7 @@ void threadTest1()
     //    thread_dispatch();
     //}
 
-    Riscv::printString("End...\n");
+    printString("End...\n");
     Riscv::disableInterrupts();
 }
 
@@ -88,7 +89,7 @@ void threadTest2()
 
     //while(((PCB*)idleThread->myHandle)->getState() != PCB::FINISHED);
 
-    Riscv::printString("End...\n");
+    printString("End...\n");
 
     Riscv::disableInterrupts();
 }
@@ -115,7 +116,7 @@ void threadTests()
 //memory (de)allocation tests
 void mallocFree()
 {
-    Riscv::printString("mallocFree\n");
+    printString("mallocFree\n");
     constexpr int num = 100;
     void* addrs[num];
     for(int i = 0; i < num;i++)
@@ -123,7 +124,7 @@ void mallocFree()
         addrs[i] = mem_alloc(100);
         if(addrs[i] == 0)
         {
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
 
@@ -134,7 +135,7 @@ void mallocFree()
         int retval = mem_free(addrs[i]);
         if(retval != 0)
         {
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
     }
@@ -144,7 +145,7 @@ void mallocFree()
         addrs[i] = mem_alloc(20);
         if(addrs[i] == 0)
         {
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
     }
@@ -154,27 +155,27 @@ void mallocFree()
         int retval = mem_free(addrs[i]);
         if(retval != 0)
         {
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
     }
 
-    Riscv::printString("OK\n");
+    printString("OK\n");
 }
 void bigMalloc()
 {
-    Riscv::printString("bigMalloc\n");
+    printString("bigMalloc\n");
     uint64 x = (uint64)HEAP_END_ADDR - (uint64)HEAP_START_ADDR + 100UL;
     void* p = mem_alloc(x);
     if(p == 0)
-        Riscv::printString("OK\n");
+        printString("OK\n");
     else
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
 }
 
 void lotOfSmallMallocs()
 {
-    Riscv::printString("lotOfSmallMallocs\n");
+    printString("lotOfSmallMallocs\n");
     uint64 cnt = 0;
     uint64 sum = 0;
     uint64 N = 10000UL;
@@ -188,27 +189,27 @@ void lotOfSmallMallocs()
         sum+=t->a;
         cnt++;
     }
-    Riscv::printInteger(cnt);
-    Riscv::printString("\n");
+    printInt(cnt);
+    printString("\n");
     if(sum == X*cnt)
-        Riscv::printString("OK\n");
+        printString("OK\n");
     else
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
 }
 void badFree()
 {
-    Riscv::printString("badFree\n");
+    printString("badFree\n");
     Test* t = (Test*)mem_alloc(sizeof(Test));
     uint64 retval = mem_free((char*)t + 2);
     if(retval == 0)
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
     else
-        Riscv::printString("OK\n");
+         printString("OK\n");
 }
 
 void stressTesting()
 {
-    Riscv::printString("stressTesting\n");
+    printString("stressTesting\n");
     constexpr int num = 100;
     void* addrs[num];
     for(int i = 0; i < num;i++)
@@ -216,7 +217,7 @@ void stressTesting()
         addrs[i] = mem_alloc(1);
         if(addrs[i] == 0)
         {
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
 
@@ -229,13 +230,13 @@ void stressTesting()
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                Riscv::printString("not OK\n");
+                printString("not OK\n");
                 return;
             }
             addrs[i] = mem_alloc(sz/2);
             if(addrs[i] == 0)
             {
-                Riscv::printString("not Ok\n");
+                printString("not Ok\n");
                 return;
             }
 
@@ -246,13 +247,13 @@ void stressTesting()
             int retval = mem_free(addrs[i]);
             if(retval != 0)
             {
-                Riscv::printString("not OK\n");
+                printString("not OK\n");
                 return;
             }
             addrs[i] = mem_alloc(sz);
             if(addrs[i] == 0)
             {
-                Riscv::printString("not Ok\n");
+                printString("not Ok\n");
                 return;
             }
 
@@ -260,7 +261,7 @@ void stressTesting()
         sz-=10;
     }
 
-    Riscv::printString("OK\n");
+    printString("OK\n");
 }
 
 void memoryAllocationTests()
@@ -296,14 +297,14 @@ void TestPeriodic::periodicActivation()
 {
     for(int i = 0 ; i < 10000;i++)
     {
-        Riscv::printString("i : ");
-        Riscv::printInteger(i);
+        printString("i : ");
+        printInt(i);
     }
 }
 
 void mallocTest()
 {
-    Riscv::printString("Testing a few mallocs and frees\n\n");
+    printString("Testing a few mallocs and frees\n\n");
 
     object* o = new object;
     o->a = 3;
@@ -314,7 +315,7 @@ void mallocTest()
     void* m5 = mem_alloc(1);
 
     if(!m1 || !m2 || !m3 || !m4 || !m5){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -325,19 +326,19 @@ void mallocTest()
     delete (uint64*)m5;
     delete o;
 
-    Riscv::printString("SUCCESSFUL: Testing a few mallocs and frees\n\n");
+    printString("SUCCESSFUL: Testing a few mallocs and frees\n\n");
 }
 
 void mallocEverything()
 {
-    Riscv::printString("Testing allocating whole address space\n\n");
+    printString("Testing allocating whole address space\n\n");
 
     uint64 neg_size = (uint64)HEAP_START_ADDR - (uint64)HEAP_END_ADDR -sizeof(MemoryAllocator::BlockHeader);
 
     void* m = mem_alloc(neg_size);
 
     if(m!=nullptr){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -346,7 +347,7 @@ void mallocEverything()
     m = mem_alloc(blockSize<<6);
 
     if(m==nullptr){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -363,19 +364,19 @@ void mallocEverything()
     void *small_chunk = mem_alloc(1);
 
     if(small_chunk == nullptr){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
     delete (uint64*)m;
     //delete (uint64*)small_chunk;
 
-    Riscv::printString("SUCCESSFUL: Testing allocating whole address space\n\n");
+    printString("SUCCESSFUL: Testing allocating whole address space\n\n");
 }
 
 void mallocGapFillTest()
 {
-    Riscv::printString("Testing gap filling and chunk merge after multiple mallocs and frees\n\n");
+    printString("Testing gap filling and chunk merge after multiple mallocs and frees\n\n");
 
     const int N = 10;
 
@@ -385,7 +386,7 @@ void mallocGapFillTest()
     {
         m[i] = mem_alloc((i<<6)+1);
         if(m[i] == nullptr){
-            Riscv::printString("not OK\n");
+            printString("not OK\n");
             return;
         }
     }
@@ -398,7 +399,7 @@ void mallocGapFillTest()
 
     if(!tmp1 || !tmp2 || !tmp3)
     {
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -413,7 +414,7 @@ void mallocGapFillTest()
 
     if(!(im1<itmp1 && itmp1<im3 && im1<itmp2 && itmp2<im3 && itmp3>imN))
     {
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -424,7 +425,7 @@ void mallocGapFillTest()
     void* tmp5 = mem_alloc(576);
 
     if(!tmp4 || !tmp5){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -432,7 +433,7 @@ void mallocGapFillTest()
     uint64 itmp5 = (uint64)tmp5;
 
     if(!(itmp5>itmp2 && itmp5>im5 && itmp4<itmp3)){
-        Riscv::printString("not OK\n");
+        printString("not OK\n");
         return;
     }
 
@@ -446,7 +447,7 @@ void mallocGapFillTest()
     delete (uint64*)tmp4;
     delete (uint64*)tmp5;
 
-    Riscv::printString("SUCCESSFUL: Testing gap filling and chunk merge after multiple mallocs and frees\n\n");
+    printString("SUCCESSFUL: Testing gap filling and chunk merge after multiple mallocs and frees\n\n");
 }
 
 char buffer[10];

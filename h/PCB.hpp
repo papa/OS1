@@ -60,6 +60,7 @@ public:
     static void threadStartHandler();
     static void threadMakePCBHandler();
 
+    uint64 sscratch;
 private:
 
     uint64 timeSlice;
