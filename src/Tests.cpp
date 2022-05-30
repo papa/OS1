@@ -286,8 +286,8 @@ void myTests()
     //memoryAllocationTests();
     //threadTests();
     //semaphoreTests();
-    //consoleTests();
-    changeModeTests();
+    consoleTests();
+    //changeModeTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {

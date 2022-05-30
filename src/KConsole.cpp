@@ -133,6 +133,7 @@ void KConsole::putcHandler()
 
 void KConsole::getcHandler()
 {
+    pendingGetc++;
     char ch;
     ch = getCharacterInput();
     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));

@@ -88,7 +88,6 @@ void Riscv::handleSupervisorTrap()
                 __asm__ volatile("lb a1,0(a0)");
                 char c;
                 __asm__ volatile("mv %0, a1" :  "=r"(c));
-
                 if(KConsole::pendingGetc > 0)
                 {
                     KConsole::pendingGetc--;
@@ -189,12 +188,12 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    //disableTimerInterrupts();
+    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    userPCB->start();
+
     enableInterrupts();
 
-    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    userPCB->start();
     while(!userPCB->isFinished())
     {
         thread_dispatch();
