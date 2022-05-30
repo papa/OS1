@@ -103,14 +103,20 @@ void Riscv::handleSupervisorTrap()
         }
         case operationInterrupt: // todo
         {
+            trapPrintString("operation interrupt\n");
+            thread_exit();
             break;
         }
         case addrReadInterrupt: // todo
         {
+            trapPrintString("read interrupt\n");
+            thread_exit();
             break;
         }
         case addrWriteInterrupt: // todo
         {
+            trapPrintString("write interrupt\n");
+            thread_exit();
             break;
         }
         case ecallSystemInterupt:
@@ -184,7 +190,7 @@ void Riscv::kernelMain()
     initSystem();
 
     //disableTimerInterrupts();
-    //enableInterrupts();
+    enableInterrupts();
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
@@ -216,8 +222,6 @@ void Riscv::myTestsWrapper(void* p)
 
 void Riscv::disableTimerInterrupts()
 {
-    //uint64 x = 0x200;
-    //__asm__ volatile("csrs sie, %0"::"r"(x));
     uint64 x = 0x2;
     __asm__ volatile("csrc sie, %0"::"r"(x));
 }
@@ -235,16 +239,15 @@ void Riscv::w_a0_sscratch()
     uint64 a1Temp;
     __asm__ volatile("mv %0, a1":"=r"(a1Temp));
     __asm__ volatile("mv a1, %0"::"r"(PCB::running->sscratch));
-    //__asm__ volatile("csrr a1, sscratch");
     __asm__ volatile("sd a0, 80(a1)");
     __asm__ volatile("mv a1,%0"::"r"(a1Temp));
 }
 
 void Riscv::changePrivMode()
 {
-    //if(PCB::running->systemThread)
-    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
-    //else
-    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
+    if(PCB::running->systemThread)
+        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    else
+        Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 }
 

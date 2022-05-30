@@ -54,8 +54,6 @@ void KConsole::getCharactersFromConsole(void* p)
 
 void KConsole::sendCharactersToConsole(void* p)
 {
-    //uint64 sie = Riscv::r_sie();
-    //Riscv::mc_sie(Riscv::SIP_SSIP);
     while(true)
     {
             if(Riscv::finishSystem && KConsole::outputBufferEmpty() && pendingGetc == 0)
@@ -77,10 +75,7 @@ void KConsole::sendCharactersToConsole(void* p)
             }
             else
             {
-                //Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
                 thread_dispatch();
-                //sie = Riscv::r_sie();
-                //Riscv::mc_sie(Riscv::SIP_SSIP);
             }
     }
 }

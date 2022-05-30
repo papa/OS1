@@ -68,6 +68,8 @@ void idle(void* args);
 void consoleTest1();
 void consoleTests();
 
+void changeModeTest1();
+void changeModeTests();
 
 void myTests();
 

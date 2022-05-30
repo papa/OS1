@@ -42,8 +42,6 @@ void KSemaphore::semOpenHandler()
             __asm__ volatile("li a0, 0");
 }
 
-//todo
-//sta treba da vrate ovi PCB-ovi u wait-u
 KSemaphore::~KSemaphore()
 {
     while(getFirstBlocked() != 0)

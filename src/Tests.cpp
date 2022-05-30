@@ -286,7 +286,8 @@ void myTests()
     //memoryAllocationTests();
     //threadTests();
     //semaphoreTests();
-    consoleTests();
+    //consoleTests();
+    changeModeTests();
 }
 
 TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
@@ -506,3 +507,14 @@ void consoleTests()
     consoleTest1();
 }
 
+
+void changeModeTest1()
+{
+    // u user niti smo
+    __asm__ volatile("csrr a0, sstatus"); //treba da pukne
+}
+
+void changeModeTests()
+{
+    changeModeTest1();
+}
