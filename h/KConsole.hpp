@@ -37,6 +37,8 @@ private:
 public:
     static uint64 pendingGetc;
 
+    static bool outputBufferEmpty();
+
     static void putCharacterInput(char c);
     static char getCharacterInput();
 

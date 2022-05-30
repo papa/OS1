@@ -58,7 +58,7 @@ PCB *Scheduler::get()
 }
 
 void Scheduler::print() {
-    printString("Scheduler print\n");
+    trapPrintString("Scheduler print\n");
     PCB* curr = schedulerPCBHead;
     while(curr != 0)
     {

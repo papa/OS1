@@ -84,6 +84,8 @@ void KConsole::sendCharactersToConsole(void* p)
 {
     while(true)
     {
+            if(Riscv::finishSystem && KConsole::outputBufferEmpty())
+                thread_exit();
 
             uint64 x = CONSOLE_STATUS;
             __asm__ volatile("mv a0, %0"::"r"(x));
@@ -156,4 +158,8 @@ void KConsole::printBuffer()
         putc(curr->data);
         curr = curr->next;
     }
+}
+
+bool KConsole::outputBufferEmpty() {
+    return headOutput == 0;
 }

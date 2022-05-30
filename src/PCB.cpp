@@ -11,6 +11,7 @@
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
 uint64 PCB::savedRegA4 = 0;
+PCB* PCB::consolePCB = 0;
 
 PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
     timeSlice(timeSlice),
@@ -38,28 +39,27 @@ void PCB::start()
 
 void PCB::runner()
 {
-    //Riscv::printString("Runner started...\n");
+    trapPrintString("Runner started...\n");
     Riscv::popSppSpie();
 
     running->body(running->args);
+
+    //printString("Runner ended...\n");
 
     thread_exit();
 }
 
 void PCB::dispatch()
 {
-    //Riscv::printString("Dispatch called...\n");
+    //trapPrintString("Dispatch called...\n");
     PCB* old = running;
     if(old->getState() == PCB::RUNNING)
         Scheduler::put(old);
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    //Riscv::printString("Switching context...\n");
+    //trapPrintString("Switching context...\n");
 
-    //if(PCB::running->systemThread)
-    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
-    //else
-    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
+    //Riscv::changePrivMode();
 
     PCB::contextSwitch(&old->context, &running->context);
 }
@@ -84,9 +84,9 @@ void PCB::initialize()
     mainSystem->systemThread = true;
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    //PCB* consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //consolePCB->systemThread = true;
-    //consolePCB->start();
+    PCB::consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB::consolePCB->systemThread = true;
+    PCB::consolePCB->start();
     //PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //idlePCB->start();
     //idlePCB->systemThread = true;
@@ -99,7 +99,7 @@ bool PCB::isFinished()
 
 void PCB::threadExitHandler()
 {
-    printString("Exiting thread...\n");
+    trapPrintString("Exiting thread...\n");
     PCB::timeSliceCounter = 0;
     PCB::running->setState(PCB::FINISHED);
     PCB::dispatch();

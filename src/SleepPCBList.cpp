@@ -9,7 +9,7 @@ PCB* SleepPCBList::sleepingPCBHead = 0;
 void SleepPCBList::insertSleepingPCB()
 {
     PCB::running->setState(PCB::SLEEPING);
-    //Riscv::printString("Inserting sleeping PCB...\n");
+    //trapPrintString("Inserting sleeping PCB...\n");
     PCB* prev = 0;
     PCB* curr = sleepingPCBHead;
     while(curr != 0)
@@ -24,25 +24,18 @@ void SleepPCBList::insertSleepingPCB()
     }
 
     if(prev == 0)
-    {
         sleepingPCBHead = PCB::running;
-        //if(sleepingPCBHead->nextPCB != 0)
-        //    sleepingPCBHead->nextPCB->setTimeToSleep(sleepingPCBHead->nextPCB->getTimeToSleep() - sleepingPCBHead->getTimeToSleep());
-    }
     else
-    {
-        //PCB::running->setTimeToSleep(PCB::running->getTimeToSleep() - prev->getTimeToSleep());
         prev->nextPCB = PCB::running;
-    }
 }
 
 void SleepPCBList::tryToWakePCBs()
 {
-    //Riscv::printString("Waking PCBs...\n");
+    //trapPrintString("Waking PCBs...\n");
     PCB* curr = sleepingPCBHead;
     if(curr == 0)
     {
-        //Riscv::printString("No sleeping PCBs...\n");
+        //trapPrintString("No sleeping PCBs...\n");
         return;
     }
     while(curr != 0 && Riscv::totalTime >= curr->getTimeToSleep())

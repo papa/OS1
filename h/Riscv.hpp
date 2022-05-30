@@ -13,6 +13,8 @@ class Riscv
 public:
     static void kernelMain();
 
+    static void changePrivMode();
+
     static void initSystem();
     static void endSystem();
 
@@ -40,6 +42,8 @@ public:
 
     static uint64 r_stval();
     static void w_stval(uint64 stval);
+
+    static bool finishSystem;
 
     enum BitMaskSip
     {

@@ -61,6 +61,9 @@ public:
     static void threadMakePCBHandler();
 
     uint64 sscratch;
+
+    static PCB* consolePCB;
+
 private:
 
     uint64 timeSlice;

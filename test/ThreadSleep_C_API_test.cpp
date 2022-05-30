@@ -15,8 +15,10 @@ void sleepyRun(void *arg) {
         printInt(sleep_time);
         printString(" !\n");
         time_sleep(sleep_time);
+        printString("woke...\n");
     }
     finished[sleep_time/10-1] = true;
+    printString("Finished...\n");
 }
 
 void testSleeping()

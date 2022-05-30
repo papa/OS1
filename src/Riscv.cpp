@@ -12,6 +12,7 @@
 #include "../test/userMain.hpp"
 
 uint64 Riscv::totalTime = 0;
+bool Riscv::finishSystem = false;
 
 void Riscv::initSystem()
 {
@@ -55,10 +56,10 @@ void Riscv::handleSupervisorTrap()
             uint64 volatile sepc = Riscv::r_sepc();
             uint64 volatile sstatus = Riscv::r_sstatus();
             mc_sip(Riscv::SIP_SSIP);
-            //Riscv::printString("timerInterrupt\n");
+            //trapPrintString("timerInterrupt\n");
             //static uint64 total = 0;
             totalTime++;
-            //printInt(totalTime);
+            //trapPrintInt(totalTime);
 
             PCB::timeSliceCounter++;
             SleepPCBList::tryToWakePCBs();
@@ -73,7 +74,7 @@ void Riscv::handleSupervisorTrap()
 
             break;
         }
-        case hwInterrupt: // todo
+        case hwInterrupt:
         {
             uint64 x = CONSOLE_STATUS;
             __asm__ volatile("mv a0, %0"::"r"(x));
@@ -87,7 +88,6 @@ void Riscv::handleSupervisorTrap()
                 __asm__ volatile("lb a1,0(a0)");
                 char c;
                 __asm__ volatile("mv %0, a1" :  "=r"(c));
-                //putCharacterOutput(c);
 
                 if(KConsole::pendingGetc > 0)
                 {
@@ -180,7 +180,9 @@ void Riscv::kernelMain()
 {
     initSystem();
 
+    //disableTimerInterrupts();
     enableInterrupts();
+
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
@@ -190,11 +192,14 @@ void Riscv::kernelMain()
         thread_dispatch();
     }
 
-    disableInterrupts();
-
-    endSystem();
-
+    finishSystem = true;
     ::printString("End...\n");
+    while(!PCB::consolePCB->isFinished() || KConsole::pendingGetc > 0)
+    {
+        thread_dispatch();
+    }
+    disableInterrupts();
+    endSystem();
 }
 
 void Riscv::userMainWrapper(void* )
@@ -231,5 +236,13 @@ void Riscv::w_a0_sscratch()
     //__asm__ volatile("csrr a1, sscratch");
     __asm__ volatile("sd a0, 80(a1)");
     __asm__ volatile("mv a1,%0"::"r"(a1Temp));
+}
+
+void Riscv::changePrivMode()
+{
+    //if(PCB::running->systemThread)
+    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    //else
+    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 }
 
