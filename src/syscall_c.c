@@ -218,3 +218,14 @@ void putc(char c)
     __asm__ volatile("li a0, 0x42");
     __asm__ volatile("ecall");
 }
+
+char sysCallGetCharOutput()
+{
+    __asm__ volatile("li a0, 0x43");
+
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+    return (char)result;
+}

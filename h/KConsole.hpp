@@ -39,6 +39,8 @@ public:
 
     static void initialize();
 
+    static void getCharHandler();
+
     static void getCharactersFromConsole(void* p);
 
     static void sendCharactersToConsole(void* p);
@@ -47,6 +49,7 @@ public:
     static const uint64 STATUS_WRITE_MASK = 1UL << 5UL;
     static const uint64 CONSOLE_GETC = 0x41;
     static const uint64 CONSOLE_PUTC = 0x42;
+    static const uint64 CONSOLE_GET_CHAR = 0x43;
 
     static void putcHandler();
     static void getcHandler();

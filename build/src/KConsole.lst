@@ -1,4 +1,4 @@
-GAS LISTING /tmp/ccOKE3MP.s 			page 1
+GAS LISTING /tmp/ccx72ZCR.s 			page 1
 
 
    1              		.file	"KConsole.cpp"
@@ -58,7 +58,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   33              	.LVL0:
   34              	.LEHE0:
   35 0024 93040500 		mv	s1,a0
-GAS LISTING /tmp/ccOKE3MP.s 			page 2
+GAS LISTING /tmp/ccx72ZCR.s 			page 2
 
 
   36 0028 93050000 		li	a1,0
@@ -118,7 +118,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   81 008c 97000000 		call	_Unwind_Resume@plt
   81      E7800000 
   82              	.LVL5:
-GAS LISTING /tmp/ccOKE3MP.s 			page 3
+GAS LISTING /tmp/ccx72ZCR.s 			page 3
 
 
   83              	.LEHE4:
@@ -178,7 +178,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   26:src/KConsole.cpp **** //extern const uint64 CONSOLE_STATUS;
   27:src/KConsole.cpp **** //extern const uint64 CONSOLE_TX_DATA;
   28:src/KConsole.cpp **** //extern const uint64 CONSOLE_RX_DATA;
-GAS LISTING /tmp/ccOKE3MP.s 			page 4
+GAS LISTING /tmp/ccx72ZCR.s 			page 4
 
 
   29:src/KConsole.cpp **** 
@@ -209,8 +209,8 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   54:src/KConsole.cpp **** 
   55:src/KConsole.cpp **** void KConsole::sendCharactersToConsole(void* p)
   56:src/KConsole.cpp **** {
-  57:src/KConsole.cpp ****     uint64 sie = Riscv::r_sie();
-  58:src/KConsole.cpp ****     Riscv::mc_sie(Riscv::SIP_SSIP);
+  57:src/KConsole.cpp ****     //uint64 sie = Riscv::r_sie();
+  58:src/KConsole.cpp ****     //Riscv::mc_sie(Riscv::SIP_SSIP);
   59:src/KConsole.cpp ****     while(true)
   60:src/KConsole.cpp ****     {
   61:src/KConsole.cpp ****             if(Riscv::finishSystem && KConsole::outputBufferEmpty() && pendingGetc == 0)
@@ -221,9 +221,9 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   66:src/KConsole.cpp ****             __asm__ volatile("lb a1, 0(a0)");
   67:src/KConsole.cpp ****             uint64 operation;
   68:src/KConsole.cpp ****             __asm__ volatile("mv %0, a1" :  "=r"(operation));
-  69:src/KConsole.cpp ****             if ((operation & STATUS_WRITE_MASK) && pendingPutc > 0)
+  69:src/KConsole.cpp ****             if (operation & STATUS_WRITE_MASK)
   70:src/KConsole.cpp ****             {
-  71:src/KConsole.cpp ****                 char volatile c = getCharacterOutput();
+  71:src/KConsole.cpp ****                 char volatile c = sysCallGetCharOutput();
   72:src/KConsole.cpp ****                 pendingPutc--;
   73:src/KConsole.cpp ****                 x = CONSOLE_RX_DATA;
   74:src/KConsole.cpp ****                 __asm__ volatile("mv a0, %0"::"r"(x));
@@ -232,13 +232,13 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   77:src/KConsole.cpp ****             }
   78:src/KConsole.cpp ****             else
   79:src/KConsole.cpp ****             {
-  80:src/KConsole.cpp ****                 Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
+  80:src/KConsole.cpp ****                 //Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
   81:src/KConsole.cpp ****                 thread_dispatch();
-  82:src/KConsole.cpp ****                 sie = Riscv::r_sie();
-  83:src/KConsole.cpp ****                 Riscv::mc_sie(Riscv::SIP_SSIP);
+  82:src/KConsole.cpp ****                 //sie = Riscv::r_sie();
+  83:src/KConsole.cpp ****                 //Riscv::mc_sie(Riscv::SIP_SSIP);
   84:src/KConsole.cpp ****             }
   85:src/KConsole.cpp ****     }
-GAS LISTING /tmp/ccOKE3MP.s 			page 5
+GAS LISTING /tmp/ccx72ZCR.s 			page 5
 
 
   86:src/KConsole.cpp **** }
@@ -298,7 +298,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  175 0104 83308100 		ld	ra,8(sp)
  176              		.cfi_restore 1
  177 0108 03340100 		ld	s0,0(sp)
-GAS LISTING /tmp/ccOKE3MP.s 			page 6
+GAS LISTING /tmp/ccx72ZCR.s 			page 6
 
 
  178              		.cfi_restore 8
@@ -358,7 +358,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  103:src/KConsole.cpp **** 
  104:src/KConsole.cpp ****     inputHead = (inputHead+1)%bufferSize;
  224              		.loc 1 104 5 is_stmt 1
-GAS LISTING /tmp/ccOKE3MP.s 			page 7
+GAS LISTING /tmp/ccx72ZCR.s 			page 7
 
 
  225              		.loc 1 104 27 is_stmt 0
@@ -418,7 +418,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  271 01a4 1307F7FF 		addi	a4,a4,-1
  272 01a8 B3F7E700 		and	a5,a5,a4
  273              		.loc 1 111 34
-GAS LISTING /tmp/ccOKE3MP.s 			page 8
+GAS LISTING /tmp/ccx72ZCR.s 			page 8
 
 
  274 01ac 03B78602 		ld	a4,40(a3)
@@ -478,7 +478,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  319              	.LFE30:
  321              		.align	2
  322              		.globl	_ZN8KConsole24getCharactersFromConsoleEPv
-GAS LISTING /tmp/ccOKE3MP.s 			page 9
+GAS LISTING /tmp/ccx72ZCR.s 			page 9
 
 
  324              	_ZN8KConsole24getCharactersFromConsoleEPv:
@@ -489,7 +489,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  328              	.LVL19:
   32:src/KConsole.cpp ****     {
  329              		.loc 1 32 5
- 330              	.LBB15:
+ 330              	.LBB2:
   34:src/KConsole.cpp ****         __asm__ volatile("mv a0, %0"::"r"(x));
  331              		.loc 1 34 9
   34:src/KConsole.cpp ****         __asm__ volatile("mv a0, %0"::"r"(x));
@@ -526,7 +526,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   39:src/KConsole.cpp ****         {
  354              		.loc 1 39 9 is_stmt 1
  355              	#NO_APP
- 356              	.LBB16:
+ 356              	.LBB3:
   39:src/KConsole.cpp ****         {
  357              		.loc 1 39 22 is_stmt 0
  358 0220 93F71700 		andi	a5,a5,1
@@ -534,11 +534,11 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   39:src/KConsole.cpp ****         {
  360              		.loc 1 39 9
  361 0224 63800708 		beqz	a5,.L32
- 362              	.LBE16:
- 363              	.LBE15:
+ 362              	.LBE3:
+ 363              	.LBE2:
   31:src/KConsole.cpp ****     while(true)
  364              		.loc 1 31 1
-GAS LISTING /tmp/ccOKE3MP.s 			page 10
+GAS LISTING /tmp/ccx72ZCR.s 			page 10
 
 
  365 0228 130101FE 		addi	sp,sp,-32
@@ -553,9 +553,9 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  374              		.cfi_def_cfa 8, 0
  375              	.LVL23:
  376              	.L28:
- 377              	.LBB20:
- 378              	.LBB18:
- 379              	.LBB17:
+ 377              	.LBB7:
+ 378              	.LBB5:
+ 379              	.LBB4:
   41:src/KConsole.cpp ****             __asm__ volatile("mv a0, %0"::"r"(x));
  380              		.loc 1 41 13 is_stmt 1
   41:src/KConsole.cpp ****             __asm__ volatile("mv a0, %0"::"r"(x));
@@ -598,7 +598,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  407 0258 13850400 		mv	a0,s1
  408 025c 97000000 		call	_ZN8KConsole17putCharacterInputEc
  408      E7800000 
-GAS LISTING /tmp/ccOKE3MP.s 			page 11
+GAS LISTING /tmp/ccx72ZCR.s 			page 11
 
 
  409              	.LVL26:
@@ -610,14 +610,14 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  413 0268 97000000 		call	_ZN8KConsole18putCharacterOutputEc
  413      E7800000 
  414              	.LVL27:
- 415              	.LBE17:
- 416              	.LBE18:
- 417              	.LBE20:
+ 415              	.LBE4:
+ 416              	.LBE5:
+ 417              	.LBE7:
   32:src/KConsole.cpp ****     {
  418              		.loc 1 32 5 is_stmt 1
   32:src/KConsole.cpp ****     {
  419              		.loc 1 32 5
- 420              	.LBB21:
+ 420              	.LBB8:
   34:src/KConsole.cpp ****         __asm__ volatile("mv a0, %0"::"r"(x));
  421              		.loc 1 34 9
   34:src/KConsole.cpp ****         __asm__ volatile("mv a0, %0"::"r"(x));
@@ -654,19 +654,19 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
   39:src/KConsole.cpp ****         {
  444              		.loc 1 39 9 is_stmt 1
  445              	#NO_APP
- 446              	.LBB19:
+ 446              	.LBB6:
   39:src/KConsole.cpp ****         {
  447              		.loc 1 39 22 is_stmt 0
  448 0288 93F71700 		andi	a5,a5,1
-GAS LISTING /tmp/ccOKE3MP.s 			page 12
+GAS LISTING /tmp/ccx72ZCR.s 			page 12
 
 
  449              	.LVL30:
   39:src/KConsole.cpp ****         {
  450              		.loc 1 39 9
  451 028c E39807FA 		bnez	a5,.L28
- 452              	.LBE19:
- 453              	.LBE21:
+ 452              	.LBE6:
+ 453              	.LBE8:
   53:src/KConsole.cpp **** 
  454              		.loc 1 53 1
  455 0290 83308101 		ld	ra,24(sp)
@@ -718,7 +718,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  496              		.loc 1 122 19 is_stmt 0
  497 02d0 83B78402 		ld	a5,40(s1)
  498 02d4 03B70402 		ld	a4,32(s1)
-GAS LISTING /tmp/ccOKE3MP.s 			page 13
+GAS LISTING /tmp/ccx72ZCR.s 			page 13
 
 
  499              		.loc 1 122 5
@@ -778,7 +778,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  131:src/KConsole.cpp **** 
  132:src/KConsole.cpp **** void KConsole::putcHandler()
  133:src/KConsole.cpp **** {
-GAS LISTING /tmp/ccOKE3MP.s 			page 14
+GAS LISTING /tmp/ccx72ZCR.s 			page 14
 
 
  544              		.loc 1 133 1 is_stmt 1
@@ -838,7 +838,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  592              		.cfi_offset 1, -8
  593              		.cfi_offset 8, -16
  594 035c 13040101 		addi	s0,sp,16
-GAS LISTING /tmp/ccOKE3MP.s 			page 15
+GAS LISTING /tmp/ccx72ZCR.s 			page 15
 
 
  595              		.cfi_def_cfa 8, 0
@@ -898,7 +898,7 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  639 0390 17050000 		ld	a0,.LANCHOR0+48
  639      03350500 
  640 0398 13351500 		seqz	a0,a0
-GAS LISTING /tmp/ccOKE3MP.s 			page 16
+GAS LISTING /tmp/ccx72ZCR.s 			page 16
 
 
  641 039c 03348100 		ld	s0,8(sp)
@@ -913,1372 +913,1102 @@ GAS LISTING /tmp/ccOKE3MP.s 			page 1
  651              		.globl	_ZN8KConsole23sendCharactersToConsoleEPv
  653              	_ZN8KConsole23sendCharactersToConsoleEPv:
  654              	.LFB27:
-  56:src/KConsole.cpp ****     uint64 sie = Riscv::r_sie();
+  56:src/KConsole.cpp ****     //uint64 sie = Riscv::r_sie();
  655              		.loc 1 56 1 is_stmt 1
  656              		.cfi_startproc
  657              	.LVL41:
- 658 03a8 130101FC 		addi	sp,sp,-64
- 659              		.cfi_def_cfa_offset 64
- 660 03ac 233C1102 		sd	ra,56(sp)
- 661 03b0 23388102 		sd	s0,48(sp)
- 662 03b4 23349102 		sd	s1,40(sp)
- 663              		.cfi_offset 1, -8
- 664              		.cfi_offset 8, -16
- 665              		.cfi_offset 9, -24
- 666 03b8 13040104 		addi	s0,sp,64
- 667              		.cfi_def_cfa 8, 0
-  57:src/KConsole.cpp ****     Riscv::mc_sie(Riscv::SIP_SSIP);
- 668              		.loc 1 57 5
- 669              	.LBB22:
- 670              	.LBB23:
- 671              		.file 2 "src/../h/Riscv.hpp"
-   1:src/../h/Riscv.hpp **** //
-   2:src/../h/Riscv.hpp **** // Created by os on 4/27/22.
-   3:src/../h/Riscv.hpp **** //
-   4:src/../h/Riscv.hpp **** 
-   5:src/../h/Riscv.hpp **** #ifndef PROJECT_BASE_V1_0_RISCV_HPP
-   6:src/../h/Riscv.hpp **** #define PROJECT_BASE_V1_0_RISCV_HPP
-   7:src/../h/Riscv.hpp **** 
-   8:src/../h/Riscv.hpp **** #include "../lib/hw.h"
-   9:src/../h/Riscv.hpp **** #include "../test/printing.hpp"
-  10:src/../h/Riscv.hpp **** 
-  11:src/../h/Riscv.hpp **** class Riscv
-  12:src/../h/Riscv.hpp **** {
-  13:src/../h/Riscv.hpp **** public:
-  14:src/../h/Riscv.hpp ****     static void kernelMain();
-  15:src/../h/Riscv.hpp **** 
-  16:src/../h/Riscv.hpp ****     static void changePrivMode();
-  17:src/../h/Riscv.hpp **** 
-  18:src/../h/Riscv.hpp ****     static void initSystem();
-  19:src/../h/Riscv.hpp ****     static void endSystem();
-  20:src/../h/Riscv.hpp **** 
-  21:src/../h/Riscv.hpp ****     static void userMainWrapper(void* p);
-  22:src/../h/Riscv.hpp **** 
-  23:src/../h/Riscv.hpp ****     static void enableInterrupts();
-  24:src/../h/Riscv.hpp **** 
-  25:src/../h/Riscv.hpp ****     static void disableTimerInterrupts();
-  26:src/../h/Riscv.hpp **** 
-GAS LISTING /tmp/ccOKE3MP.s 			page 17
-
-
-  27:src/../h/Riscv.hpp ****     static void disableInterrupts();
-  28:src/../h/Riscv.hpp **** 
-  29:src/../h/Riscv.hpp ****     static void idleRiscv(void* arg);
-  30:src/../h/Riscv.hpp **** 
-  31:src/../h/Riscv.hpp ****     static void pushRegisters();
-  32:src/../h/Riscv.hpp ****     static void popRegisters();
-  33:src/../h/Riscv.hpp **** 
-  34:src/../h/Riscv.hpp ****     static uint64 r_scause();
-  35:src/../h/Riscv.hpp ****     static void w_scause(uint64 scause);
-  36:src/../h/Riscv.hpp **** 
-  37:src/../h/Riscv.hpp ****     static uint64 r_sepc();
-  38:src/../h/Riscv.hpp ****     static void w_sepc(uint64 sepc);
-  39:src/../h/Riscv.hpp **** 
-  40:src/../h/Riscv.hpp ****     static uint64 r_stvec();
-  41:src/../h/Riscv.hpp ****     static void w_stvec(uint64 stvec);
-  42:src/../h/Riscv.hpp **** 
-  43:src/../h/Riscv.hpp ****     static uint64 r_stval();
-  44:src/../h/Riscv.hpp ****     static void w_stval(uint64 stval);
-  45:src/../h/Riscv.hpp **** 
-  46:src/../h/Riscv.hpp ****     static bool finishSystem;
-  47:src/../h/Riscv.hpp **** 
-  48:src/../h/Riscv.hpp ****     enum BitMaskSip
-  49:src/../h/Riscv.hpp ****     {
-  50:src/../h/Riscv.hpp ****         SIP_SSIP = (1 << 1),
-  51:src/../h/Riscv.hpp ****         SIP_STIP = (1 << 5),
-  52:src/../h/Riscv.hpp ****         SIP_SEIP = (1 << 9),
-  53:src/../h/Riscv.hpp ****     };
-  54:src/../h/Riscv.hpp **** 
-  55:src/../h/Riscv.hpp ****     static void ms_sip(uint64 mask);
-  56:src/../h/Riscv.hpp **** 
-  57:src/../h/Riscv.hpp ****     static void mc_sip(uint64 mask);
-  58:src/../h/Riscv.hpp **** 
-  59:src/../h/Riscv.hpp ****     static uint64 r_sip();
-  60:src/../h/Riscv.hpp **** 
-  61:src/../h/Riscv.hpp ****     static void w_sip(uint64 sip);
-  62:src/../h/Riscv.hpp **** 
-  63:src/../h/Riscv.hpp ****     enum BitMaskSstatus
-  64:src/../h/Riscv.hpp ****     {
-  65:src/../h/Riscv.hpp ****         SSTATUS_SIE = (1 << 1),
-  66:src/../h/Riscv.hpp ****         SSTATUS_SPIE = (1 << 5),
-  67:src/../h/Riscv.hpp ****         SSTATUS_SPP = (1 << 8),
-  68:src/../h/Riscv.hpp ****     };
-  69:src/../h/Riscv.hpp **** 
-  70:src/../h/Riscv.hpp ****     static void w_a0_sscratch();
-  71:src/../h/Riscv.hpp **** 
-  72:src/../h/Riscv.hpp ****     static void ms_sstatus(uint64 mask);
-  73:src/../h/Riscv.hpp **** 
-  74:src/../h/Riscv.hpp ****     static void mc_sstatus(uint64 mask);
-  75:src/../h/Riscv.hpp **** 
-  76:src/../h/Riscv.hpp ****     static void mc_sie(uint64 mask);
-  77:src/../h/Riscv.hpp **** 
-  78:src/../h/Riscv.hpp ****     static void ms_sie(uint64 mask);
-  79:src/../h/Riscv.hpp **** 
-  80:src/../h/Riscv.hpp ****     static uint64 r_sstatus();
-  81:src/../h/Riscv.hpp **** 
-  82:src/../h/Riscv.hpp ****     static void w_sstatus(uint64 sstatus);
-  83:src/../h/Riscv.hpp **** 
-GAS LISTING /tmp/ccOKE3MP.s 			page 18
-
-
-  84:src/../h/Riscv.hpp ****     static uint64 r_sie();
-  85:src/../h/Riscv.hpp ****     static void w_sie(uint64 sie);
-  86:src/../h/Riscv.hpp ****     static void popSppSpie();
-  87:src/../h/Riscv.hpp **** 
-  88:src/../h/Riscv.hpp ****     static void supervisorTrap();
-  89:src/../h/Riscv.hpp ****     static void handleSupervisorTrap();
-  90:src/../h/Riscv.hpp **** 
-  91:src/../h/Riscv.hpp ****     static void myTestsWrapper(void* );
-  92:src/../h/Riscv.hpp **** 
-  93:src/../h/Riscv.hpp ****     static const uint64 bntOne = 1UL << 63;;
-  94:src/../h/Riscv.hpp ****     static const uint64 bntZero = 0UL;
-  95:src/../h/Riscv.hpp ****     static const uint64 timerInterrupt = bntOne + 1UL;
-  96:src/../h/Riscv.hpp ****     static const uint64 hwInterrupt = bntOne + 9UL;
-  97:src/../h/Riscv.hpp ****     static const uint64 operationInterrupt = bntZero + 2UL;
-  98:src/../h/Riscv.hpp ****     static const uint64 addrReadInterrupt = bntZero + 5UL;
-  99:src/../h/Riscv.hpp ****     static const uint64 addrWriteInterrupt = bntZero + 7UL;
- 100:src/../h/Riscv.hpp ****     static const uint64 ecallUserInterrupt = bntZero + 8UL;
- 101:src/../h/Riscv.hpp ****     static const uint64 ecallSystemInterupt = bntZero + 9UL;
- 102:src/../h/Riscv.hpp **** 
- 103:src/../h/Riscv.hpp ****     static uint64 totalTime;
- 104:src/../h/Riscv.hpp **** };
- 105:src/../h/Riscv.hpp **** 
- 106:src/../h/Riscv.hpp **** inline void Riscv::mc_sie(uint64 mask)
- 107:src/../h/Riscv.hpp **** {
- 108:src/../h/Riscv.hpp ****     __asm__ volatile("csrc sie, %0" : :"r"(mask));
- 109:src/../h/Riscv.hpp **** }
- 110:src/../h/Riscv.hpp **** 
- 111:src/../h/Riscv.hpp **** inline uint64 Riscv::r_scause() {
- 112:src/../h/Riscv.hpp ****     uint64 volatile scause;
- 113:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, scause" : "=r"(scause));
- 114:src/../h/Riscv.hpp ****     return scause;
- 115:src/../h/Riscv.hpp **** }
- 116:src/../h/Riscv.hpp **** 
- 117:src/../h/Riscv.hpp **** inline void Riscv::w_scause(uint64 scause) {
- 118:src/../h/Riscv.hpp ****     __asm__ volatile("csrw scause, %0" : :"r"(scause));
- 119:src/../h/Riscv.hpp **** }
- 120:src/../h/Riscv.hpp **** 
- 121:src/../h/Riscv.hpp **** inline uint64 Riscv::r_sepc() {
- 122:src/../h/Riscv.hpp ****     uint64 volatile sepc;
- 123:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, sepc" : "=r"(sepc));
- 124:src/../h/Riscv.hpp ****     return sepc;
- 125:src/../h/Riscv.hpp **** }
- 126:src/../h/Riscv.hpp **** 
- 127:src/../h/Riscv.hpp **** inline void Riscv::w_sepc(uint64 sepc) {
- 128:src/../h/Riscv.hpp ****     __asm__ volatile("csrw sepc, %0" : :"r"(sepc));
- 129:src/../h/Riscv.hpp **** }
- 130:src/../h/Riscv.hpp **** 
- 131:src/../h/Riscv.hpp **** inline uint64 Riscv::r_stvec() {
- 132:src/../h/Riscv.hpp ****     uint64 volatile stvec;
- 133:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, stvec" : "=r"(stvec));
- 134:src/../h/Riscv.hpp ****     return stvec;
- 135:src/../h/Riscv.hpp **** }
- 136:src/../h/Riscv.hpp **** 
- 137:src/../h/Riscv.hpp **** inline void Riscv::w_stvec(uint64 stvec) {
- 138:src/../h/Riscv.hpp ****     __asm__ volatile("csrw stvec, %0" : :"r"(stvec));
- 139:src/../h/Riscv.hpp **** }
- 140:src/../h/Riscv.hpp **** 
-GAS LISTING /tmp/ccOKE3MP.s 			page 19
-
-
- 141:src/../h/Riscv.hpp **** inline uint64 Riscv::r_stval() {
- 142:src/../h/Riscv.hpp ****     uint64 volatile stval;
- 143:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, stval" : "=r"(stval));
- 144:src/../h/Riscv.hpp ****     return stval;
- 145:src/../h/Riscv.hpp **** }
- 146:src/../h/Riscv.hpp **** 
- 147:src/../h/Riscv.hpp **** inline void Riscv::w_sie(uint64 sie)
- 148:src/../h/Riscv.hpp **** {
- 149:src/../h/Riscv.hpp ****     __asm__ volatile("csrw sie, %0" : :"r"(sie));
- 150:src/../h/Riscv.hpp **** }
- 151:src/../h/Riscv.hpp **** 
- 152:src/../h/Riscv.hpp **** inline void Riscv::w_stval(uint64 stval) {
- 153:src/../h/Riscv.hpp ****     __asm__ volatile("csrw stval, %0" : :"r"(stval));
- 154:src/../h/Riscv.hpp **** }
- 155:src/../h/Riscv.hpp **** 
- 156:src/../h/Riscv.hpp **** inline void Riscv::ms_sip(uint64 mask) {
- 157:src/../h/Riscv.hpp ****     __asm__ volatile("csrs sip, %0" : :"r"(mask));
- 158:src/../h/Riscv.hpp **** }
- 159:src/../h/Riscv.hpp **** 
- 160:src/../h/Riscv.hpp **** inline void Riscv::mc_sip(uint64 mask) {
- 161:src/../h/Riscv.hpp ****     __asm__ volatile("csrc sip, %0" : :"r"(mask));
- 162:src/../h/Riscv.hpp **** }
- 163:src/../h/Riscv.hpp **** 
- 164:src/../h/Riscv.hpp **** inline uint64 Riscv::r_sie()
- 165:src/../h/Riscv.hpp **** {
- 166:src/../h/Riscv.hpp ****     uint64 volatile sie;
- 672              		.loc 2 166 5
- 167:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, sip" : "=r"(sie));
- 673              		.loc 2 167 5
- 674              		.loc 2 167 49 is_stmt 0
- 675              	#APP
- 676              	# 167 "src/../h/Riscv.hpp" 1
- 168              	    return sie;
- 677              		csrr a5, sip
- 678              	# 0 "" 2
- 679              	#NO_APP
- 680 03c0 2338F4FC 		sd	a5,-48(s0)
- 681              		.loc 2 168 5 is_stmt 1
- 682              		.loc 2 168 12 is_stmt 0
- 683 03c4 833404FD 		ld	s1,-48(s0)
- 684              	.LVL42:
- 685              	.LBE23:
- 686              	.LBE22:
-  58:src/KConsole.cpp ****     while(true)
- 687              		.loc 1 58 5 is_stmt 1
- 688              	.LBB24:
- 689              	.LBB25:
- 108:src/../h/Riscv.hpp **** }
- 690              		.loc 2 108 5
- 108:src/../h/Riscv.hpp **** }
- 691              		.loc 2 108 50 is_stmt 0
- 692 03c8 93072000 		li	a5,2
- 693              	#APP
- 694              	# 108 "src/../h/Riscv.hpp" 1
- 109:src/../h/Riscv.hpp **** 
- 695              		csrc sie, a5
- 696              	# 0 "" 2
-GAS LISTING /tmp/ccOKE3MP.s 			page 20
-
-
- 697              		.loc 2 109 1
- 698              	#NO_APP
- 699 03d0 6F00C003 		j	.L44
- 700              	.LVL43:
- 701              	.L49:
- 702              	.LBE25:
- 703              	.LBE24:
- 704              	.LBB26:
-  62:src/KConsole.cpp **** 
- 705              		.loc 1 62 17 is_stmt 1
-  62:src/KConsole.cpp **** 
- 706              		.loc 1 62 28 is_stmt 0
- 707 03d4 97000000 		call	thread_exit@plt
- 707      E7800000 
- 708              	.LVL44:
- 709 03dc 6F008005 		j	.L45
- 710              	.LVL45:
- 711              	.L46:
- 712              	.LBB27:
-  80:src/KConsole.cpp ****                 thread_dispatch();
- 713              		.loc 1 80 17 is_stmt 1
-  80:src/KConsole.cpp ****                 thread_dispatch();
- 714              		.loc 1 80 53 is_stmt 0
- 715 03e0 9B840400 		sext.w	s1,s1
- 716              	.LVL46:
-  80:src/KConsole.cpp ****                 thread_dispatch();
- 717              		.loc 1 80 30
- 718 03e4 93F42400 		andi	s1,s1,2
- 719 03e8 9B840400 		sext.w	s1,s1
- 720              	.LVL47:
- 721              	.LBB28:
- 722              	.LBB29:
- 169:src/../h/Riscv.hpp **** }
- 170:src/../h/Riscv.hpp **** 
- 171:src/../h/Riscv.hpp **** inline void Riscv::ms_sie(uint64 mask)
- 172:src/../h/Riscv.hpp **** {
- 173:src/../h/Riscv.hpp ****     __asm__ volatile("csrs sie, %0" : :"r"(mask));
- 723              		.loc 2 173 5 is_stmt 1
- 724              		.loc 2 173 50 is_stmt 0
- 725              	#APP
- 726              	# 173 "src/../h/Riscv.hpp" 1
- 174              	}
- 727              		csrs sie, s1
- 728              	# 0 "" 2
- 729              	.LVL48:
- 730              	#NO_APP
- 731              	.LBE29:
- 732              	.LBE28:
-  81:src/KConsole.cpp ****                 sie = Riscv::r_sie();
- 733              		.loc 1 81 17 is_stmt 1
-  81:src/KConsole.cpp ****                 sie = Riscv::r_sie();
- 734              		.loc 1 81 32 is_stmt 0
- 735 03f0 97000000 		call	thread_dispatch@plt
- 735      E7800000 
- 736              	.LVL49:
-  82:src/KConsole.cpp ****                 Riscv::mc_sie(Riscv::SIP_SSIP);
- 737              		.loc 1 82 17 is_stmt 1
-GAS LISTING /tmp/ccOKE3MP.s 			page 21
-
-
- 738              	.LBB30:
- 739              	.LBB31:
- 166:src/../h/Riscv.hpp ****     __asm__ volatile("csrr %0, sip" : "=r"(sie));
- 740              		.loc 2 166 5
- 167:src/../h/Riscv.hpp ****     return sie;
- 741              		.loc 2 167 5
- 167:src/../h/Riscv.hpp ****     return sie;
- 742              		.loc 2 167 49 is_stmt 0
- 743              	#APP
- 744              	# 167 "src/../h/Riscv.hpp" 1
- 745              		csrr a5, sip
- 746              	# 0 "" 2
- 747              	#NO_APP
- 748 03fc 233CF4FC 		sd	a5,-40(s0)
- 168:src/../h/Riscv.hpp **** }
- 749              		.loc 2 168 5 is_stmt 1
- 168:src/../h/Riscv.hpp **** }
- 750              		.loc 2 168 12 is_stmt 0
- 751 0400 833484FD 		ld	s1,-40(s0)
- 752              	.LVL50:
- 753              	.LBE31:
- 754              	.LBE30:
-  83:src/KConsole.cpp ****             }
- 755              		.loc 1 83 17 is_stmt 1
- 756              	.LBB32:
- 757              	.LBB33:
- 108:src/../h/Riscv.hpp **** }
- 758              		.loc 2 108 5
- 108:src/../h/Riscv.hpp **** }
- 759              		.loc 2 108 50 is_stmt 0
- 760 0404 93072000 		li	a5,2
- 761              	#APP
- 762              	# 108 "src/../h/Riscv.hpp" 1
- 763              		csrc sie, a5
- 764              	# 0 "" 2
- 765              	.LVL51:
- 766              	#NO_APP
- 767              	.L44:
- 768              	.LBE33:
- 769              	.LBE32:
- 770              	.LBE27:
- 771              	.LBE26:
-  59:src/KConsole.cpp ****     {
- 772              		.loc 1 59 5 is_stmt 1
- 773              	.LBB36:
-  61:src/KConsole.cpp ****                 thread_exit();
- 774              		.loc 1 61 13
-  61:src/KConsole.cpp ****                 thread_exit();
- 775              		.loc 1 61 69 is_stmt 0
- 776 040c 97070000 		la	a5,_ZN5Riscv12finishSystemE
- 776      83B70700 
- 777 0414 83C70700 		lbu	a5,0(a5)
- 778 0418 638E0700 		beqz	a5,.L45
-  61:src/KConsole.cpp ****                 thread_exit();
- 779              		.loc 1 61 66 discriminator 1
- 780 041c 97000000 		call	_ZN8KConsole17outputBufferEmptyEv
- 780      E7800000 
-GAS LISTING /tmp/ccOKE3MP.s 			page 22
-
-
- 781              	.LVL52:
-  61:src/KConsole.cpp ****                 thread_exit();
- 782              		.loc 1 61 36 discriminator 1
- 783 0424 63080500 		beqz	a0,.L45
-  61:src/KConsole.cpp ****                 thread_exit();
- 784              		.loc 1 61 84 discriminator 3
- 785 0428 97070000 		ld	a5,.LANCHOR0+56
- 785      83B70700 
-  61:src/KConsole.cpp ****                 thread_exit();
- 786              		.loc 1 61 69 discriminator 3
- 787 0430 E38207FA 		beqz	a5,.L49
- 788              	.L45:
+ 658 03a8 130101FE 		addi	sp,sp,-32
+ 659              		.cfi_def_cfa_offset 32
+ 660 03ac 233C1100 		sd	ra,24(sp)
+ 661 03b0 23388100 		sd	s0,16(sp)
+ 662              		.cfi_offset 1, -8
+ 663              		.cfi_offset 8, -16
+ 664 03b4 13040102 		addi	s0,sp,32
+ 665              		.cfi_def_cfa 8, 0
+ 666 03b8 6F004006 		j	.L44
+ 667              	.LVL42:
+ 668              	.L45:
+ 669              	.LBB9:
   64:src/KConsole.cpp ****             __asm__ volatile("mv a0, %0"::"r"(x));
- 789              		.loc 1 64 13 is_stmt 1
+ 670              		.loc 1 64 13
   64:src/KConsole.cpp ****             __asm__ volatile("mv a0, %0"::"r"(x));
- 790              		.loc 1 64 20 is_stmt 0
- 791 0434 97070000 		la	a5,CONSOLE_STATUS
- 791      83B70700 
- 792 043c 83B70700 		ld	a5,0(a5)
- 793              	.LVL53:
+ 671              		.loc 1 64 20 is_stmt 0
+ 672 03bc 97070000 		la	a5,CONSOLE_STATUS
+ 672      83B70700 
+ 673 03c4 83B70700 		ld	a5,0(a5)
+ 674              	.LVL43:
   65:src/KConsole.cpp ****             __asm__ volatile("lb a1, 0(a0)");
- 794              		.loc 1 65 13 is_stmt 1
+ 675              		.loc 1 65 13 is_stmt 1
   65:src/KConsole.cpp ****             __asm__ volatile("lb a1, 0(a0)");
- 795              		.loc 1 65 50 is_stmt 0
- 796              	#APP
- 797              	# 65 "src/KConsole.cpp" 1
+ 676              		.loc 1 65 50 is_stmt 0
+ 677              	#APP
+ 678              	# 65 "src/KConsole.cpp" 1
   66:src/KConsole.cpp ****             uint64 operation;
- 798              		mv a0, a5
- 799              	# 0 "" 2
- 800              		.loc 1 66 13 is_stmt 1
+ 679              		mv a0, a5
+ 680              	# 0 "" 2
+ 681              		.loc 1 66 13 is_stmt 1
   66:src/KConsole.cpp ****             uint64 operation;
- 801              		.loc 1 66 45 is_stmt 0
- 802              	# 66 "src/KConsole.cpp" 1
+ 682              		.loc 1 66 45 is_stmt 0
+ 683              	# 66 "src/KConsole.cpp" 1
   67:src/KConsole.cpp ****             __asm__ volatile("mv %0, a1" :  "=r"(operation));
- 803              		lb a1, 0(a0)
- 804              	# 0 "" 2
- 805              		.loc 1 67 13 is_stmt 1
-  68:src/KConsole.cpp ****             if ((operation & STATUS_WRITE_MASK) && pendingPutc > 0)
- 806              		.loc 1 68 13
-  68:src/KConsole.cpp ****             if ((operation & STATUS_WRITE_MASK) && pendingPutc > 0)
- 807              		.loc 1 68 61 is_stmt 0
- 808              	# 68 "src/KConsole.cpp" 1
- 809              		mv a5, a1
- 810              	# 0 "" 2
- 811              	.LVL54:
-  69:src/KConsole.cpp ****             {
- 812              		.loc 1 69 13 is_stmt 1
- 813              	#NO_APP
- 814              	.LBB35:
-  69:src/KConsole.cpp ****             {
- 815              		.loc 1 69 28 is_stmt 0
- 816 044c 93F70702 		andi	a5,a5,32
- 817              	.LVL55:
-  69:src/KConsole.cpp ****             {
- 818              		.loc 1 69 13
- 819 0450 E38807F8 		beqz	a5,.L46
-  69:src/KConsole.cpp ****             {
-GAS LISTING /tmp/ccOKE3MP.s 			page 23
+ 684              		lb a1, 0(a0)
+ 685              	# 0 "" 2
+ 686              		.loc 1 67 13 is_stmt 1
+  68:src/KConsole.cpp ****             if (operation & STATUS_WRITE_MASK)
+ 687              		.loc 1 68 13
+  68:src/KConsole.cpp ****             if (operation & STATUS_WRITE_MASK)
+ 688              		.loc 1 68 61 is_stmt 0
+GAS LISTING /tmp/ccx72ZCR.s 			page 17
 
 
- 820              		.loc 1 69 64 discriminator 1
- 821 0454 97070000 		ld	a5,.LANCHOR0+48
- 821      83B70700 
+ 689              	# 68 "src/KConsole.cpp" 1
+ 690              		mv a5, a1
+ 691              	# 0 "" 2
+ 692              	.LVL44:
   69:src/KConsole.cpp ****             {
- 822              		.loc 1 69 49 discriminator 1
- 823 045c E38207F8 		beqz	a5,.L46
- 824              	.LBB34:
+ 693              		.loc 1 69 13 is_stmt 1
+ 694              	#NO_APP
+ 695              	.LBB10:
+  69:src/KConsole.cpp ****             {
+ 696              		.loc 1 69 27 is_stmt 0
+ 697 03d4 93F70702 		andi	a5,a5,32
+ 698              	.LVL45:
+  69:src/KConsole.cpp ****             {
+ 699              		.loc 1 69 13
+ 700 03d8 638C0706 		beqz	a5,.L46
+ 701              	.LBB11:
   71:src/KConsole.cpp ****                 pendingPutc--;
- 825              		.loc 1 71 17 is_stmt 1
+ 702              		.loc 1 71 17 is_stmt 1
   71:src/KConsole.cpp ****                 pendingPutc--;
- 826              		.loc 1 71 53 is_stmt 0
- 827 0460 97000000 		call	_ZN8KConsole18getCharacterOutputEv
- 827      E7800000 
- 828              	.LVL56:
+ 703              		.loc 1 71 55 is_stmt 0
+ 704 03dc 97000000 		call	sysCallGetCharOutput@plt
+ 704      E7800000 
+ 705              	.LVL46:
   71:src/KConsole.cpp ****                 pendingPutc--;
- 829              		.loc 1 71 54
- 830 0468 A307A4FC 		sb	a0,-49(s0)
+ 706              		.loc 1 71 56
+ 707 03e4 A307A4FE 		sb	a0,-17(s0)
   72:src/KConsole.cpp ****                 x = CONSOLE_RX_DATA;
- 831              		.loc 1 72 17 is_stmt 1
+ 708              		.loc 1 72 17 is_stmt 1
   72:src/KConsole.cpp ****                 x = CONSOLE_RX_DATA;
- 832              		.loc 1 72 28 is_stmt 0
- 833 046c 17070000 		lla	a4,.LANCHOR0
- 833      13070700 
- 834 0474 83370703 		ld	a5,48(a4)
- 835 0478 9387F7FF 		addi	a5,a5,-1
- 836 047c 2338F702 		sd	a5,48(a4)
+ 709              		.loc 1 72 28 is_stmt 0
+ 710 03e8 17070000 		lla	a4,.LANCHOR0
+ 710      13070700 
+ 711 03f0 83370703 		ld	a5,48(a4)
+ 712 03f4 9387F7FF 		addi	a5,a5,-1
+ 713 03f8 2338F702 		sd	a5,48(a4)
   73:src/KConsole.cpp ****                 __asm__ volatile("mv a0, %0"::"r"(x));
- 837              		.loc 1 73 17 is_stmt 1
+ 714              		.loc 1 73 17 is_stmt 1
   73:src/KConsole.cpp ****                 __asm__ volatile("mv a0, %0"::"r"(x));
- 838              		.loc 1 73 19 is_stmt 0
- 839 0480 97070000 		la	a5,CONSOLE_RX_DATA
- 839      83B70700 
- 840 0488 83B70700 		ld	a5,0(a5)
- 841              	.LVL57:
+ 715              		.loc 1 73 19 is_stmt 0
+ 716 03fc 97070000 		la	a5,CONSOLE_RX_DATA
+ 716      83B70700 
+ 717 0404 83B70700 		ld	a5,0(a5)
+ 718              	.LVL47:
   74:src/KConsole.cpp ****                 __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
- 842              		.loc 1 74 17 is_stmt 1
+ 719              		.loc 1 74 17 is_stmt 1
   74:src/KConsole.cpp ****                 __asm__ volatile("mv a1, %0" :  :"r"((uint64)c));
- 843              		.loc 1 74 54 is_stmt 0
- 844              	#APP
- 845              	# 74 "src/KConsole.cpp" 1
+ 720              		.loc 1 74 54 is_stmt 0
+ 721              	#APP
+ 722              	# 74 "src/KConsole.cpp" 1
   75:src/KConsole.cpp ****                 __asm__ volatile("sb a1,0(a0)");
- 846              		mv a0, a5
- 847              	# 0 "" 2
- 848              		.loc 1 75 17 is_stmt 1
+ 723              		mv a0, a5
+ 724              	# 0 "" 2
+ 725              		.loc 1 75 17 is_stmt 1
   75:src/KConsole.cpp ****                 __asm__ volatile("sb a1,0(a0)");
- 849              		.loc 1 75 54 is_stmt 0
- 850              	#NO_APP
- 851 0490 8347F4FC 		lbu	a5,-49(s0)
- 852              	.LVL58:
- 853 0494 93F7F70F 		andi	a5,a5,0xff
+ 726              		.loc 1 75 54 is_stmt 0
+ 727              	#NO_APP
+ 728 040c 8347F4FE 		lbu	a5,-17(s0)
+GAS LISTING /tmp/ccx72ZCR.s 			page 18
+
+
+ 729              	.LVL48:
+ 730 0410 93F7F70F 		andi	a5,a5,0xff
   75:src/KConsole.cpp ****                 __asm__ volatile("sb a1,0(a0)");
- 854              		.loc 1 75 65
- 855              	#APP
- 856              	# 75 "src/KConsole.cpp" 1
+ 731              		.loc 1 75 65
+ 732              	#APP
+ 733              	# 75 "src/KConsole.cpp" 1
   76:src/KConsole.cpp ****             }
- 857              		mv a1, a5
- 858              	# 0 "" 2
-GAS LISTING /tmp/ccOKE3MP.s 			page 24
-
-
- 859              		.loc 1 76 17 is_stmt 1
+ 734              		mv a1, a5
+ 735              	# 0 "" 2
+ 736              		.loc 1 76 17 is_stmt 1
   76:src/KConsole.cpp ****             }
- 860              		.loc 1 76 48 is_stmt 0
- 861              	# 76 "src/KConsole.cpp" 1
- 862              		sb a1,0(a0)
- 863              	# 0 "" 2
- 864              	#NO_APP
- 865              	.LBE34:
- 866 04a0 6FF0DFF6 		j	.L44
- 867              	.LBE35:
- 868              	.LBE36:
- 869              		.cfi_endproc
- 870              	.LFE27:
- 872              		.globl	_ZN8KConsole11pendingPutcE
- 873              		.globl	_ZN8KConsole12outputBufferE
- 874              		.globl	_ZN8KConsole11inputBufferE
- 875              		.globl	_ZN8KConsole11pendingGetcE
- 876              		.globl	_ZN8KConsole18hasCharactersInputE
- 877              		.globl	_ZN8KConsole19hasCharactersOutputE
- 878              		.globl	_ZN8KConsole10outputTailE
- 879              		.globl	_ZN8KConsole10outputHeadE
- 880              		.globl	_ZN8KConsole9inputTailE
- 881              		.globl	_ZN8KConsole9inputHeadE
- 882              		.bss
- 883              		.align	3
- 884              		.set	.LANCHOR0,. + 0
- 887              	_ZN8KConsole18hasCharactersInputE:
- 888 0000 00000000 		.zero	8
- 888      00000000 
- 891              	_ZN8KConsole19hasCharactersOutputE:
- 892 0008 00000000 		.zero	8
- 892      00000000 
- 895              	_ZN8KConsole9inputTailE:
- 896 0010 00000000 		.zero	8
- 896      00000000 
- 899              	_ZN8KConsole9inputHeadE:
- 900 0018 00000000 		.zero	8
- 900      00000000 
- 903              	_ZN8KConsole10outputTailE:
- 904 0020 00000000 		.zero	8
- 904      00000000 
- 907              	_ZN8KConsole10outputHeadE:
- 908 0028 00000000 		.zero	8
- 908      00000000 
- 911              	_ZN8KConsole11pendingPutcE:
- 912 0030 00000000 		.zero	8
- 912      00000000 
- 915              	_ZN8KConsole11pendingGetcE:
- 916 0038 00000000 		.zero	8
- 916      00000000 
- 919              	_ZN8KConsole12outputBufferE:
- 920 0040 00000000 		.zero	8192
- 920      00000000 
- 920      00000000 
- 920      00000000 
- 920      00000000 
- 923              	_ZN8KConsole11inputBufferE:
-GAS LISTING /tmp/ccOKE3MP.s 			page 25
+ 737              		.loc 1 76 48 is_stmt 0
+ 738              	# 76 "src/KConsole.cpp" 1
+ 739              		sb a1,0(a0)
+ 740              	# 0 "" 2
+ 741              	.LVL49:
+ 742              	#NO_APP
+ 743              	.L44:
+ 744              	.LBE11:
+ 745              	.LBE10:
+ 746              	.LBE9:
+  59:src/KConsole.cpp ****     {
+ 747              		.loc 1 59 5 is_stmt 1
+ 748              	.LBB13:
+  61:src/KConsole.cpp ****                 thread_exit();
+ 749              		.loc 1 61 13
+  61:src/KConsole.cpp ****                 thread_exit();
+ 750              		.loc 1 61 69 is_stmt 0
+ 751 041c 97070000 		la	a5,_ZN5Riscv12finishSystemE
+ 751      83B70700 
+ 752 0424 83C70700 		lbu	a5,0(a5)
+ 753 0428 E38A07F8 		beqz	a5,.L45
+  61:src/KConsole.cpp ****                 thread_exit();
+ 754              		.loc 1 61 66 discriminator 1
+ 755 042c 97000000 		call	_ZN8KConsole17outputBufferEmptyEv
+ 755      E7800000 
+ 756              	.LVL50:
+  61:src/KConsole.cpp ****                 thread_exit();
+ 757              		.loc 1 61 36 discriminator 1
+ 758 0434 E30405F8 		beqz	a0,.L45
+  61:src/KConsole.cpp ****                 thread_exit();
+ 759              		.loc 1 61 84 discriminator 3
+ 760 0438 97070000 		ld	a5,.LANCHOR0+56
+ 760      83B70700 
+  61:src/KConsole.cpp ****                 thread_exit();
+ 761              		.loc 1 61 69 discriminator 3
+ 762 0440 E39E07F6 		bnez	a5,.L45
+  62:src/KConsole.cpp **** 
+ 763              		.loc 1 62 17 is_stmt 1
+  62:src/KConsole.cpp **** 
+ 764              		.loc 1 62 28 is_stmt 0
+ 765 0444 97000000 		call	thread_exit@plt
+ 765      E7800000 
+ 766              	.LVL51:
+ 767 044c 6FF01FF7 		j	.L45
+ 768              	.LVL52:
+ 769              	.L46:
+GAS LISTING /tmp/ccx72ZCR.s 			page 19
 
 
- 924 2040 00000000 		.zero	8192
- 924      00000000 
- 924      00000000 
- 924      00000000 
- 924      00000000 
- 925              		.text
- 926              	.Letext0:
- 927              		.file 3 "src/../h/../lib/hw.h"
- 928              		.file 4 "src/../h/PCB.hpp"
- 929              		.file 5 "src/../h/KSemaphore.hpp"
- 930              		.file 6 "src/../h/KConsole.hpp"
- 931              		.file 7 "src/../h/../test/../h/syscall_c.h"
- 4869              		.align	3
- 4872              	DW.ref.__gxx_personality_v0:
- 4873 0000 00000000 		.dword	__gxx_personality_v0
- 4873      00000000 
- 4874              		.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
- 4875              		.section	.note.GNU-stack,"",@progbits
-GAS LISTING /tmp/ccOKE3MP.s 			page 26
+ 770              	.LBB12:
+  81:src/KConsole.cpp ****                 //sie = Riscv::r_sie();
+ 771              		.loc 1 81 17 is_stmt 1
+  81:src/KConsole.cpp ****                 //sie = Riscv::r_sie();
+ 772              		.loc 1 81 32 is_stmt 0
+ 773 0450 97000000 		call	thread_dispatch@plt
+ 773      E7800000 
+ 774              	.LVL53:
+ 775 0458 6FF05FFC 		j	.L44
+ 776              	.LBE12:
+ 777              	.LBE13:
+ 778              		.cfi_endproc
+ 779              	.LFE27:
+ 781              		.align	2
+ 782              		.globl	_ZN8KConsole14getCharHandlerEv
+ 784              	_ZN8KConsole14getCharHandlerEv:
+ 785              	.LFB35:
+ 151:src/KConsole.cpp **** 
+ 152:src/KConsole.cpp **** void KConsole::getCharHandler()
+ 153:src/KConsole.cpp **** {
+ 786              		.loc 1 153 1 is_stmt 1
+ 787              		.cfi_startproc
+ 788 045c 130101FF 		addi	sp,sp,-16
+ 789              		.cfi_def_cfa_offset 16
+ 790 0460 23341100 		sd	ra,8(sp)
+ 791 0464 23308100 		sd	s0,0(sp)
+ 792              		.cfi_offset 1, -8
+ 793              		.cfi_offset 8, -16
+ 794 0468 13040101 		addi	s0,sp,16
+ 795              		.cfi_def_cfa 8, 0
+ 154:src/KConsole.cpp ****     char ch;
+ 796              		.loc 1 154 5
+ 155:src/KConsole.cpp ****     ch = getCharacterOutput();
+ 797              		.loc 1 155 5
+ 798              		.loc 1 155 28 is_stmt 0
+ 799 046c 97000000 		call	_ZN8KConsole18getCharacterOutputEv
+ 799      E7800000 
+ 800              	.LVL54:
+ 156:src/KConsole.cpp ****     __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
+ 801              		.loc 1 156 5 is_stmt 1
+ 802              		.loc 1 156 53 is_stmt 0
+ 803              	#APP
+ 804              	# 156 "src/KConsole.cpp" 1
+ 157              	    Riscv::w_a0_sscratch();
+ 805              		mv a0, a0
+ 806              	# 0 "" 2
+ 807              		.loc 1 157 5 is_stmt 1
+ 808              		.loc 1 157 25 is_stmt 0
+ 809              	#NO_APP
+ 810 0478 97000000 		call	_ZN5Riscv13w_a0_sscratchEv@plt
+ 810      E7800000 
+ 811              	.LVL55:
+ 158:src/KConsole.cpp **** }
+ 812              		.loc 1 158 1
+ 813 0480 83308100 		ld	ra,8(sp)
+ 814              		.cfi_restore 1
+ 815 0484 03340100 		ld	s0,0(sp)
+GAS LISTING /tmp/ccx72ZCR.s 			page 20
+
+
+ 816              		.cfi_restore 8
+ 817              		.cfi_def_cfa 2, 16
+ 818 0488 13010101 		addi	sp,sp,16
+ 819              		.cfi_def_cfa_offset 0
+ 820 048c 67800000 		jr	ra
+ 821              		.cfi_endproc
+ 822              	.LFE35:
+ 824              		.globl	_ZN8KConsole11pendingPutcE
+ 825              		.globl	_ZN8KConsole12outputBufferE
+ 826              		.globl	_ZN8KConsole11inputBufferE
+ 827              		.globl	_ZN8KConsole11pendingGetcE
+ 828              		.globl	_ZN8KConsole18hasCharactersInputE
+ 829              		.globl	_ZN8KConsole19hasCharactersOutputE
+ 830              		.globl	_ZN8KConsole10outputTailE
+ 831              		.globl	_ZN8KConsole10outputHeadE
+ 832              		.globl	_ZN8KConsole9inputTailE
+ 833              		.globl	_ZN8KConsole9inputHeadE
+ 834              		.bss
+ 835              		.align	3
+ 836              		.set	.LANCHOR0,. + 0
+ 839              	_ZN8KConsole18hasCharactersInputE:
+ 840 0000 00000000 		.zero	8
+ 840      00000000 
+ 843              	_ZN8KConsole19hasCharactersOutputE:
+ 844 0008 00000000 		.zero	8
+ 844      00000000 
+ 847              	_ZN8KConsole9inputTailE:
+ 848 0010 00000000 		.zero	8
+ 848      00000000 
+ 851              	_ZN8KConsole9inputHeadE:
+ 852 0018 00000000 		.zero	8
+ 852      00000000 
+ 855              	_ZN8KConsole10outputTailE:
+ 856 0020 00000000 		.zero	8
+ 856      00000000 
+ 859              	_ZN8KConsole10outputHeadE:
+ 860 0028 00000000 		.zero	8
+ 860      00000000 
+ 863              	_ZN8KConsole11pendingPutcE:
+ 864 0030 00000000 		.zero	8
+ 864      00000000 
+ 867              	_ZN8KConsole11pendingGetcE:
+ 868 0038 00000000 		.zero	8
+ 868      00000000 
+ 871              	_ZN8KConsole12outputBufferE:
+ 872 0040 00000000 		.zero	8192
+ 872      00000000 
+ 872      00000000 
+ 872      00000000 
+ 872      00000000 
+ 875              	_ZN8KConsole11inputBufferE:
+ 876 2040 00000000 		.zero	8192
+ 876      00000000 
+ 876      00000000 
+ 876      00000000 
+ 876      00000000 
+ 877              		.text
+GAS LISTING /tmp/ccx72ZCR.s 			page 21
+
+
+ 878              	.Letext0:
+ 879              		.file 2 "src/../h/../lib/hw.h"
+ 880              		.file 3 "src/../h/PCB.hpp"
+ 881              		.file 4 "src/../h/Riscv.hpp"
+ 882              		.file 5 "src/../h/KSemaphore.hpp"
+ 883              		.file 6 "src/../h/KConsole.hpp"
+ 884              		.file 7 "src/../h/../test/../h/syscall_c.h"
+ 4589              		.align	3
+ 4592              	DW.ref.__gxx_personality_v0:
+ 4593 0000 00000000 		.dword	__gxx_personality_v0
+ 4593      00000000 
+ 4594              		.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+ 4595              		.section	.note.GNU-stack,"",@progbits
+GAS LISTING /tmp/ccx72ZCR.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 KConsole.cpp
-     /tmp/ccOKE3MP.s:9      .text:0000000000000000 _ZN8KConsole10initializeEv
-     /tmp/ccOKE3MP.s:13     .text:0000000000000000 .L0 
-     /tmp/ccOKE3MP.s:4872   .data.rel.local.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
-     /tmp/ccOKE3MP.s:16     .text:0000000000000000 .L0 
-     /tmp/ccOKE3MP.s:17     .text:0000000000000004 .L0 
-     /tmp/ccOKE3MP.s:22     .text:0000000000000014 .L0 
-     /tmp/ccOKE3MP.s:23     .text:0000000000000014 .L0 
-     /tmp/ccOKE3MP.s:24     .text:0000000000000014 .L0 
-     /tmp/ccOKE3MP.s:25     .text:0000000000000014 .L0 
-     /tmp/ccOKE3MP.s:27     .text:0000000000000018 .L0 
-     /tmp/ccOKE3MP.s:29     .text:0000000000000018 .L0 
-     /tmp/ccOKE3MP.s:30     .text:0000000000000018 .L0 
-     /tmp/ccOKE3MP.s:42     .text:0000000000000034 .L0 
-     /tmp/ccOKE3MP.s:44     .text:000000000000003c .L0 
-     /tmp/ccOKE3MP.s:45     .text:000000000000003c .L0 
-     /tmp/ccOKE3MP.s:57     .text:0000000000000058 .L0 
-     /tmp/ccOKE3MP.s:59     .text:0000000000000060 .L0 
-     /tmp/ccOKE3MP.s:60     .text:0000000000000064 .L0 
-     /tmp/ccOKE3MP.s:61     .text:0000000000000064 .L0 
-     /tmp/ccOKE3MP.s:63     .text:0000000000000068 .L0 
-     /tmp/ccOKE3MP.s:64     .text:0000000000000068 .L0 
-     /tmp/ccOKE3MP.s:66     .text:000000000000006c .L0 
-     /tmp/ccOKE3MP.s:68     .text:0000000000000070 .L0 
-     /tmp/ccOKE3MP.s:70     .text:0000000000000074 .L0 
-     /tmp/ccOKE3MP.s:73     .text:0000000000000078 .L0 
-     /tmp/ccOKE3MP.s:76     .text:000000000000007c .L0 
-     /tmp/ccOKE3MP.s:87     .text:0000000000000098 .L0 
-     /tmp/ccOKE3MP.s:95     .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:133    .text:00000000000000b0 _ZN8KConsole17putCharacterInputEc
-     /tmp/ccOKE3MP.s:136    .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:138    .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:139    .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:140    .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:144    .text:00000000000000c0 .L0 
-     /tmp/ccOKE3MP.s:148    .text:00000000000000cc .L0 
-     /tmp/ccOKE3MP.s:150    .text:00000000000000d0 .L0 
-     /tmp/ccOKE3MP.s:152    .text:00000000000000d4 .L0 
-     /tmp/ccOKE3MP.s:153    .text:00000000000000d8 .L0 
-     /tmp/ccOKE3MP.s:156    .text:00000000000000e0 .L0 
-     /tmp/ccOKE3MP.s:157    .text:00000000000000e0 .L0 
-     /tmp/ccOKE3MP.s:159    .text:00000000000000e4 .L0 
-     /tmp/ccOKE3MP.s:161    .text:00000000000000e4 .L0 
-     /tmp/ccOKE3MP.s:923    .bss:0000000000002040 _ZN8KConsole11inputBufferE
-     /tmp/ccOKE3MP.s:162    .text:00000000000000e4 .L0 
-     /tmp/ccOKE3MP.s:166    .text:00000000000000f4 .L0 
-     /tmp/ccOKE3MP.s:167    .text:00000000000000f4 .L0 
-     /tmp/ccOKE3MP.s:169    .text:00000000000000f8 .L0 
-     /tmp/ccOKE3MP.s:170    .text:00000000000000f8 .L0 
-     /tmp/ccOKE3MP.s:175    .text:0000000000000104 .L0 
-     /tmp/ccOKE3MP.s:176    .text:0000000000000108 .L0 
-     /tmp/ccOKE3MP.s:178    .text:000000000000010c .L0 
-     /tmp/ccOKE3MP.s:179    .text:000000000000010c .L0 
-     /tmp/ccOKE3MP.s:181    .text:0000000000000110 .L0 
-     /tmp/ccOKE3MP.s:186    .text:0000000000000118 .L0 
-     /tmp/ccOKE3MP.s:192    .text:0000000000000118 _ZN8KConsole17getCharacterInputEv
-GAS LISTING /tmp/ccOKE3MP.s 			page 27
+     /tmp/ccx72ZCR.s:9      .text:0000000000000000 _ZN8KConsole10initializeEv
+     /tmp/ccx72ZCR.s:13     .text:0000000000000000 .L0 
+     /tmp/ccx72ZCR.s:4592   .data.rel.local.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+     /tmp/ccx72ZCR.s:16     .text:0000000000000000 .L0 
+     /tmp/ccx72ZCR.s:17     .text:0000000000000004 .L0 
+     /tmp/ccx72ZCR.s:22     .text:0000000000000014 .L0 
+     /tmp/ccx72ZCR.s:23     .text:0000000000000014 .L0 
+     /tmp/ccx72ZCR.s:24     .text:0000000000000014 .L0 
+     /tmp/ccx72ZCR.s:25     .text:0000000000000014 .L0 
+     /tmp/ccx72ZCR.s:27     .text:0000000000000018 .L0 
+     /tmp/ccx72ZCR.s:29     .text:0000000000000018 .L0 
+     /tmp/ccx72ZCR.s:30     .text:0000000000000018 .L0 
+     /tmp/ccx72ZCR.s:42     .text:0000000000000034 .L0 
+     /tmp/ccx72ZCR.s:44     .text:000000000000003c .L0 
+     /tmp/ccx72ZCR.s:45     .text:000000000000003c .L0 
+     /tmp/ccx72ZCR.s:57     .text:0000000000000058 .L0 
+     /tmp/ccx72ZCR.s:59     .text:0000000000000060 .L0 
+     /tmp/ccx72ZCR.s:60     .text:0000000000000064 .L0 
+     /tmp/ccx72ZCR.s:61     .text:0000000000000064 .L0 
+     /tmp/ccx72ZCR.s:63     .text:0000000000000068 .L0 
+     /tmp/ccx72ZCR.s:64     .text:0000000000000068 .L0 
+     /tmp/ccx72ZCR.s:66     .text:000000000000006c .L0 
+     /tmp/ccx72ZCR.s:68     .text:0000000000000070 .L0 
+     /tmp/ccx72ZCR.s:70     .text:0000000000000074 .L0 
+     /tmp/ccx72ZCR.s:73     .text:0000000000000078 .L0 
+     /tmp/ccx72ZCR.s:76     .text:000000000000007c .L0 
+     /tmp/ccx72ZCR.s:87     .text:0000000000000098 .L0 
+     /tmp/ccx72ZCR.s:95     .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:133    .text:00000000000000b0 _ZN8KConsole17putCharacterInputEc
+     /tmp/ccx72ZCR.s:136    .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:138    .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:139    .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:140    .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:144    .text:00000000000000c0 .L0 
+     /tmp/ccx72ZCR.s:148    .text:00000000000000cc .L0 
+     /tmp/ccx72ZCR.s:150    .text:00000000000000d0 .L0 
+     /tmp/ccx72ZCR.s:152    .text:00000000000000d4 .L0 
+     /tmp/ccx72ZCR.s:153    .text:00000000000000d8 .L0 
+     /tmp/ccx72ZCR.s:156    .text:00000000000000e0 .L0 
+     /tmp/ccx72ZCR.s:157    .text:00000000000000e0 .L0 
+     /tmp/ccx72ZCR.s:159    .text:00000000000000e4 .L0 
+     /tmp/ccx72ZCR.s:161    .text:00000000000000e4 .L0 
+     /tmp/ccx72ZCR.s:875    .bss:0000000000002040 _ZN8KConsole11inputBufferE
+     /tmp/ccx72ZCR.s:162    .text:00000000000000e4 .L0 
+     /tmp/ccx72ZCR.s:166    .text:00000000000000f4 .L0 
+     /tmp/ccx72ZCR.s:167    .text:00000000000000f4 .L0 
+     /tmp/ccx72ZCR.s:169    .text:00000000000000f8 .L0 
+     /tmp/ccx72ZCR.s:170    .text:00000000000000f8 .L0 
+     /tmp/ccx72ZCR.s:175    .text:0000000000000104 .L0 
+     /tmp/ccx72ZCR.s:176    .text:0000000000000108 .L0 
+     /tmp/ccx72ZCR.s:178    .text:000000000000010c .L0 
+     /tmp/ccx72ZCR.s:179    .text:000000000000010c .L0 
+     /tmp/ccx72ZCR.s:181    .text:0000000000000110 .L0 
+     /tmp/ccx72ZCR.s:186    .text:0000000000000118 .L0 
+     /tmp/ccx72ZCR.s:192    .text:0000000000000118 _ZN8KConsole17getCharacterInputEv
+GAS LISTING /tmp/ccx72ZCR.s 			page 23
 
 
-     /tmp/ccOKE3MP.s:195    .text:0000000000000118 .L0 
-     /tmp/ccOKE3MP.s:196    .text:0000000000000118 .L0 
-     /tmp/ccOKE3MP.s:197    .text:000000000000011c .L0 
-     /tmp/ccOKE3MP.s:201    .text:0000000000000128 .L0 
-     /tmp/ccOKE3MP.s:202    .text:0000000000000128 .L0 
-     /tmp/ccOKE3MP.s:203    .text:0000000000000128 .L0 
-     /tmp/ccOKE3MP.s:205    .text:000000000000012c .L0 
-     /tmp/ccOKE3MP.s:207    .text:000000000000012c .L0 
-     /tmp/ccOKE3MP.s:208    .text:000000000000012c .L0 
-     /tmp/ccOKE3MP.s:213    .text:0000000000000140 .L0 
-     /tmp/ccOKE3MP.s:214    .text:0000000000000140 .L0 
-     /tmp/ccOKE3MP.s:217    .text:0000000000000148 .L0 
-     /tmp/ccOKE3MP.s:219    .text:000000000000014c .L0 
-     /tmp/ccOKE3MP.s:220    .text:000000000000014c .L0 
-     /tmp/ccOKE3MP.s:225    .text:000000000000015c .L0 
-     /tmp/ccOKE3MP.s:226    .text:000000000000015c .L0 
-     /tmp/ccOKE3MP.s:228    .text:0000000000000160 .L0 
-     /tmp/ccOKE3MP.s:232    .text:000000000000016c .L0 
-     /tmp/ccOKE3MP.s:236    .text:0000000000000174 .L0 
-     /tmp/ccOKE3MP.s:237    .text:0000000000000174 .L0 
-     /tmp/ccOKE3MP.s:238    .text:0000000000000178 .L0 
-     /tmp/ccOKE3MP.s:239    .text:0000000000000178 .L0 
-     /tmp/ccOKE3MP.s:241    .text:000000000000017c .L0 
-     /tmp/ccOKE3MP.s:242    .text:000000000000017c .L0 
-     /tmp/ccOKE3MP.s:244    .text:0000000000000180 .L0 
-     /tmp/ccOKE3MP.s:246    .text:0000000000000184 .L0 
-     /tmp/ccOKE3MP.s:249    .text:0000000000000188 .L0 
-     /tmp/ccOKE3MP.s:251    .text:0000000000000188 .L0 
-     /tmp/ccOKE3MP.s:253    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:259    .text:0000000000000190 _ZN8KConsole18putCharacterOutputEc
-     /tmp/ccOKE3MP.s:262    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:264    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:265    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:266    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:270    .text:00000000000001a0 .L0 
-     /tmp/ccOKE3MP.s:274    .text:00000000000001ac .L0 
-     /tmp/ccOKE3MP.s:276    .text:00000000000001b0 .L0 
-     /tmp/ccOKE3MP.s:278    .text:00000000000001b4 .L0 
-     /tmp/ccOKE3MP.s:279    .text:00000000000001b8 .L0 
-     /tmp/ccOKE3MP.s:282    .text:00000000000001c0 .L0 
-     /tmp/ccOKE3MP.s:283    .text:00000000000001c0 .L0 
-     /tmp/ccOKE3MP.s:285    .text:00000000000001c4 .L0 
-     /tmp/ccOKE3MP.s:287    .text:00000000000001c4 .L0 
-     /tmp/ccOKE3MP.s:288    .text:00000000000001c4 .L0 
-     /tmp/ccOKE3MP.s:293    .text:00000000000001d4 .L0 
-     /tmp/ccOKE3MP.s:919    .bss:0000000000000040 _ZN8KConsole12outputBufferE
-     /tmp/ccOKE3MP.s:294    .text:00000000000001d4 .L0 
-     /tmp/ccOKE3MP.s:298    .text:00000000000001e4 .L0 
-     /tmp/ccOKE3MP.s:299    .text:00000000000001e4 .L0 
-     /tmp/ccOKE3MP.s:301    .text:00000000000001e8 .L0 
-     /tmp/ccOKE3MP.s:302    .text:00000000000001e8 .L0 
-     /tmp/ccOKE3MP.s:307    .text:00000000000001f4 .L0 
-     /tmp/ccOKE3MP.s:308    .text:00000000000001f8 .L0 
-     /tmp/ccOKE3MP.s:310    .text:00000000000001fc .L0 
-     /tmp/ccOKE3MP.s:311    .text:00000000000001fc .L0 
-     /tmp/ccOKE3MP.s:313    .text:0000000000000200 .L0 
-     /tmp/ccOKE3MP.s:318    .text:0000000000000208 .L0 
-GAS LISTING /tmp/ccOKE3MP.s 			page 28
+     /tmp/ccx72ZCR.s:195    .text:0000000000000118 .L0 
+     /tmp/ccx72ZCR.s:196    .text:0000000000000118 .L0 
+     /tmp/ccx72ZCR.s:197    .text:000000000000011c .L0 
+     /tmp/ccx72ZCR.s:201    .text:0000000000000128 .L0 
+     /tmp/ccx72ZCR.s:202    .text:0000000000000128 .L0 
+     /tmp/ccx72ZCR.s:203    .text:0000000000000128 .L0 
+     /tmp/ccx72ZCR.s:205    .text:000000000000012c .L0 
+     /tmp/ccx72ZCR.s:207    .text:000000000000012c .L0 
+     /tmp/ccx72ZCR.s:208    .text:000000000000012c .L0 
+     /tmp/ccx72ZCR.s:213    .text:0000000000000140 .L0 
+     /tmp/ccx72ZCR.s:214    .text:0000000000000140 .L0 
+     /tmp/ccx72ZCR.s:217    .text:0000000000000148 .L0 
+     /tmp/ccx72ZCR.s:219    .text:000000000000014c .L0 
+     /tmp/ccx72ZCR.s:220    .text:000000000000014c .L0 
+     /tmp/ccx72ZCR.s:225    .text:000000000000015c .L0 
+     /tmp/ccx72ZCR.s:226    .text:000000000000015c .L0 
+     /tmp/ccx72ZCR.s:228    .text:0000000000000160 .L0 
+     /tmp/ccx72ZCR.s:232    .text:000000000000016c .L0 
+     /tmp/ccx72ZCR.s:236    .text:0000000000000174 .L0 
+     /tmp/ccx72ZCR.s:237    .text:0000000000000174 .L0 
+     /tmp/ccx72ZCR.s:238    .text:0000000000000178 .L0 
+     /tmp/ccx72ZCR.s:239    .text:0000000000000178 .L0 
+     /tmp/ccx72ZCR.s:241    .text:000000000000017c .L0 
+     /tmp/ccx72ZCR.s:242    .text:000000000000017c .L0 
+     /tmp/ccx72ZCR.s:244    .text:0000000000000180 .L0 
+     /tmp/ccx72ZCR.s:246    .text:0000000000000184 .L0 
+     /tmp/ccx72ZCR.s:249    .text:0000000000000188 .L0 
+     /tmp/ccx72ZCR.s:251    .text:0000000000000188 .L0 
+     /tmp/ccx72ZCR.s:253    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:259    .text:0000000000000190 _ZN8KConsole18putCharacterOutputEc
+     /tmp/ccx72ZCR.s:262    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:264    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:265    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:266    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:270    .text:00000000000001a0 .L0 
+     /tmp/ccx72ZCR.s:274    .text:00000000000001ac .L0 
+     /tmp/ccx72ZCR.s:276    .text:00000000000001b0 .L0 
+     /tmp/ccx72ZCR.s:278    .text:00000000000001b4 .L0 
+     /tmp/ccx72ZCR.s:279    .text:00000000000001b8 .L0 
+     /tmp/ccx72ZCR.s:282    .text:00000000000001c0 .L0 
+     /tmp/ccx72ZCR.s:283    .text:00000000000001c0 .L0 
+     /tmp/ccx72ZCR.s:285    .text:00000000000001c4 .L0 
+     /tmp/ccx72ZCR.s:287    .text:00000000000001c4 .L0 
+     /tmp/ccx72ZCR.s:288    .text:00000000000001c4 .L0 
+     /tmp/ccx72ZCR.s:293    .text:00000000000001d4 .L0 
+     /tmp/ccx72ZCR.s:871    .bss:0000000000000040 _ZN8KConsole12outputBufferE
+     /tmp/ccx72ZCR.s:294    .text:00000000000001d4 .L0 
+     /tmp/ccx72ZCR.s:298    .text:00000000000001e4 .L0 
+     /tmp/ccx72ZCR.s:299    .text:00000000000001e4 .L0 
+     /tmp/ccx72ZCR.s:301    .text:00000000000001e8 .L0 
+     /tmp/ccx72ZCR.s:302    .text:00000000000001e8 .L0 
+     /tmp/ccx72ZCR.s:307    .text:00000000000001f4 .L0 
+     /tmp/ccx72ZCR.s:308    .text:00000000000001f8 .L0 
+     /tmp/ccx72ZCR.s:310    .text:00000000000001fc .L0 
+     /tmp/ccx72ZCR.s:311    .text:00000000000001fc .L0 
+     /tmp/ccx72ZCR.s:313    .text:0000000000000200 .L0 
+     /tmp/ccx72ZCR.s:318    .text:0000000000000208 .L0 
+GAS LISTING /tmp/ccx72ZCR.s 			page 24
 
 
-     /tmp/ccOKE3MP.s:324    .text:0000000000000208 _ZN8KConsole24getCharactersFromConsoleEPv
-     /tmp/ccOKE3MP.s:327    .text:0000000000000208 .L0 
-     /tmp/ccOKE3MP.s:329    .text:0000000000000208 .L0 
-     /tmp/ccOKE3MP.s:331    .text:0000000000000208 .L0 
-     /tmp/ccOKE3MP.s:332    .text:0000000000000208 .L0 
-     /tmp/ccOKE3MP.s:333    .text:0000000000000208 .L0 
-     /tmp/ccOKE3MP.s:337    .text:0000000000000214 .L0 
+     /tmp/ccx72ZCR.s:324    .text:0000000000000208 _ZN8KConsole24getCharactersFromConsoleEPv
+     /tmp/ccx72ZCR.s:327    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:329    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:331    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:332    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:333    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:337    .text:0000000000000214 .L0 
     src/KConsole.cpp:35     .text:0000000000000214 .L0 
-     /tmp/ccOKE3MP.s:343    .text:0000000000000218 .L0 
+     /tmp/ccx72ZCR.s:343    .text:0000000000000218 .L0 
     src/KConsole.cpp:36     .text:0000000000000218 .L0 
-     /tmp/ccOKE3MP.s:348    .text:000000000000021c .L0 
-     /tmp/ccOKE3MP.s:349    .text:000000000000021c .L0 
+     /tmp/ccx72ZCR.s:348    .text:000000000000021c .L0 
+     /tmp/ccx72ZCR.s:349    .text:000000000000021c .L0 
     src/KConsole.cpp:38     .text:000000000000021c .L0 
-     /tmp/ccOKE3MP.s:357    .text:0000000000000220 .L0 
-     /tmp/ccOKE3MP.s:358    .text:0000000000000220 .L0 
-     /tmp/ccOKE3MP.s:361    .text:0000000000000224 .L0 
-     /tmp/ccOKE3MP.s:365    .text:0000000000000228 .L0 
-     /tmp/ccOKE3MP.s:366    .text:000000000000022c .L0 
-     /tmp/ccOKE3MP.s:370    .text:0000000000000238 .L0 
-     /tmp/ccOKE3MP.s:371    .text:0000000000000238 .L0 
-     /tmp/ccOKE3MP.s:372    .text:0000000000000238 .L0 
-     /tmp/ccOKE3MP.s:374    .text:000000000000023c .L0 
-     /tmp/ccOKE3MP.s:381    .text:000000000000023c .L0 
-     /tmp/ccOKE3MP.s:382    .text:000000000000023c .L0 
-     /tmp/ccOKE3MP.s:386    .text:0000000000000248 .L0 
+     /tmp/ccx72ZCR.s:357    .text:0000000000000220 .L0 
+     /tmp/ccx72ZCR.s:358    .text:0000000000000220 .L0 
+     /tmp/ccx72ZCR.s:361    .text:0000000000000224 .L0 
+     /tmp/ccx72ZCR.s:365    .text:0000000000000228 .L0 
+     /tmp/ccx72ZCR.s:366    .text:000000000000022c .L0 
+     /tmp/ccx72ZCR.s:370    .text:0000000000000238 .L0 
+     /tmp/ccx72ZCR.s:371    .text:0000000000000238 .L0 
+     /tmp/ccx72ZCR.s:372    .text:0000000000000238 .L0 
+     /tmp/ccx72ZCR.s:374    .text:000000000000023c .L0 
+     /tmp/ccx72ZCR.s:381    .text:000000000000023c .L0 
+     /tmp/ccx72ZCR.s:382    .text:000000000000023c .L0 
+     /tmp/ccx72ZCR.s:386    .text:0000000000000248 .L0 
     src/KConsole.cpp:42     .text:0000000000000248 .L0 
-     /tmp/ccOKE3MP.s:392    .text:000000000000024c .L0 
+     /tmp/ccx72ZCR.s:392    .text:000000000000024c .L0 
     src/KConsole.cpp:43     .text:000000000000024c .L0 
-     /tmp/ccOKE3MP.s:397    .text:0000000000000250 .L0 
-     /tmp/ccOKE3MP.s:398    .text:0000000000000250 .L0 
+     /tmp/ccx72ZCR.s:397    .text:0000000000000250 .L0 
+     /tmp/ccx72ZCR.s:398    .text:0000000000000250 .L0 
     src/KConsole.cpp:45     .text:0000000000000250 .L0 
-     /tmp/ccOKE3MP.s:406    .text:0000000000000258 .L0 
-     /tmp/ccOKE3MP.s:407    .text:0000000000000258 .L0 
-     /tmp/ccOKE3MP.s:411    .text:0000000000000264 .L0 
-     /tmp/ccOKE3MP.s:412    .text:0000000000000264 .L0 
-     /tmp/ccOKE3MP.s:419    .text:0000000000000270 .L0 
-     /tmp/ccOKE3MP.s:421    .text:0000000000000270 .L0 
-     /tmp/ccOKE3MP.s:422    .text:0000000000000270 .L0 
-     /tmp/ccOKE3MP.s:423    .text:0000000000000270 .L0 
-     /tmp/ccOKE3MP.s:427    .text:000000000000027c .L0 
+     /tmp/ccx72ZCR.s:406    .text:0000000000000258 .L0 
+     /tmp/ccx72ZCR.s:407    .text:0000000000000258 .L0 
+     /tmp/ccx72ZCR.s:411    .text:0000000000000264 .L0 
+     /tmp/ccx72ZCR.s:412    .text:0000000000000264 .L0 
+     /tmp/ccx72ZCR.s:419    .text:0000000000000270 .L0 
+     /tmp/ccx72ZCR.s:421    .text:0000000000000270 .L0 
+     /tmp/ccx72ZCR.s:422    .text:0000000000000270 .L0 
+     /tmp/ccx72ZCR.s:423    .text:0000000000000270 .L0 
+     /tmp/ccx72ZCR.s:427    .text:000000000000027c .L0 
     src/KConsole.cpp:35     .text:000000000000027c .L0 
-     /tmp/ccOKE3MP.s:433    .text:0000000000000280 .L0 
+     /tmp/ccx72ZCR.s:433    .text:0000000000000280 .L0 
     src/KConsole.cpp:36     .text:0000000000000280 .L0 
-     /tmp/ccOKE3MP.s:438    .text:0000000000000284 .L0 
-     /tmp/ccOKE3MP.s:439    .text:0000000000000284 .L0 
+     /tmp/ccx72ZCR.s:438    .text:0000000000000284 .L0 
+     /tmp/ccx72ZCR.s:439    .text:0000000000000284 .L0 
     src/KConsole.cpp:38     .text:0000000000000284 .L0 
-     /tmp/ccOKE3MP.s:447    .text:0000000000000288 .L0 
-     /tmp/ccOKE3MP.s:448    .text:0000000000000288 .L0 
-     /tmp/ccOKE3MP.s:451    .text:000000000000028c .L0 
-     /tmp/ccOKE3MP.s:455    .text:0000000000000290 .L0 
-     /tmp/ccOKE3MP.s:456    .text:0000000000000294 .L0 
-     /tmp/ccOKE3MP.s:458    .text:0000000000000298 .L0 
-     /tmp/ccOKE3MP.s:459    .text:0000000000000298 .L0 
-     /tmp/ccOKE3MP.s:461    .text:000000000000029c .L0 
-     /tmp/ccOKE3MP.s:464    .text:00000000000002a0 .L0 
-     /tmp/ccOKE3MP.s:469    .text:00000000000002a8 .L0 
-     /tmp/ccOKE3MP.s:475    .text:00000000000002a8 _ZN8KConsole18getCharacterOutputEv
-GAS LISTING /tmp/ccOKE3MP.s 			page 29
+     /tmp/ccx72ZCR.s:447    .text:0000000000000288 .L0 
+     /tmp/ccx72ZCR.s:448    .text:0000000000000288 .L0 
+     /tmp/ccx72ZCR.s:451    .text:000000000000028c .L0 
+     /tmp/ccx72ZCR.s:455    .text:0000000000000290 .L0 
+     /tmp/ccx72ZCR.s:456    .text:0000000000000294 .L0 
+     /tmp/ccx72ZCR.s:458    .text:0000000000000298 .L0 
+     /tmp/ccx72ZCR.s:459    .text:0000000000000298 .L0 
+     /tmp/ccx72ZCR.s:461    .text:000000000000029c .L0 
+     /tmp/ccx72ZCR.s:464    .text:00000000000002a0 .L0 
+     /tmp/ccx72ZCR.s:469    .text:00000000000002a8 .L0 
+     /tmp/ccx72ZCR.s:475    .text:00000000000002a8 _ZN8KConsole18getCharacterOutputEv
+GAS LISTING /tmp/ccx72ZCR.s 			page 25
 
 
-     /tmp/ccOKE3MP.s:478    .text:00000000000002a8 .L0 
-     /tmp/ccOKE3MP.s:479    .text:00000000000002a8 .L0 
-     /tmp/ccOKE3MP.s:480    .text:00000000000002ac .L0 
-     /tmp/ccOKE3MP.s:484    .text:00000000000002b8 .L0 
-     /tmp/ccOKE3MP.s:485    .text:00000000000002b8 .L0 
-     /tmp/ccOKE3MP.s:486    .text:00000000000002b8 .L0 
-     /tmp/ccOKE3MP.s:488    .text:00000000000002bc .L0 
-     /tmp/ccOKE3MP.s:490    .text:00000000000002bc .L0 
-     /tmp/ccOKE3MP.s:491    .text:00000000000002bc .L0 
-     /tmp/ccOKE3MP.s:496    .text:00000000000002d0 .L0 
-     /tmp/ccOKE3MP.s:497    .text:00000000000002d0 .L0 
-     /tmp/ccOKE3MP.s:500    .text:00000000000002d8 .L0 
-     /tmp/ccOKE3MP.s:502    .text:00000000000002dc .L0 
-     /tmp/ccOKE3MP.s:503    .text:00000000000002dc .L0 
-     /tmp/ccOKE3MP.s:508    .text:00000000000002ec .L0 
-     /tmp/ccOKE3MP.s:509    .text:00000000000002ec .L0 
-     /tmp/ccOKE3MP.s:511    .text:00000000000002f0 .L0 
-     /tmp/ccOKE3MP.s:515    .text:00000000000002fc .L0 
-     /tmp/ccOKE3MP.s:519    .text:0000000000000304 .L0 
-     /tmp/ccOKE3MP.s:520    .text:0000000000000304 .L0 
-     /tmp/ccOKE3MP.s:521    .text:0000000000000308 .L0 
-     /tmp/ccOKE3MP.s:522    .text:0000000000000308 .L0 
-     /tmp/ccOKE3MP.s:524    .text:000000000000030c .L0 
-     /tmp/ccOKE3MP.s:525    .text:000000000000030c .L0 
-     /tmp/ccOKE3MP.s:527    .text:0000000000000310 .L0 
-     /tmp/ccOKE3MP.s:529    .text:0000000000000314 .L0 
-     /tmp/ccOKE3MP.s:532    .text:0000000000000318 .L0 
-     /tmp/ccOKE3MP.s:534    .text:0000000000000318 .L0 
-     /tmp/ccOKE3MP.s:536    .text:0000000000000320 .L0 
-     /tmp/ccOKE3MP.s:542    .text:0000000000000320 _ZN8KConsole11putcHandlerEv
-     /tmp/ccOKE3MP.s:545    .text:0000000000000320 .L0 
-     /tmp/ccOKE3MP.s:546    .text:0000000000000320 .L0 
-     /tmp/ccOKE3MP.s:547    .text:0000000000000324 .L0 
-     /tmp/ccOKE3MP.s:550    .text:000000000000032c .L0 
-     /tmp/ccOKE3MP.s:551    .text:000000000000032c .L0 
-     /tmp/ccOKE3MP.s:553    .text:0000000000000330 .L0 
-     /tmp/ccOKE3MP.s:555    .text:0000000000000330 .L0 
-     /tmp/ccOKE3MP.s:556    .text:0000000000000330 .L0 
+     /tmp/ccx72ZCR.s:478    .text:00000000000002a8 .L0 
+     /tmp/ccx72ZCR.s:479    .text:00000000000002a8 .L0 
+     /tmp/ccx72ZCR.s:480    .text:00000000000002ac .L0 
+     /tmp/ccx72ZCR.s:484    .text:00000000000002b8 .L0 
+     /tmp/ccx72ZCR.s:485    .text:00000000000002b8 .L0 
+     /tmp/ccx72ZCR.s:486    .text:00000000000002b8 .L0 
+     /tmp/ccx72ZCR.s:488    .text:00000000000002bc .L0 
+     /tmp/ccx72ZCR.s:490    .text:00000000000002bc .L0 
+     /tmp/ccx72ZCR.s:491    .text:00000000000002bc .L0 
+     /tmp/ccx72ZCR.s:496    .text:00000000000002d0 .L0 
+     /tmp/ccx72ZCR.s:497    .text:00000000000002d0 .L0 
+     /tmp/ccx72ZCR.s:500    .text:00000000000002d8 .L0 
+     /tmp/ccx72ZCR.s:502    .text:00000000000002dc .L0 
+     /tmp/ccx72ZCR.s:503    .text:00000000000002dc .L0 
+     /tmp/ccx72ZCR.s:508    .text:00000000000002ec .L0 
+     /tmp/ccx72ZCR.s:509    .text:00000000000002ec .L0 
+     /tmp/ccx72ZCR.s:511    .text:00000000000002f0 .L0 
+     /tmp/ccx72ZCR.s:515    .text:00000000000002fc .L0 
+     /tmp/ccx72ZCR.s:519    .text:0000000000000304 .L0 
+     /tmp/ccx72ZCR.s:520    .text:0000000000000304 .L0 
+     /tmp/ccx72ZCR.s:521    .text:0000000000000308 .L0 
+     /tmp/ccx72ZCR.s:522    .text:0000000000000308 .L0 
+     /tmp/ccx72ZCR.s:524    .text:000000000000030c .L0 
+     /tmp/ccx72ZCR.s:525    .text:000000000000030c .L0 
+     /tmp/ccx72ZCR.s:527    .text:0000000000000310 .L0 
+     /tmp/ccx72ZCR.s:529    .text:0000000000000314 .L0 
+     /tmp/ccx72ZCR.s:532    .text:0000000000000318 .L0 
+     /tmp/ccx72ZCR.s:534    .text:0000000000000318 .L0 
+     /tmp/ccx72ZCR.s:536    .text:0000000000000320 .L0 
+     /tmp/ccx72ZCR.s:542    .text:0000000000000320 _ZN8KConsole11putcHandlerEv
+     /tmp/ccx72ZCR.s:545    .text:0000000000000320 .L0 
+     /tmp/ccx72ZCR.s:546    .text:0000000000000320 .L0 
+     /tmp/ccx72ZCR.s:547    .text:0000000000000324 .L0 
+     /tmp/ccx72ZCR.s:550    .text:000000000000032c .L0 
+     /tmp/ccx72ZCR.s:551    .text:000000000000032c .L0 
+     /tmp/ccx72ZCR.s:553    .text:0000000000000330 .L0 
+     /tmp/ccx72ZCR.s:555    .text:0000000000000330 .L0 
+     /tmp/ccx72ZCR.s:556    .text:0000000000000330 .L0 
     src/KConsole.cpp:135    .text:0000000000000330 .L0 
-     /tmp/ccOKE3MP.s:563    .text:0000000000000334 .L0 
-     /tmp/ccOKE3MP.s:565    .text:0000000000000334 .L0 
-     /tmp/ccOKE3MP.s:570    .text:0000000000000340 .L0 
-     /tmp/ccOKE3MP.s:571    .text:0000000000000344 .L0 
-     /tmp/ccOKE3MP.s:573    .text:0000000000000348 .L0 
-     /tmp/ccOKE3MP.s:574    .text:0000000000000348 .L0 
-     /tmp/ccOKE3MP.s:576    .text:000000000000034c .L0 
-     /tmp/ccOKE3MP.s:578    .text:0000000000000350 .L0 
-     /tmp/ccOKE3MP.s:584    .text:0000000000000350 _ZN8KConsole11getcHandlerEv
-     /tmp/ccOKE3MP.s:587    .text:0000000000000350 .L0 
-     /tmp/ccOKE3MP.s:588    .text:0000000000000350 .L0 
-     /tmp/ccOKE3MP.s:589    .text:0000000000000354 .L0 
-     /tmp/ccOKE3MP.s:592    .text:000000000000035c .L0 
-     /tmp/ccOKE3MP.s:593    .text:000000000000035c .L0 
-     /tmp/ccOKE3MP.s:595    .text:0000000000000360 .L0 
-     /tmp/ccOKE3MP.s:597    .text:0000000000000360 .L0 
-     /tmp/ccOKE3MP.s:598    .text:0000000000000360 .L0 
-     /tmp/ccOKE3MP.s:599    .text:0000000000000360 .L0 
-GAS LISTING /tmp/ccOKE3MP.s 			page 30
+     /tmp/ccx72ZCR.s:563    .text:0000000000000334 .L0 
+     /tmp/ccx72ZCR.s:565    .text:0000000000000334 .L0 
+     /tmp/ccx72ZCR.s:570    .text:0000000000000340 .L0 
+     /tmp/ccx72ZCR.s:571    .text:0000000000000344 .L0 
+     /tmp/ccx72ZCR.s:573    .text:0000000000000348 .L0 
+     /tmp/ccx72ZCR.s:574    .text:0000000000000348 .L0 
+     /tmp/ccx72ZCR.s:576    .text:000000000000034c .L0 
+     /tmp/ccx72ZCR.s:578    .text:0000000000000350 .L0 
+     /tmp/ccx72ZCR.s:584    .text:0000000000000350 _ZN8KConsole11getcHandlerEv
+     /tmp/ccx72ZCR.s:587    .text:0000000000000350 .L0 
+     /tmp/ccx72ZCR.s:588    .text:0000000000000350 .L0 
+     /tmp/ccx72ZCR.s:589    .text:0000000000000354 .L0 
+     /tmp/ccx72ZCR.s:592    .text:000000000000035c .L0 
+     /tmp/ccx72ZCR.s:593    .text:000000000000035c .L0 
+     /tmp/ccx72ZCR.s:595    .text:0000000000000360 .L0 
+     /tmp/ccx72ZCR.s:597    .text:0000000000000360 .L0 
+     /tmp/ccx72ZCR.s:598    .text:0000000000000360 .L0 
+     /tmp/ccx72ZCR.s:599    .text:0000000000000360 .L0 
+GAS LISTING /tmp/ccx72ZCR.s 			page 26
 
 
-     /tmp/ccOKE3MP.s:602    .text:0000000000000368 .L0 
+     /tmp/ccx72ZCR.s:602    .text:0000000000000368 .L0 
     src/KConsole.cpp:143    .text:0000000000000368 .L0 
-     /tmp/ccOKE3MP.s:608    .text:000000000000036c .L0 
-     /tmp/ccOKE3MP.s:610    .text:000000000000036c .L0 
-     /tmp/ccOKE3MP.s:613    .text:0000000000000374 .L0 
-     /tmp/ccOKE3MP.s:614    .text:0000000000000378 .L0 
-     /tmp/ccOKE3MP.s:616    .text:000000000000037c .L0 
-     /tmp/ccOKE3MP.s:617    .text:000000000000037c .L0 
-     /tmp/ccOKE3MP.s:619    .text:0000000000000380 .L0 
-     /tmp/ccOKE3MP.s:621    .text:0000000000000384 .L0 
-     /tmp/ccOKE3MP.s:627    .text:0000000000000384 _ZN8KConsole17outputBufferEmptyEv
-     /tmp/ccOKE3MP.s:630    .text:0000000000000384 .L0 
-     /tmp/ccOKE3MP.s:631    .text:0000000000000384 .L0 
-     /tmp/ccOKE3MP.s:632    .text:0000000000000388 .L0 
-     /tmp/ccOKE3MP.s:634    .text:000000000000038c .L0 
-     /tmp/ccOKE3MP.s:636    .text:0000000000000390 .L0 
-     /tmp/ccOKE3MP.s:638    .text:0000000000000390 .L0 
-     /tmp/ccOKE3MP.s:639    .text:0000000000000390 .L0 
-     /tmp/ccOKE3MP.s:642    .text:00000000000003a0 .L0 
-     /tmp/ccOKE3MP.s:643    .text:00000000000003a0 .L0 
-     /tmp/ccOKE3MP.s:645    .text:00000000000003a4 .L0 
-     /tmp/ccOKE3MP.s:647    .text:00000000000003a8 .L0 
-     /tmp/ccOKE3MP.s:653    .text:00000000000003a8 _ZN8KConsole23sendCharactersToConsoleEPv
-     /tmp/ccOKE3MP.s:656    .text:00000000000003a8 .L0 
-     /tmp/ccOKE3MP.s:658    .text:00000000000003a8 .L0 
-     /tmp/ccOKE3MP.s:659    .text:00000000000003ac .L0 
-     /tmp/ccOKE3MP.s:663    .text:00000000000003b8 .L0 
-     /tmp/ccOKE3MP.s:664    .text:00000000000003b8 .L0 
-     /tmp/ccOKE3MP.s:665    .text:00000000000003b8 .L0 
-     /tmp/ccOKE3MP.s:667    .text:00000000000003bc .L0 
-     /tmp/ccOKE3MP.s:672    .text:00000000000003bc .L0 
-     /tmp/ccOKE3MP.s:673    .text:00000000000003bc .L0 
-     /tmp/ccOKE3MP.s:674    .text:00000000000003bc .L0 
-  src/../h/Riscv.hpp:167    .text:00000000000003bc .L0 
-     /tmp/ccOKE3MP.s:682    .text:00000000000003c4 .L0 
-     /tmp/ccOKE3MP.s:683    .text:00000000000003c4 .L0 
-     /tmp/ccOKE3MP.s:690    .text:00000000000003c8 .L0 
-     /tmp/ccOKE3MP.s:691    .text:00000000000003c8 .L0 
-     /tmp/ccOKE3MP.s:692    .text:00000000000003c8 .L0 
-     /tmp/ccOKE3MP.s:699    .text:00000000000003d0 .L0 
-     /tmp/ccOKE3MP.s:706    .text:00000000000003d4 .L0 
-     /tmp/ccOKE3MP.s:707    .text:00000000000003d4 .L0 
-     /tmp/ccOKE3MP.s:714    .text:00000000000003e0 .L0 
-     /tmp/ccOKE3MP.s:715    .text:00000000000003e0 .L0 
-     /tmp/ccOKE3MP.s:718    .text:00000000000003e4 .L0 
-     /tmp/ccOKE3MP.s:724    .text:00000000000003ec .L0 
-  src/../h/Riscv.hpp:173    .text:00000000000003ec .L0 
-     /tmp/ccOKE3MP.s:734    .text:00000000000003f0 .L0 
-     /tmp/ccOKE3MP.s:735    .text:00000000000003f0 .L0 
-     /tmp/ccOKE3MP.s:740    .text:00000000000003f8 .L0 
-     /tmp/ccOKE3MP.s:741    .text:00000000000003f8 .L0 
-     /tmp/ccOKE3MP.s:742    .text:00000000000003f8 .L0 
-  src/../h/Riscv.hpp:167    .text:00000000000003f8 .L0 
-     /tmp/ccOKE3MP.s:750    .text:0000000000000400 .L0 
-     /tmp/ccOKE3MP.s:751    .text:0000000000000400 .L0 
-     /tmp/ccOKE3MP.s:758    .text:0000000000000404 .L0 
-     /tmp/ccOKE3MP.s:759    .text:0000000000000404 .L0 
-GAS LISTING /tmp/ccOKE3MP.s 			page 31
+     /tmp/ccx72ZCR.s:608    .text:000000000000036c .L0 
+     /tmp/ccx72ZCR.s:610    .text:000000000000036c .L0 
+     /tmp/ccx72ZCR.s:613    .text:0000000000000374 .L0 
+     /tmp/ccx72ZCR.s:614    .text:0000000000000378 .L0 
+     /tmp/ccx72ZCR.s:616    .text:000000000000037c .L0 
+     /tmp/ccx72ZCR.s:617    .text:000000000000037c .L0 
+     /tmp/ccx72ZCR.s:619    .text:0000000000000380 .L0 
+     /tmp/ccx72ZCR.s:621    .text:0000000000000384 .L0 
+     /tmp/ccx72ZCR.s:627    .text:0000000000000384 _ZN8KConsole17outputBufferEmptyEv
+     /tmp/ccx72ZCR.s:630    .text:0000000000000384 .L0 
+     /tmp/ccx72ZCR.s:631    .text:0000000000000384 .L0 
+     /tmp/ccx72ZCR.s:632    .text:0000000000000388 .L0 
+     /tmp/ccx72ZCR.s:634    .text:000000000000038c .L0 
+     /tmp/ccx72ZCR.s:636    .text:0000000000000390 .L0 
+     /tmp/ccx72ZCR.s:638    .text:0000000000000390 .L0 
+     /tmp/ccx72ZCR.s:639    .text:0000000000000390 .L0 
+     /tmp/ccx72ZCR.s:642    .text:00000000000003a0 .L0 
+     /tmp/ccx72ZCR.s:643    .text:00000000000003a0 .L0 
+     /tmp/ccx72ZCR.s:645    .text:00000000000003a4 .L0 
+     /tmp/ccx72ZCR.s:647    .text:00000000000003a8 .L0 
+     /tmp/ccx72ZCR.s:653    .text:00000000000003a8 _ZN8KConsole23sendCharactersToConsoleEPv
+     /tmp/ccx72ZCR.s:656    .text:00000000000003a8 .L0 
+     /tmp/ccx72ZCR.s:658    .text:00000000000003a8 .L0 
+     /tmp/ccx72ZCR.s:659    .text:00000000000003ac .L0 
+     /tmp/ccx72ZCR.s:662    .text:00000000000003b4 .L0 
+     /tmp/ccx72ZCR.s:663    .text:00000000000003b4 .L0 
+     /tmp/ccx72ZCR.s:665    .text:00000000000003b8 .L0 
+     /tmp/ccx72ZCR.s:671    .text:00000000000003bc .L0 
+     /tmp/ccx72ZCR.s:672    .text:00000000000003bc .L0 
+     /tmp/ccx72ZCR.s:676    .text:00000000000003c8 .L0 
+    src/KConsole.cpp:65     .text:00000000000003c8 .L0 
+     /tmp/ccx72ZCR.s:682    .text:00000000000003cc .L0 
+    src/KConsole.cpp:66     .text:00000000000003cc .L0 
+     /tmp/ccx72ZCR.s:687    .text:00000000000003d0 .L0 
+     /tmp/ccx72ZCR.s:688    .text:00000000000003d0 .L0 
+    src/KConsole.cpp:68     .text:00000000000003d0 .L0 
+     /tmp/ccx72ZCR.s:696    .text:00000000000003d4 .L0 
+     /tmp/ccx72ZCR.s:697    .text:00000000000003d4 .L0 
+     /tmp/ccx72ZCR.s:700    .text:00000000000003d8 .L0 
+     /tmp/ccx72ZCR.s:703    .text:00000000000003dc .L0 
+     /tmp/ccx72ZCR.s:704    .text:00000000000003dc .L0 
+     /tmp/ccx72ZCR.s:707    .text:00000000000003e4 .L0 
+     /tmp/ccx72ZCR.s:709    .text:00000000000003e8 .L0 
+     /tmp/ccx72ZCR.s:710    .text:00000000000003e8 .L0 
+     /tmp/ccx72ZCR.s:715    .text:00000000000003fc .L0 
+     /tmp/ccx72ZCR.s:716    .text:00000000000003fc .L0 
+     /tmp/ccx72ZCR.s:720    .text:0000000000000408 .L0 
+    src/KConsole.cpp:74     .text:0000000000000408 .L0 
+     /tmp/ccx72ZCR.s:726    .text:000000000000040c .L0 
+     /tmp/ccx72ZCR.s:728    .text:000000000000040c .L0 
+    src/KConsole.cpp:75     .text:0000000000000414 .L0 
+     /tmp/ccx72ZCR.s:737    .text:0000000000000418 .L0 
+    src/KConsole.cpp:76     .text:0000000000000418 .L0 
+     /tmp/ccx72ZCR.s:749    .text:000000000000041c .L0 
+     /tmp/ccx72ZCR.s:750    .text:000000000000041c .L0 
+GAS LISTING /tmp/ccx72ZCR.s 			page 27
 
 
-     /tmp/ccOKE3MP.s:760    .text:0000000000000404 .L0 
-     /tmp/ccOKE3MP.s:774    .text:000000000000040c .L0 
-     /tmp/ccOKE3MP.s:775    .text:000000000000040c .L0 
-     /tmp/ccOKE3MP.s:776    .text:000000000000040c .L0 
-     /tmp/ccOKE3MP.s:780    .text:000000000000041c .L0 
-     /tmp/ccOKE3MP.s:783    .text:0000000000000424 .L0 
-     /tmp/ccOKE3MP.s:785    .text:0000000000000428 .L0 
-     /tmp/ccOKE3MP.s:787    .text:0000000000000430 .L0 
-     /tmp/ccOKE3MP.s:790    .text:0000000000000434 .L0 
-     /tmp/ccOKE3MP.s:791    .text:0000000000000434 .L0 
-     /tmp/ccOKE3MP.s:795    .text:0000000000000440 .L0 
-    src/KConsole.cpp:65     .text:0000000000000440 .L0 
-     /tmp/ccOKE3MP.s:801    .text:0000000000000444 .L0 
-    src/KConsole.cpp:66     .text:0000000000000444 .L0 
-     /tmp/ccOKE3MP.s:806    .text:0000000000000448 .L0 
-     /tmp/ccOKE3MP.s:807    .text:0000000000000448 .L0 
-    src/KConsole.cpp:68     .text:0000000000000448 .L0 
-     /tmp/ccOKE3MP.s:815    .text:000000000000044c .L0 
-     /tmp/ccOKE3MP.s:816    .text:000000000000044c .L0 
-     /tmp/ccOKE3MP.s:819    .text:0000000000000450 .L0 
-     /tmp/ccOKE3MP.s:821    .text:0000000000000454 .L0 
-     /tmp/ccOKE3MP.s:823    .text:000000000000045c .L0 
-     /tmp/ccOKE3MP.s:826    .text:0000000000000460 .L0 
-     /tmp/ccOKE3MP.s:827    .text:0000000000000460 .L0 
-     /tmp/ccOKE3MP.s:830    .text:0000000000000468 .L0 
-     /tmp/ccOKE3MP.s:832    .text:000000000000046c .L0 
-     /tmp/ccOKE3MP.s:833    .text:000000000000046c .L0 
-     /tmp/ccOKE3MP.s:838    .text:0000000000000480 .L0 
-     /tmp/ccOKE3MP.s:839    .text:0000000000000480 .L0 
-     /tmp/ccOKE3MP.s:843    .text:000000000000048c .L0 
-    src/KConsole.cpp:74     .text:000000000000048c .L0 
-     /tmp/ccOKE3MP.s:849    .text:0000000000000490 .L0 
-     /tmp/ccOKE3MP.s:851    .text:0000000000000490 .L0 
-    src/KConsole.cpp:75     .text:0000000000000498 .L0 
-     /tmp/ccOKE3MP.s:860    .text:000000000000049c .L0 
-    src/KConsole.cpp:76     .text:000000000000049c .L0 
-     /tmp/ccOKE3MP.s:869    .text:00000000000004a4 .L0 
-     /tmp/ccOKE3MP.s:911    .bss:0000000000000030 _ZN8KConsole11pendingPutcE
-     /tmp/ccOKE3MP.s:915    .bss:0000000000000038 _ZN8KConsole11pendingGetcE
-     /tmp/ccOKE3MP.s:887    .bss:0000000000000000 _ZN8KConsole18hasCharactersInputE
-     /tmp/ccOKE3MP.s:891    .bss:0000000000000008 _ZN8KConsole19hasCharactersOutputE
-     /tmp/ccOKE3MP.s:903    .bss:0000000000000020 _ZN8KConsole10outputTailE
-     /tmp/ccOKE3MP.s:907    .bss:0000000000000028 _ZN8KConsole10outputHeadE
-     /tmp/ccOKE3MP.s:895    .bss:0000000000000010 _ZN8KConsole9inputTailE
-     /tmp/ccOKE3MP.s:899    .bss:0000000000000018 _ZN8KConsole9inputHeadE
-     /tmp/ccOKE3MP.s:884    .bss:0000000000000000 .LANCHOR0
-     /tmp/ccOKE3MP.s:932    .text:00000000000004a4 .L0 
-     /tmp/ccOKE3MP.s:42     .text:0000000000000034 .L0 
-     /tmp/ccOKE3MP.s:57     .text:0000000000000058 .L0 
-     /tmp/ccOKE3MP.s:140    .text:00000000000000b0 .L0 
-     /tmp/ccOKE3MP.s:162    .text:00000000000000e4 .L0 
-     /tmp/ccOKE3MP.s:208    .text:000000000000012c .L0 
-     /tmp/ccOKE3MP.s:220    .text:000000000000014c .L0 
-     /tmp/ccOKE3MP.s:232    .text:000000000000016c .L0 
-     /tmp/ccOKE3MP.s:266    .text:0000000000000190 .L0 
-     /tmp/ccOKE3MP.s:294    .text:00000000000001d4 .L0 
-     /tmp/ccOKE3MP.s:333    .text:0000000000000208 .L0 
-GAS LISTING /tmp/ccOKE3MP.s 			page 32
+     /tmp/ccx72ZCR.s:751    .text:000000000000041c .L0 
+     /tmp/ccx72ZCR.s:755    .text:000000000000042c .L0 
+     /tmp/ccx72ZCR.s:758    .text:0000000000000434 .L0 
+     /tmp/ccx72ZCR.s:760    .text:0000000000000438 .L0 
+     /tmp/ccx72ZCR.s:762    .text:0000000000000440 .L0 
+     /tmp/ccx72ZCR.s:764    .text:0000000000000444 .L0 
+     /tmp/ccx72ZCR.s:765    .text:0000000000000444 .L0 
+     /tmp/ccx72ZCR.s:772    .text:0000000000000450 .L0 
+     /tmp/ccx72ZCR.s:773    .text:0000000000000450 .L0 
+     /tmp/ccx72ZCR.s:778    .text:000000000000045c .L0 
+     /tmp/ccx72ZCR.s:784    .text:000000000000045c _ZN8KConsole14getCharHandlerEv
+     /tmp/ccx72ZCR.s:787    .text:000000000000045c .L0 
+     /tmp/ccx72ZCR.s:788    .text:000000000000045c .L0 
+     /tmp/ccx72ZCR.s:789    .text:0000000000000460 .L0 
+     /tmp/ccx72ZCR.s:792    .text:0000000000000468 .L0 
+     /tmp/ccx72ZCR.s:793    .text:0000000000000468 .L0 
+     /tmp/ccx72ZCR.s:795    .text:000000000000046c .L0 
+     /tmp/ccx72ZCR.s:797    .text:000000000000046c .L0 
+     /tmp/ccx72ZCR.s:798    .text:000000000000046c .L0 
+     /tmp/ccx72ZCR.s:799    .text:000000000000046c .L0 
+     /tmp/ccx72ZCR.s:802    .text:0000000000000474 .L0 
+    src/KConsole.cpp:156    .text:0000000000000474 .L0 
+     /tmp/ccx72ZCR.s:808    .text:0000000000000478 .L0 
+     /tmp/ccx72ZCR.s:810    .text:0000000000000478 .L0 
+     /tmp/ccx72ZCR.s:813    .text:0000000000000480 .L0 
+     /tmp/ccx72ZCR.s:814    .text:0000000000000484 .L0 
+     /tmp/ccx72ZCR.s:816    .text:0000000000000488 .L0 
+     /tmp/ccx72ZCR.s:817    .text:0000000000000488 .L0 
+     /tmp/ccx72ZCR.s:819    .text:000000000000048c .L0 
+     /tmp/ccx72ZCR.s:821    .text:0000000000000490 .L0 
+     /tmp/ccx72ZCR.s:863    .bss:0000000000000030 _ZN8KConsole11pendingPutcE
+     /tmp/ccx72ZCR.s:867    .bss:0000000000000038 _ZN8KConsole11pendingGetcE
+     /tmp/ccx72ZCR.s:839    .bss:0000000000000000 _ZN8KConsole18hasCharactersInputE
+     /tmp/ccx72ZCR.s:843    .bss:0000000000000008 _ZN8KConsole19hasCharactersOutputE
+     /tmp/ccx72ZCR.s:855    .bss:0000000000000020 _ZN8KConsole10outputTailE
+     /tmp/ccx72ZCR.s:859    .bss:0000000000000028 _ZN8KConsole10outputHeadE
+     /tmp/ccx72ZCR.s:847    .bss:0000000000000010 _ZN8KConsole9inputTailE
+     /tmp/ccx72ZCR.s:851    .bss:0000000000000018 _ZN8KConsole9inputHeadE
+     /tmp/ccx72ZCR.s:836    .bss:0000000000000000 .LANCHOR0
+     /tmp/ccx72ZCR.s:885    .text:0000000000000490 .L0 
+     /tmp/ccx72ZCR.s:42     .text:0000000000000034 .L0 
+     /tmp/ccx72ZCR.s:57     .text:0000000000000058 .L0 
+     /tmp/ccx72ZCR.s:140    .text:00000000000000b0 .L0 
+     /tmp/ccx72ZCR.s:162    .text:00000000000000e4 .L0 
+     /tmp/ccx72ZCR.s:208    .text:000000000000012c .L0 
+     /tmp/ccx72ZCR.s:220    .text:000000000000014c .L0 
+     /tmp/ccx72ZCR.s:232    .text:000000000000016c .L0 
+     /tmp/ccx72ZCR.s:266    .text:0000000000000190 .L0 
+     /tmp/ccx72ZCR.s:294    .text:00000000000001d4 .L0 
+     /tmp/ccx72ZCR.s:333    .text:0000000000000208 .L0 
+     /tmp/ccx72ZCR.s:382    .text:000000000000023c .L0 
+     /tmp/ccx72ZCR.s:423    .text:0000000000000270 .L0 
+     /tmp/ccx72ZCR.s:491    .text:00000000000002bc .L0 
+     /tmp/ccx72ZCR.s:503    .text:00000000000002dc .L0 
+     /tmp/ccx72ZCR.s:515    .text:00000000000002fc .L0 
+     /tmp/ccx72ZCR.s:639    .text:0000000000000390 .L0 
+     /tmp/ccx72ZCR.s:672    .text:00000000000003bc .L0 
+GAS LISTING /tmp/ccx72ZCR.s 			page 28
 
 
-     /tmp/ccOKE3MP.s:382    .text:000000000000023c .L0 
-     /tmp/ccOKE3MP.s:423    .text:0000000000000270 .L0 
-     /tmp/ccOKE3MP.s:491    .text:00000000000002bc .L0 
-     /tmp/ccOKE3MP.s:503    .text:00000000000002dc .L0 
-     /tmp/ccOKE3MP.s:515    .text:00000000000002fc .L0 
-     /tmp/ccOKE3MP.s:639    .text:0000000000000390 .L0 
-     /tmp/ccOKE3MP.s:776    .text:000000000000040c .L0 
-     /tmp/ccOKE3MP.s:785    .text:0000000000000428 .L0 
-     /tmp/ccOKE3MP.s:791    .text:0000000000000434 .L0 
-     /tmp/ccOKE3MP.s:821    .text:0000000000000454 .L0 
-     /tmp/ccOKE3MP.s:833    .text:000000000000046c .L0 
-     /tmp/ccOKE3MP.s:839    .text:0000000000000480 .L0 
-     /tmp/ccOKE3MP.s:184    .text:0000000000000114 .L11
-     /tmp/ccOKE3MP.s:248    .text:0000000000000188 .L16
-     /tmp/ccOKE3MP.s:235    .text:0000000000000174 .L15
-     /tmp/ccOKE3MP.s:316    .text:0000000000000204 .L21
-     /tmp/ccOKE3MP.s:467    .text:00000000000002a4 .L32
-     /tmp/ccOKE3MP.s:376    .text:000000000000023c .L28
-     /tmp/ccOKE3MP.s:531    .text:0000000000000318 .L35
-     /tmp/ccOKE3MP.s:518    .text:0000000000000304 .L34
-     /tmp/ccOKE3MP.s:767    .text:000000000000040c .L44
-     /tmp/ccOKE3MP.s:788    .text:0000000000000434 .L45
-     /tmp/ccOKE3MP.s:701    .text:00000000000003d4 .L49
-     /tmp/ccOKE3MP.s:711    .text:00000000000003e0 .L46
-     /tmp/ccOKE3MP.s:31     .text:000000000000001c .LEHB0
-     /tmp/ccOKE3MP.s:10     .text:0000000000000000 .LFB25
-     /tmp/ccOKE3MP.s:34     .text:0000000000000024 .LEHE0
-     /tmp/ccOKE3MP.s:37     .text:000000000000002c .LEHB1
-     /tmp/ccOKE3MP.s:40     .text:0000000000000034 .LEHE1
-     /tmp/ccOKE3MP.s:72     .text:0000000000000078 .L4
-     /tmp/ccOKE3MP.s:46     .text:0000000000000040 .LEHB2
-     /tmp/ccOKE3MP.s:49     .text:0000000000000048 .LEHE2
-     /tmp/ccOKE3MP.s:52     .text:0000000000000050 .LEHB3
-     /tmp/ccOKE3MP.s:55     .text:0000000000000058 .LEHE3
-     /tmp/ccOKE3MP.s:84     .text:0000000000000094 .L5
-     /tmp/ccOKE3MP.s:80     .text:000000000000008c .LEHB4
-     /tmp/ccOKE3MP.s:83     .text:0000000000000094 .LEHE4
-     /tmp/ccOKE3MP.s:91     .text:00000000000000a8 .LEHB5
-     /tmp/ccOKE3MP.s:94     .text:00000000000000b0 .LEHE5
-     /tmp/ccOKE3MP.s:3021   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
-     /tmp/ccOKE3MP.s:4380   .debug_str:00000000000001f7 .LASF263
-     /tmp/ccOKE3MP.s:4774   .debug_str:0000000000000fea .LASF264
-     /tmp/ccOKE3MP.s:4772   .debug_str:0000000000000fc7 .LASF265
-     /tmp/ccOKE3MP.s:5      .text:0000000000000000 .Ltext0
-     /tmp/ccOKE3MP.s:926    .text:00000000000004a4 .Letext0
-     /tmp/ccOKE3MP.s:4320   .debug_line:0000000000000000 .Ldebug_line0
-     /tmp/ccOKE3MP.s:4498   .debug_str:00000000000006b3 .LASF0
-     /tmp/ccOKE3MP.s:4540   .debug_str:0000000000000844 .LASF1
-     /tmp/ccOKE3MP.s:4672   .debug_str:0000000000000c92 .LASF2
-     /tmp/ccOKE3MP.s:4690   .debug_str:0000000000000d2d .LASF4
-     /tmp/ccOKE3MP.s:4518   .debug_str:0000000000000759 .LASF3
-     /tmp/ccOKE3MP.s:4338   .debug_str:000000000000006f .LASF5
-     /tmp/ccOKE3MP.s:4634   .debug_str:0000000000000b79 .LASF6
-     /tmp/ccOKE3MP.s:4626   .debug_str:0000000000000b33 .LASF7
-     /tmp/ccOKE3MP.s:4526   .debug_str:00000000000007a3 .LASF8
-     /tmp/ccOKE3MP.s:4466   .debug_str:0000000000000597 .LASF9
-     /tmp/ccOKE3MP.s:4474   .debug_str:00000000000005ee .LASF10
-GAS LISTING /tmp/ccOKE3MP.s 			page 33
+     /tmp/ccx72ZCR.s:710    .text:00000000000003e8 .L0 
+     /tmp/ccx72ZCR.s:716    .text:00000000000003fc .L0 
+     /tmp/ccx72ZCR.s:751    .text:000000000000041c .L0 
+     /tmp/ccx72ZCR.s:760    .text:0000000000000438 .L0 
+     /tmp/ccx72ZCR.s:184    .text:0000000000000114 .L11
+     /tmp/ccx72ZCR.s:248    .text:0000000000000188 .L16
+     /tmp/ccx72ZCR.s:235    .text:0000000000000174 .L15
+     /tmp/ccx72ZCR.s:316    .text:0000000000000204 .L21
+     /tmp/ccx72ZCR.s:467    .text:00000000000002a4 .L32
+     /tmp/ccx72ZCR.s:376    .text:000000000000023c .L28
+     /tmp/ccx72ZCR.s:531    .text:0000000000000318 .L35
+     /tmp/ccx72ZCR.s:518    .text:0000000000000304 .L34
+     /tmp/ccx72ZCR.s:743    .text:000000000000041c .L44
+     /tmp/ccx72ZCR.s:769    .text:0000000000000450 .L46
+     /tmp/ccx72ZCR.s:668    .text:00000000000003bc .L45
+     /tmp/ccx72ZCR.s:31     .text:000000000000001c .LEHB0
+     /tmp/ccx72ZCR.s:10     .text:0000000000000000 .LFB25
+     /tmp/ccx72ZCR.s:34     .text:0000000000000024 .LEHE0
+     /tmp/ccx72ZCR.s:37     .text:000000000000002c .LEHB1
+     /tmp/ccx72ZCR.s:40     .text:0000000000000034 .LEHE1
+     /tmp/ccx72ZCR.s:72     .text:0000000000000078 .L4
+     /tmp/ccx72ZCR.s:46     .text:0000000000000040 .LEHB2
+     /tmp/ccx72ZCR.s:49     .text:0000000000000048 .LEHE2
+     /tmp/ccx72ZCR.s:52     .text:0000000000000050 .LEHB3
+     /tmp/ccx72ZCR.s:55     .text:0000000000000058 .LEHE3
+     /tmp/ccx72ZCR.s:84     .text:0000000000000094 .L5
+     /tmp/ccx72ZCR.s:80     .text:000000000000008c .LEHB4
+     /tmp/ccx72ZCR.s:83     .text:0000000000000094 .LEHE4
+     /tmp/ccx72ZCR.s:91     .text:00000000000000a8 .LEHB5
+     /tmp/ccx72ZCR.s:94     .text:00000000000000b0 .LEHE5
+     /tmp/ccx72ZCR.s:2887   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccx72ZCR.s:4102   .debug_str:00000000000001f7 .LASF261
+     /tmp/ccx72ZCR.s:4492   .debug_str:0000000000000fee .LASF262
+     /tmp/ccx72ZCR.s:4490   .debug_str:0000000000000fcb .LASF263
+     /tmp/ccx72ZCR.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccx72ZCR.s:878    .text:0000000000000490 .Letext0
+     /tmp/ccx72ZCR.s:4042   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccx72ZCR.s:4220   .debug_str:00000000000006bb .LASF0
+     /tmp/ccx72ZCR.s:4260   .debug_str:0000000000000843 .LASF1
+     /tmp/ccx72ZCR.s:4390   .debug_str:0000000000000c97 .LASF2
+     /tmp/ccx72ZCR.s:4408   .debug_str:0000000000000d32 .LASF4
+     /tmp/ccx72ZCR.s:4240   .debug_str:0000000000000761 .LASF3
+     /tmp/ccx72ZCR.s:4060   .debug_str:000000000000006f .LASF5
+     /tmp/ccx72ZCR.s:4356   .debug_str:0000000000000b97 .LASF6
+     /tmp/ccx72ZCR.s:4348   .debug_str:0000000000000b51 .LASF7
+     /tmp/ccx72ZCR.s:4246   .debug_str:00000000000007a2 .LASF8
+     /tmp/ccx72ZCR.s:4186   .debug_str:000000000000058e .LASF9
+     /tmp/ccx72ZCR.s:4194   .debug_str:00000000000005e5 .LASF10
+     /tmp/ccx72ZCR.s:4120   .debug_str:000000000000034e .LASF11
+     /tmp/ccx72ZCR.s:4180   .debug_str:0000000000000562 .LASF12
+     /tmp/ccx72ZCR.s:4130   .debug_str:0000000000000383 .LASF13
+     /tmp/ccx72ZCR.s:4118   .debug_str:000000000000033e .LASF14
+     /tmp/ccx72ZCR.s:4458   .debug_str:0000000000000ef7 .LASF15
+     /tmp/ccx72ZCR.s:4166   .debug_str:00000000000004bd .LASF16
+     /tmp/ccx72ZCR.s:4444   .debug_str:0000000000000e4a .LASF17
+     /tmp/ccx72ZCR.s:4476   .debug_str:0000000000000f76 .LASF264
+     /tmp/ccx72ZCR.s:4112   .debug_str:0000000000000311 .LASF18
+GAS LISTING /tmp/ccx72ZCR.s 			page 29
 
 
-     /tmp/ccOKE3MP.s:4398   .debug_str:000000000000034e .LASF11
-     /tmp/ccOKE3MP.s:4460   .debug_str:000000000000056b .LASF12
-     /tmp/ccOKE3MP.s:4408   .debug_str:0000000000000383 .LASF13
-     /tmp/ccOKE3MP.s:4396   .debug_str:000000000000033e .LASF14
-     /tmp/ccOKE3MP.s:4740   .debug_str:0000000000000ef3 .LASF15
-     /tmp/ccOKE3MP.s:4444   .debug_str:00000000000004bd .LASF16
-     /tmp/ccOKE3MP.s:4726   .debug_str:0000000000000e46 .LASF17
-     /tmp/ccOKE3MP.s:4758   .debug_str:0000000000000f72 .LASF89
-     /tmp/ccOKE3MP.s:4390   .debug_str:0000000000000311 .LASF18
-     /tmp/ccOKE3MP.s:4712   .debug_str:0000000000000de2 .LASF19
-     /tmp/ccOKE3MP.s:4404   .debug_str:000000000000036f .LASF20
-     /tmp/ccOKE3MP.s:4376   .debug_str:00000000000001cb .LASF21
-     /tmp/ccOKE3MP.s:4630   .debug_str:0000000000000b5c .LASF22
-     /tmp/ccOKE3MP.s:4402   .debug_str:0000000000000366 .LASF23
-     /tmp/ccOKE3MP.s:4746   .debug_str:0000000000000f19 .LASF86
-     /tmp/ccOKE3MP.s:4484   .debug_str:0000000000000666 .LASF24
-     /tmp/ccOKE3MP.s:4342   .debug_str:0000000000000081 .LASF29
-     /tmp/ccOKE3MP.s:4780   .debug_str:0000000000001012 .LASF266
-     /tmp/ccOKE3MP.s:4614   .debug_str:0000000000000ae3 .LASF267
-     /tmp/ccOKE3MP.s:4538   .debug_str:000000000000083f .LASF25
-     /tmp/ccOKE3MP.s:4848   .debug_str:0000000000001231 .LASF27
-     /tmp/ccOKE3MP.s:4842   .debug_str:0000000000001208 .LASF26
-     /tmp/ccOKE3MP.s:4766   .debug_str:0000000000000f99 .LASF28
-     /tmp/ccOKE3MP.s:4428   .debug_str:0000000000000459 .LASF54
-     /tmp/ccOKE3MP.s:4352   .debug_str:00000000000000cd .LASF56
-     /tmp/ccOKE3MP.s:4546   .debug_str:000000000000086b .LASF34
-     /tmp/ccOKE3MP.s:4618   .debug_str:0000000000000af2 .LASF36
-     /tmp/ccOKE3MP.s:4764   .debug_str:0000000000000f91 .LASF30
-     /tmp/ccOKE3MP.s:4704   .debug_str:0000000000000d8e .LASF31
-     /tmp/ccOKE3MP.s:4548   .debug_str:0000000000000871 .LASF38
-     /tmp/ccOKE3MP.s:4556   .debug_str:00000000000008c4 .LASF40
-     /tmp/ccOKE3MP.s:4856   .debug_str:000000000000128e .LASF32
-     /tmp/ccOKE3MP.s:4452   .debug_str:0000000000000530 .LASF33
-     /tmp/ccOKE3MP.s:4330   .debug_str:000000000000003a .LASF35
-     /tmp/ccOKE3MP.s:4512   .debug_str:000000000000072d .LASF37
-     /tmp/ccOKE3MP.s:4706   .debug_str:0000000000000d9f .LASF39
-     /tmp/ccOKE3MP.s:4588   .debug_str:0000000000000a02 .LASF41
-     /tmp/ccOKE3MP.s:4684   .debug_str:0000000000000cf3 .LASF42
-     /tmp/ccOKE3MP.s:4734   .debug_str:0000000000000eae .LASF43
-     /tmp/ccOKE3MP.s:4590   .debug_str:0000000000000a15 .LASF44
-     /tmp/ccOKE3MP.s:4326   .debug_str:000000000000001b .LASF45
-     /tmp/ccOKE3MP.s:4828   .debug_str:0000000000001190 .LASF46
-     /tmp/ccOKE3MP.s:4624   .debug_str:0000000000000b19 .LASF47
-     /tmp/ccOKE3MP.s:4724   .debug_str:0000000000000e38 .LASF48
-     /tmp/ccOKE3MP.s:4640   .debug_str:0000000000000b96 .LASF49
-     /tmp/ccOKE3MP.s:4424   .debug_str:0000000000000437 .LASF50
-     /tmp/ccOKE3MP.s:4462   .debug_str:000000000000057a .LASF51
-     /tmp/ccOKE3MP.s:4664   .debug_str:0000000000000c59 .LASF52
-     /tmp/ccOKE3MP.s:4834   .debug_str:00000000000011be .LASF53
-     /tmp/ccOKE3MP.s:4520   .debug_str:000000000000076b .LASF60
-     /tmp/ccOKE3MP.s:4718   .debug_str:0000000000000e14 .LASF55
-     /tmp/ccOKE3MP.s:4846   .debug_str:000000000000121b .LASF57
-     /tmp/ccOKE3MP.s:4748   .debug_str:0000000000000f21 .LASF58
-     /tmp/ccOKE3MP.s:4420   .debug_str:000000000000041b .LASF59
-     /tmp/ccOKE3MP.s:4700   .debug_str:0000000000000d77 .LASF61
-     /tmp/ccOKE3MP.s:4500   .debug_str:00000000000006c0 .LASF62
-     /tmp/ccOKE3MP.s:4600   .debug_str:0000000000000a4b .LASF63
-GAS LISTING /tmp/ccOKE3MP.s 			page 34
+     /tmp/ccx72ZCR.s:4430   .debug_str:0000000000000de6 .LASF19
+     /tmp/ccx72ZCR.s:4126   .debug_str:000000000000036f .LASF20
+     /tmp/ccx72ZCR.s:4098   .debug_str:00000000000001cb .LASF21
+     /tmp/ccx72ZCR.s:4352   .debug_str:0000000000000b7a .LASF22
+     /tmp/ccx72ZCR.s:4124   .debug_str:0000000000000366 .LASF23
+     /tmp/ccx72ZCR.s:4464   .debug_str:0000000000000f1d .LASF86
+     /tmp/ccx72ZCR.s:4206   .debug_str:000000000000066e .LASF24
+     /tmp/ccx72ZCR.s:4064   .debug_str:0000000000000081 .LASF29
+     /tmp/ccx72ZCR.s:4498   .debug_str:0000000000001016 .LASF265
+     /tmp/ccx72ZCR.s:4336   .debug_str:0000000000000b01 .LASF266
+     /tmp/ccx72ZCR.s:4258   .debug_str:000000000000083e .LASF25
+     /tmp/ccx72ZCR.s:4568   .debug_str:000000000000125a .LASF27
+     /tmp/ccx72ZCR.s:4562   .debug_str:0000000000001231 .LASF26
+     /tmp/ccx72ZCR.s:4484   .debug_str:0000000000000f9d .LASF28
+     /tmp/ccx72ZCR.s:4150   .debug_str:0000000000000459 .LASF54
+     /tmp/ccx72ZCR.s:4074   .debug_str:00000000000000cd .LASF56
+     /tmp/ccx72ZCR.s:4266   .debug_str:000000000000086a .LASF34
+     /tmp/ccx72ZCR.s:4340   .debug_str:0000000000000b10 .LASF36
+     /tmp/ccx72ZCR.s:4482   .debug_str:0000000000000f95 .LASF30
+     /tmp/ccx72ZCR.s:4422   .debug_str:0000000000000d92 .LASF31
+     /tmp/ccx72ZCR.s:4268   .debug_str:0000000000000870 .LASF38
+     /tmp/ccx72ZCR.s:4276   .debug_str:00000000000008c3 .LASF40
+     /tmp/ccx72ZCR.s:4576   .debug_str:00000000000012b7 .LASF32
+     /tmp/ccx72ZCR.s:4174   .debug_str:0000000000000530 .LASF33
+     /tmp/ccx72ZCR.s:4052   .debug_str:000000000000003a .LASF35
+     /tmp/ccx72ZCR.s:4234   .debug_str:0000000000000735 .LASF37
+     /tmp/ccx72ZCR.s:4424   .debug_str:0000000000000da3 .LASF39
+     /tmp/ccx72ZCR.s:4310   .debug_str:0000000000000a20 .LASF41
+     /tmp/ccx72ZCR.s:4402   .debug_str:0000000000000cf8 .LASF42
+     /tmp/ccx72ZCR.s:4452   .debug_str:0000000000000eb2 .LASF43
+     /tmp/ccx72ZCR.s:4312   .debug_str:0000000000000a33 .LASF44
+     /tmp/ccx72ZCR.s:4048   .debug_str:000000000000001b .LASF45
+     /tmp/ccx72ZCR.s:4548   .debug_str:00000000000011b3 .LASF46
+     /tmp/ccx72ZCR.s:4346   .debug_str:0000000000000b37 .LASF47
+     /tmp/ccx72ZCR.s:4442   .debug_str:0000000000000e3c .LASF48
+     /tmp/ccx72ZCR.s:4362   .debug_str:0000000000000bb4 .LASF49
+     /tmp/ccx72ZCR.s:4146   .debug_str:0000000000000437 .LASF50
+     /tmp/ccx72ZCR.s:4182   .debug_str:0000000000000571 .LASF51
+     /tmp/ccx72ZCR.s:4382   .debug_str:0000000000000c5e .LASF52
+     /tmp/ccx72ZCR.s:4554   .debug_str:00000000000011e7 .LASF53
+     /tmp/ccx72ZCR.s:4242   .debug_str:0000000000000773 .LASF60
+     /tmp/ccx72ZCR.s:4436   .debug_str:0000000000000e18 .LASF55
+     /tmp/ccx72ZCR.s:4566   .debug_str:0000000000001244 .LASF57
+     /tmp/ccx72ZCR.s:4466   .debug_str:0000000000000f25 .LASF58
+     /tmp/ccx72ZCR.s:4142   .debug_str:000000000000041b .LASF59
+     /tmp/ccx72ZCR.s:4418   .debug_str:0000000000000d7c .LASF61
+     /tmp/ccx72ZCR.s:4222   .debug_str:00000000000006c8 .LASF62
+     /tmp/ccx72ZCR.s:4322   .debug_str:0000000000000a69 .LASF63
+     /tmp/ccx72ZCR.s:4136   .debug_str:00000000000003d2 .LASF64
+     /tmp/ccx72ZCR.s:4368   .debug_str:0000000000000bea .LASF65
+     /tmp/ccx72ZCR.s:4584   .debug_str:00000000000012f0 .LASF66
+     /tmp/ccx72ZCR.s:4326   .debug_str:0000000000000a8f .LASF67
+     /tmp/ccx72ZCR.s:4400   .debug_str:0000000000000ce5 .LASF68
+     /tmp/ccx72ZCR.s:4426   .debug_str:0000000000000dac .LASF69
+     /tmp/ccx72ZCR.s:4514   .debug_str:0000000000001090 .LASF70
+     /tmp/ccx72ZCR.s:4298   .debug_str:00000000000009a9 .LASF71
+     /tmp/ccx72ZCR.s:4500   .debug_str:000000000000102e .LASF72
+GAS LISTING /tmp/ccx72ZCR.s 			page 30
 
 
-     /tmp/ccOKE3MP.s:4414   .debug_str:00000000000003d2 .LASF64
-     /tmp/ccOKE3MP.s:4646   .debug_str:0000000000000bcc .LASF65
-     /tmp/ccOKE3MP.s:4864   .debug_str:00000000000012c7 .LASF66
-     /tmp/ccOKE3MP.s:4604   .debug_str:0000000000000a71 .LASF67
-     /tmp/ccOKE3MP.s:4682   .debug_str:0000000000000ce0 .LASF68
-     /tmp/ccOKE3MP.s:4708   .debug_str:0000000000000da8 .LASF69
-     /tmp/ccOKE3MP.s:4796   .debug_str:000000000000108c .LASF70
-     /tmp/ccOKE3MP.s:4578   .debug_str:00000000000009aa .LASF71
-     /tmp/ccOKE3MP.s:4782   .debug_str:000000000000102a .LASF72
-     /tmp/ccOKE3MP.s:4732   .debug_str:0000000000000e8e .LASF73
-     /tmp/ccOKE3MP.s:4434   .debug_str:000000000000046d .LASF74
-     /tmp/ccOKE3MP.s:4504   .debug_str:00000000000006f6 .LASF75
-     /tmp/ccOKE3MP.s:4770   .debug_str:0000000000000fbd .LASF76
-     /tmp/ccOKE3MP.s:4620   .debug_str:0000000000000b02 .LASF77
-     /tmp/ccOKE3MP.s:4840   .debug_str:00000000000011fa .LASF78
-     /tmp/ccOKE3MP.s:4360   .debug_str:0000000000000123 .LASF80
-     /tmp/ccOKE3MP.s:4456   .debug_str:0000000000000545 .LASF79
-     /tmp/ccOKE3MP.s:4388   .debug_str:00000000000002e5 .LASF81
-     /tmp/ccOKE3MP.s:4826   .debug_str:0000000000001189 .LASF268
-     /tmp/ccOKE3MP.s:4384   .debug_str:00000000000002c6 .LASF269
-     /tmp/ccOKE3MP.s:4328   .debug_str:0000000000000035 .LASF82
-     /tmp/ccOKE3MP.s:4792   .debug_str:000000000000107b .LASF83
-     /tmp/ccOKE3MP.s:4562   .debug_str:0000000000000909 .LASF84
-     /tmp/ccOKE3MP.s:4432   .debug_str:0000000000000467 .LASF85
-     /tmp/ccOKE3MP.s:4778   .debug_str:000000000000100a .LASF87
-     /tmp/ccOKE3MP.s:4812   .debug_str:000000000000110a .LASF88
-     /tmp/ccOKE3MP.s:4654   .debug_str:0000000000000c1e .LASF90
-     /tmp/ccOKE3MP.s:4522   .debug_str:0000000000000778 .LASF91
-     /tmp/ccOKE3MP.s:4454   .debug_str:000000000000053c .LASF92
-     /tmp/ccOKE3MP.s:4832   .debug_str:00000000000011b5 .LASF93
-     /tmp/ccOKE3MP.s:4492   .debug_str:000000000000068a .LASF94
-     /tmp/ccOKE3MP.s:4730   .debug_str:0000000000000e76 .LASF95
-     /tmp/ccOKE3MP.s:4702   .debug_str:0000000000000d7f .LASF96
-     /tmp/ccOKE3MP.s:4710   .debug_str:0000000000000dc6 .LASF97
-     /tmp/ccOKE3MP.s:4622   .debug_str:0000000000000b0e .LASF98
-     /tmp/ccOKE3MP.s:4574   .debug_str:0000000000000982 .LASF99
-     /tmp/ccOKE3MP.s:4440   .debug_str:00000000000004a0 .LASF100
-     /tmp/ccOKE3MP.s:4628   .debug_str:0000000000000b46 .LASF101
-     /tmp/ccOKE3MP.s:4576   .debug_str:000000000000099a .LASF102
-     /tmp/ccOKE3MP.s:4806   .debug_str:00000000000010d0 .LASF103
-     /tmp/ccOKE3MP.s:4800   .debug_str:00000000000010aa .LASF104
-     /tmp/ccOKE3MP.s:4554   .debug_str:00000000000008a6 .LASF105
-     /tmp/ccOKE3MP.s:4436   .debug_str:0000000000000476 .LASF106
-     /tmp/ccOKE3MP.s:4838   .debug_str:00000000000011d6 .LASF107
-     /tmp/ccOKE3MP.s:4510   .debug_str:000000000000071b .LASF108
-     /tmp/ccOKE3MP.s:4416   .debug_str:00000000000003e4 .LASF109
-     /tmp/ccOKE3MP.s:4370   .debug_str:000000000000019f .LASF110
-     /tmp/ccOKE3MP.s:4468   .debug_str:00000000000005a7 .LASF111
-     /tmp/ccOKE3MP.s:4650   .debug_str:0000000000000bfc .LASF112
-     /tmp/ccOKE3MP.s:4410   .debug_str:0000000000000393 .LASF113
-     /tmp/ccOKE3MP.s:4592   .debug_str:0000000000000a24 .LASF114
-     /tmp/ccOKE3MP.s:4818   .debug_str:000000000000112c .LASF115
-     /tmp/ccOKE3MP.s:4790   .debug_str:0000000000001072 .LASF118
-     /tmp/ccOKE3MP.s:4336   .debug_str:000000000000005a .LASF120
-     /tmp/ccOKE3MP.s:4666   .debug_str:0000000000000c66 .LASF116
-     /tmp/ccOKE3MP.s:4610   .debug_str:0000000000000abe .LASF117
-     /tmp/ccOKE3MP.s:4642   .debug_str:0000000000000ba2 .LASF119
-GAS LISTING /tmp/ccOKE3MP.s 			page 35
+     /tmp/ccx72ZCR.s:4450   .debug_str:0000000000000e92 .LASF73
+     /tmp/ccx72ZCR.s:4156   .debug_str:000000000000046d .LASF74
+     /tmp/ccx72ZCR.s:4226   .debug_str:00000000000006fe .LASF75
+     /tmp/ccx72ZCR.s:4488   .debug_str:0000000000000fc1 .LASF76
+     /tmp/ccx72ZCR.s:4342   .debug_str:0000000000000b20 .LASF77
+     /tmp/ccx72ZCR.s:4560   .debug_str:0000000000001223 .LASF78
+     /tmp/ccx72ZCR.s:4082   .debug_str:0000000000000123 .LASF80
+     /tmp/ccx72ZCR.s:4176   .debug_str:000000000000053c .LASF79
+     /tmp/ccx72ZCR.s:4110   .debug_str:00000000000002e5 .LASF81
+     /tmp/ccx72ZCR.s:4546   .debug_str:00000000000011ac .LASF267
+     /tmp/ccx72ZCR.s:4106   .debug_str:00000000000002c6 .LASF268
+     /tmp/ccx72ZCR.s:4050   .debug_str:0000000000000035 .LASF82
+     /tmp/ccx72ZCR.s:4510   .debug_str:000000000000107f .LASF83
+     /tmp/ccx72ZCR.s:4282   .debug_str:0000000000000908 .LASF84
+     /tmp/ccx72ZCR.s:4154   .debug_str:0000000000000467 .LASF85
+     /tmp/ccx72ZCR.s:4496   .debug_str:000000000000100e .LASF87
+     /tmp/ccx72ZCR.s:4530   .debug_str:0000000000001118 .LASF88
+     /tmp/ccx72ZCR.s:4214   .debug_str:0000000000000692 .LASF89
+     /tmp/ccx72ZCR.s:4448   .debug_str:0000000000000e7a .LASF90
+     /tmp/ccx72ZCR.s:4552   .debug_str:00000000000011d8 .LASF91
+     /tmp/ccx72ZCR.s:4428   .debug_str:0000000000000dca .LASF92
+     /tmp/ccx72ZCR.s:4344   .debug_str:0000000000000b2c .LASF93
+     /tmp/ccx72ZCR.s:4294   .debug_str:0000000000000981 .LASF94
+     /tmp/ccx72ZCR.s:4162   .debug_str:00000000000004a0 .LASF95
+     /tmp/ccx72ZCR.s:4350   .debug_str:0000000000000b64 .LASF96
+     /tmp/ccx72ZCR.s:4296   .debug_str:0000000000000999 .LASF97
+     /tmp/ccx72ZCR.s:4524   .debug_str:00000000000010de .LASF98
+     /tmp/ccx72ZCR.s:4518   .debug_str:00000000000010ae .LASF99
+     /tmp/ccx72ZCR.s:4274   .debug_str:00000000000008a5 .LASF100
+     /tmp/ccx72ZCR.s:4158   .debug_str:0000000000000476 .LASF101
+     /tmp/ccx72ZCR.s:4558   .debug_str:00000000000011ff .LASF102
+     /tmp/ccx72ZCR.s:4232   .debug_str:0000000000000723 .LASF103
+     /tmp/ccx72ZCR.s:4138   .debug_str:00000000000003e4 .LASF104
+     /tmp/ccx72ZCR.s:4092   .debug_str:000000000000019f .LASF105
+     /tmp/ccx72ZCR.s:4188   .debug_str:000000000000059e .LASF106
+     /tmp/ccx72ZCR.s:4420   .debug_str:0000000000000d84 .LASF107
+     /tmp/ccx72ZCR.s:4132   .debug_str:0000000000000393 .LASF108
+     /tmp/ccx72ZCR.s:4314   .debug_str:0000000000000a42 .LASF109
+     /tmp/ccx72ZCR.s:4538   .debug_str:000000000000114f .LASF110
+     /tmp/ccx72ZCR.s:4508   .debug_str:0000000000001076 .LASF113
+     /tmp/ccx72ZCR.s:4058   .debug_str:000000000000005a .LASF115
+     /tmp/ccx72ZCR.s:4384   .debug_str:0000000000000c6b .LASF111
+     /tmp/ccx72ZCR.s:4332   .debug_str:0000000000000adc .LASF112
+     /tmp/ccx72ZCR.s:4364   .debug_str:0000000000000bc0 .LASF114
+     /tmp/ccx72ZCR.s:4370   .debug_str:0000000000000c07 .LASF116
+     /tmp/ccx72ZCR.s:4324   .debug_str:0000000000000a88 .LASF117
+     /tmp/ccx72ZCR.s:4250   .debug_str:00000000000007d1 .LASF118
+     /tmp/ccx72ZCR.s:4540   .debug_str:0000000000001169 .LASF119
+     /tmp/ccx72ZCR.s:4486   .debug_str:0000000000000fad .LASF120
+     /tmp/ccx72ZCR.s:4318   .debug_str:0000000000000a58 .LASF121
+     /tmp/ccx72ZCR.s:4330   .debug_str:0000000000000ac8 .LASF122
+     /tmp/ccx72ZCR.s:4306   .debug_str:0000000000000a06 .LASF123
+     /tmp/ccx72ZCR.s:4372   .debug_str:0000000000000c1a .LASF124
+     /tmp/ccx72ZCR.s:4582   .debug_str:00000000000012e8 .LASF125
+     /tmp/ccx72ZCR.s:4230   .debug_str:000000000000070f .LASF126
+     /tmp/ccx72ZCR.s:4210   .debug_str:000000000000067f .LASF127
+     /tmp/ccx72ZCR.s:4454   .debug_str:0000000000000ece .LASF128
+GAS LISTING /tmp/ccx72ZCR.s 			page 31
 
 
-     /tmp/ccOKE3MP.s:4648   .debug_str:0000000000000be9 .LASF121
-     /tmp/ccOKE3MP.s:4602   .debug_str:0000000000000a6a .LASF122
-     /tmp/ccOKE3MP.s:4530   .debug_str:00000000000007d2 .LASF123
-     /tmp/ccOKE3MP.s:4820   .debug_str:0000000000001146 .LASF124
-     /tmp/ccOKE3MP.s:4768   .debug_str:0000000000000fa9 .LASF125
-     /tmp/ccOKE3MP.s:4596   .debug_str:0000000000000a3a .LASF126
-     /tmp/ccOKE3MP.s:4608   .debug_str:0000000000000aaa .LASF127
-     /tmp/ccOKE3MP.s:4584   .debug_str:00000000000009e8 .LASF128
-     /tmp/ccOKE3MP.s:4652   .debug_str:0000000000000c0a .LASF129
-     /tmp/ccOKE3MP.s:4862   .debug_str:00000000000012bf .LASF130
-     /tmp/ccOKE3MP.s:4508   .debug_str:0000000000000707 .LASF131
-     /tmp/ccOKE3MP.s:4488   .debug_str:0000000000000677 .LASF132
-     /tmp/ccOKE3MP.s:4736   .debug_str:0000000000000eca .LASF133
-     /tmp/ccOKE3MP.s:4696   .debug_str:0000000000000d5d .LASF134
-     /tmp/ccOKE3MP.s:4698   .debug_str:0000000000000d70 .LASF135
-     /tmp/ccOKE3MP.s:4438   .debug_str:000000000000048d .LASF136
-     /tmp/ccOKE3MP.s:4694   .debug_str:0000000000000d57 .LASF137
-     /tmp/ccOKE3MP.s:4346   .debug_str:0000000000000099 .LASF138
-     /tmp/ccOKE3MP.s:4506   .debug_str:0000000000000701 .LASF139
-     /tmp/ccOKE3MP.s:4426   .debug_str:0000000000000447 .LASF140
-     /tmp/ccOKE3MP.s:4386   .debug_str:00000000000002d7 .LASF141
-     /tmp/ccOKE3MP.s:4752   .debug_str:0000000000000f31 .LASF142
-     /tmp/ccOKE3MP.s:4340   .debug_str:0000000000000076 .LASF143
-     /tmp/ccOKE3MP.s:4678   .debug_str:0000000000000cbc .LASF144
-     /tmp/ccOKE3MP.s:4670   .debug_str:0000000000000c87 .LASF145
-     /tmp/ccOKE3MP.s:4852   .debug_str:0000000000001266 .LASF146
-     /tmp/ccOKE3MP.s:4676   .debug_str:0000000000000cb5 .LASF147
-     /tmp/ccOKE3MP.s:4394   .debug_str:000000000000032b .LASF148
-     /tmp/ccOKE3MP.s:4722   .debug_str:0000000000000e31 .LASF149
-     /tmp/ccOKE3MP.s:4558   .debug_str:00000000000008dc .LASF150
-     /tmp/ccOKE3MP.s:4814   .debug_str:0000000000001110 .LASF151
-     /tmp/ccOKE3MP.s:4830   .debug_str:000000000000119f .LASF152
-     /tmp/ccOKE3MP.s:4808   .debug_str:00000000000010ee .LASF153
-     /tmp/ccOKE3MP.s:4348   .debug_str:00000000000000ab .LASF154
-     /tmp/ccOKE3MP.s:4422   .debug_str:0000000000000431 .LASF155
-     /tmp/ccOKE3MP.s:4482   .debug_str:0000000000000654 .LASF156
-     /tmp/ccOKE3MP.s:4490   .debug_str:0000000000000684 .LASF157
-     /tmp/ccOKE3MP.s:4810   .debug_str:00000000000010f8 .LASF158
-     /tmp/ccOKE3MP.s:4486   .debug_str:000000000000066c .LASF159
-     /tmp/ccOKE3MP.s:4494   .debug_str:0000000000000695 .LASF160
-     /tmp/ccOKE3MP.s:4784   .debug_str:000000000000103f .LASF161
-     /tmp/ccOKE3MP.s:4472   .debug_str:00000000000005d2 .LASF162
-     /tmp/ccOKE3MP.s:4632   .debug_str:0000000000000b64 .LASF163
-     /tmp/ccOKE3MP.s:4524   .debug_str:0000000000000781 .LASF164
-     /tmp/ccOKE3MP.s:4366   .debug_str:000000000000017d .LASF165
-     /tmp/ccOKE3MP.s:4570   .debug_str:0000000000000951 .LASF166
-     /tmp/ccOKE3MP.s:4660   .debug_str:0000000000000c48 .LASF167
-     /tmp/ccOKE3MP.s:4334   .debug_str:0000000000000052 .LASF168
-     /tmp/ccOKE3MP.s:4372   .debug_str:00000000000001a9 .LASF169
-     /tmp/ccOKE3MP.s:4550   .debug_str:000000000000087e .LASF170
-     /tmp/ccOKE3MP.s:4374   .debug_str:00000000000001b8 .LASF171
-     /tmp/ccOKE3MP.s:4586   .debug_str:00000000000009f0 .LASF172
-     /tmp/ccOKE3MP.s:4476   .debug_str:00000000000005fc .LASF173
-     /tmp/ccOKE3MP.s:4516   .debug_str:0000000000000746 .LASF174
-     /tmp/ccOKE3MP.s:4392   .debug_str:0000000000000317 .LASF175
-     /tmp/ccOKE3MP.s:4762   .debug_str:0000000000000f87 .LASF176
-     /tmp/ccOKE3MP.s:4568   .debug_str:000000000000094c .LASF177
-GAS LISTING /tmp/ccOKE3MP.s 			page 36
+     /tmp/ccx72ZCR.s:4414   .debug_str:0000000000000d62 .LASF129
+     /tmp/ccx72ZCR.s:4416   .debug_str:0000000000000d75 .LASF130
+     /tmp/ccx72ZCR.s:4160   .debug_str:000000000000048d .LASF131
+     /tmp/ccx72ZCR.s:4412   .debug_str:0000000000000d5c .LASF132
+     /tmp/ccx72ZCR.s:4068   .debug_str:0000000000000099 .LASF133
+     /tmp/ccx72ZCR.s:4228   .debug_str:0000000000000709 .LASF134
+     /tmp/ccx72ZCR.s:4148   .debug_str:0000000000000447 .LASF135
+     /tmp/ccx72ZCR.s:4108   .debug_str:00000000000002d7 .LASF136
+     /tmp/ccx72ZCR.s:4470   .debug_str:0000000000000f35 .LASF137
+     /tmp/ccx72ZCR.s:4062   .debug_str:0000000000000076 .LASF138
+     /tmp/ccx72ZCR.s:4396   .debug_str:0000000000000cc1 .LASF139
+     /tmp/ccx72ZCR.s:4388   .debug_str:0000000000000c8c .LASF140
+     /tmp/ccx72ZCR.s:4572   .debug_str:000000000000128f .LASF141
+     /tmp/ccx72ZCR.s:4394   .debug_str:0000000000000cba .LASF142
+     /tmp/ccx72ZCR.s:4116   .debug_str:000000000000032b .LASF143
+     /tmp/ccx72ZCR.s:4440   .debug_str:0000000000000e35 .LASF144
+     /tmp/ccx72ZCR.s:4278   .debug_str:00000000000008db .LASF145
+     /tmp/ccx72ZCR.s:4532   .debug_str:000000000000111e .LASF146
+     /tmp/ccx72ZCR.s:4550   .debug_str:00000000000011c2 .LASF147
+     /tmp/ccx72ZCR.s:4526   .debug_str:00000000000010fc .LASF148
+     /tmp/ccx72ZCR.s:4070   .debug_str:00000000000000ab .LASF149
+     /tmp/ccx72ZCR.s:4144   .debug_str:0000000000000431 .LASF150
+     /tmp/ccx72ZCR.s:4204   .debug_str:000000000000065c .LASF151
+     /tmp/ccx72ZCR.s:4212   .debug_str:000000000000068c .LASF152
+     /tmp/ccx72ZCR.s:4528   .debug_str:0000000000001106 .LASF153
+     /tmp/ccx72ZCR.s:4208   .debug_str:0000000000000674 .LASF154
+     /tmp/ccx72ZCR.s:4216   .debug_str:000000000000069d .LASF155
+     /tmp/ccx72ZCR.s:4502   .debug_str:0000000000001043 .LASF156
+     /tmp/ccx72ZCR.s:4192   .debug_str:00000000000005c9 .LASF157
+     /tmp/ccx72ZCR.s:4354   .debug_str:0000000000000b82 .LASF158
+     /tmp/ccx72ZCR.s:4244   .debug_str:0000000000000780 .LASF159
+     /tmp/ccx72ZCR.s:4088   .debug_str:000000000000017d .LASF160
+     /tmp/ccx72ZCR.s:4290   .debug_str:0000000000000950 .LASF161
+     /tmp/ccx72ZCR.s:4378   .debug_str:0000000000000c4d .LASF162
+     /tmp/ccx72ZCR.s:4056   .debug_str:0000000000000052 .LASF163
+     /tmp/ccx72ZCR.s:4094   .debug_str:00000000000001a9 .LASF164
+     /tmp/ccx72ZCR.s:4270   .debug_str:000000000000087d .LASF165
+     /tmp/ccx72ZCR.s:4096   .debug_str:00000000000001b8 .LASF166
+     /tmp/ccx72ZCR.s:4308   .debug_str:0000000000000a0e .LASF167
+     /tmp/ccx72ZCR.s:4196   .debug_str:00000000000005f3 .LASF168
+     /tmp/ccx72ZCR.s:4238   .debug_str:000000000000074e .LASF169
+     /tmp/ccx72ZCR.s:4114   .debug_str:0000000000000317 .LASF170
+     /tmp/ccx72ZCR.s:4480   .debug_str:0000000000000f8b .LASF171
+     /tmp/ccx72ZCR.s:4288   .debug_str:000000000000094b .LASF172
+     /tmp/ccx72ZCR.s:4376   .debug_str:0000000000000c42 .LASF173
+     /tmp/ccx72ZCR.s:4190   .debug_str:00000000000005b5 .LASF174
+     /tmp/ccx72ZCR.s:4080   .debug_str:0000000000000117 .LASF175
+     /tmp/ccx72ZCR.s:4374   .debug_str:0000000000000c2e .LASF176
+     /tmp/ccx72ZCR.s:4152   .debug_str:0000000000000462 .LASF177
+     /tmp/ccx72ZCR.s:4434   .debug_str:0000000000000e01 .LASF178
+     /tmp/ccx72ZCR.s:4462   .debug_str:0000000000000f16 .LASF179
+     /tmp/ccx72ZCR.s:4170   .debug_str:00000000000004f5 .LASF180
+     /tmp/ccx72ZCR.s:4046   .debug_str:000000000000000f .LASF181
+     /tmp/ccx72ZCR.s:4398   .debug_str:0000000000000cd9 .LASF182
+     /tmp/ccx72ZCR.s:4292   .debug_str:000000000000096d .LASF183
+     /tmp/ccx72ZCR.s:4392   .debug_str:0000000000000ca5 .LASF184
+     /tmp/ccx72ZCR.s:4122   .debug_str:000000000000035d .LASF185
+GAS LISTING /tmp/ccx72ZCR.s 			page 32
 
 
-     /tmp/ccOKE3MP.s:4658   .debug_str:0000000000000c3d .LASF178
-     /tmp/ccOKE3MP.s:4470   .debug_str:00000000000005be .LASF179
-     /tmp/ccOKE3MP.s:4358   .debug_str:0000000000000117 .LASF180
-     /tmp/ccOKE3MP.s:4656   .debug_str:0000000000000c29 .LASF181
-     /tmp/ccOKE3MP.s:4430   .debug_str:0000000000000462 .LASF182
-     /tmp/ccOKE3MP.s:4716   .debug_str:0000000000000dfd .LASF183
-     /tmp/ccOKE3MP.s:4744   .debug_str:0000000000000f12 .LASF184
-     /tmp/ccOKE3MP.s:4448   .debug_str:00000000000004f5 .LASF185
-     /tmp/ccOKE3MP.s:4324   .debug_str:000000000000000f .LASF186
-     /tmp/ccOKE3MP.s:4680   .debug_str:0000000000000cd4 .LASF187
-     /tmp/ccOKE3MP.s:4572   .debug_str:000000000000096e .LASF188
-     /tmp/ccOKE3MP.s:4674   .debug_str:0000000000000ca0 .LASF189
-     /tmp/ccOKE3MP.s:4400   .debug_str:000000000000035d .LASF190
-     /tmp/ccOKE3MP.s:4406   .debug_str:0000000000000379 .LASF191
-     /tmp/ccOKE3MP.s:4594   .debug_str:0000000000000a31 .LASF192
-     /tmp/ccOKE3MP.s:4688   .debug_str:0000000000000d22 .LASF193
-     /tmp/ccOKE3MP.s:4322   .debug_str:0000000000000000 .LASF194
-     /tmp/ccOKE3MP.s:4480   .debug_str:0000000000000632 .LASF195
-     /tmp/ccOKE3MP.s:4776   .debug_str:0000000000000ffb .LASF196
-     /tmp/ccOKE3MP.s:4738   .debug_str:0000000000000ed1 .LASF197
-     /tmp/ccOKE3MP.s:4564   .debug_str:0000000000000911 .LASF198
-     /tmp/ccOKE3MP.s:4412   .debug_str:00000000000003ae .LASF199
-     /tmp/ccOKE3MP.s:4612   .debug_str:0000000000000ad3 .LASF200
-     /tmp/ccOKE3MP.s:4644   .debug_str:0000000000000ba9 .LASF201
-     /tmp/ccOKE3MP.s:4544   .debug_str:0000000000000862 .LASF202
-     /tmp/ccOKE3MP.s:4496   .debug_str:00000000000006ad .LASF203
-     /tmp/ccOKE3MP.s:4860   .debug_str:00000000000012a7 .LASF204
-     /tmp/ccOKE3MP.s:4332   .debug_str:000000000000004a .LASF205
-     /tmp/ccOKE3MP.s:4560   .debug_str:00000000000008ef .LASF206
-     /tmp/ccOKE3MP.s:4854   .debug_str:000000000000127e .LASF207
-     /tmp/ccOKE3MP.s:4692   .debug_str:0000000000000d34 .LASF208
-     /tmp/ccOKE3MP.s:4742   .debug_str:0000000000000eff .LASF209
-     /tmp/ccOKE3MP.s:4686   .debug_str:0000000000000cfc .LASF210
-     /tmp/ccOKE3MP.s:4844   .debug_str:000000000000120e .LASF211
-     /tmp/ccOKE3MP.s:4536   .debug_str:000000000000081b .LASF212
-     /tmp/ccOKE3MP.s:4598   .debug_str:0000000000000a42 .LASF213
-     /tmp/ccOKE3MP.s:4714   .debug_str:0000000000000dea .LASF214
-     /tmp/ccOKE3MP.s:4580   .debug_str:00000000000009c8 .LASF215
-     /tmp/ccOKE3MP.s:4616   .debug_str:0000000000000ae8 .LASF216
-     /tmp/ccOKE3MP.s:4542   .debug_str:0000000000000857 .LASF217
-     /tmp/ccOKE3MP.s:4638   .debug_str:0000000000000b8c .LASF218
-     /tmp/ccOKE3MP.s:4798   .debug_str:000000000000109f .LASF219
-     /tmp/ccOKE3MP.s:4754   .debug_str:0000000000000f4c .LASF220
-     /tmp/ccOKE3MP.s:4794   .debug_str:0000000000001080 .LASF221
-     /tmp/ccOKE3MP.s:4344   .debug_str:000000000000008c .LASF222
-     /tmp/ccOKE3MP.s:4582   .debug_str:00000000000009dc .LASF223
-     /tmp/ccOKE3MP.s:4636   .debug_str:0000000000000b80 .LASF224
-     /tmp/ccOKE3MP.s:4720   .debug_str:0000000000000e1f .LASF225
-     /tmp/ccOKE3MP.s:4450   .debug_str:000000000000050e .LASF226
-     /tmp/ccOKE3MP.s:4788   .debug_str:0000000000001060 .LASF227
-     /tmp/ccOKE3MP.s:4824   .debug_str:0000000000001167 .LASF228
-     /tmp/ccOKE3MP.s:4786   .debug_str:000000000000104e .LASF229
-     /tmp/ccOKE3MP.s:4502   .debug_str:00000000000006d4 .LASF230
-     /tmp/ccOKE3MP.s:4368   .debug_str:000000000000018c .LASF231
-     /tmp/ccOKE3MP.s:4382   .debug_str:00000000000002a3 .LASF232
-     /tmp/ccOKE3MP.s:4442   .debug_str:00000000000004aa .LASF233
-     /tmp/ccOKE3MP.s:4378   .debug_str:00000000000001d4 .LASF234
-GAS LISTING /tmp/ccOKE3MP.s 			page 37
+     /tmp/ccx72ZCR.s:4128   .debug_str:0000000000000379 .LASF186
+     /tmp/ccx72ZCR.s:4316   .debug_str:0000000000000a4f .LASF187
+     /tmp/ccx72ZCR.s:4406   .debug_str:0000000000000d27 .LASF188
+     /tmp/ccx72ZCR.s:4044   .debug_str:0000000000000000 .LASF189
+     /tmp/ccx72ZCR.s:4202   .debug_str:000000000000063a .LASF190
+     /tmp/ccx72ZCR.s:4494   .debug_str:0000000000000fff .LASF191
+     /tmp/ccx72ZCR.s:4456   .debug_str:0000000000000ed5 .LASF192
+     /tmp/ccx72ZCR.s:4284   .debug_str:0000000000000910 .LASF193
+     /tmp/ccx72ZCR.s:4134   .debug_str:00000000000003ae .LASF194
+     /tmp/ccx72ZCR.s:4334   .debug_str:0000000000000af1 .LASF195
+     /tmp/ccx72ZCR.s:4366   .debug_str:0000000000000bc7 .LASF196
+     /tmp/ccx72ZCR.s:4264   .debug_str:0000000000000861 .LASF197
+     /tmp/ccx72ZCR.s:4218   .debug_str:00000000000006b5 .LASF198
+     /tmp/ccx72ZCR.s:4580   .debug_str:00000000000012d0 .LASF199
+     /tmp/ccx72ZCR.s:4054   .debug_str:000000000000004a .LASF200
+     /tmp/ccx72ZCR.s:4280   .debug_str:00000000000008ee .LASF201
+     /tmp/ccx72ZCR.s:4574   .debug_str:00000000000012a7 .LASF202
+     /tmp/ccx72ZCR.s:4410   .debug_str:0000000000000d39 .LASF203
+     /tmp/ccx72ZCR.s:4460   .debug_str:0000000000000f03 .LASF204
+     /tmp/ccx72ZCR.s:4404   .debug_str:0000000000000d01 .LASF205
+     /tmp/ccx72ZCR.s:4564   .debug_str:0000000000001237 .LASF206
+     /tmp/ccx72ZCR.s:4256   .debug_str:000000000000081a .LASF207
+     /tmp/ccx72ZCR.s:4320   .debug_str:0000000000000a60 .LASF208
+     /tmp/ccx72ZCR.s:4432   .debug_str:0000000000000dee .LASF209
+     /tmp/ccx72ZCR.s:4302   .debug_str:00000000000009e6 .LASF210
+     /tmp/ccx72ZCR.s:4338   .debug_str:0000000000000b06 .LASF211
+     /tmp/ccx72ZCR.s:4262   .debug_str:0000000000000856 .LASF212
+     /tmp/ccx72ZCR.s:4360   .debug_str:0000000000000baa .LASF213
+     /tmp/ccx72ZCR.s:4516   .debug_str:00000000000010a3 .LASF214
+     /tmp/ccx72ZCR.s:4472   .debug_str:0000000000000f50 .LASF215
+     /tmp/ccx72ZCR.s:4512   .debug_str:0000000000001084 .LASF216
+     /tmp/ccx72ZCR.s:4066   .debug_str:000000000000008c .LASF217
+     /tmp/ccx72ZCR.s:4304   .debug_str:00000000000009fa .LASF218
+     /tmp/ccx72ZCR.s:4358   .debug_str:0000000000000b9e .LASF219
+     /tmp/ccx72ZCR.s:4438   .debug_str:0000000000000e23 .LASF220
+     /tmp/ccx72ZCR.s:4172   .debug_str:000000000000050e .LASF221
+     /tmp/ccx72ZCR.s:4506   .debug_str:0000000000001064 .LASF222
+     /tmp/ccx72ZCR.s:4544   .debug_str:000000000000118a .LASF223
+     /tmp/ccx72ZCR.s:4504   .debug_str:0000000000001052 .LASF224
+     /tmp/ccx72ZCR.s:4224   .debug_str:00000000000006dc .LASF225
+     /tmp/ccx72ZCR.s:4090   .debug_str:000000000000018c .LASF226
+     /tmp/ccx72ZCR.s:4104   .debug_str:00000000000002a3 .LASF227
+     /tmp/ccx72ZCR.s:4164   .debug_str:00000000000004aa .LASF228
+     /tmp/ccx72ZCR.s:4100   .debug_str:00000000000001d4 .LASF229
+     /tmp/ccx72ZCR.s:4076   .debug_str:00000000000000e0 .LASF230
+     /tmp/ccx72ZCR.s:4522   .debug_str:00000000000010cf .LASF231
+     /tmp/ccx72ZCR.s:4300   .debug_str:00000000000009c7 .LASF232
+     /tmp/ccx72ZCR.s:4542   .debug_str:0000000000001171 .LASF233
+     /tmp/ccx72ZCR.s:4286   .debug_str:0000000000000921 .LASF234
+     /tmp/ccx72ZCR.s:4140   .debug_str:0000000000000403 .LASF235
+     /tmp/ccx72ZCR.s:4570   .debug_str:0000000000001266 .LASF236
+     /tmp/ccx72ZCR.s:4178   .debug_str:0000000000000551 .LASF237
+     /tmp/ccx72ZCR.s:4534   .debug_str:0000000000001128 .LASF238
+     /tmp/ccx72ZCR.s:4184   .debug_str:0000000000000581 .LASF239
+     /tmp/ccx72ZCR.s:4556   .debug_str:00000000000011f2 .LASF240
+     /tmp/ccx72ZCR.s:4200   .debug_str:0000000000000629 .LASF241
+     /tmp/ccx72ZCR.s:4072   .debug_str:00000000000000c1 .LASF242
+GAS LISTING /tmp/ccx72ZCR.s 			page 33
 
 
-     /tmp/ccOKE3MP.s:4354   .debug_str:00000000000000e0 .LASF235
-     /tmp/ccOKE3MP.s:4822   .debug_str:000000000000114e .LASF236
-     /tmp/ccOKE3MP.s:4566   .debug_str:0000000000000922 .LASF237
-     /tmp/ccOKE3MP.s:4418   .debug_str:0000000000000403 .LASF238
-     /tmp/ccOKE3MP.s:4850   .debug_str:000000000000123d .LASF239
-     /tmp/ccOKE3MP.s:4458   .debug_str:000000000000055a .LASF240
-     /tmp/ccOKE3MP.s:4816   .debug_str:000000000000111a .LASF241
-     /tmp/ccOKE3MP.s:4464   .debug_str:000000000000058a .LASF242
-     /tmp/ccOKE3MP.s:4836   .debug_str:00000000000011c9 .LASF243
-     /tmp/ccOKE3MP.s:4350   .debug_str:00000000000000c1 .LASF244
-     /tmp/ccOKE3MP.s:4552   .debug_str:000000000000088a .LASF245
-     /tmp/ccOKE3MP.s:4858   .debug_str:000000000000129b .LASF246
-     /tmp/ccOKE3MP.s:4356   .debug_str:00000000000000fb .LASF247
-     /tmp/ccOKE3MP.s:4750   .debug_str:0000000000000f2c .LASF248
-     /tmp/ccOKE3MP.s:4606   .debug_str:0000000000000a92 .LASF249
-     /tmp/ccOKE3MP.s:4668   .debug_str:0000000000000c6f .LASF250
-     /tmp/ccOKE3MP.s:4364   .debug_str:0000000000000163 .LASF251
-     /tmp/ccOKE3MP.s:4728   .debug_str:0000000000000e5c .LASF252
-     /tmp/ccOKE3MP.s:4478   .debug_str:000000000000060f .LASF253
-     /tmp/ccOKE3MP.s:4446   .debug_str:00000000000004d3 .LASF254
-     /tmp/ccOKE3MP.s:4532   .debug_str:00000000000007e5 .LASF255
-     /tmp/ccOKE3MP.s:4534   .debug_str:0000000000000800 .LASF256
-     /tmp/ccOKE3MP.s:4528   .debug_str:00000000000007b6 .LASF257
-     /tmp/ccOKE3MP.s:4756   .debug_str:0000000000000f57 .LASF258
-     /tmp/ccOKE3MP.s:628    .text:0000000000000384 .LFB34
-     /tmp/ccOKE3MP.s:648    .text:00000000000003a8 .LFE34
-     /tmp/ccOKE3MP.s:585    .text:0000000000000350 .LFB33
-     /tmp/ccOKE3MP.s:622    .text:0000000000000384 .LFE33
-     /tmp/ccOKE3MP.s:4100   .debug_loc:0000000000000000 .LLST9
-     /tmp/ccOKE3MP.s:600    .text:0000000000000368 .LVL39
-     /tmp/ccOKE3MP.s:611    .text:0000000000000374 .LVL40
-     /tmp/ccOKE3MP.s:543    .text:0000000000000320 .LFB32
-     /tmp/ccOKE3MP.s:579    .text:0000000000000350 .LFE32
-     /tmp/ccOKE3MP.s:4107   .debug_loc:0000000000000023 .LLST8
-     /tmp/ccOKE3MP.s:568    .text:0000000000000340 .LVL38
-     /tmp/ccOKE3MP.s:476    .text:00000000000002a8 .LFB31
-     /tmp/ccOKE3MP.s:537    .text:0000000000000320 .LFE31
-     /tmp/ccOKE3MP.s:4114   .debug_loc:0000000000000046 .LLST7
-     /tmp/ccOKE3MP.s:494    .text:00000000000002d0 .LVL33
-     /tmp/ccOKE3MP.s:260    .text:0000000000000190 .LFB30
-     /tmp/ccOKE3MP.s:319    .text:0000000000000208 .LFE30
-     /tmp/ccOKE3MP.s:4121   .debug_loc:0000000000000069 .LLST2
-     /tmp/ccOKE3MP.s:305    .text:00000000000001f4 .LVL17
-     /tmp/ccOKE3MP.s:193    .text:0000000000000118 .LFB29
-     /tmp/ccOKE3MP.s:254    .text:0000000000000190 .LFE29
-     /tmp/ccOKE3MP.s:4144   .debug_loc:00000000000000c9 .LLST1
-     /tmp/ccOKE3MP.s:211    .text:0000000000000140 .LVL12
-     /tmp/ccOKE3MP.s:134    .text:00000000000000b0 .LFB28
-     /tmp/ccOKE3MP.s:187    .text:0000000000000118 .LFE28
-     /tmp/ccOKE3MP.s:4151   .debug_loc:00000000000000ec .LLST0
-     /tmp/ccOKE3MP.s:173    .text:0000000000000104 .LVL10
-     /tmp/ccOKE3MP.s:654    .text:00000000000003a8 .LFB27
-     /tmp/ccOKE3MP.s:870    .text:00000000000004a4 .LFE27
-     /tmp/ccOKE3MP.s:4174   .debug_loc:000000000000014c .LLST10
-     /tmp/ccOKE3MP.s:4188   .debug_loc:0000000000000185 .LLST11
-     /tmp/ccOKE3MP.s:4304   .debug_ranges:0000000000000000 .Ldebug_ranges0
-     /tmp/ccOKE3MP.s:4199   .debug_loc:00000000000001bb .LLST13
-GAS LISTING /tmp/ccOKE3MP.s 			page 38
+     /tmp/ccx72ZCR.s:4272   .debug_str:0000000000000889 .LASF243
+     /tmp/ccx72ZCR.s:4578   .debug_str:00000000000012c4 .LASF244
+     /tmp/ccx72ZCR.s:4078   .debug_str:00000000000000fb .LASF245
+     /tmp/ccx72ZCR.s:4468   .debug_str:0000000000000f30 .LASF246
+     /tmp/ccx72ZCR.s:4328   .debug_str:0000000000000ab0 .LASF247
+     /tmp/ccx72ZCR.s:4386   .debug_str:0000000000000c74 .LASF248
+     /tmp/ccx72ZCR.s:4086   .debug_str:0000000000000163 .LASF249
+     /tmp/ccx72ZCR.s:4446   .debug_str:0000000000000e60 .LASF250
+     /tmp/ccx72ZCR.s:4198   .debug_str:0000000000000606 .LASF251
+     /tmp/ccx72ZCR.s:4168   .debug_str:00000000000004d3 .LASF252
+     /tmp/ccx72ZCR.s:4252   .debug_str:00000000000007e4 .LASF253
+     /tmp/ccx72ZCR.s:4254   .debug_str:00000000000007ff .LASF254
+     /tmp/ccx72ZCR.s:4248   .debug_str:00000000000007b5 .LASF255
+     /tmp/ccx72ZCR.s:4474   .debug_str:0000000000000f5b .LASF256
+     /tmp/ccx72ZCR.s:785    .text:000000000000045c .LFB35
+     /tmp/ccx72ZCR.s:822    .text:0000000000000490 .LFE35
+     /tmp/ccx72ZCR.s:3849   .debug_loc:0000000000000000 .LLST13
+     /tmp/ccx72ZCR.s:800    .text:0000000000000474 .LVL54
+     /tmp/ccx72ZCR.s:811    .text:0000000000000480 .LVL55
+     /tmp/ccx72ZCR.s:628    .text:0000000000000384 .LFB34
+     /tmp/ccx72ZCR.s:648    .text:00000000000003a8 .LFE34
+     /tmp/ccx72ZCR.s:585    .text:0000000000000350 .LFB33
+     /tmp/ccx72ZCR.s:622    .text:0000000000000384 .LFE33
+     /tmp/ccx72ZCR.s:3856   .debug_loc:0000000000000023 .LLST9
+     /tmp/ccx72ZCR.s:600    .text:0000000000000368 .LVL39
+     /tmp/ccx72ZCR.s:611    .text:0000000000000374 .LVL40
+     /tmp/ccx72ZCR.s:543    .text:0000000000000320 .LFB32
+     /tmp/ccx72ZCR.s:579    .text:0000000000000350 .LFE32
+     /tmp/ccx72ZCR.s:3863   .debug_loc:0000000000000046 .LLST8
+     /tmp/ccx72ZCR.s:568    .text:0000000000000340 .LVL38
+     /tmp/ccx72ZCR.s:476    .text:00000000000002a8 .LFB31
+     /tmp/ccx72ZCR.s:537    .text:0000000000000320 .LFE31
+     /tmp/ccx72ZCR.s:3870   .debug_loc:0000000000000069 .LLST7
+     /tmp/ccx72ZCR.s:494    .text:00000000000002d0 .LVL33
+     /tmp/ccx72ZCR.s:260    .text:0000000000000190 .LFB30
+     /tmp/ccx72ZCR.s:319    .text:0000000000000208 .LFE30
+     /tmp/ccx72ZCR.s:3877   .debug_loc:000000000000008c .LLST2
+     /tmp/ccx72ZCR.s:305    .text:00000000000001f4 .LVL17
+     /tmp/ccx72ZCR.s:193    .text:0000000000000118 .LFB29
+     /tmp/ccx72ZCR.s:254    .text:0000000000000190 .LFE29
+     /tmp/ccx72ZCR.s:3900   .debug_loc:00000000000000ec .LLST1
+     /tmp/ccx72ZCR.s:211    .text:0000000000000140 .LVL12
+     /tmp/ccx72ZCR.s:134    .text:00000000000000b0 .LFB28
+     /tmp/ccx72ZCR.s:187    .text:0000000000000118 .LFE28
+     /tmp/ccx72ZCR.s:3907   .debug_loc:000000000000010f .LLST0
+     /tmp/ccx72ZCR.s:173    .text:0000000000000104 .LVL10
+     /tmp/ccx72ZCR.s:654    .text:00000000000003a8 .LFB27
+     /tmp/ccx72ZCR.s:779    .text:000000000000045c .LFE27
+     /tmp/ccx72ZCR.s:3930   .debug_loc:000000000000016f .LLST10
+     /tmp/ccx72ZCR.s:4026   .debug_ranges:0000000000000000 .Ldebug_ranges0
+     /tmp/ccx72ZCR.s:3944   .debug_loc:00000000000001a8 .LLST11
+     /tmp/ccx72ZCR.s:4380   .debug_str:0000000000000c54 .LASF257
+     /tmp/ccx72ZCR.s:3955   .debug_loc:00000000000001de .LLST12
+     /tmp/ccx72ZCR.s:701    .text:00000000000003dc .LBB11
+     /tmp/ccx72ZCR.s:744    .text:000000000000041c .LBE11
+     /tmp/ccx72ZCR.s:705    .text:00000000000003e4 .LVL46
+     /tmp/ccx72ZCR.s:756    .text:0000000000000434 .LVL50
+GAS LISTING /tmp/ccx72ZCR.s 			page 34
 
 
-     /tmp/ccOKE3MP.s:4662   .debug_str:0000000000000c4f .LASF259
-     /tmp/ccOKE3MP.s:4210   .debug_loc:00000000000001f1 .LLST14
-     /tmp/ccOKE3MP.s:824    .text:0000000000000460 .LBB34
-     /tmp/ccOKE3MP.s:865    .text:00000000000004a0 .LBE34
-     /tmp/ccOKE3MP.s:828    .text:0000000000000468 .LVL56
-     /tmp/ccOKE3MP.s:721    .text:00000000000003ec .LBB28
-     /tmp/ccOKE3MP.s:732    .text:00000000000003f0 .LBE28
-     /tmp/ccOKE3MP.s:4217   .debug_loc:0000000000000214 .LLST15
-     /tmp/ccOKE3MP.s:738    .text:00000000000003f8 .LBB30
-     /tmp/ccOKE3MP.s:754    .text:0000000000000404 .LBE30
-     /tmp/ccOKE3MP.s:756    .text:0000000000000404 .LBB32
-     /tmp/ccOKE3MP.s:769    .text:000000000000040c .LBE32
-     /tmp/ccOKE3MP.s:4224   .debug_loc:0000000000000237 .LLST16
-     /tmp/ccOKE3MP.s:708    .text:00000000000003dc .LVL44
-     /tmp/ccOKE3MP.s:736    .text:00000000000003f8 .LVL49
-     /tmp/ccOKE3MP.s:781    .text:0000000000000424 .LVL52
-     /tmp/ccOKE3MP.s:669    .text:00000000000003bc .LBB22
-     /tmp/ccOKE3MP.s:686    .text:00000000000003c8 .LBE22
-     /tmp/ccOKE3MP.s:688    .text:00000000000003c8 .LBB24
-     /tmp/ccOKE3MP.s:703    .text:00000000000003d4 .LBE24
-     /tmp/ccOKE3MP.s:4232   .debug_loc:000000000000025b .LLST12
-     /tmp/ccOKE3MP.s:325    .text:0000000000000208 .LFB26
-     /tmp/ccOKE3MP.s:470    .text:00000000000002a8 .LFE26
-     /tmp/ccOKE3MP.s:4240   .debug_loc:000000000000027f .LLST3
-     /tmp/ccOKE3MP.s:4258   .debug_loc:00000000000002cb .LLST4
-     /tmp/ccOKE3MP.s:4273   .debug_loc:0000000000000314 .LLST5
-     /tmp/ccOKE3MP.s:379    .text:000000000000023c .LBB17
-     /tmp/ccOKE3MP.s:415    .text:0000000000000270 .LBE17
-     /tmp/ccOKE3MP.s:4284   .debug_loc:000000000000034a .LLST6
-     /tmp/ccOKE3MP.s:409    .text:0000000000000264 .LVL26
-     /tmp/ccOKE3MP.s:414    .text:0000000000000270 .LVL27
-     /tmp/ccOKE3MP.s:96     .text:00000000000000b0 .LFE25
-     /tmp/ccOKE3MP.s:33     .text:0000000000000024 .LVL0
-     /tmp/ccOKE3MP.s:39     .text:0000000000000034 .LVL1
-     /tmp/ccOKE3MP.s:48     .text:0000000000000048 .LVL2
-     /tmp/ccOKE3MP.s:54     .text:0000000000000058 .LVL3
-     /tmp/ccOKE3MP.s:78     .text:0000000000000088 .LVL4
-     /tmp/ccOKE3MP.s:82     .text:0000000000000094 .LVL5
-     /tmp/ccOKE3MP.s:89     .text:00000000000000a4 .LVL6
-     /tmp/ccOKE3MP.s:93     .text:00000000000000b0 .LVL7
-     /tmp/ccOKE3MP.s:4804   .debug_str:00000000000010cb .LASF260
-     /tmp/ccOKE3MP.s:4514   .debug_str:000000000000073a .LASF261
-     /tmp/ccOKE3MP.s:4802   .debug_str:00000000000010bb .LASF262
-     /tmp/ccOKE3MP.s:4760   .debug_str:0000000000000f78 .LASF270
-     /tmp/ccOKE3MP.s:4362   .debug_str:000000000000014b .LASF271
-     /tmp/ccOKE3MP.s:561    .text:0000000000000334 .LVL36
-     /tmp/ccOKE3MP.s:566    .text:0000000000000338 .LVL37
-     /tmp/ccOKE3MP.s:506    .text:00000000000002ec .LVL34
-     /tmp/ccOKE3MP.s:517    .text:0000000000000304 .LVL35
-     /tmp/ccOKE3MP.s:263    .text:0000000000000190 .LVL15
-     /tmp/ccOKE3MP.s:303    .text:00000000000001ec .LVL16
-     /tmp/ccOKE3MP.s:315    .text:0000000000000204 .LVL18
-     /tmp/ccOKE3MP.s:223    .text:000000000000015c .LVL13
-     /tmp/ccOKE3MP.s:234    .text:0000000000000174 .LVL14
-     /tmp/ccOKE3MP.s:137    .text:00000000000000b0 .LVL8
-     /tmp/ccOKE3MP.s:171    .text:00000000000000fc .LVL9
-     /tmp/ccOKE3MP.s:183    .text:0000000000000114 .LVL11
-GAS LISTING /tmp/ccOKE3MP.s 			page 39
+     /tmp/ccx72ZCR.s:766    .text:000000000000044c .LVL51
+     /tmp/ccx72ZCR.s:774    .text:0000000000000458 .LVL53
+     /tmp/ccx72ZCR.s:325    .text:0000000000000208 .LFB26
+     /tmp/ccx72ZCR.s:470    .text:00000000000002a8 .LFE26
+     /tmp/ccx72ZCR.s:3962   .debug_loc:0000000000000201 .LLST3
+     /tmp/ccx72ZCR.s:3980   .debug_loc:000000000000024d .LLST4
+     /tmp/ccx72ZCR.s:3995   .debug_loc:0000000000000296 .LLST5
+     /tmp/ccx72ZCR.s:379    .text:000000000000023c .LBB4
+     /tmp/ccx72ZCR.s:415    .text:0000000000000270 .LBE4
+     /tmp/ccx72ZCR.s:4006   .debug_loc:00000000000002cc .LLST6
+     /tmp/ccx72ZCR.s:409    .text:0000000000000264 .LVL26
+     /tmp/ccx72ZCR.s:414    .text:0000000000000270 .LVL27
+     /tmp/ccx72ZCR.s:96     .text:00000000000000b0 .LFE25
+     /tmp/ccx72ZCR.s:33     .text:0000000000000024 .LVL0
+     /tmp/ccx72ZCR.s:39     .text:0000000000000034 .LVL1
+     /tmp/ccx72ZCR.s:48     .text:0000000000000048 .LVL2
+     /tmp/ccx72ZCR.s:54     .text:0000000000000058 .LVL3
+     /tmp/ccx72ZCR.s:78     .text:0000000000000088 .LVL4
+     /tmp/ccx72ZCR.s:82     .text:0000000000000094 .LVL5
+     /tmp/ccx72ZCR.s:89     .text:00000000000000a4 .LVL6
+     /tmp/ccx72ZCR.s:93     .text:00000000000000b0 .LVL7
+     /tmp/ccx72ZCR.s:4536   .debug_str:000000000000113a .LASF258
+     /tmp/ccx72ZCR.s:4236   .debug_str:0000000000000742 .LASF259
+     /tmp/ccx72ZCR.s:4520   .debug_str:00000000000010bf .LASF260
+     /tmp/ccx72ZCR.s:4478   .debug_str:0000000000000f7c .LASF269
+     /tmp/ccx72ZCR.s:4084   .debug_str:000000000000014b .LASF270
+     /tmp/ccx72ZCR.s:561    .text:0000000000000334 .LVL36
+     /tmp/ccx72ZCR.s:566    .text:0000000000000338 .LVL37
+     /tmp/ccx72ZCR.s:506    .text:00000000000002ec .LVL34
+     /tmp/ccx72ZCR.s:517    .text:0000000000000304 .LVL35
+     /tmp/ccx72ZCR.s:263    .text:0000000000000190 .LVL15
+     /tmp/ccx72ZCR.s:303    .text:00000000000001ec .LVL16
+     /tmp/ccx72ZCR.s:315    .text:0000000000000204 .LVL18
+     /tmp/ccx72ZCR.s:223    .text:000000000000015c .LVL13
+     /tmp/ccx72ZCR.s:234    .text:0000000000000174 .LVL14
+     /tmp/ccx72ZCR.s:137    .text:00000000000000b0 .LVL8
+     /tmp/ccx72ZCR.s:171    .text:00000000000000fc .LVL9
+     /tmp/ccx72ZCR.s:183    .text:0000000000000114 .LVL11
+     /tmp/ccx72ZCR.s:657    .text:00000000000003a8 .LVL41
+     /tmp/ccx72ZCR.s:667    .text:00000000000003bc .LVL42
+     /tmp/ccx72ZCR.s:674    .text:00000000000003c8 .LVL43
+     /tmp/ccx72ZCR.s:692    .text:00000000000003d4 .LVL44
+     /tmp/ccx72ZCR.s:718    .text:0000000000000408 .LVL47
+     /tmp/ccx72ZCR.s:729    .text:0000000000000410 .LVL48
+     /tmp/ccx72ZCR.s:698    .text:00000000000003d8 .LVL45
+     /tmp/ccx72ZCR.s:328    .text:0000000000000208 .LVL19
+     /tmp/ccx72ZCR.s:375    .text:000000000000023c .LVL23
+     /tmp/ccx72ZCR.s:466    .text:00000000000002a4 .LVL32
+     /tmp/ccx72ZCR.s:335    .text:0000000000000214 .LVL20
+     /tmp/ccx72ZCR.s:353    .text:0000000000000220 .LVL21
+     /tmp/ccx72ZCR.s:384    .text:0000000000000248 .LVL24
+     /tmp/ccx72ZCR.s:425    .text:000000000000027c .LVL28
+     /tmp/ccx72ZCR.s:443    .text:0000000000000288 .LVL29
+     /tmp/ccx72ZCR.s:359    .text:0000000000000224 .LVL22
+     /tmp/ccx72ZCR.s:449    .text:000000000000028c .LVL30
+     /tmp/ccx72ZCR.s:404    .text:0000000000000258 .LVL25
+     /tmp/ccx72ZCR.s:462    .text:000000000000029c .LVL31
+GAS LISTING /tmp/ccx72ZCR.s 			page 35
 
 
-     /tmp/ccOKE3MP.s:657    .text:00000000000003a8 .LVL41
-     /tmp/ccOKE3MP.s:700    .text:00000000000003d4 .LVL43
-     /tmp/ccOKE3MP.s:684    .text:00000000000003c8 .LVL42
-     /tmp/ccOKE3MP.s:716    .text:00000000000003e4 .LVL46
-     /tmp/ccOKE3MP.s:752    .text:0000000000000404 .LVL50
-     /tmp/ccOKE3MP.s:793    .text:0000000000000440 .LVL53
-     /tmp/ccOKE3MP.s:811    .text:000000000000044c .LVL54
-     /tmp/ccOKE3MP.s:841    .text:000000000000048c .LVL57
-     /tmp/ccOKE3MP.s:852    .text:0000000000000494 .LVL58
-     /tmp/ccOKE3MP.s:817    .text:0000000000000450 .LVL55
-     /tmp/ccOKE3MP.s:720    .text:00000000000003ec .LVL47
-     /tmp/ccOKE3MP.s:729    .text:00000000000003f0 .LVL48
-     /tmp/ccOKE3MP.s:765    .text:000000000000040c .LVL51
-     /tmp/ccOKE3MP.s:328    .text:0000000000000208 .LVL19
-     /tmp/ccOKE3MP.s:375    .text:000000000000023c .LVL23
-     /tmp/ccOKE3MP.s:466    .text:00000000000002a4 .LVL32
-     /tmp/ccOKE3MP.s:335    .text:0000000000000214 .LVL20
-     /tmp/ccOKE3MP.s:353    .text:0000000000000220 .LVL21
-     /tmp/ccOKE3MP.s:384    .text:0000000000000248 .LVL24
-     /tmp/ccOKE3MP.s:425    .text:000000000000027c .LVL28
-     /tmp/ccOKE3MP.s:443    .text:0000000000000288 .LVL29
-     /tmp/ccOKE3MP.s:359    .text:0000000000000224 .LVL22
-     /tmp/ccOKE3MP.s:449    .text:000000000000028c .LVL30
-     /tmp/ccOKE3MP.s:404    .text:0000000000000258 .LVL25
-     /tmp/ccOKE3MP.s:462    .text:000000000000029c .LVL31
-     /tmp/ccOKE3MP.s:933    .debug_info:0000000000000000 .Ldebug_info0
-     /tmp/ccOKE3MP.s:330    .text:0000000000000208 .LBB15
-     /tmp/ccOKE3MP.s:363    .text:0000000000000228 .LBE15
-     /tmp/ccOKE3MP.s:377    .text:000000000000023c .LBB20
-     /tmp/ccOKE3MP.s:417    .text:0000000000000270 .LBE20
-     /tmp/ccOKE3MP.s:420    .text:0000000000000270 .LBB21
-     /tmp/ccOKE3MP.s:453    .text:0000000000000290 .LBE21
-     /tmp/ccOKE3MP.s:704    .text:00000000000003d4 .LBB26
-     /tmp/ccOKE3MP.s:771    .text:000000000000040c .LBE26
-     /tmp/ccOKE3MP.s:773    .text:000000000000040c .LBB36
-     /tmp/ccOKE3MP.s:868    .text:00000000000004a4 .LBE36
-     /tmp/ccOKE3MP.s:99     .gcc_except_table:0000000000000000 .LLSDA25
+     /tmp/ccx72ZCR.s:886    .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/ccx72ZCR.s:330    .text:0000000000000208 .LBB2
+     /tmp/ccx72ZCR.s:363    .text:0000000000000228 .LBE2
+     /tmp/ccx72ZCR.s:377    .text:000000000000023c .LBB7
+     /tmp/ccx72ZCR.s:417    .text:0000000000000270 .LBE7
+     /tmp/ccx72ZCR.s:420    .text:0000000000000270 .LBB8
+     /tmp/ccx72ZCR.s:453    .text:0000000000000290 .LBE8
+     /tmp/ccx72ZCR.s:669    .text:00000000000003bc .LBB9
+     /tmp/ccx72ZCR.s:746    .text:000000000000041c .LBE9
+     /tmp/ccx72ZCR.s:748    .text:000000000000041c .LBB13
+     /tmp/ccx72ZCR.s:777    .text:000000000000045c .LBE13
+     /tmp/ccx72ZCR.s:99     .gcc_except_table:0000000000000000 .LLSDA25
 
 UNDEFINED SYMBOLS
 _ZN10KSemaphorenwEm
@@ -2291,7 +2021,8 @@ _ZN10KSemaphore4waitEv
 CONSOLE_STATUS
 CONSOLE_TX_DATA
 _ZN5Riscv13w_a0_sscratchEv
+sysCallGetCharOutput
+CONSOLE_RX_DATA
+_ZN5Riscv12finishSystemE
 thread_exit
 thread_dispatch
-_ZN5Riscv12finishSystemE
-CONSOLE_RX_DATA

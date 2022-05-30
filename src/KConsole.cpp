@@ -54,8 +54,8 @@ void KConsole::getCharactersFromConsole(void* p)
 
 void KConsole::sendCharactersToConsole(void* p)
 {
-    uint64 sie = Riscv::r_sie();
-    Riscv::mc_sie(Riscv::SIP_SSIP);
+    //uint64 sie = Riscv::r_sie();
+    //Riscv::mc_sie(Riscv::SIP_SSIP);
     while(true)
     {
             if(Riscv::finishSystem && KConsole::outputBufferEmpty() && pendingGetc == 0)
@@ -68,7 +68,7 @@ void KConsole::sendCharactersToConsole(void* p)
             __asm__ volatile("mv %0, a1" :  "=r"(operation));
             if (operation & STATUS_WRITE_MASK)
             {
-                char volatile c = getCharacterOutput();
+                char volatile c = sysCallGetCharOutput();
                 pendingPutc--;
                 x = CONSOLE_RX_DATA;
                 __asm__ volatile("mv a0, %0"::"r"(x));
@@ -77,10 +77,10 @@ void KConsole::sendCharactersToConsole(void* p)
             }
             else
             {
-                Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
+                //Riscv::ms_sie(sie & Riscv::SIP_SSIP ? Riscv::SIP_SSIP : 0);
                 thread_dispatch();
-                sie = Riscv::r_sie();
-                Riscv::mc_sie(Riscv::SIP_SSIP);
+                //sie = Riscv::r_sie();
+                //Riscv::mc_sie(Riscv::SIP_SSIP);
             }
     }
 }
@@ -147,4 +147,12 @@ void KConsole::getcHandler()
 bool KConsole::outputBufferEmpty()
 {
     return pendingPutc == 0;
+}
+
+void KConsole::getCharHandler()
+{
+    char ch;
+    ch = getCharacterOutput();
+    __asm__ volatile("mv a0, %0" : :"r"((uint64)ch));
+    Riscv::w_a0_sscratch();
 }

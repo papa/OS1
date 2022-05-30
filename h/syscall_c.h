@@ -41,6 +41,8 @@ char getc();
 
 void putc(char c);
 
+char sysCallGetCharOutput();
+
 #ifdef __cplusplus
 }
 #endif

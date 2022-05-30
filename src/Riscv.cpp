@@ -166,6 +166,9 @@ void Riscv::handleSupervisorTrap()
                 case KConsole::CONSOLE_PUTC:
                     KConsole::putcHandler();
                     break;
+                case KConsole::CONSOLE_GET_CHAR:
+                    KConsole::getCharHandler();
+                    break;
             }
 
             Riscv::w_sstatus(sstatus);
@@ -181,7 +184,7 @@ void Riscv::kernelMain()
     initSystem();
 
     //disableTimerInterrupts();
-    enableInterrupts();
+    //enableInterrupts();
 
     PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
