@@ -71,7 +71,7 @@ void Riscv::handleSupervisorTrap()
 
             Riscv::w_sstatus(sstatus);
             Riscv::w_sepc(sepc);
-
+            changePrivMode();
             break;
         }
         case hwInterrupt:
@@ -170,7 +170,7 @@ void Riscv::handleSupervisorTrap()
 
             Riscv::w_sstatus(sstatus);
             Riscv::w_sepc(sepc);
-
+            changePrivMode();
             break;
         }
     }
@@ -194,7 +194,7 @@ void Riscv::kernelMain()
 
     finishSystem = true;
     ::printString("End...\n");
-    while(!PCB::consolePCB->isFinished() || KConsole::pendingGetc > 0)
+    while(!PCB::consolePCB->isFinished())
     {
         thread_dispatch();
     }
@@ -240,9 +240,9 @@ void Riscv::w_a0_sscratch()
 
 void Riscv::changePrivMode()
 {
-    //if(PCB::running->systemThread)
-    //    Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
-    //else
-    //    Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
+    if(PCB::running->systemThread)
+        Riscv::ms_sstatus(Riscv::SSTATUS_SPP);
+    else
+        Riscv::mc_sstatus(Riscv::SSTATUS_SPP);
 }
 

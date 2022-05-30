@@ -59,7 +59,7 @@ void PCB::dispatch()
     PCB::running->setState(PCB::RUNNING);
     //trapPrintString("Switching context...\n");
 
-    //Riscv::changePrivMode();
+    Riscv::changePrivMode();
 
     PCB::contextSwitch(&old->context, &running->context);
 }
@@ -87,9 +87,6 @@ void PCB::initialize()
     PCB::consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     PCB::consolePCB->systemThread = true;
     PCB::consolePCB->start();
-    //PCB* idlePCB = new PCB(&Riscv::idleRiscv, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //idlePCB->start();
-    //idlePCB->systemThread = true;
 }
 
 bool PCB::isFinished()

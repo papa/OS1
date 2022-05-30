@@ -84,7 +84,7 @@ void KConsole::sendCharactersToConsole(void* p)
 {
     while(true)
     {
-            if(Riscv::finishSystem && KConsole::outputBufferEmpty())
+            if(Riscv::finishSystem && KConsole::outputBufferEmpty() && pendingGetc == 0)
                 thread_exit();
 
             uint64 x = CONSOLE_STATUS;
@@ -160,6 +160,7 @@ void KConsole::printBuffer()
     }
 }
 
-bool KConsole::outputBufferEmpty() {
+bool KConsole::outputBufferEmpty()
+{
     return headOutput == 0;
 }
