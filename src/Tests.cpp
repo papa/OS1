@@ -462,7 +462,7 @@ void consumerA(void *arg)
     while(head!=10)
     {
         sem_wait(itemAvailable);
-        __putc(buffer[head++]);
+        putc(buffer[head++]);
         sem_signal(spaceAvailable);
     }
 }

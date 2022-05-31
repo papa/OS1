@@ -103,19 +103,19 @@ void Riscv::handleSupervisorTrap()
         case operationInterrupt: // todo
         {
             trapPrintString("operation interrupt\n");
-            thread_exit();
+            PCB::threadExitHandler();
             break;
         }
         case addrReadInterrupt: // todo
         {
             trapPrintString("read interrupt\n");
-            thread_exit();
+            PCB::threadExitHandler();
             break;
         }
         case addrWriteInterrupt: // todo
         {
             trapPrintString("write interrupt\n");
-            thread_exit();
+            PCB::threadExitHandler();
             break;
         }
         case ecallSystemInterupt:
@@ -188,8 +188,8 @@ void Riscv::kernelMain()
 {
     initSystem();
 
-    //PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     userPCB->start();
 
     enableInterrupts();
