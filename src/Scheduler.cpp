@@ -11,12 +11,12 @@ PCB* Scheduler::schedulerPCBTail = 0;
 
 void *Scheduler::operator new(size_t size)
 {
-    return kmalloc(size);
+    return MemoryAllocator::kmalloc(size);
 }
 
 void Scheduler::operator delete(void *p)
 {
-    kfree(p);
+    MemoryAllocator::kfree(p);
 }
 
 int Scheduler::getSize()

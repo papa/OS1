@@ -13,6 +13,7 @@
 
 uint64 Riscv::totalTime = 0;
 bool Riscv::finishSystem = false;
+bool Riscv::kernelMainCalled = false;
 
 void Riscv::initSystem()
 {
@@ -186,9 +187,12 @@ void Riscv::handleSupervisorTrap()
 
 void Riscv::kernelMain()
 {
+    if(kernelMainCalled) return;
+    kernelMainCalled = true;
+
     initSystem();
 
-    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     userPCB->start();
 
@@ -199,7 +203,7 @@ void Riscv::kernelMain()
         thread_dispatch();
     }
 
-    printString("End...\n");
+    //printString("End...\n");
     finishSystem = true;
     while(!PCB::consolePCB->isFinished())
     {

@@ -11,8 +11,15 @@ class SleepPCBList
 {
 private:
     static PCB* sleepingPCBHead;
-public:
+
     static void insertSleepingPCB();
     static void tryToWakePCBs();
+
+    friend class PCB;
+    friend class Scheduler;
+    friend class KConsole;
+    friend class KSemaphore;
+    friend class Riscv;
+    friend class MemoryAllocator;
 };
 #endif //PROJECT_BASE_V1_0_SLEEPPCBLIST_HPP

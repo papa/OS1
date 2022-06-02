@@ -12,7 +12,6 @@
 class KConsole
 {
 private:
-
     static KSemaphore* hasCharactersInput;
     static KSemaphore* hasCharactersOutput;
 
@@ -25,7 +24,7 @@ private:
 
     static char inputBuffer[bufferSize];
     static char outputBuffer[bufferSize];
-public:
+
     static uint64 pendingGetc;
     static uint64 pendingPutc;
 
@@ -53,6 +52,16 @@ public:
 
     static void putcHandler();
     static void getcHandler();
+
+    static void trapPrintString(const char* string);
+    static void printInt(int xx, int base=10, int sgn=0);
+
+    friend class PCB;
+    friend class Scheduler;
+    friend class SleepPCBList;
+    friend class KSemaphore;
+    friend class Riscv;
+    friend class MemoryAllocator;
 };
 
 #endif //PROJECT_BASE_V1_0_KCONSOLE_HPP

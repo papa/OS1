@@ -12,7 +12,8 @@ class Riscv
 {
 public:
     static void kernelMain();
-
+private:
+    static bool kernelMainCalled;
     static void changePrivMode();
 
     static void initSystem();
@@ -101,6 +102,13 @@ public:
     static const uint64 ecallSystemInterupt = bntZero + 9UL;
 
     static uint64 totalTime;
+
+    friend class PCB;
+    friend class Scheduler;
+    friend class SleepPCBList;
+    friend class KSemaphore;
+    friend class KConsole;
+    friend class MemoryAllocator;
 };
 
 inline void Riscv::mc_sie(uint64 mask)

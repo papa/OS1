@@ -194,12 +194,12 @@ void MemoryAllocator::memFreeHandler()
     Riscv::w_a0_sscratch();
 }
 
-void* kmalloc(size_t size)
+void* MemoryAllocator::kmalloc(size_t size)
 {
     return MemoryAllocator::mem_alloc(size);
 }
 
-uint64 kfree(void* p)
+uint64 MemoryAllocator::kfree(void* p)
 {
     return MemoryAllocator::mem_free(p);
 }

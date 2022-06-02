@@ -11,7 +11,7 @@
 
 class PCB
 {
-public:
+private:
     static uint64 savedRegA4;
 
     using Body = void (*)(void*);
@@ -64,8 +64,6 @@ public:
 
     static PCB* consolePCB;
 
-private:
-
     uint64 timeSlice;
 
     uint64 timeToSleep = 0;
@@ -90,6 +88,13 @@ private:
     State state;
 
     Context context;
+
+    friend class KConsole;
+    friend class Scheduler;
+    friend class SleepPCBList;
+    friend class KSemaphore;
+    friend class Riscv;
+    friend class MemoryAllocator;
 };
 
 

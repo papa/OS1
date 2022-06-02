@@ -7,13 +7,12 @@
 
 #include "../lib/hw.h"
 #include "MemoryAllocator.hpp"
-#include "Queue.hpp"
 
 class PCB;
 
 class Scheduler
 {
-public:
+private:
     static void put(PCB* pcb);
     static PCB* get();
 
@@ -24,9 +23,15 @@ public:
 
     static void print();
 
-private:
     static PCB* schedulerPCBHead;
     static PCB* schedulerPCBTail;
+
+    friend class PCB;
+    friend class KConsole;
+    friend class SleepPCBList;
+    friend class KSemaphore;
+    friend class Riscv;
+    friend class MemoryAllocator;
 };
 
 #endif //PROJECT_BASE_V1_0_SCHEDULER_HPP

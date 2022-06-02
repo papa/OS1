@@ -99,12 +99,12 @@ void KSemaphore::unblock() {
     }
 }
 void *KSemaphore::operator new(size_t size) {
-    return kmalloc(size);
+    return MemoryAllocator::kmalloc(size);
 }
 
 void KSemaphore::operator delete(void *p)
 {
-    kfree(p);
+    MemoryAllocator::kfree(p);
 }
 
 void KSemaphore::semWaitHandler()

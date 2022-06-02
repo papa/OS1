@@ -10,7 +10,7 @@
 
 class KSemaphore
 {
-public:
+private:
     KSemaphore(int val = 0);
     ~KSemaphore();
 
@@ -33,7 +33,6 @@ public:
     static void semSignalHandler();
     static void semCloseHandler();
 
-private:
     int val, beginVal;
 
     void block();
@@ -42,6 +41,13 @@ private:
     PCB* getFirstBlocked();
     void removeFirstBlocked();
     void addToBlocked(PCB* pcb);
+
+    friend class PCB;
+    friend class Scheduler;
+    friend class SleepPCBList;
+    friend class KConsole;
+    friend class Riscv;
+    friend class MemoryAllocator;
 };
 
 #endif //PROJECT_BASE_V1_0_KSEMAPHORE_HPP

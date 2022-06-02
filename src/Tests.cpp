@@ -61,7 +61,7 @@ void thread2FunctionTest2(void* p)
 
 void threadTest1()
 {
-    Thread* t1 = new Thread(&thread1Function, 0);
+    /*Thread* t1 = new Thread(&thread1Function, 0);
     t1->start();
     Thread* t2 = new Thread(&thread2Function, 0);
     t2->start();
@@ -73,12 +73,12 @@ void threadTest1()
     //}
 
     printString("End...\n");
-    Riscv::disableInterrupts();
+    Riscv::disableInterrupts();*/
 }
 
 void threadTest2()
 {
-    Thread* idleThread = new Thread(&idle, 0);
+    /*Thread* idleThread = new Thread(&idle, 0);
     idleThread->start();
     Thread* t1 = new Thread(&thread1Function, 0);
     t1->start();
@@ -91,7 +91,7 @@ void threadTest2()
 
     printString("End...\n");
 
-    Riscv::disableInterrupts();
+    Riscv::disableInterrupts();*/
 }
 
 
@@ -332,7 +332,7 @@ void mallocTest()
 
 void mallocEverything()
 {
-    printString("Testing allocating whole address space\n\n");
+    /*printString("Testing allocating whole address space\n\n");
 
     uint64 neg_size = (uint64)HEAP_START_ADDR - (uint64)HEAP_END_ADDR -sizeof(MemoryAllocator::BlockHeader);
 
@@ -372,7 +372,7 @@ void mallocEverything()
     delete (uint64*)m;
     //delete (uint64*)small_chunk;
 
-    printString("SUCCESSFUL: Testing allocating whole address space\n\n");
+    printString("SUCCESSFUL: Testing allocating whole address space\n\n");*/
 }
 
 void mallocGapFillTest()
@@ -480,7 +480,7 @@ void producerA(void *arg)
 
 void semTest1()
 {
-    sem_open(&spaceAvailable, 10);
+    /*sem_open(&spaceAvailable, 10);
 
     sem_open(&itemAvailable, 0);
 
@@ -491,7 +491,7 @@ void semTest1()
     thread_create(&threadB, consumerA, nullptr);
 
     while(!((PCB*)threadA)->isFinished() || !((PCB*)threadA)->isFinished())
-        thread_dispatch();
+        thread_dispatch();*/
 }
 
 void consoleTest1()

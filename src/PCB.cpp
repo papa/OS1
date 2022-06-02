@@ -65,16 +65,16 @@ void PCB::dispatch()
 }
 
 void *PCB::operator new(size_t size) {
-    return kmalloc(size);
+    return MemoryAllocator::kmalloc(size);
 }
 
 void PCB::operator delete(void *p) {
-    kfree(p);
+    MemoryAllocator::kfree(p);
 }
 
 PCB::~PCB()
 {
-    kfree(beginSP);
+    MemoryAllocator::kfree(beginSP);
 }
 
 void PCB::initialize()
@@ -84,7 +84,7 @@ void PCB::initialize()
     mainSystem->systemThread = true;
     PCB::running = Scheduler::get();
     PCB::running->setState(PCB::RUNNING);
-    PCB::consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB::consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     PCB::consolePCB->systemThread = true;
     PCB::consolePCB->start();
 }

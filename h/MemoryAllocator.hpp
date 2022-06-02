@@ -9,20 +9,17 @@
 
 class MemoryAllocator
 {
-public:
+private:
     typedef struct BlockHeader
     {
         size_t size;
         struct BlockHeader *next;
     } BlockHeader;
-private:
-
 
     static BlockHeader* headFree;
     static BlockHeader* headAllocated;
 
     static int memoryInitiliaized;
-public:
 
     static const int MEM_FREE = 2;
     static const int MEM_ALLOC = 1;
@@ -40,10 +37,16 @@ public:
 
     static void memAllocHandler();
     static void memFreeHandler();
+
+    static void* kmalloc(size_t size);
+    static uint64 kfree(void* p);
+
+    friend class PCB;
+    friend class Scheduler;
+    friend class SleepPCBList;
+    friend class KSemaphore;
+    friend class Riscv;
+    friend class KConsole;
 };
-
-void* kmalloc(size_t size);
-uint64 kfree(void* p);
-
 
 #endif //PROJECT_BASE_V1_0_MEMORYALLOCATOR_HPP
