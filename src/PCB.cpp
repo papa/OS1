@@ -10,11 +10,11 @@
 #include "../h/Scheduler.hpp"
 #include "../h/Riscv.hpp"
 
-
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
 uint64 PCB::savedRegA4 = 0;
 PCB* PCB::consolePCB = 0;
+PCB* PCB::userPCB = 0;
 
 PCB::PCB(Body body, void *args, void* stack_space, uint64 timeSlice) :
     timeSlice(timeSlice),
@@ -83,13 +83,14 @@ PCB::~PCB()
 void PCB::initialize()
 {
     PCB* mainSystem = new PCB(0, 0, 0, 0);
-    mainSystem->start();
     mainSystem->systemThread = true;
-    PCB::running = Scheduler::get();
+    PCB::running = mainSystem;
     PCB::running->setState(PCB::RUNNING);
     PCB::consolePCB = new PCB(&KConsole::sendCharactersToConsole, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     PCB::consolePCB->systemThread = true;
     PCB::consolePCB->start();
+    PCB::userPCB = new PCB(&Riscv::userMainWrapper, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    PCB::userPCB->start();
 }
 
 bool PCB::isFinished()

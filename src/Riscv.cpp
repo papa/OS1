@@ -191,13 +191,9 @@ void Riscv::kernelMain()
 
     initSystem();
 
-    PCB* userPCB = new PCB(&Riscv::userMainWrapper, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    //PCB* userPCB = new PCB(&Riscv::myTestsWrapper, 0, kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
-    userPCB->start();
-
     enableInterrupts();
 
-    while(!userPCB->isFinished())
+    while(!PCB::userPCB->isFinished())
     {
         thread_dispatch();
     }

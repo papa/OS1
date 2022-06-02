@@ -61,6 +61,7 @@ private:
     uint64 sscratch;
 
     static PCB* consolePCB;
+    static PCB* userPCB;
 
     uint64 timeSlice;
 

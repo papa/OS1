@@ -16,6 +16,7 @@ static uint64 fibonacci(uint64 n) {
 }
 
 void workerBodyA(void* arg) {
+    //__asm__ volatile("csrr a0, sstatus");
     for (uint64 i = 0; i < 10; i++) {
         printString("A: i="); printInt(i); printString("\n");
         for (uint64 j = 0; j < 10000; j++) {
@@ -35,9 +36,9 @@ void workerBodyB(void* arg) {
             thread_dispatch();
         }
     }
+    thread_dispatch();
     printString("B finished!\n");
     finishedB = true;
-    thread_dispatch();
 }
 
 void workerBodyC(void* arg) {
@@ -62,9 +63,9 @@ void workerBodyC(void* arg) {
         printString("C: i="); printInt(i); printString("\n");
     }
 
-    printString("A finished!\n");
-    finishedC = true;
     thread_dispatch();
+    printString("C finished!\n");
+    finishedC = true;
 }
 
 void workerBodyD(void* arg) {
@@ -84,9 +85,9 @@ void workerBodyD(void* arg) {
         printString("D: i="); printInt(i); printString("\n");
     }
 
+    thread_dispatch();
     printString("D finished!\n");
     finishedD = true;
-    thread_dispatch();
 }
 
 
