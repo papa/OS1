@@ -20,7 +20,8 @@ public:
 
     void put(int val);
     int get();
-};
 
+    int getCnt();
+};
 
 #endif //OS1_BUFFERCPP_H

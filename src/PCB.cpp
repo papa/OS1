@@ -96,7 +96,7 @@ bool PCB::isFinished()
 
 void PCB::threadExitHandler()
 {
-    trapPrintString("Exiting thread...\n");
+    //trapPrintString("Exiting thread...\n");
     PCB::timeSliceCounter = 0;
     PCB::running->setState(PCB::FINISHED);
     PCB::dispatch();

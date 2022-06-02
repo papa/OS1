@@ -3,7 +3,8 @@
 //
 
 #include "ConsumerProducer_C_API_test.hpp"
-#include "../h/Riscv.hpp"
+#include "buffer.hpp"
+#include "printing.hpp"
 
 sem_t waitForAll;
 

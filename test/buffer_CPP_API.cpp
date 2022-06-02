@@ -1,27 +1,23 @@
 #include "buffer_CPP_API.hpp"
 
-
-BufferCPP::BufferCPP(int _cap) : cap(_cap), head(0), tail(0) {
+BufferCPP::BufferCPP(int _cap) : cap(_cap + 1), head(0), tail(0) {
     buffer = (int *)mem_alloc(sizeof(int) * cap);
     itemAvailable = new Semaphore(0);
-    spaceAvailable = new Semaphore(cap);
+    spaceAvailable = new Semaphore(_cap);
     mutexHead = new Semaphore(1);
     mutexTail = new Semaphore(1);
 }
 
 BufferCPP::~BufferCPP() {
-    putc('\n');
-    //todo
-    //placeholder
-    //printf("Buffer deleted!\n");
-    while (head != tail) {
-        //todo
-        //placeholder
-        //printf("%c ", buffer[head]);
+    Console::putc('\n');
+    printString("Buffer deleted!\n");
+    while (getCnt()) {
+        char ch = buffer[head];
+        Console::putc(ch);
         head = (head + 1) % cap;
     }
-    putc('!');
-    putc('\n');
+    Console::putc('!');
+    Console::putc('\n');
 
     mem_free(buffer);
     delete itemAvailable;
@@ -56,3 +52,22 @@ int BufferCPP::get() {
 
     return ret;
 }
+
+int BufferCPP::getCnt() {
+    int ret;
+
+    mutexHead->wait();
+    mutexTail->wait();
+
+    if (tail >= head) {
+        ret = tail - head;
+    } else {
+        ret = cap - head + tail;
+    }
+
+    mutexTail->signal();
+    mutexHead->signal();
+
+    return ret;
+}
+

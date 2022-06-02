@@ -8,7 +8,6 @@
 #include "../h/syscall_cpp.hpp"
 
 #include "buffer_CPP_API.hpp"
-#include "printing.hpp"
 
 Semaphore* waitForAll;
 
@@ -36,7 +35,7 @@ void ProducerKeyboard::producerKeyboard(void *arg) {
 
     int key;
     int i = 0;
-    while ((key = getc()) != 0x1b) {
+    while ((key = getc()) != 'q') {
         data->buffer->put(key);
         i++;
 
@@ -46,8 +45,7 @@ void ProducerKeyboard::producerKeyboard(void *arg) {
     }
 
     threadEnd = 1;
-
-    delete data->buffer;
+    td->buffer->put('!');
 
     data->wait->signal();
 }
@@ -109,6 +107,12 @@ void Consumer::consumer(void *arg) {
         }
     }
 
+
+    while (td->buffer->getCnt() > 0) {
+        int key = td->buffer->get();
+        Console::putc(key);
+    }
+
     data->wait->signal();
 }
 
@@ -127,6 +131,14 @@ void producerConsumer_CPP_Sync_API() {
     printString("Broj proizvodjaca "); printInt(threadNum);
     printString(" i velicina bafera "); printInt(n);
     printString(".\n");
+
+    if(threadNum > n) {
+        printString("Broj proizvodjaca ne sme biti manji od velicine bafera!\n");
+        return;
+    } else if (threadNum < 1) {
+        printString("Broj proizvodjaca mora biti veci od nula!\n");
+        return;
+    }
 
     BufferCPP *buffer = new BufferCPP(n);
 
@@ -168,6 +180,7 @@ void producerConsumer_CPP_Sync_API() {
     }
     delete consumerThread;
     delete waitForAll;
+    delete buffer;
 
 }
 
