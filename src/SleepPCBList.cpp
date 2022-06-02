@@ -3,6 +3,8 @@
 //
 
 #include "../h/SleepPCBList.hpp"
+#include "../h/Scheduler.hpp"
+#include "../h/Riscv.hpp"
 
 PCB* SleepPCBList::sleepingPCBHead = 0;
 

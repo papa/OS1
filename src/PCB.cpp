@@ -7,6 +7,9 @@
 #include "../h/SleepPCBList.hpp"
 #include "../test/printing.hpp"
 #include "../h/KConsole.hpp"
+#include "../h/Scheduler.hpp"
+#include "../h/Riscv.hpp"
+
 
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;

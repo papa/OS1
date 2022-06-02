@@ -30,7 +30,7 @@ namespace ConsumerProducerCPP {
         void run() override {
             int key;
             int i = 0;
-            while ((key = getc()) != 0x1b) {
+            while ((key = getc()) != 'q') {
                 td->buffer->put(key);
                 i++;
             }
@@ -151,7 +151,6 @@ namespace ConsumerProducerCPP {
         delete consumer;
         delete buffer;
     }
-
 }
 
 #endif //XV6_CONSUMERPRODUCER_CPP_API_TEST_HPP

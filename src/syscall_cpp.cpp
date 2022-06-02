@@ -103,12 +103,12 @@ Semaphore::~Semaphore() {
 
 char Console::getc()
 {
-    return 0;
+    return ::getc();
 }
 
-void Console::putc(char)
+void Console::putc(char c)
 {
-
+    return ::putc(c);
 }
 
 //PeriodicThread

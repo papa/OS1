@@ -4,6 +4,8 @@
 
 #include "../h/KSemaphore.hpp"
 #include "../h/MemoryAllocator.hpp"
+#include "../h/Riscv.hpp"
+#include "../h/Scheduler.hpp"
 
 KSemaphore::KSemaphore(int val)
 {
@@ -11,7 +13,9 @@ KSemaphore::KSemaphore(int val)
     headBlocked = tailBlocked = 0;
 }
 
-uint64 KSemaphore::wait() {
+uint64 KSemaphore::wait()
+{
+    PCB::running->retFromClosedSem = false;
     if(--val < 0)
         block();
 
@@ -40,6 +44,7 @@ void KSemaphore::semOpenHandler()
             __asm__ volatile("li a0, 0xffffffffffffffff");
     else
             __asm__ volatile("li a0, 0");
+    Riscv::w_a0_sscratch();
 }
 
 KSemaphore::~KSemaphore()
@@ -48,6 +53,7 @@ KSemaphore::~KSemaphore()
     {
         PCB* pcb = getFirstBlocked();
         removeFirstBlocked();
+        pcb->retFromClosedSem = true;
         Scheduler::put(pcb);
     }
 }
@@ -111,17 +117,28 @@ void KSemaphore::semWaitHandler()
 {
     KSemaphore* kSem;
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
-    uint64 volatile retval = kSem->wait();
-    __asm__ volatile("mv a0,%0" : :"r"(retval));
+    //uint64 volatile retval = kSem->wait();
+    kSem->wait();
+    if(PCB::running->retFromClosedSem)
+        __asm__ volatile("li a0, 0x1");
+    else
+        __asm__ volatile("li a0, 0x0");
     Riscv::w_a0_sscratch();
 }
 
-void KSemaphore::semSignalHandler()
-{
-    KSemaphore* kSem;
+void KSemaphore::semSignalHandler() {
+    KSemaphore *kSem;
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
-    uint64 volatile retval = kSem->signal();
-    __asm__ volatile("mv a0,%0" : :"r"(retval));
+    if (kSem == 0)
+    {
+        __asm__ volatile("li a0, 0x1");
+    }
+    else
+    {
+        //uint64 volatile retval = kSem->signal();
+        kSem->signal();
+        __asm__ volatile("li a0, 0x0");
+    }
     Riscv::w_a0_sscratch();
 }
 

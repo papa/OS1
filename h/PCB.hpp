@@ -6,8 +6,6 @@
 #define PROJECT_BASE_V1_0_PCB_HPP
 
 #include "../lib/hw.h"
-#include "Scheduler.hpp"
-#include "Riscv.hpp"
 
 class PCB
 {
@@ -88,6 +86,8 @@ private:
     State state;
 
     Context context;
+
+    bool retFromClosedSem = false;
 
     friend class KConsole;
     friend class Scheduler;
