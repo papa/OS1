@@ -52,8 +52,7 @@ int Buffer::get() {
     return ret;
 }
 
-int Buffer::getCnt()
-{
+int Buffer::getCnt() {
     int ret;
 
     sem_wait(mutexHead);

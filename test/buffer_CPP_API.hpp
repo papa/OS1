@@ -2,6 +2,7 @@
 #define OS1_BUFFERCPP_H
 
 #include "../h/syscall_cpp.hpp"
+#include "printing.hpp"
 
 class BufferCPP {
 private:
@@ -23,5 +24,6 @@ public:
 
     int getCnt();
 };
+
 
 #endif //OS1_BUFFERCPP_H
