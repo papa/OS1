@@ -2,7 +2,6 @@
 #define XV6_THREADS_CPP_API_TEST_HPP
 
 #include "../h/syscall_cpp.hpp"
-
 #include "printing.hpp"
 
 class WorkerA: public Thread {

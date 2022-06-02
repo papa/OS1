@@ -3,8 +3,9 @@
 //
 
 #include "../h/Tests.hpp"
-#include "../lib/console.h"
 #include "../test/printing.hpp"
+#include "../h/Riscv.hpp"
+#include "../h/PCB.hpp"
 
 void idle(void* args)
 {

@@ -6,8 +6,6 @@
 #define PROJECT_BASE_V1_0_SYSCALL_CPP_HPP
 
 #include "syscall_c.h"
-#include "PCB.hpp"
-#include "KSemaphore.hpp"
 
 void * operator new(size_t size);
 

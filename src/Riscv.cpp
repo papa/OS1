@@ -9,7 +9,6 @@
 #include "../h/SleepPCBList.hpp"
 #include "../h/KConsole.hpp"
 #include "../h/Tests.hpp"
-#include "../test/userMain.hpp"
 
 uint64 Riscv::totalTime = 0;
 bool Riscv::finishSystem = false;

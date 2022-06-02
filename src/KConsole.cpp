@@ -2,7 +2,7 @@
 // Created by os on 5/19/22.
 //
 #include "../h/KConsole.hpp"
-#include "../h/syscall_c.h"
+#include "../test/printing.hpp"
 #include "../h/Riscv.hpp"
 
 uint64 KConsole::inputHead = 0;

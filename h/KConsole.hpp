@@ -5,9 +5,7 @@
 #ifndef PROJECT_BASE_V1_0_KCONSOLE_HPP
 #define PROJECT_BASE_V1_0_KCONSOLE_HPP
 
-#include "MemoryAllocator.hpp"
 #include "KSemaphore.hpp"
-#include "../lib/hw.h"
 
 class KConsole
 {

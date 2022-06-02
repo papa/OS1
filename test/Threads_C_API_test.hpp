@@ -1,8 +1,6 @@
 #ifndef XV6_THREADS_C_API_TEST_HPP
 #define XV6_THREADS_C_API_TEST_HPP
 
-#include "../h/syscall_c.h"
-
 #include "printing.hpp"
 
 void workerBodyA(void* arg);

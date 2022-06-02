@@ -5,8 +5,6 @@
 #ifndef PROJECT_BASE_V1_0_TESTS_HPP
 #define PROJECT_BASE_V1_0_TESTS_HPP
 
-#include "Riscv.hpp"
-#include "PCB.hpp"
 #include "syscall_cpp.hpp"
 
 class Test

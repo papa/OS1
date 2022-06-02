@@ -5,12 +5,7 @@
 #ifndef XV6_CONSUMERPRODUCER_C_API_TEST_H
 #define XV6_CONSUMERPRODUCER_C_API_TEST_H
 
-#include "../h/syscall_c.h"
-
-#include "../lib/console.h"
-
 #include "buffer.hpp"
-#include "printing.hpp"
 
 void producerKeyboard(void *arg);
 

@@ -5,7 +5,6 @@
 #ifndef PROJECT_BASE_V1_0_SCHEDULER_HPP
 #define PROJECT_BASE_V1_0_SCHEDULER_HPP
 
-#include "../lib/hw.h"
 #include "MemoryAllocator.hpp"
 
 class PCB;

@@ -6,7 +6,7 @@
 #define PROJECT_BASE_V1_0_RISCV_HPP
 
 #include "../lib/hw.h"
-#include "../test/printing.hpp"
+#include "../test/userMain.hpp"
 
 class Riscv
 {
