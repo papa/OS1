@@ -107,7 +107,7 @@ void Threads_C_API_test() {
         thread_dispatch();
     }
 
-    for (auto &thread: threads) { delete (uint64*)thread; }
+    for (auto &thread: threads) { delete thread; }
 }
 
 #endif //XV6_THREADS_C_API_TEST_HPP

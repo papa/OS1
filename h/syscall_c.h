@@ -15,14 +15,14 @@ void * mem_alloc(size_t size);
 
 int mem_free(void*);
 
-typedef void* thread_t;
+typedef uint64* thread_t;
 int thread_create(thread_t*, void (*start_routine)(void*), void*);
 
 int thread_exit();
 
 void thread_dispatch();
 
-typedef void* sem_t;
+typedef uint64* sem_t;
 int sem_open(sem_t* handle, unsigned int x);
 
 int sem_close(sem_t handle);

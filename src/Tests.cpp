@@ -176,7 +176,7 @@ void bigMalloc()
 
 void lotOfSmallMallocs()
 {
-    printString("lotOfSmallMallocs\n");
+    /*printString("lotOfSmallMallocs\n");
     uint64 cnt = 0;
     uint64 sum = 0;
     uint64 N = 10000UL;
@@ -195,7 +195,17 @@ void lotOfSmallMallocs()
     if(sum == X*cnt)
         printString("OK\n");
     else
-        printString("not OK\n");
+        printString("not OK\n");*/
+    for(int i=0;i<70000;i++)
+    {
+        int *x = (int*) mem_alloc(1);
+        if(x == nullptr)
+        {
+            printString("not OK\n");
+            break;
+        }
+    }
+    printString("OK\n");
 }
 void badFree()
 {
@@ -268,13 +278,13 @@ void stressTesting()
 void memoryAllocationTests()
 {
     //bigMalloc();
-    //lotOfSmallMallocs();
+    lotOfSmallMallocs();
     //mallocFree();
     //badFree();
     //stressTesting();
     //mallocTest();
     //mallocEverything();
-    mallocGapFillTest();
+    //mallocGapFillTest();
 }
 
 void semaphoreTests()
@@ -284,10 +294,10 @@ void semaphoreTests()
 
 void myTests()
 {
-    //memoryAllocationTests();
+    memoryAllocationTests();
     //threadTests();
     //semaphoreTests();
-    consoleTests();
+    //consoleTests();
     //changeModeTests();
 }
 

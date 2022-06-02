@@ -9,6 +9,7 @@
 #include "../h/KConsole.hpp"
 #include "../h/Scheduler.hpp"
 #include "../h/Riscv.hpp"
+#include "../h/Tests.hpp"
 
 PCB* PCB::running = 0;
 uint64 PCB::timeSliceCounter = 0;
@@ -90,6 +91,7 @@ void PCB::initialize()
     PCB::consolePCB->systemThread = true;
     PCB::consolePCB->start();
     PCB::userPCB = new PCB(&Riscv::userMainWrapper, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
+    //PCB::userPCB = new PCB(&Riscv::myTestsWrapper, 0, MemoryAllocator::kmalloc(DEFAULT_STACK_SIZE), DEFAULT_TIME_SLICE);
     PCB::userPCB->start();
 }
 

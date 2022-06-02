@@ -99,7 +99,7 @@ int thread_exit()
     return result;
 }
 
-typedef void* sem_t;
+typedef uint64* sem_t;
 int sem_open(sem_t* handle, unsigned int x)
 {
     __asm__ volatile("mv a2, %0" :  : "r"((uint64)x));
