@@ -64,7 +64,7 @@ void KConsole::sendCharactersToConsole(void* p)
             __asm__ volatile("lb a1, 0(a0)");
             uint64 operation;
             __asm__ volatile("mv %0, a1" :  "=r"(operation));
-            if (operation & STATUS_WRITE_MASK)
+            if ((operation & STATUS_WRITE_MASK) && pendingPutc > 0)
             {
                 char volatile c = sysCallGetCharOutput();
                 pendingPutc--;

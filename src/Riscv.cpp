@@ -199,8 +199,8 @@ void Riscv::kernelMain()
         thread_dispatch();
     }
 
+    printString("End...\n");
     finishSystem = true;
-    ::printString("End...\n");
     while(!PCB::consolePCB->isFinished())
     {
         thread_dispatch();

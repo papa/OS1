@@ -1,5 +1,4 @@
 #include "buffer.hpp"
-#include "../h/syscall_c.h"
 
 Buffer::Buffer(int _cap) : cap(_cap + 1), head(0), tail(0) {
     buffer = (int *)mem_alloc(sizeof(int) * cap);
@@ -53,7 +52,8 @@ int Buffer::get() {
     return ret;
 }
 
-int Buffer::getCnt() {
+int Buffer::getCnt()
+{
     int ret;
 
     sem_wait(mutexHead);
