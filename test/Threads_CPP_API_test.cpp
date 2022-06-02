@@ -4,12 +4,12 @@
 
 #include "Threads_CPP_API_test.hpp"
 
-static bool finishedA = false;
-static bool finishedB = false;
-static bool finishedC = false;
-static bool finishedD = false;
+bool finishedA = false;
+bool finishedB = false;
+bool finishedC = false;
+bool finishedD = false;
 
-static uint64 fibonacci(uint64 n) {
+uint64 fibonacci(uint64 n) {
     if (n == 0 || n == 1) { return n; }
     if (n % 10 == 0) { thread_dispatch(); }
     return fibonacci(n - 1) + fibonacci(n - 2);
@@ -27,8 +27,7 @@ void WorkerA::workerBodyA(void *arg) {
     finishedA = true;
 }
 
-void WorkerB::workerBodyB(void *arg)
-{
+void WorkerB::workerBodyB(void *arg) {
     for (uint64 i = 0; i < 16; i++) {
         printString("B: i="); printInt(i); printString("\n");
         for (uint64 j = 0; j < 10000; j++) {
@@ -36,9 +35,9 @@ void WorkerB::workerBodyB(void *arg)
             thread_dispatch();
         }
     }
-    thread_dispatch();
     printString("B finished!\n");
     finishedB = true;
+    thread_dispatch();
 }
 
 void WorkerC::workerBodyC(void *arg) {
@@ -63,9 +62,9 @@ void WorkerC::workerBodyC(void *arg) {
         printString("C: i="); printInt(i); printString("\n");
     }
 
-    thread_dispatch();
-    printString("C finished!\n");
+    printString("A finished!\n");
     finishedC = true;
+    thread_dispatch();
 }
 
 void WorkerD::workerBodyD(void* arg) {
@@ -85,16 +84,15 @@ void WorkerD::workerBodyD(void* arg) {
         printString("D: i="); printInt(i); printString("\n");
     }
 
-    thread_dispatch();
     printString("D finished!\n");
     finishedD = true;
+    thread_dispatch();
 }
 
 
 void Threads_CPP_API_test() {
     Thread* threads[4];
 
-    //Riscv::printString("Got here\n");
     threads[0] = new WorkerA();
     printString("ThreadA created\n");
 
@@ -108,14 +106,12 @@ void Threads_CPP_API_test() {
     printString("ThreadD created\n");
 
     for(int i=0; i<4; i++) {
-        //Riscv::printString("Starting...\n");
         threads[i]->start();
     }
 
-    //Riscv::printString("Thread started\n");
     while (!(finishedA && finishedB && finishedC && finishedD)) {
         Thread::dispatch();
-        //Riscv::printString("main\n");
     }
+
     for (auto thread: threads) { delete thread; }
 }

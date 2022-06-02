@@ -24,7 +24,6 @@ void Riscv::initSystem()
 
 void Riscv::endSystem()
 {
-    //todo
     Riscv::disableInterrupts();
 }
 

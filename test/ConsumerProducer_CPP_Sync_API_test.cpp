@@ -4,6 +4,7 @@
 
 #include "ConsumerProducer_CPP_Sync_API_test.hpp"
 #include "printing.hpp"
+
 extern Semaphore* waitForAll;
 
 struct thread_data {
@@ -118,6 +119,7 @@ void producerConsumer_CPP_Sync_API()
     data[threadNum].wait = waitForAll;
     consumerThread = new Consumer(data+threadNum);
     consumerThread->start();
+
     for (int i = 0; i < threadNum; i++) {
         data[i].id = i;
         data[i].buffer = buffer;
@@ -132,9 +134,8 @@ void producerConsumer_CPP_Sync_API()
         threads[i]->start();
     }
 
-    printString("dispatching...\n");
     Thread::dispatch();
-    printString("dispatch return...\n");
+
     for (int i = 0; i <= threadNum; i++) {
         waitForAll->wait();
     }
@@ -145,4 +146,5 @@ void producerConsumer_CPP_Sync_API()
     delete consumerThread;
     delete waitForAll;
     delete buffer;
+
 }

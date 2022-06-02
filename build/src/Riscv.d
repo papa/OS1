@@ -5,8 +5,8 @@ build/src/Riscv.o: src/Riscv.cpp src/../h/Riscv.hpp src/../h/../lib/hw.h \
  src/../h/SleepPCBList.hpp src/../h/KConsole.hpp \
  src/../h/MemoryAllocator.hpp src/../h/Tests.hpp src/../h/Riscv.hpp \
  src/../h/syscall_cpp.hpp src/../test/userMain.hpp \
- src/../test/ConsumerProducer_CPP_Sync_API_test.hpp \
- src/../test/../h/syscall_cpp.hpp src/../test/buffer_CPP_API.hpp
+ src/../test/ThreadSleep_C_API_test.hpp src/../test/../h/syscall_c.h \
+ src/../test/printing.hpp
 
 src/../h/Riscv.hpp:
 
@@ -42,8 +42,8 @@ src/../h/syscall_cpp.hpp:
 
 src/../test/userMain.hpp:
 
-src/../test/ConsumerProducer_CPP_Sync_API_test.hpp:
+src/../test/ThreadSleep_C_API_test.hpp:
 
-src/../test/../h/syscall_cpp.hpp:
+src/../test/../h/syscall_c.h:
 
-src/../test/buffer_CPP_API.hpp:
+src/../test/printing.hpp:

@@ -31,8 +31,7 @@ void producerKeyboard(void *arg) {
     }
 
     threadEnd = 1;
-
-    delete data->buffer;
+    data->buffer->put('!');
 
     sem_signal(data->wait);
 }
@@ -56,7 +55,6 @@ void producer(void *arg) {
 void consumer(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
 
-
     int i = 0;
     while (!threadEnd) {
         int key = data->buffer->get();
@@ -71,6 +69,11 @@ void consumer(void *arg) {
         if (i % 80 == 0) {
             putc('\n');
         }
+    }
+
+    while (data->buffer->getCnt() > 0) {
+        int key = data->buffer->get();
+        putc(key);
     }
 
     sem_signal(data->wait);
@@ -91,6 +94,14 @@ void producerConsumer_C_API() {
     printString("Broj proizvodjaca "); printInt(threadNum);
     printString(" i velicina bafera "); printInt(n);
     printString(".\n");
+
+    if(threadNum > n) {
+        printString("Broj proizvodjaca ne sme biti manji od velicine bafera!\n");
+        return;
+    } else if (threadNum < 1) {
+        printString("Broj proizvodjaca mora biti veci od nula!\n");
+        return;
+    }
 
     Buffer *buffer = new Buffer(n);
 
@@ -123,4 +134,7 @@ void producerConsumer_C_API() {
     }
 
     sem_close(waitForAll);
+
+    delete buffer;
+
 }

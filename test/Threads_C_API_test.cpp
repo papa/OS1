@@ -4,12 +4,12 @@
 
 #include "Threads_C_API_test.hpp"
 
-bool finishedA = false;
-bool finishedB = false;
-bool finishedC = false;
-bool finishedD = false;
+static bool finishedA = false;
+static bool finishedB = false;
+static bool finishedC = false;
+static bool finishedD = false;
 
-uint64 fibonacci(uint64 n) {
+static uint64 fibonacci(uint64 n) {
     if (n == 0 || n == 1) { return n; }
     if (n % 10 == 0) { thread_dispatch(); }
     return fibonacci(n - 1) + fibonacci(n - 2);
@@ -89,6 +89,7 @@ void workerBodyD(void* arg) {
     thread_dispatch();
 }
 
+
 void Threads_C_API_test() {
     thread_t threads[4];
     thread_create(&threads[0], workerBodyA, nullptr);
@@ -109,3 +110,4 @@ void Threads_C_API_test() {
 
     for (auto &thread: threads) { delete (uint64*)thread; }
 }
+

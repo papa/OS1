@@ -152,5 +152,4 @@ namespace ConsumerProducerCPP {
         delete buffer;
     }
 }
-
 #endif //XV6_CONSUMERPRODUCER_CPP_API_TEST_HPP
