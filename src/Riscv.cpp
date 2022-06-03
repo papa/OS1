@@ -8,7 +8,6 @@
 #include "../h/syscall_cpp.hpp"
 #include "../h/SleepPCBList.hpp"
 #include "../h/KConsole.hpp"
-#include "../h/Tests.hpp"
 #include "../h/Scheduler.hpp"
 
 uint64 Riscv::totalTime = 0;
@@ -224,11 +223,6 @@ void Riscv::kernelMain()
 void Riscv::userMainWrapper(void* )
 {
     userMain();
-}
-
-void Riscv::myTestsWrapper(void* p)
-{
-    myTests();
 }
 
 void Riscv::disableTimerInterrupts()
