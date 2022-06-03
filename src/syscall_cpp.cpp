@@ -49,11 +49,13 @@ void Thread::sleep(time_t time)
 
 Thread::Thread(void (*body)(void *), void *args)
 {
+    myHandle = 0;
     thread_make_pcb(&myHandle, body, args);
 }
 
 Thread::Thread()
 {
+    myHandle = 0;
     thread_make_pcb(&myHandle, &Thread::runner, (void*)this);
 }
 
@@ -65,7 +67,7 @@ void Thread::runner(void *t)
 
 Thread::~Thread()
 {
-    mem_free(myHandle);
+    delete myHandle;
 }
 
 //Semaphore
@@ -82,8 +84,6 @@ Semaphore::Semaphore(unsigned int init)
     int retval = sem_open(&myHandle, init);
     if(retval != 0)
     {
-        //todo
-        //what then
         myHandle = 0;
     }
 }
@@ -96,7 +96,7 @@ int Semaphore::signal()
 }
 
 Semaphore::~Semaphore() {
-    sem_close(myHandle);
+    delete myHandle;
 }
 
 //Console

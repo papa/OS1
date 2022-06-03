@@ -40,6 +40,7 @@ private:
     static const uint64 THREAD_DISPATCH = 0x13;
     static const uint64 THREAD_MAKE_PCB = 0x14;
     static const uint64 THREAD_START = 0x15;
+    static const uint64 THREAD_DEL_PCB = 0x16;
     static const uint64 TIME_SLEEP = 0x31;
 
     bool systemThread = false;
@@ -57,6 +58,7 @@ private:
     static void threadSleepHandler();
     static void threadStartHandler();
     static void threadMakePCBHandler();
+    static void threadDelPCBHandler();
 
     uint64 sscratch;
 

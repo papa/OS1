@@ -3,7 +3,7 @@
 //
 
 #include "../h/PCB.hpp"
-#include "../h/syscall_c.h"
+#include "../h/syscall_c.hpp"
 #include "../h/SleepPCBList.hpp"
 #include "../test/printing.hpp"
 #include "../h/KConsole.hpp"
@@ -184,5 +184,21 @@ void PCB::threadMakePCBHandler()
         __asm__ volatile("li a0, 0xffffffffffffffff");
     else
         __asm__ volatile("li a0, 0");
+    Riscv::w_a0_sscratch();
+}
+
+void PCB::threadDelPCBHandler()
+{
+    PCB* pcb;
+    __asm__ volatile("mv %0, a1" : "=r"(pcb));
+    if(pcb != 0)
+    {
+        delete pcb;
+        __asm__ volatile("li a0, 0x0");
+    }
+    else
+    {
+        __asm__ volatile("li a0, 0x1");
+    }
     Riscv::w_a0_sscratch();
 }

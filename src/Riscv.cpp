@@ -55,10 +55,10 @@ void Riscv::handleSupervisorTrap()
             uint64 volatile sepc = Riscv::r_sepc();
             uint64 volatile sstatus = Riscv::r_sstatus();
             mc_sip(Riscv::SIP_SSIP);
-            //trapPrintString("timerInterrupt\n");
+            //KConsole::trapPrintString("timerInterrupt\n");
             //static uint64 total = 0;
             totalTime++;
-            //trapPrintInt(totalTime);
+            //KConsole::trapPrintInt(totalTime);
 
             PCB::timeSliceCounter++;
             SleepPCBList::tryToWakePCBs();
@@ -152,6 +152,9 @@ void Riscv::handleSupervisorTrap()
                 case PCB::TIME_SLEEP:
                     PCB::threadSleepHandler();
                     break;
+                case PCB::THREAD_DEL_PCB:
+                     PCB::threadDelPCBHandler();
+                     break;
                 case KSemaphore::SEM_OPEN:
                     KSemaphore::semOpenHandler();
                     break;
@@ -190,6 +193,7 @@ void Riscv::kernelMain()
 
     initSystem();
 
+    //disableTimerInterrupts();
     enableInterrupts();
 
     while(!PCB::userPCB->isFinished())

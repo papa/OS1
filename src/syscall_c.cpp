@@ -2,11 +2,8 @@
 // Created by os on 4/9/22.
 //
 
-#include "../h/syscall_c.h"
+#include "../h/syscall_c.hpp"
 
-#ifdef __cplusplus
-extern "C"
-#endif
 void* mem_alloc(size_t size)
 {
     //prepare for system call
@@ -23,9 +20,6 @@ void* mem_alloc(size_t size)
     return (void*)allocatedAddr;
 }
 
-#ifdef __cplusplus
-extern "C"
-#endif
 int mem_free(void* p)
 {
     //prepare for system call
@@ -42,9 +36,6 @@ int mem_free(void* p)
     return result;
 }
 
-#ifdef __cplusplus
-extern "C"
-#endif
 int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
 {
     uint64 handleLocal = (uint64)handle;
@@ -76,18 +67,12 @@ int thread_create(thread_t* handle, void (*start_routine)(void*), void* args)
     return result;
 }
 
-#ifdef __cplusplus
-extern "C"
-#endif
 void thread_dispatch()
 {
     __asm__ volatile("li a0, 0x13");
     __asm__ volatile("ecall");
 }
 
-#ifdef __cplusplus
-extern "C"
-#endif
 int thread_exit()
 {
     __asm__ volatile("li a0, 0x12");
@@ -99,7 +84,6 @@ int thread_exit()
     return result;
 }
 
-typedef uint64* sem_t;
 int sem_open(sem_t* handle, unsigned int x)
 {
     __asm__ volatile("mv a2, %0" :  : "r"((uint64)x));
@@ -223,6 +207,17 @@ char sysCallGetCharOutput()
 {
     __asm__ volatile("li a0, 0x43");
 
+    __asm__ volatile("ecall");
+
+    uint64 result;
+    __asm__ volatile("mv %0, a0" : "=r"(result));
+    return (char)result;
+}
+
+int thread_delete_pcb(thread_t handle)
+{
+    __asm__ volatile("mv a1, %0" :  : "r"((uint64)handle));
+    __asm__ volatile("li a0, 0x16");
     __asm__ volatile("ecall");
 
     uint64 result;

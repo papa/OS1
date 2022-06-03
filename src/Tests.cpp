@@ -102,7 +102,7 @@ void threadTest3()
     t->start();
     while(true)
     {
-        //thread_dispatch();
+        thread_dispatch();
     }
 }
 
@@ -176,26 +176,27 @@ void bigMalloc()
 
 void lotOfSmallMallocs()
 {
-    /*printString("lotOfSmallMallocs\n");
-    uint64 cnt = 0;
-    uint64 sum = 0;
-    uint64 N = 10000UL;
-    uint64 X = 10UL;
-    for(uint64 i = 0; i < N;i++)
-    {
-        Test* t = (Test*)mem_alloc(sizeof(Test));
-        if(t == 0)
+    for(int i=0;;i++){
+        void *x = mem_alloc(1);
+        void *y = mem_alloc(1);
+        if(x == nullptr){
+            printString("alloc\n");
+            printInt(i);
             break;
-        t->a = X;
-        sum+=t->a;
-        cnt++;
+        }
+        int status = mem_free(x);
+        if(status == -1){
+            printString("free\n");
+            printInt(i);
+            break;
+        }
+        if(i%10000==0){
+            printInt(i);
+            putc('\n');
+        }
+        if(y);
     }
-    printInt(cnt);
-    printString("\n");
-    if(sum == X*cnt)
-        printString("OK\n");
-    else
-        printString("not OK\n");*/
+    /*
     for(int i=0;i<200000;i++)
     {
         int *x = (int*) mem_alloc(1);
@@ -204,7 +205,7 @@ void lotOfSmallMallocs()
             printString("not OK\n");
             break;
         }
-    }
+    }*/
     printString("OK\n");
 }
 void badFree()
@@ -278,7 +279,7 @@ void stressTesting()
 void memoryAllocationTests()
 {
     //bigMalloc();
-    lotOfSmallMallocs();
+    //lotOfSmallMallocs();
     //mallocFree();
     //badFree();
     //stressTesting();
@@ -294,8 +295,8 @@ void semaphoreTests()
 
 void myTests()
 {
-    memoryAllocationTests();
-    //threadTests();
+    //memoryAllocationTests();
+    threadTests();
     //semaphoreTests();
     //consoleTests();
     //changeModeTests();
@@ -307,10 +308,11 @@ TestPeriodic::TestPeriodic(time_t time) : PeriodicThread(time) {
 
 void TestPeriodic::periodicActivation()
 {
-    for(int i = 0 ; i < 10000;i++)
+    for(int i = 0 ; i < 10;i++)
     {
         printString("i : ");
         printInt(i);
+        printString("\n");
     }
 }
 
