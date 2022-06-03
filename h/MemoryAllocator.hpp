@@ -14,10 +14,13 @@ private:
     {
         size_t size;
         struct BlockHeader *next;
+        struct BlockHeader* prev;
     } BlockHeader;
 
     static BlockHeader* headFree;
     static BlockHeader* headAllocated;
+    static BlockHeader* tailFree;
+    static BlockHeader* tailAllocated;
 
     static int memoryInitiliaized;
 

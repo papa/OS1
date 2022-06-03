@@ -278,10 +278,10 @@ void stressTesting()
 void memoryAllocationTests()
 {
     //bigMalloc();
-    lotOfSmallMallocs();
+    //lotOfSmallMallocs();
     //mallocFree();
     //badFree();
-    //stressTesting();
+    stressTesting();
     //mallocTest();
     //mallocEverything();
     //mallocGapFillTest();
