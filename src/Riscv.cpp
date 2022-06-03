@@ -9,6 +9,7 @@
 #include "../h/SleepPCBList.hpp"
 #include "../h/KConsole.hpp"
 #include "../h/Tests.hpp"
+#include "../h/Scheduler.hpp"
 
 uint64 Riscv::totalTime = 0;
 bool Riscv::finishSystem = false;
@@ -23,7 +24,22 @@ void Riscv::initSystem()
 
 void Riscv::endSystem()
 {
-    Riscv::disableInterrupts();
+    disableInterrupts();
+    finishSystem = true;
+    PCB* pcb = 0;
+    while(true)
+    {
+        pcb = Scheduler::get();
+        if(pcb == 0) break;
+    }
+    Scheduler::put(PCB::consolePCB);
+    KConsole::pendingGetc = 0;
+    enableInterrupts();
+    while(!PCB::consolePCB->isFinished())
+    {
+        thread_dispatch();
+    }
+    disableInterrupts();
 }
 
 void Riscv::enableInterrupts() {
@@ -202,12 +218,6 @@ void Riscv::kernelMain()
     }
 
     //printString("End...\n");
-    finishSystem = true;
-    while(!PCB::consolePCB->isFinished())
-    {
-        thread_dispatch();
-    }
-    disableInterrupts();
     endSystem();
 }
 
