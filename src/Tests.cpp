@@ -196,7 +196,7 @@ void lotOfSmallMallocs()
         printString("OK\n");
     else
         printString("not OK\n");*/
-    for(int i=0;i<70000;i++)
+    for(int i=0;i<200000;i++)
     {
         int *x = (int*) mem_alloc(1);
         if(x == nullptr)

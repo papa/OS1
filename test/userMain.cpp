@@ -12,7 +12,6 @@
 //#include "ThreadSleep_C_API_test.hpp" // thread_sleep test C API
 //#include "ConsumerProducer_CPP_API_test.hpp" // zadatak 4. CPP API i asinhrona promena konteksta
 
-
 void userMain()
 {
     //__asm__ volatile("csrr a0, sstatus");

@@ -4,6 +4,7 @@
 
 #include "../h/MemoryAllocator.hpp"
 #include "../h/Riscv.hpp"
+#include "../h/KConsole.hpp"
 
 MemoryAllocator::BlockHeader* MemoryAllocator::headAllocated = 0;
 MemoryAllocator::BlockHeader* MemoryAllocator::headFree = 0;
@@ -28,6 +29,29 @@ void MemoryAllocator::initMemory()
     headFree = (BlockHeader*)HEAP_START_ADDR;
     headFree->next = 0;
     headFree->size = (size_t)((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR + 1 - sizeof(BlockHeader));
+}
+
+void MemoryAllocator::insertAllFragment(void *addr, size_t size, void* nxtAddr)
+{
+    initMemory();
+    BlockHeader* newAllocated = (BlockHeader*)addr;
+    newAllocated->next = 0;
+    newAllocated->size = size;
+    if(headAllocated == 0)
+    {
+        headAllocated = newAllocated;
+    }
+    else if(nxtAddr <= HEAP_END_ADDR)
+    {
+        BlockHeader * allFrag = (BlockHeader*)nxtAddr;
+        newAllocated->next = allFrag->next;
+        allFrag->next = newAllocated;
+    }
+    else
+    {
+        newAllocated->next = headAllocated;
+        headAllocated = newAllocated;
+    }
 }
 
 void MemoryAllocator::insertNewAllocatedFragment(void *addr, size_t size)
@@ -67,6 +91,7 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size)
         {
             void* oldAddr = curr;
             void* newAddr = ((char*)curr + size + sizeof(BlockHeader));
+            void* nxtAllFrag = ((char*)curr + curr->size + sizeof(BlockHeader));
             if(newAddr <= HEAP_END_ADDR)
             {
                 uint64 size2 = curr->size - size;
@@ -83,6 +108,7 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size)
                 }
                 else
                 {
+                    size+=size2;
                     if(prev != 0)
                         prev->next = curr->next;
                     else
@@ -96,7 +122,8 @@ void* MemoryAllocator::tryToAllocateFragment(size_t size)
                 else
                     headFree = 0;
             }
-            insertNewAllocatedFragment(oldAddr, size);
+            insertAllFragment(oldAddr, size, nxtAllFrag);
+            //insertNewAllocatedFragment(oldAddr, size);
             uint64 oldA = (uint64)((char*)oldAddr + sizeof(BlockHeader));
             retval = oldA;
             break;
