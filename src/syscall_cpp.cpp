@@ -96,7 +96,7 @@ int Semaphore::signal()
 }
 
 Semaphore::~Semaphore() {
-    mem_free(myHandle);
+    sem_close(myHandle);
 }
 
 //Console
