@@ -1,5 +1,4 @@
-# OS1
-OS1 project
+# Operating systems 1 project
 A minimalistic kernel for RiscV architecture with support for some basic kenel functions (ie. time-sharing, multi-threading, semaphores, etc..)
 
 <br/>
