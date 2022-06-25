@@ -52,11 +52,6 @@ Implementation of this kernel is layered into multiple levels of abstraction:
 | 0x41             |  <p><pre> char getc ();  </pre></p>| Returns one character from input buffer. If buffer is empty, blocks caller thread until there is a character. If successful returns character, otherwise return const EOF|
 | 0x42             |  <p><pre> void putc (char);  </pre></p>| Prints given character to console|
 
-_Notes:_  
-Thread is created with stack size of _DEFAULT_STACK_SIZE_ and time slice the size of _DEFAULT_TIME_SLICE_.  
-Memory availible for allocation starts at _HEAP_START_ADDR_ and ends at _HEAP_END_ADDR-1_.  
-All constants are declared in _hw.h_ file
-
 <br/>
 
 ### ABI
