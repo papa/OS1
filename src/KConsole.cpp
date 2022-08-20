@@ -25,7 +25,7 @@ void KConsole::initialize()
 //extern const uint64 CONSOLE_STATUS;
 //extern const uint64 CONSOLE_TX_DATA;
 //extern const uint64 CONSOLE_RX_DATA;
-
+//todo
 void KConsole::getCharactersFromConsole(void* p)
 {
     while(true)
@@ -51,6 +51,7 @@ void KConsole::getCharactersFromConsole(void* p)
     }
 }
 
+//todo
 void KConsole::sendCharactersToConsole(void* p)
 {
     while(true)
@@ -94,9 +95,7 @@ char KConsole::getCharacterInput()
     if(inputHead == inputTail)
         return -1;
     char c = inputBuffer[inputHead];
-
     inputHead = (inputHead+1)%bufferSize;
-
     return c;
 }
 
@@ -115,11 +114,8 @@ char KConsole::getCharacterOutput()
     hasCharactersOutput->wait();
     if(outputHead == outputTail)
         return -1;
-
     char c = outputBuffer[outputHead];
-
     outputHead = (outputHead+1)%bufferSize;
-
     return c;
 }
 
@@ -178,7 +174,7 @@ void KConsole::printInt(int xx, int base, int sgn)
     uint x;
 
     neg = 0;
-    if(sgn && xx < 0){
+    if(sgn && xx < 0) {
         neg = 1;
         x = -xx;
     } else {
@@ -186,7 +182,7 @@ void KConsole::printInt(int xx, int base, int sgn)
     }
 
     i = 0;
-    do{
+    do {
         buf[i++] = digits[x % base];
     }while((x /= base) != 0);
     if(neg)

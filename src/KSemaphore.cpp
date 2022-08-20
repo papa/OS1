@@ -100,7 +100,6 @@ void KSemaphore::unblock() {
     removeFirstBlocked();
     if(fr != 0)
     {
-        //Riscv::printString("Unblocked thread\n");
         Scheduler::put(fr);
     }
 }
@@ -117,7 +116,6 @@ void KSemaphore::semWaitHandler()
 {
     KSemaphore* kSem;
     __asm__ volatile("mv %0, a1" : "=r"(kSem));
-    //uint64 volatile retval = kSem->wait();
     kSem->wait();
     if(PCB::running->retFromClosedSem)
         __asm__ volatile("li a0, 0x1");
@@ -135,7 +133,6 @@ void KSemaphore::semSignalHandler() {
     }
     else
     {
-        //uint64 volatile retval = kSem->signal();
         kSem->signal();
         __asm__ volatile("li a0, 0x0");
     }

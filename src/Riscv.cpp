@@ -114,19 +114,19 @@ void Riscv::handleSupervisorTrap()
 
             break;
         }
-        case operationInterrupt: // todo
+        case operationInterrupt:
         {
             //trapPrintString("operation interrupt\n");
             PCB::threadExitHandler();
             break;
         }
-        case addrReadInterrupt: // todo
+        case addrReadInterrupt:
         {
             //trapPrintString("read interrupt\n");
             PCB::threadExitHandler();
             break;
         }
-        case addrWriteInterrupt: // todo
+        case addrWriteInterrupt:
         {
             //trapPrintString("write interrupt\n");
             PCB::threadExitHandler();

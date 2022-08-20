@@ -23,7 +23,6 @@ void operator delete(void * p)
 }
 
 //Thread
-
 int Thread::start()
 {
     if(myHandle != 0)

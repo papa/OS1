@@ -11,7 +11,6 @@ PCB* SleepPCBList::sleepingPCBHead = 0;
 void SleepPCBList::insertSleepingPCB()
 {
     PCB::running->setState(PCB::SLEEPING);
-    //trapPrintString("Inserting sleeping PCB...\n");
     PCB* prev = 0;
     PCB* curr = sleepingPCBHead;
     while(curr != 0)
@@ -33,13 +32,10 @@ void SleepPCBList::insertSleepingPCB()
 
 void SleepPCBList::tryToWakePCBs()
 {
-    //trapPrintString("Waking PCBs...\n");
     PCB* curr = sleepingPCBHead;
     if(curr == 0)
-    {
-        //trapPrintString("No sleeping PCBs...\n");
         return;
-    }
+
     while(curr != 0 && Riscv::totalTime >= curr->getTimeToSleep())
     {
         PCB *old = curr;
